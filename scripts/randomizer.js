@@ -1,0 +1,1 @@
+(()=>{const N=window.NitroArcade=window.NitroArcade||{};let last=[];N.randomGame=(games,avoid=4)=>{let pool=games.filter(g=>!last.includes(g.id??g));if(!pool.length)pool=games;let g=pool[Math.floor(Math.random()*pool.length)],id=g.id??g;last=[id,...last.filter(x=>x!==id)].slice(0,avoid);return g}})();

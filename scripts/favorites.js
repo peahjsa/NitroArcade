@@ -1,0 +1,1 @@
+(()=>{const N=window.NitroArcade=window.NitroArcade||{};const K="favorites";N.favorites={all:()=>N.save?.get(K,[])||[],has:id=>N.favorites.all().includes(id),toggle(id){let a=N.favorites.all(),i=a.indexOf(id);i<0?a.push(id):a.splice(i,1);N.save?.set(K,a);N.emit?.("favorites",{id,active:i<0});return i<0}}})();

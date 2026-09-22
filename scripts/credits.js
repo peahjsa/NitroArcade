@@ -1,0 +1,1 @@
+(()=>{const N=window.NitroArcade=window.NitroArcade||{};N.credits={nitroArcade:["Prabhav","Zayaan","Shaun"],macroArcade:["Alin","Arihant","Viyaan"],text(){return `NitroArcade — ${this.nitroArcade.join(", ")}\nMacroArcade — ${this.macroArcade.join(", ")}`}}})();

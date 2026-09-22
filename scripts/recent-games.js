@@ -1,0 +1,1 @@
+(()=>{const N=window.NitroArcade=window.NitroArcade||{};const K="recent";N.recent={add(id){let a=N.save?.get(K,[])||[];a=[id,...a.filter(x=>x!==id)].slice(0,12);N.save?.set(K,a);return a},all:()=>N.save?.get(K,[])||[]};N.on?.("gameopen",d=>N.recent.add(d.id))})();

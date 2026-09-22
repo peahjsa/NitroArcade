@@ -1,0 +1,1 @@
+(()=>{const N=window.NitroArcade=window.NitroArcade||{};N.router={go(path){location.href=path},macro:()=>location.href="./macroarcade.html",nitro:()=>location.href="./index.html"};})();

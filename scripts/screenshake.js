@@ -1,0 +1,1 @@
+(()=>{const N=window.NitroArcade=window.NitroArcade||{};N.shake=(el=document.body,power=8,duration=250)=>{if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;el.animate([{transform:"translate(0)"},{transform:`translate(${power}px,${-power/2}px)`},{transform:`translate(${-power}px,${power/2}px)`},{transform:"translate(0)"}],{duration,iterations:1})}})();

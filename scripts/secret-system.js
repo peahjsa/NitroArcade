@@ -1,0 +1,1 @@
+(()=>{const N=window.NitroArcade=window.NitroArcade||{};const K="secrets";N.secrets={unlock(id){let a=N.save?.get(K,[])||[];if(!a.includes(id)){a.push(id);N.save?.set(K,a);N.emit?.("secretunlock",{id});N.notify?.("Secret unlocked: "+id,{title:"🔐 SECRET"})}return true},has:id=>(N.save?.get(K,[])||[]).includes(id),all:()=>N.save?.get(K,[])||[]}}})();

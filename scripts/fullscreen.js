@@ -1,0 +1,1 @@
+(()=>{const N=window.NitroArcade=window.NitroArcade||{};N.fullscreen={async enter(el=document.documentElement){if(!document.fullscreenElement)await el.requestFullscreen?.()},async exit(){if(document.fullscreenElement)await document.exitFullscreen?.()},toggle(el=document.documentElement){return document.fullscreenElement?N.fullscreen.exit():N.fullscreen.enter(el)}}})();

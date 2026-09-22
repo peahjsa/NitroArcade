@@ -1,0 +1,1 @@
+(()=>{const N=window.NitroArcade=window.NitroArcade||{};let paused=false;N.pause={get active(){return paused},set(v){paused=!!v;document.documentElement.dataset.paused=paused;N.emit?.(paused?"pause":"resume",{});return paused},toggle(){return N.pause.set(!paused)}};addEventListener("keydown",e=>{if(e.code==="Escape"&&!e.repeat)N.pause.toggle()})})();

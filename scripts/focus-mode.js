@@ -1,0 +1,1 @@
+(()=>{const N=window.NitroArcade=window.NitroArcade||{};N.focusMode={set(on=true){document.documentElement.dataset.focusMode=on;N.emit?.("focusmode",{active:on});return on},toggle(){return N.focusMode.set(document.documentElement.dataset.focusMode!=="true")}}})();

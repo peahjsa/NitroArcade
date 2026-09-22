@@ -1,0 +1,1 @@
+(()=>{const N=window.NitroArcade=window.NitroArcade||{};const start=performance.now();N.session={seconds:()=>Math.floor((performance.now()-start)/1000),formatted(){let s=N.session.seconds(),m=Math.floor(s/60);return `${m}:${String(s%60).padStart(2,"0")}`}}})();
