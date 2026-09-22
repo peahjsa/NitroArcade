@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
     <title>NitroArcade</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@ruffle-rs/ruffle">
@@ -1690,7 +1691,13 @@ body.theme-matrix{
 <button id="macroArcadeLink" type="button" onclick="window.location.href='https://peahjsa.github.io/NitroArcade/macroarcade.html'">↗ VISIT MACRO ARCADE</button>
 
     <header class="navbar">
-        <div class="brand"
+        <div class="brand">
+            <img
+                src="images/logo.png"
+                alt="NitroArcade"
+                class="logo-img"
+                onerror="this.style.display='none';document.getElementById('brandFallback').style.display='block';"
+            >
             <div class="brand-fallback" id="brandFallback">NitroArcade</div>
             <div class="brand-dot"></div>
         </div>
