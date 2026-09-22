@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ALIN 916 ULTRA ARCADE</title>
+<style>
+:root{--cyan:#00f5ff;--purple:#a855f7;--pink:#ff38c7;--bg:#070816}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at top,#171743,var(--bg) 65%);color:#fff;font-family:system-ui,Arial,sans-serif}
+header{text-align:center;padding:30px 15px 24px;background:linear-gradient(120deg,#170d43,#082d4b,#350b42);border-bottom:2px solid var(--cyan);box-shadow:0 8px 40px #00eaff22}
+.brand{font-size:13px;letter-spacing:5px;color:#ffe600;font-weight:900}
+h1{font-size:clamp(29px,6vw,62px);margin:12px 0;text-shadow:0 0 20px #00dfff,0 0 45px #7c32ff}
+header p{color:#c8dcff}
+.pills{display:flex;justify-content:center;gap:9px;flex-wrap:wrap}
+.pill{border:1px solid #5a5e9d;border-radius:30px;padding:7px 13px;background:#ffffff0b;font-size:12px}
+.controls{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;padding:20px}
+input,select{background:#11152e;color:white;border:1px solid #444e89;border-radius:11px;padding:13px;font-size:15px;max-width:100%}
+#search{width:min(420px,90vw)}
+#count{text-align:center;color:var(--cyan);font-weight:bold;letter-spacing:1px;padding:0 10px 10px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(205px,1fr));gap:15px;padding:18px;max-width:1550px;margin:auto}
+.card{background:linear-gradient(150deg,#191d3c,#0e1024);border:1px solid #343962;border-radius:16px;overflow:hidden;transition:.2s;box-shadow:0 7px 20px #0005}
+.card:hover{transform:translateY(-5px);border-color:var(--cyan);box-shadow:0 0 23px #00eaff35}
+.art{height:122px;display:grid;place-items:center;font-size:55px;background:linear-gradient(135deg,#20285e,#62246e,#087d91);position:relative}
+.art:after{content:"";position:absolute;inset:0;background:linear-gradient(125deg,transparent 35%,#ffffff18,transparent 65%);pointer-events:none}
+.info{padding:14px}
+.tag{font-size:10px;letter-spacing:1.5px;color:#40f9db;text-transform:uppercase}
+.info h3{margin:8px 0;font-size:17px}
+.info p{font-size:13px;color:#b9c5e6;min-height:38px;line-height:1.45}
+button{cursor:pointer;border:0;border-radius:10px;padding:12px 16px;color:white;background:linear-gradient(100deg,#00bfe8,#8c45f5);font-weight:900;font-size:14px}
+button:hover{filter:brightness(1.18)}
+.card button{width:100%}
+button:disabled{opacity:.45;cursor:default}
+.topbuttons{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;padding:0 12px 12px}
+#screen{display:none;position:fixed;z-index:5;inset:0;overflow:auto;background:radial-gradient(ellipse at top,#19194c,#050611 75%);padding:15px}
+.gamebar{max-width:900px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.gamebar button{width:auto}
+#arena{max-width:850px;margin:22px auto;padding:clamp(15px,4vw,35px);text-align:center;border:1px solid #00eaff;border-radius:20px;background:linear-gradient(145deg,#131a37,#0a0d20);box-shadow:0 0 35px #00eaff20;min-height:350px}
+#gameTitle{font-size:clamp(25px,5vw,40px);color:#00eaff;text-shadow:0 0 15px #00bfff}
+#desc{color:#c4d5f4;line-height:1.6}
+#playArea{margin:20px auto;max-width:600px}
+#playArea button{margin:5px}
+#feedback{color:#ffe45e;font-weight:bold;min-height:30px;font-size:17px}
+#guess{width:min(100%,400px);font-size:23px;text-align:center;letter-spacing:4px}
+#musicBtn{background:linear-gradient(100deg,#ed2cba,#713fff)}
+footer{text-align:center;padding:30px;color:#8b96ba;font-size:13px}
+
+#arena{max-width:1050px!important}#playArea{max-width:100%!important}.hud{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:8px 0 10px;color:#bffcff}.gameHelp{color:#b9c5e6;margin:10px 0;font-size:13px}#gameCanvas{width:100%;max-width:960px;aspect-ratio:16/9;background:#050611;border:1px solid #38478a;border-radius:14px;box-shadow:0 0 30px #00eaff22;display:block;margin:10px auto;outline:none}
+
+.cross-arcade-btn{
+  background:linear-gradient(100deg,#ffe600,#ff7a00)!important;
+  color:#160b22!important;
+  border:1px solid #fff3a8!important;
+  box-shadow:0 0 18px #ffb30055!important;
+}
+.cross-arcade-btn:hover{filter:brightness(1.15);transform:translateY(-1px)}
+
+</style>
+</head>
+<body>
+<header>
+<div class="brand">✦ CREATED BY ALIN 916 ✦</div>
+<h1>⚡ ALIN 916 ULTRA ARCADE ⚡</h1>
+<p>ENTER THE ULTIMATE GAMING UNIVERSE</p>
+<div class="pills">
+<span class="pill">🎮 120+ GAME WORLDS</span>
+<span class="pill">🕶️ HACKER CODE LAB</span>
+<span class="pill">🎵 ORIGINAL ARCADE MUSIC</span>
+</div>
+</header>
+<div class="controls">
+<input id="search" placeholder="🔎 Search for a game..." oninput="render()">
+<select id="category" onchange="render()">
+<option>All</option><option>Racing</option><option>Action</option><option>Platform</option><option>Puzzle</option><option>Adventure</option><option>Sports</option><option>Strategy</option><option>Survival</option><option>Simulation</option><option>Space</option><option>Skill</option><option>Horror</option><option>Hacker</option>
+</select>
+</div>
+<div class="topbuttons">
+<button id="musicBtn" onclick="toggleMusic()">🎵 PLAY ARCADE MUSIC</button>
+<button onclick="randomGame()">🎲 RANDOM GAME</button>
+<button class="cross-arcade-btn" onclick="window.location.href='https://peahjsa.github.io/UltraArcade'">⚡ VISIT NITRO ARCADE</button>
+</div>
+<div id="count"></div>
+<div class="grid" id="grid"></div>
+<div id="screen">
+<div class="gamebar">
+<strong>⚡ ALIN 916 ARCADE</strong>
+<button onclick="closeGame()">✕ EXIT GAME</button>
+</div>
+<div id="arena">
+<h2 id="gameTitle"></h2>
+<p id="desc"></p>
+<div id="playArea"></div>
+<div id="feedback"></div>
+</div>
+</div>
+<footer>ALIN 916 ULTRA ARCADE • CREATED BY ALIN 916</footer>
+<script>
+const raw = [
+["Neon Drift","Racing","🏎️","Slide around neon corners and build a drift score."],
+["Canyon Rally","Racing","🚙","Race through a rocky canyon."],
+["Skyline Sprint","Racing","🏁","Beat the clock on a skyscraper highway."],
+["Lava Kart Mayhem","Racing","🌋","Avoid lava pools and race to the finish."],
+["Turbo Tunnel","Racing","🚘","Weave through a twisting tunnel."],
+["Monster Truck Clash","Racing","🚚","Jump over obstacles and land safely."],
+["Desert Dune Dash","Racing","🏜️","Cross shifting dunes before time runs out."],
+["Frostbite Formula","Racing","❄️","Master slippery turns on an icy circuit."],
+["Rocket Roadster","Racing","🚀","Use rocket bursts to beat your rivals."],
+["Midnight Motorway","Racing","🌃","Dodge traffic on a midnight highway."],
+["Pixel Parkour","Platform","🧗","Leap across platforms to reach the flag."],
+["Gravity Flip","Platform","🔄","Reverse gravity to avoid spikes."],
+["Jungle Rooftops","Platform","🌴","Hop between treetops and collect gems."],
+["Cloud Jumper","Platform","☁️","Climb a tower of moving clouds."],
+["Crystal Cavern","Platform","💎","Explore caves and find the crystal exit."],
+["Clockwork Escape","Platform","⚙️","Time jumps through moving machinery."],
+["Shadow Steps","Platform","🌑","Cross disappearing platforms."],
+["Frog Rocket","Platform","🐸","Launch jumps across a dangerous swamp."],
+["Volcano Climber","Platform","🌋","Climb quickly to escape rising lava."],
+["Tiny Titan","Platform","🦾","Use double jumps to overcome giant obstacles."],
+["Asteroid Ace","Space","☄️","Pilot through an asteroid field."],
+["Planet Defender","Space","🌎","Protect your planet from incoming meteors."],
+["Starship Siege","Space","🛸","Break through a space blockade."],
+["Cosmic Collector","Space","🌌","Gather stardust while dodging black holes."],
+["Moonbase Mystery","Space","🌕","Find access codes around a moonbase."],
+["Alien Swarm","Space","👾","Survive waves of alien invaders."],
+["Orbit Runner","Space","🪐","Run around a rotating planet."],
+["Galaxy Miner","Space","⛏️","Mine minerals before oxygen runs out."],
+["Solar Flare","Space","☀️","Navigate dangerous solar storms."],
+["Black Hole Escape","Space","🕳️","Escape a collapsing star system."],
+["Ninja Nightfall","Action","🥷","Time your moves to pass guarded corridors."],
+["Robot Rampage","Action","🤖","Battle malfunctioning robots."],
+["Castle Siege","Action","🏰","Defend the castle gates."],
+["Dragon Duel","Action","🐉","Dodge fireballs and outsmart a dragon."],
+["Shadow Agent","Action","🕵️","Sneak past cameras and reach your target."],
+["Laser Labyrinth","Action","🔦","Cross a grid of moving laser beams."],
+["Mech Arena","Action","🦿","Outmaneuver a giant battle mech."],
+["Pirate Broadside","Action","🏴‍☠️","Aim cannons and defeat rival ships."],
+["Samurai Showdown","Action","⚔️","Block and counter an opponent."],
+["Dungeon Brawler","Action","🛡️","Clear dungeon rooms with combat and dodges."],
+["Mystic Maze","Puzzle","🌀","Find the exit in a shifting maze."],
+["Color Circuit","Puzzle","🎨","Connect matching colors without crossing paths."],
+["Number Nexus","Puzzle","🔢","Combine number tiles to reach a target."],
+["Switchboard","Puzzle","🔌","Flip switches to power every light."],
+["Mirror Master","Puzzle","🪞","Reflect a beam into a receiver."],
+["Keyhole Quest","Puzzle","🗝️","Discover the correct key sequence."],
+["Prism Path","Puzzle","🔺","Rotate prisms to guide a light beam."],
+["Shape Shifter","Puzzle","🔷","Fit changing shapes through gaps."],
+["Memory Vault","Puzzle","🧠","Remember and repeat a sequence."],
+["Magnet Mayhem","Puzzle","🧲","Use magnetic forces to move metal objects."],
+["Lost Temple","Adventure","🗿","Explore ruins and recover an ancient relic."],
+["Deep Sea Discovery","Adventure","🐠","Dive through reefs to find treasure."],
+["Enchanted Forest","Adventure","🧚","Help forest spirits restore their grove."],
+["Wilderness Trek","Adventure","⛺","Find a safe route through the wilderness."],
+["Haunted Mansion","Horror","👻","Search a haunted house while avoiding its ghost."],
+["Phantom Train","Horror","🚂","Solve clues aboard a mysterious train."],
+["Midnight Hospital","Horror","🏥","Find your way out of an abandoned hospital."],
+["Cursed Lighthouse","Horror","🗼","Restore the light while something stalks you."],
+["Cave of Echoes","Adventure","🦇","Navigate caves using sound clues."],
+["Treasure Diver","Adventure","🤿","Collect treasure and return before air runs out."],
+["Penalty Panic","Sports","⚽","Aim shots past a moving goalkeeper."],
+["Hoop Hero","Sports","🏀","Score baskets from changing positions."],
+["Grand Slam Smash","Sports","⚾","Time your swing to hit the ball."],
+["Turbo Tennis","Sports","🎾","Return serves and win the rally."],
+["Snowboard Surge","Sports","🏂","Perform tricks and avoid rocks."],
+["Goalkeeper Glory","Sports","🥅","Block shots coming from different angles."],
+["Skate City","Sports","🛹","Land combos without falling."],
+["Bowling Blitz","Sports","🎳","Choose angle and power to knock down pins."],
+["Cliffside Climber","Sports","🧗‍♂️","Climb by choosing secure handholds."],
+["Archery Ace","Sports","🏹","Adjust for wind and hit the target."],
+["Kingdom Architect","Strategy","👑","Build a balanced kingdom with limited resources."],
+["Tower Tactician","Strategy","🗼","Place defenses to stop advancing enemies."],
+["Tiny Empires","Strategy","🏯","Expand your empire and manage supplies."],
+["Signal Commander","Strategy","📡","Route messages through a network."],
+["Factory Frenzy","Simulation","🏭","Build a production line to meet a quota."],
+["Cafe Crafter","Simulation","☕","Prepare orders and keep customers happy."],
+["Theme Park Tycoon","Simulation","🎢","Design rides and manage a theme park."],
+["Pet Planet","Simulation","🐾","Care for creatures and their habitat."],
+["Island Engineer","Simulation","🏝️","Build bridges between separated islands."],
+["City After Dark","Simulation","🌆","Manage traffic and electricity in a city."],
+["Zombie Last Stand","Survival","🧟","Gather supplies and survive the night."],
+["Arctic Outpost","Survival","🧊","Keep warm and maintain your remote outpost."],
+["Jungle Survival","Survival","🌿","Find food, water, and shelter."],
+["Meteor Shelter","Survival","☄️","Reinforce your shelter before impacts."],
+["Deep Space Drifter","Survival","🛰️","Repair your ship while stranded in space."],
+["Flood Escape","Survival","🌊","Climb to safety as water rises."],
+["Sandstorm Runner","Survival","🌪️","Find cover in a dangerous sandstorm."],
+["Frozen Expedition","Survival","🥶","Manage warmth while crossing frozen terrain."],
+["Rooftop Refuge","Survival","🏙️","Travel between rooftops to find rescue."],
+["Night Garden","Survival","🌙","Protect a garden from nocturnal pests."],
+["Bubble Alchemist","Skill","🫧","Combine bubbles to create rare colors."],
+["Pinball Reactor","Skill","🎱","Keep the ball in play and hit targets."],
+["Perfect Balance","Skill","⚖️","Stack objects without tipping the tower."],
+["Knife Orbit","Skill","🎯","Time throws into a rotating target."],
+["Rhythm Reactor","Skill","🎵","Tap notes in time with the beat."],
+["Lightning Reflex","Skill","⚡","React to signals before time expires."],
+["Magnetic Catch","Skill","🧲","Catch falling objects with matching polarity."],
+["Target Tornado","Skill","🎯","Hit moving targets before time expires."],
+["One Button Hero","Skill","🟣","Master a changing obstacle course with one button."],
+["Pendulum Pilot","Skill","🕰️","Swing between hooks to reach the landing pad."],
+["Quantum Courier","Adventure","📦","Deliver a package through shifting dimensions."],
+["Time Loop Tower","Puzzle","⏳","Use clues from earlier loops to escape."],
+["Dream Weaver","Adventure","💤","Rearrange dream objects to open new paths."],
+["Clocktower Conundrum","Puzzle","🕰️","Set clock gears to unlock the tower."],
+["Cloud Kingdom Quest","Adventure","🏰","Help sky villagers recover their floating island."],
+["Robo Rescue","Action","🦾","Rescue robots from a collapsing facility."],
+["Crystal Defender","Strategy","🔮","Place magical wards to protect a crystal."],
+["Submarine Secrets","Adventure","🚤","Explore a wreck and decode its logs."],
+["Meteor Baseball","Sports","🌠","Hit bouncing cosmic balls out of the arena."],
+["Parkour Pursuit","Platform","🏃","Race across rooftops and avoid traps."],
+["Glacier Glider","Racing","🛷","Steer a sled through icy gates."],
+["Junkyard Joust","Action","🔩","Use scrap-built gear to win arena duels."],
+["Potion Panic","Simulation","🧪","Mix ingredients in the correct order."],
+["Runestone Riddle","Puzzle","📜","Decode runes to open an ancient door."],
+["Cyborg Courier","Skill","📨","Deliver fragile cargo through a robot city."],
+["Deep Core Drill","Simulation","🌋","Drill through layers while managing heat."],
+["Wildlife Warden","Simulation","🦊","Rescue animals and restore their habitat."],
+["Comet Catcher","Space","🌠","Redirect comets into collection zones."],
+["Sky Fortress","Action","🏯","Disable the shield of a floating fortress."],
+["Pharaoh's Trial","Adventure","𓂀","Solve tomb mechanisms and uncover the exit."],
+["Riddle Reactor","Puzzle","💡","Solve logic clues before overload."],
+["Rally Rescue","Racing","🚑","Drive an emergency vehicle through blocked roads."],
+["Bamboo Blitz","Platform","🎋","Leap between bamboo poles over a river."],
+["Dungeon Cartographer","Adventure","🗺️","Map a dungeon and find hidden passages."],
+["Tidal Tactics","Strategy","🌊","Plan moves around a changing tide."],
+["Aurora Skater","Sports","⛸️","Perform skating combos beneath the aurora."],
+["Moonlight Courier","Skill","🌙","Deliver parcels across rooftops."],
+["Volcanic Vault","Horror","🔥","Escape chambers filling with smoke."],
+["Microcosm","Adventure","🔬","Explore a miniature world inside a water drop."],
+["Thunder Circuit","Racing","⚡","Race an electric vehicle through energy gates."],
+["Orbital Chess","Strategy","♟️","Capture objectives on a rotating board."],
+["Jellyfish Journey","Adventure","🪼","Guide a jellyfish through ocean currents."],
+["Gravity Foundry","Puzzle","🪐","Rotate gravity to move a core into place."],
+["Final Frontier Rescue","Space","🧑‍🚀","Rescue stranded astronauts and return to base."],
+["One-Digit Code Breaker","Hacker","🔢","Guess a secret 1-digit number."],
+["Two-Digit Code Breaker","Hacker","🔐","Crack a hidden 2-digit number."],
+["Three-Digit Code Breaker","Hacker","🕵️","Break a 3-digit security code."],
+["Four-Digit Code Breaker","Hacker","💻","Crack a 4-digit digital lock."],
+["Five-Digit Code Breaker","Hacker","🔓","Discover a 5-digit password."],
+["Six-Digit Code Breaker","Hacker","🧩","Decode a 6-digit combination."],
+["Seven-Digit Code Breaker","Hacker","🖥️","Crack a 7-digit vault code."],
+["Eight-Digit Code Breaker","Hacker","📟","Guess an 8-digit access code."],
+["Nine-Digit Code Breaker","Hacker","🛡️","Solve a 9-digit security challenge."],
+["Ten-Digit Code Breaker","Hacker","🌐","Crack a 10-digit cipher."],
+["Eleven-Digit Code Breaker","Hacker","👾","Break the 11-digit mega code."],
+["Twelve-Digit Code Breaker","Hacker","🚨","Crack the ultimate 12-digit code."],
+["Letter Cipher Hacker","Hacker","🔠","Guess a secret code made from letters."],
+["Mega Cipher Terminal","Hacker","🧠","Crack an eight-letter secret combination."],
+["Binary Breakout","Hacker","0️⃣","Decode binary clues into numbers."],
+["Cipher Shadow","Hacker","🕶️","Uncover a message hidden by a letter shift."],
+["Password Phantom","Hacker","🔑","Solve clues to reveal a fictional password."],
+["Terminal Override","Hacker","⌨️","Beat a sequence puzzle to unlock the terminal."],
+["Enigma Grid","Hacker","🧩","Use feedback to deduce a secret sequence."],
+["Data Vault Escape","Hacker","🗄️","Find the correct sequence of vault switches."],
+["Hexadecimal Hunter","Hacker","🔣","Match hexadecimal symbols to their values."],
+["Codebreaker Zero","Hacker","🧑‍💻","Solve a progressively harder number cipher."]
+];
+const games=raw.map((g,i)=>({name:g[0],cat:g[1],emoji:g[2],desc:g[3],id:i}));
+let active=null,score=0,secret="",attempts=0,maxAttempts=12,audioCtx=null,musicTimer=null,musicOn=false,step=0;
+function render(){
+ const q=document.getElementById("search").value.toLowerCase();
+ const c=document.getElementById("category").value;
+ const list=games.filter(g=>(c==="All"||g.cat===c)&&g.name.toLowerCase().includes(q));
+ document.getElementById("count").textContent=`${list.length} GAMES SHOWN • ${games.length} TOTAL WORLDS`;
+ document.getElementById("grid").innerHTML=list.map(g=>`
+ <article class="card">
+ <div class="art">${g.emoji}</div><div class="info">
+ <div class="tag">${g.cat} • GAME ${g.id+1}</div>
+ <h3>${g.name}</h3><p>${g.desc}</p>
+ <button onclick="openGame(${g.id})">PLAY NOW ▶</button>
+ </div></article>`).join("");
+}
+function randomGame(){openGame(Math.floor(Math.random()*games.length))}
+function openGame(id){
+ active=games[id];score=0;step=0;
+ document.getElementById("screen").style.display="block";
+ document.getElementById("gameTitle").textContent=active.emoji+" "+active.name;
+ document.getElementById("desc").textContent=active.desc;
+ document.getElementById("feedback").textContent="";
+ const area=document.getElementById("playArea");
+ area.innerHTML="";
+ if(active.cat==="Hacker") hackerSetup();
+ else prototypeSetup();
+}
+function closeGame(){document.getElementById("screen").style.display="none";active=null}
+function hackerSetup(){
+ attempts=0;
+ const m=active.name.match(/^(One|Two|Three|Four|Five|Six|Seven|Eight|Nine|Ten|Eleven|Twelve)-Digit/);
+ const lengths={One:1,Two:2,Three:3,Four:4,Five:5,Six:6,Seven:7,Eight:8,Nine:9,Ten:10,Eleven:11,Twelve:12};
+ const digits=m?lengths[m[1]]:0;
+ const size=active.name==="Mega Cipher Terminal"?8:4;
+ const len=digits||size;
+ const letters=!digits;
+ const chars=letters?"ABCDEFGHIJKLMNOPQRSTUVWXYZ":"0123456789";
+ secret=Array.from({length:len},()=>chars[Math.floor(Math.random()*chars.length)]).join("");
+ maxAttempts=digits?Math.min(35,5+digits*3):20;
+ const area=document.getElementById("playArea");
+ area.innerHTML=`
+ <h2 style="color:#ff49d4">▰ SECURE PUZZLE TERMINAL ▰</h2>
+ <p>Code length: <b>${len}</b> • Attempts: <b id="left">${maxAttempts}</b></p>
+ <input id="guess" maxlength="${len}" placeholder="${letters?"ENTER LETTERS":"ENTER DIGITS"}" autocomplete="off">
+ <p><button id="submitGuess">SUBMIT CODE</button> <button onclick="newCode()">NEW CODE</button></p>
+ <p id="hint">Hint: ${letters?"Use uppercase letters A–Z.":"The code contains digits 0–9."}</p>
+ <div id="history" style="white-space:pre-line;color:#b6c9f9"></div>`;
+ const input=document.getElementById("guess");
+ document.getElementById("submitGuess").onclick=()=>checkCode(len,letters);
+ input.addEventListener("keydown",e=>{if(e.key==="Enter")checkCode(len,letters)});
+ input.focus();
+ document.getElementById("feedback").textContent="SYSTEM ONLINE — crack the secret!";
+}
+function newCode(){if(active)hackerSetup()}
+function checkCode(len,letters){
+ const input=document.getElementById("guess");
+ const guess=input.value.trim().toUpperCase();
+ const valid=letters?new RegExp("^[A-Z]{"+len+"}$"):new RegExp("^\\\d{"+len+"}$");
+ if(!valid.test(guess)){document.getElementById("feedback").textContent="Enter exactly "+len+(letters?" letters!":" digits!");return}
+ attempts++;
+ document.getElementById("left").textContent=Math.max(0,maxAttempts-attempts);
+ if(guess===secret){
+ score+=100+(maxAttempts-attempts)*10;
+ document.getElementById("feedback").textContent="ACCESS GRANTED! +"+score+" POINTS 🏆";
+ document.getElementById("hint").textContent="You cracked it: "+secret;
+ input.disabled=true;document.getElementById("submitGuess").disabled=true;return;
+ }
+ let clue="";
+ if(!letters){
+   let exact=0,correct=0;
+   for(let i=0;i<len;i++){if(guess[i]===secret[i])exact++;if(secret.includes(guess[i]))correct++}
+   clue=`Right digit, right place: ${exact}. Digits appearing in code: ${correct}.`;
+ }else{
+   let exact=0,present=0;
+   for(let i=0;i<len;i++){if(guess[i]===secret[i])exact++}
+   for(const ch of new Set(guess))if(secret.includes(ch))present++;
+   clue=`Correct letter and position: ${exact}. Letters present: ${present}.`;
+ }
+ document.getElementById("hint").textContent=clue;
+ const hist=document.getElementById("history");
+ hist.textContent=(hist.textContent?hist.textContent+"\n":"")+"Attempt "+attempts+": "+guess;
+ document.getElementById("feedback").textContent="ACCESS DENIED — try again!";
+ if(attempts>=maxAttempts){
+   document.getElementById("feedback").textContent="SYSTEM LOCKED — code was "+secret;
+   input.disabled=true;document.getElementById("submitGuess").disabled=true;
+ }
+}
+// === ALIN 916 GAME ENGINE UPGRADE ===
+let gameRAF=0, keys={}, gameState=null;
+addEventListener('keydown',e=>{keys[e.key.toLowerCase()]=true;if([' ','arrowup','arrowdown','arrowleft','arrowright'].includes(e.key.toLowerCase()))e.preventDefault()});
+addEventListener('keyup',e=>keys[e.key.toLowerCase()]=false);
+function stopEngine(){cancelAnimationFrame(gameRAF); gameRAF=0; gameState=null;}
+function prototypeSetup(){
+ stopEngine();
+ const area=document.getElementById('playArea');
+ area.style.maxWidth='100%';
+ area.innerHTML=`<div class="hud"><b>${active.emoji} ${active.name}</b><span id="gameHud">LOADING WORLD...</span></div><canvas id="gameCanvas" width="960" height="540" tabindex="0"></canvas><div class="gameHelp" id="gameHelp"></div><button onclick="prototypeSetup()">↻ RESTART</button>`;
+ document.getElementById('feedback').textContent='';
+ const cat=active.cat;
+ if(cat==='Racing') startRacing();
+ else if(cat==='Platform') startPlatform();
+ else if(cat==='Space') startSpace();
+ else if(cat==='Sports') startSports();
+ else if(cat==='Puzzle') startPuzzle();
+ else if(cat==='Horror'||cat==='Adventure') startExplore();
+ else if(cat==='Action'||cat==='Survival') startAction();
+ else if(cat==='Strategy'||cat==='Simulation') startBuilder();
+ else startSkill();
+}
+function closeGame(){stopEngine();document.getElementById('screen').style.display='none';active=null}
+function C(){let c=document.getElementById('gameCanvas');return [c,c.getContext('2d')]}
+function hud(t){let e=document.getElementById('gameHud');if(e)e.textContent=t}
+function help(t){let e=document.getElementById('gameHelp');if(e)e.innerHTML=t}
+function bg3(ctx,top='#08132d',bottom='#24104c'){let g=ctx.createLinearGradient(0,0,0,540);g.addColorStop(0,top);g.addColorStop(1,bottom);ctx.fillStyle=g;ctx.fillRect(0,0,960,540)}
+function loop(fn){function f(t){fn(t);gameRAF=requestAnimationFrame(f)}gameRAF=requestAnimationFrame(f)}
+function seed(){return active.id*997+13}
+function rand(n){let x=Math.sin(n*12.9898+seed())*43758.5453;return x-Math.floor(x)}
+function startRacing(){
+ const modes={"Neon Drift":raceDrift,"Canyon Rally":raceCanyon,"Skyline Sprint":raceSkyline,"Lava Kart Mayhem":raceLava,"Turbo Tunnel":raceTunnel,"Monster Truck Clash":raceMonster,"Desert Dune Dash":raceDesert,"Frostbite Formula":raceIce,"Rocket Roadster":raceRocket,"Midnight Motorway":raceTraffic,"Glacier Glider":raceIce,"Rally Rescue":raceCanyon,"Thunder Circuit":raceRocket};
+ (modes[active.name]||raceSkyline)();
+}
+function raceBase(opt){let[c,x]=C(),s={z:0,lane:0,v:0,hp:100,air:0,vy:0,score:0,boost:100};gameState=s;help(opt.help||'W/↑ accelerate • S/↓ brake • A/D steer');loop(()=>{let up=keys.w||keys.arrowup,dn=keys.s||keys.arrowdown,L=keys.a||keys.arrowleft,R=keys.d||keys.arrowright;if(up)s.v=Math.min(opt.max||18,s.v+(opt.acc||.18));else s.v=Math.max(0,s.v-(opt.drag||.06));if(dn)s.v=Math.max(0,s.v-.3);s.lane+=(R?1:0)-(L?1:0);s.lane*=.94;s.lane=Math.max(-120,Math.min(120,s.lane));s.z+=s.v;s.score+=s.v;bg3(x,opt.sky1||'#071028',opt.sky2||'#32124e');opt.draw&&opt.draw(x,s);drawRoad(x,s,opt);drawCar(x,s,opt);opt.tick&&opt.tick(s,x);hud((opt.hud?opt.hud(s):`SPEED ${Math.round(s.v*14)} km/h • ${Math.round(s.z)}m`));})}
+function drawRoad(x,s,o){x.fillStyle=o.ground||'#121526';x.fillRect(0,270,960,270);x.fillStyle=o.road||'#292b3c';x.beginPath();x.moveTo(390,270);x.lineTo(570,270);x.lineTo(900,540);x.lineTo(60,540);x.closePath();x.fill();x.strokeStyle=o.edge||'#00eaff';x.lineWidth=4;x.stroke();for(let i=0;i<12;i++){let q=((i*95-s.z*2)%1140+1140)%1140/1140,y=270+q*q*270,w=5+q*35;x.fillStyle='#fff';x.fillRect(480-w/2,y,w,3+q*10)}}
+function drawCar(x,s,o){x.save();x.translate(480+s.lane*2.3,465-s.air);if(o.truck){x.fillStyle='#ffb000';x.fillRect(-42,-55,84,58);x.fillStyle='#222';x.beginPath();x.arc(-30,8,18,0,7);x.arc(30,8,18,0,7);x.fill()}else{x.fillStyle=o.car||'#00eaff';x.beginPath();x.moveTo(0,-58);x.lineTo(35,22);x.lineTo(25,45);x.lineTo(-25,45);x.lineTo(-35,22);x.closePath();x.fill();x.fillStyle='#101426';x.fillRect(-20,-20,40,25)}x.restore()}
+function raceSkyline(){raceBase({max:20,sky1:'#080b22',sky2:'#301052',help:'🏙️ SKYLINE SPRINT — race across a rooftop expressway. W accelerate • A/D steer • reach 6000m',draw:(x,s)=>{for(let i=0;i<16;i++){let xx=i*70,h=60+rand(i)*210;x.fillStyle=i%2?'#101936':'#191332';x.fillRect(xx,270-h,50,h);x.fillStyle='#00eaff';for(let y=280-h;y<250;y+=20)x.fillRect(xx+8,y,4,7)}},tick:(s,x)=>{for(let i=0;i<6;i++){let d=(i*900+500-s.z%5400+5400)%5400;if(d<1300){let q=1-d/1300,ol=(rand(i+30)*2-1)*100,y=270+q*q*260;x.fillStyle='#ff3864';x.fillRect(480+ol*2.3-q*25,y-q*25,50*q,50*q);if(q>.82&&Math.abs(s.lane-ol)<25)s.v*=.82}}},hud:s=>s.z>=6000?'🏆 SKYLINE FINISH!':`TIME TRIAL • ${Math.round(s.z)}/6000m • ${Math.round(s.v*14)} km/h`})}
+function raceDrift(){raceBase({max:17,drag:.035,road:'#20213b',edge:'#ff38c7',car:'#ffe45e',help:'🌈 NEON DRIFT — hold A/D through corners to build DRIFT score.',draw:(x,s)=>{x.strokeStyle='#8c45f5';x.lineWidth=10;for(let i=0;i<6;i++){x.beginPath();x.arc(160+i*160,240,70,Math.PI,0);x.stroke()}},tick:s=>{if(Math.abs(s.lane)>45&&s.v>8)s.score+=Math.abs(s.lane)/40},hud:s=>`DRIFT SCORE ${Math.round(s.score)} • COMBO ${Math.max(1,Math.round(Math.abs(s.lane)/25))}x`})}
+function raceCanyon(){raceBase({max:15,ground:'#6b3b20',road:'#40352f',edge:'#ffd080',car:'#ff6b35',help:'🏜️ CANYON RALLY — rough dirt, narrow canyon and rock hazards.',draw:(x,s)=>{x.fillStyle='#9b552e';x.beginPath();x.moveTo(0,270);for(let i=0;i<8;i++)x.lineTo(i*140,80+rand(i)*150);x.lineTo(960,270);x.fill()},tick:(s,x)=>{for(let i=0;i<7;i++){let d=(i*700+300-s.z%4900+4900)%4900;if(d<1200){let q=1-d/1200,ol=(rand(i+80)*2-1)*105,y=270+q*q*260;x.fillStyle='#8b6b58';x.beginPath();x.arc(480+ol*2.3,y,8+q*25,0,7);x.fill();if(q>.86&&Math.abs(s.lane-ol)<22)s.v*=.65}}},hud:s=>`RALLY ${Math.round(s.z)}m • SUSPENSION OK • ${Math.round(s.v*14)} km/h`})}
+function raceLava(){raceBase({max:16,ground:'#2a0804',road:'#2b2222',edge:'#ff5a00',car:'#ffe600',help:'🌋 LAVA KART MAYHEM — dodge lava pools; survive 5000m.',draw:(x,s)=>{x.fillStyle='#ff4b00';for(let i=0;i<10;i++){let xx=rand(i)*960,yy=290+rand(i+9)*240;x.beginPath();x.ellipse(xx,yy,40+rand(i)*45,12,0,0,7);x.fill()}},tick:(s,x)=>{for(let i=0;i<6;i++){let d=(i*800+250-s.z%4800+4800)%4800;if(d<1200){let q=1-d/1200,ol=(rand(i+100)*2-1)*105,y=270+q*q*260;x.fillStyle='#ff2500';x.beginPath();x.ellipse(480+ol*2.3,y,35*q,12*q,0,0,7);x.fill();if(q>.82&&Math.abs(s.lane-ol)<28){s.v*=.35;s.hp-=.3}}}},hud:s=>`KART ${Math.round(s.z)}/5000m • HEAT SHIELD ${Math.max(0,Math.round(s.hp))}%`})}
+function raceTunnel(){let[c,x]=C(),s={t:0,x:0,v:7,hp:100};help('🌀 TURBO TUNNEL — A/D steer inside the twisting tunnel • avoid red gates.');loop(()=>{s.t+=s.v;if(keys.a||keys.arrowleft)s.x-=5;if(keys.d||keys.arrowright)s.x+=5;s.x*=.96;bg3(x,'#030312','#12052b');for(let r=12;r>0;r--){let z=((r*110-s.t)%1320+1320)%1320/1320,rad=40+z*420,off=Math.sin((s.t+r*90)/260)*90*z;x.strokeStyle=r%2?'#00eaff':'#8c45f5';x.lineWidth=3+z*5;x.beginPath();x.ellipse(480+off,270,rad,rad*.55,0,0,7);x.stroke()}for(let i=0;i<5;i++){let d=(i*330-s.t%1650+1650)%1650,q=1-d/1650,y=270+q*180,xx=480+Math.sin((s.t+i*500)/260)*90*q;x.fillStyle='#ff315f';x.fillRect(xx-35*q,y-12*q,70*q,24*q);if(q>.88&&Math.abs((480+s.x)-xx)<45)s.hp-=.4}x.fillStyle='#ffe45e';x.beginPath();x.moveTo(480+s.x,420);x.lineTo(455+s.x,470);x.lineTo(505+s.x,470);x.fill();hud(`TUNNEL DEPTH ${Math.round(s.t)} • HULL ${Math.max(0,Math.round(s.hp))}%`)})}
+function raceMonster(){raceBase({max:13,truck:true,ground:'#3b2b19',road:'#564633',edge:'#f5c04a',help:'🚚 MONSTER TRUCK CLASH — SPACE to jump ramps. Land cleanly for points!',tick:(s,x)=>{if(keys[' ']&&s.air<=0&&s.v>4){s.vy=11;s.air=1}s.air+=s.vy;s.vy-=.65;if(s.air<0){if(s.vy<-9)s.score+=100;s.air=0;s.vy=0}for(let i=0;i<4;i++){let d=(i*1100+700-s.z%4400+4400)%4400;if(d<1000){let q=1-d/1000,y=270+q*q*260;x.fillStyle='#c58a42';x.beginPath();x.moveTo(420,y);x.lineTo(540,y);x.lineTo(510,y-45*q);x.lineTo(450,y-45*q);x.fill()}}},hud:s=>`STUNT SCORE ${Math.round(s.score)} • AIR ${Math.round(s.air)} • ${Math.round(s.v*14)} km/h`})}
+function raceDesert(){raceBase({max:14,ground:'#c99448',road:'#a66f35',edge:'#ffe0a0',car:'#d93434',help:'🐪 DESERT DUNE DASH — climb dunes; SPACE gives a short dune hop.',draw:(x,s)=>{x.fillStyle='#e2b35e';x.beginPath();x.moveTo(0,270);for(let i=0;i<=10;i++)x.lineTo(i*100,210+Math.sin(i+s.z/350)*35);x.lineTo(960,270);x.fill()},tick:s=>{s.v*=.997;if(keys[' ']&&s.air<=0&&s.v>5){s.vy=7;s.air=1}s.air+=s.vy;s.vy-=.45;if(s.air<0){s.air=0;s.vy=0}},hud:s=>`DUNE RUN ${Math.round(s.z)}m • ${Math.round(s.v*14)} km/h • AIR ${Math.round(s.air)}`})}
+function raceIce(){raceBase({max:19,drag:.02,ground:'#c9eaff',road:'#9bc7df',edge:'#fff',car:'#226cff',help:'❄️ FROSTBITE FORMULA — slippery steering! Small inputs; avoid ice walls.',tick:s=>{if(keys.a||keys.arrowleft)s.lane-=3;if(keys.d||keys.arrowright)s.lane+=3;s.lane*=.985;if(Math.abs(s.lane)>108)s.v*=.97},hud:s=>`ICE CIRCUIT • ${Math.round(s.z)}m • GRIP ${Math.max(0,100-Math.round(Math.abs(s.lane)/1.2))}%`})}
+function raceRocket(){raceBase({max:28,car:'#ff38c7',edge:'#ffe600',help:'🚀 ROCKET ROADSTER — SHIFT = rocket boost. Recharge when not boosting.',tick:s=>{if(keys.shift&&s.boost>0){s.v=Math.min(28,s.v+.55);s.boost-=.8}else s.boost=Math.min(100,s.boost+.18)},hud:s=>`ROCKET ${Math.round(s.v*14)} km/h • BOOST ${Math.round(s.boost)}% • ${Math.round(s.z)}m`})}
+function raceTraffic(){raceBase({max:21,sky1:'#02030b',sky2:'#100b25',road:'#171923',edge:'#777',car:'#00eaff',help:'🌃 MIDNIGHT MOTORWAY — dodge moving traffic at high speed.',draw:(x,s)=>{x.fillStyle='#060712';for(let i=0;i<14;i++){let xx=i*75,h=50+rand(i)*170;x.fillRect(xx,270-h,55,h);x.fillStyle='#ffd95a';for(let y=280-h;y<250;y+=25)x.fillRect(xx+8,y,5,7);x.fillStyle='#060712'}},tick:(s,x)=>{for(let i=0;i<9;i++){let d=(i*560+200-s.z%5040+5040)%5040;if(d<1200){let q=1-d/1200,ol=(rand(i+200)*2-1)*100+Math.sin(s.z/180+i)*18,y=270+q*q*260;x.fillStyle=i%2?'#ff315f':'#ffe45e';x.fillRect(480+ol*2.3-18*q,y-35*q,36*q,55*q);if(q>.84&&Math.abs(s.lane-ol)<22)s.v*=.55}}},hud:s=>`MIDNIGHT TRAFFIC • ${Math.round(s.v*14)} km/h • DIST ${Math.round(s.z)}m`})}
+function startPlatform(){let[c,x]=C(),p={x:80,y:390,vx:0,vy:0,on:0,cam:0};let plats=[];for(let i=0;i<24;i++)plats.push({x:i*180,y:390-rand(i)*230,w:110+rand(i+3)*70});help('🧗 <b>A/D</b> move • <b>SPACE/W</b> jump • Reach the glowing portal');loop(()=>{p.vx=(keys.d||keys.arrowright?5:0)-(keys.a||keys.arrowleft?5:0);if((keys[' ']||keys.w||keys.arrowup)&&p.on){p.vy=-12;p.on=0}p.vy+=.55;p.x+=p.vx;p.y+=p.vy;p.on=0;for(let q of plats)if(p.x+18>q.x&&p.x-18<q.x+q.w&&p.y+28>=q.y&&p.y+28<=q.y+15&&p.vy>=0){p.y=q.y-28;p.vy=0;p.on=1}if(p.y>600){p.x=Math.max(40,p.x-250);p.y=100;p.vy=0}p.cam=Math.max(0,p.x-280);bg3(x,'#10264d','#351353');for(let i=0;i<70;i++){let sx=(rand(i)*3000-p.cam*.2)%1100;x.fillStyle='#fff';x.globalAlpha=.3+rand(i+2)*.7;x.fillRect(sx,rand(i+1)*260,2,2)}x.globalAlpha=1;for(let q of plats){let sx=q.x-p.cam;if(sx>-200&&sx<1000){let g=x.createLinearGradient(sx,q.y,sx+q.w,q.y);g.addColorStop(0,'#00eaff');g.addColorStop(1,'#8c45f5');x.fillStyle=g;x.fillRect(sx,q.y,q.w,18);x.fillStyle='#121936';x.fillRect(sx+5,q.y+18,q.w-10,18)}}x.fillStyle='#ffe45e';x.fillRect(23*180-p.cam,120,40,100);x.fillStyle='#fff';x.fillRect(p.x-p.cam-18,p.y-28,36,56);x.fillStyle='#00eaff';x.fillRect(p.x-p.cam-13,p.y-20,26,18);hud(`ALTITUDE RUN • ${Math.min(100,Math.round(p.x/(23*180)*100))}%`);if(p.x>23*180)hud('🏆 PORTAL REACHED!')})}
+function startSpace(){let[c,x]=C(),s={x:480,y:270,score:0,hp:100,t:0};help('🚀 <b>WASD / arrows</b> pilot • Avoid asteroids • Survive and collect stars');loop(()=>{s.t++;let sp=5;if(keys.a||keys.arrowleft)s.x-=sp;if(keys.d||keys.arrowright)s.x+=sp;if(keys.w||keys.arrowup)s.y-=sp;if(keys.s||keys.arrowdown)s.y+=sp;s.x=Math.max(25,Math.min(935,s.x));s.y=Math.max(25,Math.min(515,s.y));bg3(x,'#01030e','#13082d');for(let i=0;i<120;i++){let xx=(rand(i)*960-s.t*(1+rand(i+3)*5)+9600)%960,yy=rand(i+1)*540;x.fillStyle='#fff';x.fillRect(xx,yy,1+rand(i)*2,1+rand(i)*2)}for(let i=0;i<12;i++){let xx=(1000-((s.t*(2+rand(i)*4)+i*160)%1200)),yy=40+rand(i+8)*460,r=12+rand(i+4)*30;x.fillStyle='#685d78';x.beginPath();x.arc(xx,yy,r,0,7);x.fill();if(Math.hypot(xx-s.x,yy-s.y)<r+18&&s.t%8===0)s.hp=Math.max(0,s.hp-1)}x.save();x.translate(s.x,s.y);x.fillStyle='#00eaff';x.beginPath();x.moveTo(28,0);x.lineTo(-20,-17);x.lineTo(-10,0);x.lineTo(-20,17);x.closePath();x.fill();x.fillStyle='#ff38c7';x.fillRect(-28,-6,15,12);x.restore();s.score++;hud(`SHIELDS ${s.hp}% • DISTANCE ${s.score}`);if(!s.hp)hud('💥 SHIP DISABLED — RESTART TO TRY AGAIN')})}
+function startSports(){let[c,x]=C(),s={aim:480,power:0,dir:1,shots:0,goals:0,ball:null};help('⚽ <b>← →</b> aim • Hold <b>SPACE</b> for power, release to shoot');let prev=false;loop(()=>{let down=!!keys[' '];if(keys.arrowleft||keys.a)s.aim-=4;if(keys.arrowright||keys.d)s.aim+=4;s.aim=Math.max(250,Math.min(710,s.aim));if(down&&!s.ball)s.power=Math.min(100,s.power+1.5);if(prev&&!down&&!s.ball){s.ball={x:480,y:470,vx:(s.aim-480)/32,vy:-8-s.power/13,z:0};s.shots++;s.power=0}prev=down;bg3(x,'#0b3150','#07172c');x.fillStyle='#177a42';x.fillRect(0,300,960,240);x.strokeStyle='#fff';x.lineWidth=8;x.strokeRect(240,115,480,220);let keeper=480+Math.sin(Date.now()/430)*150;x.fillStyle='#ff3b6b';x.fillRect(keeper-35,245,70,70);x.strokeStyle='#ffe45e';x.beginPath();x.moveTo(480,470);x.lineTo(s.aim,200);x.stroke();x.fillStyle='#fff';if(s.ball){s.ball.x+=s.ball.vx;s.ball.y+=s.ball.vy;s.ball.vy+=.12;x.beginPath();x.arc(s.ball.x,s.ball.y,15,0,7);x.fill();if(s.ball.y<260){if(s.ball.x>250&&s.ball.x<710&&Math.abs(s.ball.x-keeper)>55)s.goals++;s.ball=null}}else{x.beginPath();x.arc(480,470,16,0,7);x.fill()}x.fillStyle='#ffe45e';x.fillRect(330,510,s.power*3,12);hud(`GOALS ${s.goals} / SHOTS ${s.shots} • POWER ${Math.round(s.power)}%`)})}
+function startPuzzle(){let[c,x]=C(),s={rot:[0,1,2,3,0,2,1,3,0],moves:0};help('🔺 Click tiles to rotate the energy path. Make every tile point toward the glowing core.');c.onclick=e=>{let r=c.getBoundingClientRect(),mx=(e.clientX-r.left)*960/r.width,my=(e.clientY-r.top)*540/r.height,col=Math.floor((mx-255)/150),row=Math.floor((my-45)/150);if(col>=0&&col<3&&row>=0&&row<3){let i=row*3+col;s.rot[i]=(s.rot[i]+1)%4;s.moves++}};loop(()=>{bg3(x,'#071a28','#20103c');for(let i=0;i<9;i++){let col=i%3,row=Math.floor(i/3),cx=330+col*150,cy=120+row*150;x.fillStyle='#111a34';x.strokeStyle='#00eaff';x.lineWidth=3;x.fillRect(cx-55,cy-55,110,110);x.strokeRect(cx-55,cy-55,110,110);x.save();x.translate(cx,cy);x.rotate(s.rot[i]*Math.PI/2);x.strokeStyle='#ffe45e';x.lineWidth=12;x.beginPath();x.moveTo(0,0);x.lineTo(0,-45);x.stroke();x.restore();x.fillStyle='#ff38c7';x.beginPath();x.arc(cx,cy,10,0,7);x.fill()}hud(`PRISM GRID • MOVES ${s.moves}`)})}
+function startExplore(){let[c,x]=C(),s={px:0,pz:0,a:0,keys:0};help('🔦 <b>WASD</b> explore • <b>← →</b> turn • Find 3 glowing relics');let relics=[[3,5],[-4,8],[6,11]];loop(()=>{if(keys.arrowleft)s.a-=.04;if(keys.arrowright)s.a+=.04;let f=(keys.w?1:0)-(keys.s?1:0),st=(keys.d?1:0)-(keys.a?1:0);s.px+=(Math.sin(s.a)*f+Math.cos(s.a)*st)*.07;s.pz+=(Math.cos(s.a)*f-Math.sin(s.a)*st)*.07;bg3(x,active.cat==='Horror'?'#020204':'#0a1c25','#05050a');x.fillStyle='#171723';x.fillRect(0,270,960,270); // pseudo-3d corridor
+ for(let i=0;i<22;i++){let wx=(rand(i)*16-8),wz=2+rand(i+2)*16;let dx=wx-s.px,dz=wz-s.pz,ca=Math.cos(s.a),sa=Math.sin(s.a),rx=dx*ca-dz*sa,rz=dx*sa+dz*ca;if(rz>0.2){let sc=260/rz,sx=480+rx*sc,h=Math.min(360,500/rz),w=Math.min(160,150/rz);x.fillStyle=i%2?'#273047':'#342644';x.fillRect(sx-w/2,270-h/2,w,h)}}for(let r of relics){let dx=r[0]-s.px,dz=r[1]-s.pz;if(Math.hypot(dx,dz)<.7&&r[1]<99){s.keys++;r[1]=999}let ca=Math.cos(s.a),sa=Math.sin(s.a),rx=dx*ca-dz*sa,rz=dx*sa+dz*ca;if(rz>.3&&rz<15){let sc=260/rz,sx=480+rx*sc,sy=270,rr=Math.min(35,90/rz);x.fillStyle='#ffe45e';x.beginPath();x.arc(sx,sy,rr,0,7);x.fill()}}let g=x.createRadialGradient(480,300,30,480,300,350);g.addColorStop(0,'#ffffff12');g.addColorStop(1,'#000000dd');x.fillStyle=g;x.fillRect(0,0,960,540);hud(`RELICS ${s.keys}/3 • X ${s.px.toFixed(1)} Z ${s.pz.toFixed(1)}`);if(s.keys===3)hud('🏆 ALL RELICS FOUND — ESCAPE COMPLETE')})}
+function startAction(){let[c,x]=C(),s={x:480,hp:100,score:0,t:0,shots:[]};help('🤖 <b>A/D</b> move • <b>SPACE</b> fire • Survive the waves');let cd=0;loop(()=>{s.t++;if(keys.a||keys.arrowleft)s.x-=5;if(keys.d||keys.arrowright)s.x+=5;s.x=Math.max(30,Math.min(930,s.x));if(keys[' ']&&cd<=0){s.shots.push({x:s.x,y:440});cd=12}cd--;s.shots.forEach(b=>b.y-=10);bg3(x,'#210c20','#070816');let enemies=[];for(let i=0;i<8;i++){let ex=70+rand(i)*820,ey=30+((s.t*(1+rand(i+2)*1.5)+i*90)%390);enemies.push([ex,ey]);x.fillStyle='#ff3b6b';x.fillRect(ex-18,ey-18,36,36);for(let b of s.shots)if(Math.abs(b.x-ex)<28&&Math.abs(b.y-ey)<28){b.y=-99;s.score++}}s.shots=s.shots.filter(b=>b.y>-10);x.fillStyle='#ffe45e';s.shots.forEach(b=>x.fillRect(b.x-3,b.y,6,16));x.fillStyle='#00eaff';x.fillRect(s.x-25,455,50,55);hud(`SCORE ${s.score} • ARMOR ${s.hp}%`)})}
+function startBuilder(){let[c,x]=C(),s={money:500,build:[],tick:0};help('🏭 Click empty ground to build. Buildings generate credits. Create a thriving neon colony.');c.onclick=e=>{let r=c.getBoundingClientRect(),mx=(e.clientX-r.left)*960/r.width,my=(e.clientY-r.top)*540/r.height;if(my>180&&s.money>=100){s.build.push({x:mx,y:my,h:40+rand(s.build.length)*100});s.money-=100}};loop(()=>{s.tick++;if(s.tick%120===0)s.money+=s.build.length*15;bg3(x,'#0b2740','#102214');x.fillStyle='#173a2a';x.fillRect(0,180,960,360);for(let b of s.build){x.fillStyle='#202b48';x.fillRect(b.x-25,b.y-b.h,50,b.h);x.fillStyle='#00eaff';for(let yy=b.y-b.h+10;yy<b.y-8;yy+=18)x.fillRect(b.x-14,yy,8,8)}hud(`CREDITS ${s.money} • BUILDINGS ${s.build.length} • +${s.build.length*15}/cycle`)})}
+function startSkill(){let[c,x]=C(),s={score:0,t:0,target:{x:480,y:270,r:35}};help('🎯 Click the moving neon target as many times as you can.');c.onclick=e=>{let r=c.getBoundingClientRect(),mx=(e.clientX-r.left)*960/r.width,my=(e.clientY-r.top)*540/r.height;if(Math.hypot(mx-s.target.x,my-s.target.y)<s.target.r){s.score++;s.target.x=70+Math.random()*820;s.target.y=70+Math.random()*400;s.target.r=Math.max(15,35-s.score*.5)}};loop(()=>{s.t++;bg3(x,'#071326','#250a35');s.target.x+=Math.sin(s.t/25)*1.5;s.target.y+=Math.cos(s.t/31)*1.2;x.strokeStyle='#00eaff';x.lineWidth=7;x.beginPath();x.arc(s.target.x,s.target.y,s.target.r,0,7);x.stroke();x.strokeStyle='#ff38c7';x.beginPath();x.arc(s.target.x,s.target.y,s.target.r*.55,0,7);x.stroke();hud(`HITS ${s.score} • TARGET SIZE ${Math.round(s.target.r)}`)})}
+
+
+// Original synthesized arcade soundtrack — generated in the browser.
+function tone(freq,dur,type="square",vol=.045,when=0){
+ if(!audioCtx)return;
+ const osc=audioCtx.createOscillator(),gain=audioCtx.createGain();
+ osc.type=type;osc.frequency.setValueAtTime(freq,audioCtx.currentTime+when);
+ gain.gain.setValueAtTime(.0001,audioCtx.currentTime+when);
+ gain.gain.exponentialRampToValueAtTime(vol,audioCtx.currentTime+when+.015);
+ gain.gain.exponentialRampToValueAtTime(.0001,audioCtx.currentTime+when+dur);
+ osc.connect(gain);gain.connect(audioCtx.destination);
+ osc.start(audioCtx.currentTime+when);osc.stop(audioCtx.currentTime+when+dur+.03);
+}
+function musicBar(){
+ if(!musicOn||!audioCtx)return;
+ // Original bright synthwave melody with bass and a kick/snare rhythm.
+ const melody=[659,784,988,784,587,698,880,698,523,659,784,659,587,698,880,1047];
+ const bass=[110,110,146.8,146.8,98,98,130.8,130.8];
+ const n=step++%melody.length;
+ tone(melody[n],.19,"sawtooth",.027);
+ tone(bass[n%bass.length],.32,"triangle",.075);
+ if(n%4===0){
+   tone(65,.12,"sine",.16);
+   tone(1800,.045,"square",.018,.12);
+ }
+ if(n%4===2)tone(240,.09,"triangle",.055);
+}
+async function toggleMusic(){
+ if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+ if(audioCtx.state==="suspended")await audioCtx.resume();
+ musicOn=!musicOn;
+ const btn=document.getElementById("musicBtn");
+ if(musicOn){
+   btn.textContent="🔊 ARCADE MUSIC: ON";
+   musicBar();musicTimer=setInterval(musicBar,180);
+ }else{
+   btn.textContent="🎵 PLAY ARCADE MUSIC";
+   clearInterval(musicTimer);
+ }
+}
+render();
+</script>
+</body>
+</html>
