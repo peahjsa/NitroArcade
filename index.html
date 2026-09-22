@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UltraArcade</title>
+    <title>NitroArcade</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@ruffle-rs/ruffle">
         </script>
@@ -670,7 +670,7 @@
 
 
 
-        /* ===== UltraArcade visual upgrade ===== */
+        /* ===== NitroArcade visual upgrade ===== */
         :root{--glow:rgba(143,199,203,.18)}
         body{background-attachment:fixed}
         .navbar{box-shadow:0 8px 35px rgba(0,0,0,.18)}
@@ -1060,7 +1060,7 @@
         @media(max-width:700px){.challenge-progress{grid-template-columns:1fr}}
 
 
-        /* ===== 20 genuinely different UltraArcade games ===== */
+        /* ===== 20 genuinely different NitroArcade games ===== */
         .thumb-newgame{background:radial-gradient(circle at 70% 25%,rgba(94,190,255,.14),transparent 25%),linear-gradient(150deg,rgba(73,107,130,.15),transparent 55%),#020405}
         .thumb-newgame::before{width:145px;height:72px;left:82px;top:74px;border:1px solid rgba(120,190,220,.38);border-radius:18px;background:radial-gradient(circle at 35% 50%,rgba(105,207,245,.75) 0 8%,transparent 9%),radial-gradient(circle at 70% 50%,rgba(225,159,84,.7) 0 8%,transparent 9%);box-shadow:105px 54px 0 -25px rgba(105,207,245,.35)}
         .mega-shell{width:100%;height:100%;min-height:560px;display:flex;align-items:center;justify-content:center;padding:20px;background:#000}
@@ -1581,19 +1581,123 @@ body.theme-matrix{
 .three3d-stage,.bm95-stage{border:1px solid rgba(255,255,255,.16);box-shadow:inset 0 0 50px rgba(0,0,0,.35)}
 .three3d-hud,.fly-status,.bm95-hud{backdrop-filter:blur(7px);border:1px solid rgba(255,255,255,.18)!important;box-shadow:0 8px 24px rgba(0,0,0,.28)}
 
+
+.td-wrap{position:relative;max-width:1100px;margin:auto;background:#111827;border:2px solid rgba(255,255,255,.18);border-radius:18px;overflow:hidden;outline:none;box-shadow:0 18px 55px rgba(0,0,0,.42)}.td-hud,.td-info{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 16px;background:linear-gradient(90deg,#111827,#1f2937);color:#fff;font-family:Inter,sans-serif;flex-wrap:wrap}.td-hud b{font-size:20px;letter-spacing:2px}.td-hud span,.td-info{font-size:11px;letter-spacing:1px}#tdCv{display:block;width:100%;height:auto;background:#000}.td-cover{position:absolute;inset:0;display:grid;place-items:center;background:rgba(4,8,18,.76);backdrop-filter:blur(7px);z-index:5;padding:20px}.td-panel{width:min(600px,94%);padding:28px;border:1px solid rgba(255,255,255,.2);border-radius:18px;background:linear-gradient(145deg,#172033,#0d1320);color:#fff;text-align:center}.td-panel small{letter-spacing:3px;color:#7dd3fc;font-weight:900}.td-panel h2{font-size:clamp(38px,7vw,72px);margin:6px 0}.td-panel p{color:#cbd5e1;line-height:1.6}.td-list{display:grid;gap:8px;margin:18px 0}.td-list b{padding:10px;border-radius:8px;background:rgba(255,255,255,.06);font-size:12px;letter-spacing:1px}.td-panel button{border:0;border-radius:999px;padding:13px 22px;background:#facc15;color:#111827;font-weight:1000;cursor:pointer}.td-panel strong{display:block;margin:16px;color:#facc15;font-size:22px}
+
+
+/* NIGHT WATCH */
+.nw-shell{max-width:1100px;margin:auto;background:#050608;color:#e7ebee;border:2px solid #282d31;border-radius:18px;overflow:hidden;font-family:Inter,sans-serif;box-shadow:0 20px 65px rgba(0,0,0,.55)}.nw-head,.nw-status{display:flex;justify-content:space-between;gap:12px;padding:11px 16px;background:#0b0e11;border-bottom:1px solid #272c31;font:800 12px monospace;letter-spacing:1px}.nw-status{border-top:1px solid #272c31;border-bottom:0;color:#9da5ab;flex-wrap:wrap}.nw-office{height:520px;position:relative;overflow:hidden;background:radial-gradient(circle at 50% 65%,#36302a 0,#171719 30%,#070809 72%)}.nw-office:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 95px,rgba(255,255,255,.018) 96px 97px)}.nw-office.blackout{filter:brightness(.08)}.nw-vignette{position:absolute;inset:0;box-shadow:inset 0 0 140px 60px #000;pointer-events:none;z-index:5}.nw-noise,.nw-static{position:absolute;inset:0;opacity:.08;pointer-events:none;background-image:repeating-radial-gradient(circle at 20% 30%,#fff 0 1px,transparent 1px 4px)}.nw-door{position:absolute;top:60px;width:165px;height:350px;background:linear-gradient(90deg,#090a0b,#202329,#08090a);border:8px solid #2b2e31;transition:.18s}.nw-door.left{left:0}.nw-door.right{right:0}.nw-door span{position:absolute;top:15px;width:100%;text-align:center;font:900 11px monospace;color:#777}.nw-door.closed:after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,#4a4e51 0 25px,#25282a 26px 35px);border-bottom:8px solid #111}.nw-desk{position:absolute;left:26%;right:26%;bottom:0;height:165px;background:linear-gradient(#24201c,#0e0d0c);border-top:10px solid #3a3129}.nw-fan{position:absolute;left:16%;top:-50px;font-size:95px;color:#31363a;animation:nwspin 2s linear infinite}.nw-monitor{position:absolute;left:38%;top:25px;padding:22px;background:#080b0d;border:8px solid #24282b;color:#71d79b;font:900 13px monospace;text-align:center}.nw-cup{position:absolute;right:16%;top:30px;width:34px;height:52px;background:#873b3b;border-radius:3px 3px 12px 12px}.nw-controls{position:absolute;top:230px;z-index:8;display:grid;gap:7px}.nw-controls.left{left:175px}.nw-controls.right{right:175px}.nw-controls button,.nw-cam-btn,.nw-closecam,.nw-map button{border:1px solid #50575d;background:#15191c;color:#d9dee1;font:900 11px monospace;padding:10px;cursor:pointer}.nw-controls button:active{background:#9a3434}.nw-cam-btn{position:absolute;bottom:10px;left:40%;right:40%;z-index:9}.nw-eyes{position:absolute;top:215px;font-size:38px;letter-spacing:12px;color:#fff6b0;text-shadow:0 0 18px #fff;opacity:0;z-index:7}.nw-eyes.left{left:60px}.nw-eyes.right{right:45px}.nw-office.light-left{background:radial-gradient(circle at 8% 55%,#80765e 0,#201d1b 25%,#070809 70%)}.nw-office.light-right{background:radial-gradient(circle at 92% 55%,#80765e 0,#201d1b 25%,#070809 70%)}.nw-cams{display:none;grid-template-columns:1fr 210px;min-height:520px;background:#080a0c}.nw-feed{position:relative;padding:16px}.nw-feed canvas{width:100%;height:auto;border:8px solid #15191b;filter:contrast(1.2) saturate(.65)}.nw-feed>span{position:absolute;left:32px;top:30px;background:#080a0caa;padding:7px;font:900 12px monospace}.nw-map{display:grid;grid-template-columns:1fr 1fr;gap:6px;align-content:center;padding:14px;background:#101418}.nw-map button{padding:14px 5px}.nw-closecam{position:absolute;margin:470px 0 0 20px}.nw-cover{position:absolute;inset:0;display:grid;place-items:center;background:#030405eF;z-index:20;padding:20px}.nw-shell{position:relative}.nw-card{width:min(600px,94%);padding:30px;background:#0b0e11;border:1px solid #41484e;border-radius:12px;text-align:center;box-shadow:0 0 60px #000}.nw-card small{font:900 11px monospace;letter-spacing:3px;color:#b7c0c6}.nw-card h2{font-size:clamp(42px,8vw,80px);margin:8px}.nw-card p{color:#9ea6ab;line-height:1.6}.nw-card button{margin-top:22px;padding:13px 22px;border:1px solid #707980;background:#181d20;color:#fff;font-weight:900;cursor:pointer}.nw-card.danger{border-color:#7d2525}.nw-card.win{border-color:#5a8b67}.nw-jump{font-size:90px;color:#ffdf8a;text-shadow:0 0 30px #d64b3e}@keyframes nwspin{to{transform:rotate(360deg)}}@media(max-width:700px){.nw-office{height:430px}.nw-door{width:105px}.nw-controls.left{left:110px}.nw-controls.right{right:110px}.nw-cams{grid-template-columns:1fr}.nw-map{grid-template-columns:repeat(3,1fr)}.nw-closecam{position:static;margin:8px}}
+
+
+/* NIGHT WATCH FULL-SIZE BIG GAME */
+.nw-shell{width:100%!important;max-width:none!important;min-height:760px!important}
+.nw-office{width:100%!important;height:720px!important;min-height:720px!important}
+.nw-cams{width:100%!important;min-height:720px!important;grid-template-columns:minmax(0,1fr) 280px!important}
+.nw-feed canvas{width:100%!important;height:620px!important;object-fit:cover}
+.nw-door{width:22%!important;height:72%!important}.nw-controls.left{left:23%!important}.nw-controls.right{right:23%!important}
+.nw-desk{left:25%!important;right:25%!important;height:200px!important}.nw-cam-btn{left:38%!important;right:38%!important;bottom:24px!important;padding:15px!important}
+@media(max-width:800px){.nw-shell{min-height:620px!important}.nw-office{height:620px!important;min-height:620px!important}.nw-cams{grid-template-columns:1fr!important}.nw-feed canvas{height:auto!important}}
+/* SCHOOL NIGHTMARE 3D */
+.sn-shell{position:relative;width:100%;min-height:760px;background:#05080d;border-radius:16px;overflow:hidden;outline:none}.sn-hud,.sn-foot{display:flex;justify-content:space-between;gap:14px;align-items:center;flex-wrap:wrap;padding:12px 18px;background:#101827;color:#fff}.sn-hud b{letter-spacing:2px;font-size:19px}.sn-hud span,.sn-foot{font:800 11px monospace}.sn-stage{height:680px;width:100%;background:#000}.sn-stage canvas{display:block;width:100%!important;height:100%!important}.sn-cover{position:absolute;inset:0;z-index:8;display:grid;place-items:center;background:#030711dd;backdrop-filter:blur(8px);padding:20px}.sn-card{width:min(650px,94%);padding:32px;text-align:center;color:#fff;background:linear-gradient(145deg,#172236,#0b111c);border:1px solid #ffffff33;border-radius:18px;box-shadow:0 25px 80px #000}.sn-card small{font:900 11px monospace;letter-spacing:3px;color:#7dd3fc}.sn-card h2{font-size:clamp(42px,7vw,76px);margin:8px 0}.sn-card p{color:#cbd5e1;line-height:1.6}.sn-list{display:grid;gap:8px;margin:20px 0}.sn-list b{padding:12px;background:#ffffff0f;border-radius:8px}.sn-card button{border:0;border-radius:999px;padding:14px 24px;background:#facc15;color:#111827;font-weight:1000;cursor:pointer}.sn-card strong{display:block;margin:16px;color:#facc15;font-size:22px}
+
+
+/* BLACK-SCREEN FIX + FULL-SIZE NIGHT WATCH */
+.nwf{position:relative;width:100%;min-height:720px;background:#050608;color:#e9edf0;border-radius:16px;overflow:hidden}
+.nwf-top,.nwf-bottom{height:48px;box-sizing:border-box;display:flex;align-items:center;justify-content:space-between;padding:0 18px;background:#0b0e11;border-bottom:1px solid #30363b;font:900 13px monospace;letter-spacing:1px}.nwf-bottom{border-top:1px solid #30363b;border-bottom:0}
+.nwf-office{position:relative;width:100%;height:clamp(620px,72vh,820px);overflow:hidden;background:radial-gradient(circle at 50% 65%,#3b332a,#161719 34%,#050607 75%)}
+.nwf-hall{position:absolute;top:6%;bottom:15%;width:25%;background:linear-gradient(90deg,#030405,#171a1d,#030405);border:10px solid #24282b}.nwf-hall.left{left:2%}.nwf-hall.right{right:2%}.nwf-hall span{display:block;text-align:center;padding:18px;color:#676d72;font:900 12px monospace}
+.nwf-eyes{position:absolute;top:42%;left:36%;font-size:38px;letter-spacing:14px;color:#fff1a4;text-shadow:0 0 22px #fff;opacity:0}.nwf-office.lit-l{background:radial-gradient(circle at 10% 50%,#81785f,#25211d 26%,#050607 68%)}.nwf-office.lit-r{background:radial-gradient(circle at 90% 50%,#81785f,#25211d 26%,#050607 68%)}
+.nwf-desk{position:absolute;left:30%;right:30%;bottom:0;height:190px;background:linear-gradient(#332b24,#0d0d0d);border-top:12px solid #4a3b2d}.nwf-fan{position:absolute;left:12%;top:-62px;font-size:115px;color:#3d4347;animation:nwfspin 1.8s linear infinite}.nwf-screen{position:absolute;left:38%;top:28px;padding:26px;background:#050708;border:9px solid #282d30;color:#62d78e;text-align:center;font:900 14px monospace}
+.nwf-buttons{position:absolute;top:44%;z-index:7;display:grid;gap:9px}.nwf-buttons.left{left:28%}.nwf-buttons.right{right:28%}.nwf-buttons button,.nwf-open,.nwf-lower,.nwf-map button{padding:12px;border:1px solid #5a6268;background:#15191c;color:white;font:900 12px monospace;cursor:pointer}
+.nwf-shutter{position:absolute;top:6%;bottom:15%;width:25%;z-index:6;pointer-events:none;transform:translateY(-110%);transition:.2s;background:repeating-linear-gradient(0deg,#51565a 0 27px,#25282b 28px 39px)}.nwf-shutter.left{left:2%}.nwf-shutter.right{right:2%}.nwf-shutter.down{transform:translateY(0)}
+.nwf-open{position:absolute;bottom:25px;left:42%;right:42%;z-index:9}.nwf-cams{display:none;position:relative;min-height:clamp(620px,72vh,820px);grid-template-columns:minmax(0,1fr) 260px;background:#080a0c}.nwf-feed{position:relative;padding:18px}.nwf-feed canvas{width:100%;height:clamp(540px,65vh,720px);object-fit:cover;border:8px solid #181c1f}.nwf-feed b{position:absolute;left:38px;top:38px;background:#050708bb;padding:8px;font:900 13px monospace}.nwf-map{display:grid;grid-template-columns:1fr 1fr;gap:7px;align-content:center;padding:15px;background:#101417}.nwf-lower{position:absolute;left:35%;bottom:18px}
+.nwf-cover{position:absolute;inset:0;z-index:20;display:grid;place-items:center;padding:20px;background:#020304ed}.nwf-card{width:min(650px,94%);padding:34px;text-align:center;background:#0d1114;border:1px solid #495158;border-radius:14px;box-shadow:0 25px 80px #000}.nwf-card small{font:900 11px monospace;letter-spacing:3px;color:#b7c0c6}.nwf-card h2{font-size:clamp(48px,8vw,86px);margin:8px}.nwf-card p{color:#aab2b8;line-height:1.65}.nwf-card button{margin-top:20px;padding:14px 25px;background:#1b2024;border:1px solid #69737a;color:#fff;font-weight:900;cursor:pointer}.nwf-card.win{border-color:#4e8b61}.nwf-card.lose{border-color:#8b4545}
+.sn-loading{height:100%;display:grid;place-items:center;color:#fff;font:900 18px monospace;letter-spacing:2px;background:radial-gradient(circle,#152033,#030508)}
+@keyframes nwfspin{to{transform:rotate(360deg)}}
+@media(max-width:800px){.nwf-cams{grid-template-columns:1fr}.nwf-map{grid-template-columns:repeat(3,1fr)}.nwf-buttons.left{left:29%}.nwf-buttons.right{right:29%}.nwf-open{left:35%;right:35%}}
+
+
+/* SCHOOL NIGHTMARE — dependency-free perspective renderer */
+.snr{position:relative;width:100%;background:#05080d;border-radius:16px;overflow:hidden;outline:none}.snr-hud,.snr-foot{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;padding:12px 18px;background:#101827;color:#fff}.snr-hud>div{display:flex;gap:14px;align-items:center;flex-wrap:wrap}.snr-hud b{font-size:20px;letter-spacing:2px}.snr-hud span,.snr-foot{font:800 11px monospace}.snr canvas{display:block;width:100%;height:auto;max-height:78vh;background:#111}.snr-cover{position:absolute;inset:0;z-index:12;display:grid;place-items:center;background:#030711dc;backdrop-filter:blur(8px);padding:20px}.snr-card{width:min(650px,94%);padding:32px;text-align:center;color:#fff;background:linear-gradient(145deg,#172236,#0b111c);border:1px solid #ffffff33;border-radius:18px;box-shadow:0 25px 80px #000}.snr-card small{font:900 11px monospace;letter-spacing:3px;color:#7dd3fc}.snr-card h2{font-size:clamp(42px,7vw,76px);margin:8px 0}.snr-card p{color:#cbd5e1;line-height:1.6}.snr-list{display:grid;gap:8px;margin:20px 0}.snr-list b{padding:12px;background:#ffffff0f;border-radius:8px}.snr-card button{border:0;border-radius:999px;padding:14px 24px;background:#facc15;color:#111827;font-weight:1000;cursor:pointer}.snr-card strong{display:block;margin:16px;color:#facc15;font-size:22px}
+
+
+/* SCHOOL NIGHTMARE — FIRST PERSON */
+.snfp{position:relative;width:100%;background:#05080d;border-radius:16px;overflow:hidden;outline:none}.snfp-hud,.snfp-foot{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;padding:12px 18px;background:linear-gradient(90deg,#0d1624,#17263a);color:#fff}.snfp-hud>div{display:flex;gap:14px;align-items:center;flex-wrap:wrap}.snfp-hud b{font-size:20px;letter-spacing:2px}.snfp-hud span,.snfp-foot{font:800 11px monospace}.snfp canvas{display:block;width:100%;height:auto;max-height:78vh;background:#111}.snfp-cover{position:absolute;inset:0;z-index:15;display:grid;place-items:center;background:#030711e8;backdrop-filter:blur(8px);padding:20px}.snfp-card{width:min(700px,94%);padding:34px;text-align:center;color:#fff;background:linear-gradient(145deg,#172236,#0b111c);border:1px solid #ffffff33;border-radius:18px;box-shadow:0 25px 80px #000}.snfp-card small{font:900 11px monospace;letter-spacing:3px;color:#7dd3fc}.snfp-card h2{font-size:clamp(42px,7vw,78px);margin:8px 0}.snfp-card p{color:#cbd5e1;line-height:1.6}.snfp-list{display:grid;gap:9px;margin:22px 0;text-align:left}.snfp-list b{padding:13px 16px;background:#ffffff0f;border-radius:9px}.snfp-card button{border:0;border-radius:999px;padding:14px 25px;background:#facc15;color:#111827;font-weight:1000;cursor:pointer}.snfp-card strong{display:block;margin:16px;color:#facc15;font-size:22px}
+
+
+.snfp canvas{image-rendering:auto}
+.snfp-foot{border-top:1px solid rgba(125,211,252,.18)}
+.snfp-hud{border-bottom:1px solid rgba(125,211,252,.18);box-shadow:0 8px 30px rgba(0,0,0,.28)}
+
+
+/* ===== NITROARCADE 3D DELUXE PASS ===== */
+.three3d-shell,.bm95-shell,.snfp{background:radial-gradient(circle at 50% 0,#17243a,#05070c 70%);border:1px solid #ffffff18;box-shadow:0 28px 90px #0009,inset 0 1px #ffffff12}
+.three3d-bar{min-height:54px;padding:12px 18px;background:linear-gradient(90deg,#101b2b,#182b43,#101b2b);border-bottom:1px solid #7dd3fc33;letter-spacing:.5px}
+.three3d-bar b{font-size:19px;text-shadow:0 0 20px #7dd3fc66}.three3d-bar span{font:800 12px monospace;color:#d9f1ff}
+.three3d-stage,.bm95-stage{min-height:680px;position:relative;overflow:hidden;box-shadow:inset 0 0 80px #0008}
+.three3d-stage canvas,.bm95-stage canvas{filter:saturate(1.12) contrast(1.04)}
+.three3d-hud{background:#07111dcc!important;border:1px solid #8bdcff55!important;border-radius:10px!important;padding:11px 14px!important;box-shadow:0 8px 25px #0008;backdrop-filter:blur(7px);font:900 12px monospace!important;line-height:1.55}
+.three3d-help,.bm95-help{padding:11px 16px!important;background:#08101a!important;border-top:1px solid #7dd3fc25!important;color:#c8d9e8!important;font:800 11px monospace!important}
+.ultra3d-badge{position:absolute;right:14px;bottom:14px;z-index:5;padding:7px 10px;border-radius:999px;background:#050b12bb;border:1px solid #ffffff2c;color:#dff5ff;font:900 10px monospace;pointer-events:none}
+
+
+/* VOXEL FRONTIER 3D — WILDLANDS */
+.voxel-deluxe .three3d-stage{height:min(78vh,820px);min-height:650px}
+.v3-top-left{position:absolute;z-index:7;left:18px;top:18px;display:grid;gap:4px;padding:12px 15px;border:1px solid #ffffff2c;border-radius:11px;background:#07101abb;backdrop-filter:blur(8px);color:#fff;pointer-events:none}.v3-top-left b{font:1000 14px monospace;letter-spacing:1px}.v3-top-left small{font:800 10px monospace;color:#aee7ff}
+.v3-bars{position:absolute;z-index:7;right:18px;top:18px;width:210px;padding:11px 13px;border-radius:11px;background:#07101abb;border:1px solid #ffffff2c;color:#fff;pointer-events:none}.v3-bars label{display:grid;grid-template-columns:62px 1fr;align-items:center;gap:7px;margin:5px 0;font:900 9px monospace}.v3-bars i{height:8px;background:#ffffff18;border-radius:99px;overflow:hidden}.v3-bars em{display:block;height:100%;width:100%;background:linear-gradient(90deg,#57dc75,#a8f06d);border-radius:99px}.v3-bars label+label em{background:linear-gradient(90deg,#54baff,#72e8df)}
+.v3-cross{position:absolute;z-index:7;left:50%;top:50%;transform:translate(-50%,-50%);font:300 28px monospace;color:#fff;text-shadow:0 0 8px #000;pointer-events:none}
+.v3-toast{position:absolute;z-index:9;left:50%;top:24%;transform:translate(-50%,-10px);padding:10px 16px;border-radius:999px;background:#07101add;border:1px solid #9ee7ff55;color:#fff;font:900 11px monospace;opacity:0;transition:.2s;pointer-events:none}.v3-toast.show{opacity:1;transform:translate(-50%,0)}
+.v3-hotbar{position:absolute;z-index:8;left:50%;bottom:18px;transform:translateX(-50%);display:flex;gap:7px;padding:8px;border-radius:13px;background:#06101acc;border:1px solid #ffffff24;backdrop-filter:blur(8px)}.v3-hotbar div{width:72px;height:58px;display:grid;grid-template-columns:18px 1fr;grid-template-rows:1fr 17px;align-items:center;padding:5px;border:1px solid #ffffff20;border-radius:8px;color:#d8e6ee;background:#ffffff0a;font:800 9px monospace}.v3-hotbar div.sel{border-color:#ffe57a;box-shadow:0 0 18px #ffe57a44;background:#ffe57a18}.v3-hotbar kbd{grid-row:1/3;background:#ffffff18;border-radius:4px;padding:3px;text-align:center}.v3-hotbar small{color:#8fe2ff}
+.v3-minimap{position:absolute;z-index:7;right:18px;bottom:18px;width:150px;height:150px;border:2px solid #dff5ff55;border-radius:50%;overflow:hidden;background:#07110d;box-shadow:0 8px 30px #0009;pointer-events:none}.v3-minimap canvas{width:100%;height:100%}.v3-minimap b{position:absolute;top:3px;left:50%;transform:translateX(-50%);color:#fff;font:900 10px monospace}
+@media(max-width:850px){.v3-minimap{width:110px;height:110px}.v3-hotbar div{width:55px}.v3-bars{width:165px}.v3-top-left{max-width:250px}}
+
+
+.voxel-deluxe #v3stage > .v3-top-left,
+.voxel-deluxe #v3stage > .v3-bars,
+.voxel-deluxe #v3stage > .v3-cross,
+.voxel-deluxe #v3stage > .v3-toast,
+.voxel-deluxe #v3stage > .v3-hotbar,
+.voxel-deluxe #v3stage > .v3-minimap{z-index:8}
+
+
+.v3-controls-btn{position:absolute;z-index:12;left:18px;top:92px;border:1px solid #9edfff55;border-radius:9px;background:#07101add;color:#dff7ff;padding:9px 12px;font:900 10px monospace;letter-spacing:.6px;cursor:pointer;box-shadow:0 5px 18px #0006}
+.v3-controls-btn:hover{background:#153149;color:#fff;border-color:#8ee7ff}
+.v3-controls-panel{position:absolute;z-index:20;left:18px;top:132px;width:min(390px,calc(100% - 36px));padding:14px;border:1px solid #8fdfff55;border-radius:13px;background:#07101af2;color:#fff;box-shadow:0 18px 60px #000c;backdrop-filter:blur(12px);display:none}
+.v3-controls-panel.open{display:block}
+.v3-controls-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;font:1000 12px monospace;letter-spacing:.8px}
+.v3-controls-head button{width:28px;height:28px;border:1px solid #ffffff30;border-radius:7px;background:#ffffff0d;color:#fff;font-size:18px;cursor:pointer}
+.v3-control-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.v3-control-grid div{display:flex;align-items:center;gap:8px;padding:8px;border-radius:8px;background:#ffffff08;border:1px solid #ffffff13}
+.v3-control-grid kbd{min-width:67px;text-align:center;padding:5px 6px;border-radius:6px;border:1px solid #ffffff31;background:#132638;color:#9ce8ff;box-shadow:inset 0 -2px 0 #0006;font:900 9px monospace}
+.v3-control-grid span{font:800 9px monospace;color:#e9f6fa}
+.v3-controls-panel>small{display:block;margin-top:11px;color:#8db0bd;font:800 9px monospace}
+@media(max-width:650px){.v3-control-grid{grid-template-columns:1fr}.v3-controls-panel{max-height:70%;overflow:auto}}
+
+
+#macroArcadeLink{
+  position:fixed;right:18px;bottom:18px;z-index:99999;
+  padding:12px 17px;border:1px solid #fff3a8;border-radius:12px;
+  background:linear-gradient(100deg,#ffe600,#ff7a00);color:#160b22;
+  font:900 12px system-ui,Arial,sans-serif;letter-spacing:.4px;
+  box-shadow:0 8px 28px #0008,0 0 20px #ffb30055;cursor:pointer;
+}
+#macroArcadeLink:hover{filter:brightness(1.12);transform:translateY(-2px)}
+
 </style>
 </head>
 
 <body>
+<button id="macroArcadeLink" type="button" onclick="window.location.href='/macroarcade'">↗ VISIT MACRO ARCADE</button>
+
     <header class="navbar">
         <div class="brand">
             <img
                 src="images/logo.png"
-                alt="UltraArcade"
+                alt="NitroArcade"
                 class="logo-img"
                 onerror="this.style.display='none';document.getElementById('brandFallback').style.display='block';"
             >
-            <div class="brand-fallback" id="brandFallback">UltraArcade</div>
+            <div class="brand-fallback" id="brandFallback">NitroArcade</div>
             <div class="brand-dot"></div>
         </div>
 
@@ -1629,7 +1733,7 @@ body.theme-matrix{
         <section id="dashboardView">
             <div class="hero">
                 <div class="hero-content">
-                    <div class="eyebrow"><span></span> UltraArcade Project</div>
+                    <div class="eyebrow"><span></span> NitroArcade Project</div>
                     <h1>THE ARCADE,<br>REBUILT.</h1>
                     <p class="hero-copy">
                         A browser-first arcade designed to bring interactive games together in one clean,
@@ -1673,7 +1777,7 @@ body.theme-matrix{
                 </div>
 
                 <section id="bigGameHub" class="big-game-hub" style="display:none">
-  <div class="bgh-kicker">ULTRAARCADE // LARGE EXPERIENCES</div>
+  <div class="bgh-kicker">NITROARCADE // LARGE EXPERIENCES</div>
   <h2>BIG GAMES</h2>
   <p>Longer missions, richer worlds, deeper controls and proper progression.</p>
   <div class="bgh-grid">
@@ -1697,11 +1801,11 @@ body.theme-matrix{
                 <div class="no-results" id="noResults">No games match this search.</div>
 <div class="game-grid" id="gameGrid">
 
-                    <!-- ULTRAARCADE VISUALIZERS -->
+                    <!-- NITROARCADE VISUALIZERS -->
 <article class="game-card" data-game-id="crazysnake" data-arcade-part="small" onclick="launchGame(gamesDatabase.find(g => g.id === 'crazysnake'))">
                         <button class="favorite-btn" data-fav-id="crazysnake" onclick="toggleFavorite(event, 'crazysnake')" title="Favorite">☆</button>
                         <div class="thumb thumb-snake">
-                            <div class="thumb-label">ULTRAARCADE ORIGINAL</div>
+                            <div class="thumb-label">NITROARCADE ORIGINAL</div>
                             <div class="play-pill">▶</div>
                         </div>
                         <div class="game-meta">
@@ -1716,7 +1820,7 @@ body.theme-matrix{
                     <article class="game-card" data-game-id="brickbreaker" data-arcade-part="small" onclick="launchGame(gamesDatabase.find(g => g.id === 'brickbreaker'))">
                         <button class="favorite-btn" data-fav-id="brickbreaker" onclick="toggleFavorite(event, 'brickbreaker')" title="Favorite">☆</button>
                         <div class="thumb thumb-brick">
-                            <div class="thumb-label">ULTRAARCADE ORIGINAL</div>
+                            <div class="thumb-label">NITROARCADE ORIGINAL</div>
                             <div class="play-pill">▶</div>
                         </div>
                         <div class="game-meta">
@@ -1779,7 +1883,7 @@ body.theme-matrix{
 
     <div class="modal-overlay" id="loginModal">
         <div class="modal">
-            <h3>Log in to UltraArcade</h3>
+            <h3>Log in to NitroArcade</h3>
             <input type="text" id="usernameInput" placeholder="Username">
             <input type="password" placeholder="Password">
             <div class="modal-row">
@@ -1791,9 +1895,9 @@ body.theme-matrix{
 
     <div class="modal-overlay" id="aboutModal">
         <div class="modal">
-            <h3>About UltraArcade</h3>
+            <h3>About NitroArcade</h3>
             <p style="color:var(--muted);font-size:13px;line-height:1.6;margin-bottom:16px;">
-                UltraArcade is a browser-based arcade platform project. This version demonstrates
+                NitroArcade is a browser-based arcade platform project. This version demonstrates
                 a polished game library interface and Flash compatibility through Ruffle.
             </p>
             <div class="modal-row">
@@ -1851,30 +1955,32 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
         const megaGames = [{"id": "crazy_pong", "name": "Crazy Pong", "category": "arcade", "type": "native", "nativeGame": "mega", "engine": "pong", "desc": "Arcade • Sports • Original"}, {"id": "space_blaster", "name": "Space Blaster", "category": "arcade", "type": "native", "nativeGame": "mega", "engine": "shooter", "desc": "Arcade • Space • Original"}, {"id": "sky_hopper", "name": "Sky Hopper", "category": "arcade", "type": "native", "nativeGame": "mega", "engine": "flappy", "desc": "Arcade • Flying • Original"}, {"id": "maze_escape", "name": "Maze Escape", "category": "arcade", "type": "native", "nativeGame": "mega", "engine": "maze", "desc": "Puzzle • Maze • Original"}, {"id": "connect_four", "name": "Connect Four", "category": "arcade", "type": "native", "nativeGame": "mega", "engine": "connect4", "desc": "Strategy • Board • Original"}, {"id": "tic_tac_cpu", "name": "Tic-Tac-Toe CPU", "category": "arcade", "type": "native", "nativeGame": "mega", "engine": "tictac", "desc": "Strategy • CPU • Original"}, {"id": "whack_orb", "name": "Whack An Orb", "category": "arcade", "type": "native", "nativeGame": "mega", "engine": "whack", "desc": "Arcade • Targets • Original"}, {"id": "platform_jump", "name": "Platform Jump", "category": "arcade", "type": "native", "nativeGame": "mega", "engine": "jumper", "desc": "Arcade • Platform • Original"}, {"id": "mini_racer", "name": "Mini Racer", "category": "arcade", "type": "native", "nativeGame": "mega", "engine": "racer", "desc": "Arcade • Racing • Original"}, {"id": "mine_grid", "name": "Mine Grid", "category": "arcade", "type": "native", "nativeGame": "mega", "engine": "mines", "desc": "Puzzle • Grid • Original"}, {"id": "snake_duel", "name": "Snake Duel", "category": "arcade", "type": "native", "nativeGame": "mega", "engine": "snake2", "desc": "Arcade • Survival • Original"}, {"id": "brick_stack", "name": "Brick Stack", "category": "arcade", "type": "native", "nativeGame": "mega", "engine": "stack", "desc": "Arcade • Balance • Original"}, {"id": "laser_dodge", "name": "Laser Dodge", "category": "arcade", "type": "native", "nativeGame": "mega", "engine": "laserdodge", "desc": "Arcade • Dodge • Original"}, {"id": "orbital_defense", "name": "Orbital Defense", "category": "arcade", "type": "native", "nativeGame": "mega", "engine": "orbit", "desc": "Arcade • Defense • Original"}, {"id": "color_switch", "name": "Color Switch", "category": "arcade", "type": "native", "nativeGame": "mega", "engine": "colorswitch", "desc": "Arcade • Matching • Original"}, {"id": "gravity_flip", "name": "Gravity Flip", "category": "arcade", "type": "native", "nativeGame": "mega", "engine": "gravity", "desc": "Arcade • Gravity • Original"}, {"id": "tile_slide", "name": "Tile Slide", "category": "arcade", "type": "native", "nativeGame": "mega", "engine": "slide", "desc": "Puzzle • Sliding • Original"}, {"id": "word_scramble", "name": "Word Scramble", "category": "arcade", "type": "native", "nativeGame": "mega", "engine": "scramble", "desc": "Word • Puzzle • Original"}, {"id": "reaction_race", "name": "Reaction Race", "category": "arcade", "type": "native", "nativeGame": "mega", "engine": "lane", "desc": "Arcade • Racing • Original"}, {"id": "memory_pairs", "name": "Memory Pairs", "category": "arcade", "type": "native", "nativeGame": "mega", "engine": "pairs", "desc": "Memory • Cards • Original"}];
         gamesDatabase.push(...megaGames);
 
-        // ===== 160 NEW ULTRAARCADE ORIGINAL MICROGAMES =====
+        // ===== 160 NEW NITROARCADE ORIGINAL MICROGAMES =====
         // 20 independently coded rule systems × 8 escalating variants.
-        // These are original UltraArcade challenges; they do not load or copy third-party games.
+        // These are original NitroArcade challenges; they do not load or copy third-party games.
         const novaGames = [{"id":"nova_largest_1","name":"Neon Peak Picker","category":"puzzle","type":"native","nativeGame":"nova","engine":"largest","tier":1,"rounds":6,"desc":"Number • Precision • Original","rule":"Pick the largest value"},{"id":"nova_largest_2","name":"Orbit Peak Picker","category":"puzzle","type":"native","nativeGame":"nova","engine":"largest","tier":2,"rounds":6,"desc":"Number • Precision • Original","rule":"Pick the largest value"},{"id":"nova_largest_3","name":"Pixel Peak Picker","category":"puzzle","type":"native","nativeGame":"nova","engine":"largest","tier":3,"rounds":7,"desc":"Number • Precision • Original","rule":"Pick the largest value"},{"id":"nova_largest_4","name":"Quantum Peak Picker","category":"puzzle","type":"native","nativeGame":"nova","engine":"largest","tier":4,"rounds":7,"desc":"Number • Precision • Original","rule":"Pick the largest value"},{"id":"nova_largest_5","name":"Turbo Peak Picker","category":"puzzle","type":"native","nativeGame":"nova","engine":"largest","tier":5,"rounds":7,"desc":"Number • Precision • Original","rule":"Pick the largest value"},{"id":"nova_largest_6","name":"Crystal Peak Picker","category":"puzzle","type":"native","nativeGame":"nova","engine":"largest","tier":6,"rounds":8,"desc":"Number • Precision • Original","rule":"Pick the largest value"},{"id":"nova_largest_7","name":"Nova Peak Picker","category":"puzzle","type":"native","nativeGame":"nova","engine":"largest","tier":7,"rounds":8,"desc":"Number • Precision • Original","rule":"Pick the largest value"},{"id":"nova_largest_8","name":"Cipher Peak Picker","category":"puzzle","type":"native","nativeGame":"nova","engine":"largest","tier":8,"rounds":8,"desc":"Number • Precision • Original","rule":"Pick the largest value"},{"id":"nova_smallest_1","name":"Neon Tiny Signal","category":"puzzle","type":"native","nativeGame":"nova","engine":"smallest","tier":1,"rounds":6,"desc":"Number • Precision • Original","rule":"Pick the smallest value"},{"id":"nova_smallest_2","name":"Orbit Tiny Signal","category":"puzzle","type":"native","nativeGame":"nova","engine":"smallest","tier":2,"rounds":6,"desc":"Number • Precision • Original","rule":"Pick the smallest value"},{"id":"nova_smallest_3","name":"Pixel Tiny Signal","category":"puzzle","type":"native","nativeGame":"nova","engine":"smallest","tier":3,"rounds":7,"desc":"Number • Precision • Original","rule":"Pick the smallest value"},{"id":"nova_smallest_4","name":"Quantum Tiny Signal","category":"puzzle","type":"native","nativeGame":"nova","engine":"smallest","tier":4,"rounds":7,"desc":"Number • Precision • Original","rule":"Pick the smallest value"},{"id":"nova_smallest_5","name":"Turbo Tiny Signal","category":"puzzle","type":"native","nativeGame":"nova","engine":"smallest","tier":5,"rounds":7,"desc":"Number • Precision • Original","rule":"Pick the smallest value"},{"id":"nova_smallest_6","name":"Crystal Tiny Signal","category":"puzzle","type":"native","nativeGame":"nova","engine":"smallest","tier":6,"rounds":8,"desc":"Number • Precision • Original","rule":"Pick the smallest value"},{"id":"nova_smallest_7","name":"Nova Tiny Signal","category":"puzzle","type":"native","nativeGame":"nova","engine":"smallest","tier":7,"rounds":8,"desc":"Number • Precision • Original","rule":"Pick the smallest value"},{"id":"nova_smallest_8","name":"Cipher Tiny Signal","category":"puzzle","type":"native","nativeGame":"nova","engine":"smallest","tier":8,"rounds":8,"desc":"Number • Precision • Original","rule":"Pick the smallest value"},{"id":"nova_closest_1","name":"Neon Target Drift","category":"puzzle","type":"native","nativeGame":"nova","engine":"closest","tier":1,"rounds":6,"desc":"Number • Estimation • Original","rule":"Pick the value closest to the target"},{"id":"nova_closest_2","name":"Orbit Target Drift","category":"puzzle","type":"native","nativeGame":"nova","engine":"closest","tier":2,"rounds":6,"desc":"Number • Estimation • Original","rule":"Pick the value closest to the target"},{"id":"nova_closest_3","name":"Pixel Target Drift","category":"puzzle","type":"native","nativeGame":"nova","engine":"closest","tier":3,"rounds":7,"desc":"Number • Estimation • Original","rule":"Pick the value closest to the target"},{"id":"nova_closest_4","name":"Quantum Target Drift","category":"puzzle","type":"native","nativeGame":"nova","engine":"closest","tier":4,"rounds":7,"desc":"Number • Estimation • Original","rule":"Pick the value closest to the target"},{"id":"nova_closest_5","name":"Turbo Target Drift","category":"puzzle","type":"native","nativeGame":"nova","engine":"closest","tier":5,"rounds":7,"desc":"Number • Estimation • Original","rule":"Pick the value closest to the target"},{"id":"nova_closest_6","name":"Crystal Target Drift","category":"puzzle","type":"native","nativeGame":"nova","engine":"closest","tier":6,"rounds":8,"desc":"Number • Estimation • Original","rule":"Pick the value closest to the target"},{"id":"nova_closest_7","name":"Nova Target Drift","category":"puzzle","type":"native","nativeGame":"nova","engine":"closest","tier":7,"rounds":8,"desc":"Number • Estimation • Original","rule":"Pick the value closest to the target"},{"id":"nova_closest_8","name":"Cipher Target Drift","category":"puzzle","type":"native","nativeGame":"nova","engine":"closest","tier":8,"rounds":8,"desc":"Number • Estimation • Original","rule":"Pick the value closest to the target"},{"id":"nova_odd_1","name":"Neon Odd Reactor","category":"puzzle","type":"native","nativeGame":"nova","engine":"odd","tier":1,"rounds":6,"desc":"Logic • Number • Original","rule":"Pick the odd number"},{"id":"nova_odd_2","name":"Orbit Odd Reactor","category":"puzzle","type":"native","nativeGame":"nova","engine":"odd","tier":2,"rounds":6,"desc":"Logic • Number • Original","rule":"Pick the odd number"},{"id":"nova_odd_3","name":"Pixel Odd Reactor","category":"puzzle","type":"native","nativeGame":"nova","engine":"odd","tier":3,"rounds":7,"desc":"Logic • Number • Original","rule":"Pick the odd number"},{"id":"nova_odd_4","name":"Quantum Odd Reactor","category":"puzzle","type":"native","nativeGame":"nova","engine":"odd","tier":4,"rounds":7,"desc":"Logic • Number • Original","rule":"Pick the odd number"},{"id":"nova_odd_5","name":"Turbo Odd Reactor","category":"puzzle","type":"native","nativeGame":"nova","engine":"odd","tier":5,"rounds":7,"desc":"Logic • Number • Original","rule":"Pick the odd number"},{"id":"nova_odd_6","name":"Crystal Odd Reactor","category":"puzzle","type":"native","nativeGame":"nova","engine":"odd","tier":6,"rounds":8,"desc":"Logic • Number • Original","rule":"Pick the odd number"},{"id":"nova_odd_7","name":"Nova Odd Reactor","category":"puzzle","type":"native","nativeGame":"nova","engine":"odd","tier":7,"rounds":8,"desc":"Logic • Number • Original","rule":"Pick the odd number"},{"id":"nova_odd_8","name":"Cipher Odd Reactor","category":"puzzle","type":"native","nativeGame":"nova","engine":"odd","tier":8,"rounds":8,"desc":"Logic • Number • Original","rule":"Pick the odd number"},{"id":"nova_even_1","name":"Neon Even Reactor","category":"puzzle","type":"native","nativeGame":"nova","engine":"even","tier":1,"rounds":6,"desc":"Logic • Number • Original","rule":"Pick the even number"},{"id":"nova_even_2","name":"Orbit Even Reactor","category":"puzzle","type":"native","nativeGame":"nova","engine":"even","tier":2,"rounds":6,"desc":"Logic • Number • Original","rule":"Pick the even number"},{"id":"nova_even_3","name":"Pixel Even Reactor","category":"puzzle","type":"native","nativeGame":"nova","engine":"even","tier":3,"rounds":7,"desc":"Logic • Number • Original","rule":"Pick the even number"},{"id":"nova_even_4","name":"Quantum Even Reactor","category":"puzzle","type":"native","nativeGame":"nova","engine":"even","tier":4,"rounds":7,"desc":"Logic • Number • Original","rule":"Pick the even number"},{"id":"nova_even_5","name":"Turbo Even Reactor","category":"puzzle","type":"native","nativeGame":"nova","engine":"even","tier":5,"rounds":7,"desc":"Logic • Number • Original","rule":"Pick the even number"},{"id":"nova_even_6","name":"Crystal Even Reactor","category":"puzzle","type":"native","nativeGame":"nova","engine":"even","tier":6,"rounds":8,"desc":"Logic • Number • Original","rule":"Pick the even number"},{"id":"nova_even_7","name":"Nova Even Reactor","category":"puzzle","type":"native","nativeGame":"nova","engine":"even","tier":7,"rounds":8,"desc":"Logic • Number • Original","rule":"Pick the even number"},{"id":"nova_even_8","name":"Cipher Even Reactor","category":"puzzle","type":"native","nativeGame":"nova","engine":"even","tier":8,"rounds":8,"desc":"Logic • Number • Original","rule":"Pick the even number"},{"id":"nova_prime_1","name":"Neon Prime Scanner","category":"puzzle","type":"native","nativeGame":"nova","engine":"prime","tier":1,"rounds":6,"desc":"Logic • Number • Original","rule":"Find the prime number"},{"id":"nova_prime_2","name":"Orbit Prime Scanner","category":"puzzle","type":"native","nativeGame":"nova","engine":"prime","tier":2,"rounds":6,"desc":"Logic • Number • Original","rule":"Find the prime number"},{"id":"nova_prime_3","name":"Pixel Prime Scanner","category":"puzzle","type":"native","nativeGame":"nova","engine":"prime","tier":3,"rounds":7,"desc":"Logic • Number • Original","rule":"Find the prime number"},{"id":"nova_prime_4","name":"Quantum Prime Scanner","category":"puzzle","type":"native","nativeGame":"nova","engine":"prime","tier":4,"rounds":7,"desc":"Logic • Number • Original","rule":"Find the prime number"},{"id":"nova_prime_5","name":"Turbo Prime Scanner","category":"puzzle","type":"native","nativeGame":"nova","engine":"prime","tier":5,"rounds":7,"desc":"Logic • Number • Original","rule":"Find the prime number"},{"id":"nova_prime_6","name":"Crystal Prime Scanner","category":"puzzle","type":"native","nativeGame":"nova","engine":"prime","tier":6,"rounds":8,"desc":"Logic • Number • Original","rule":"Find the prime number"},{"id":"nova_prime_7","name":"Nova Prime Scanner","category":"puzzle","type":"native","nativeGame":"nova","engine":"prime","tier":7,"rounds":8,"desc":"Logic • Number • Original","rule":"Find the prime number"},{"id":"nova_prime_8","name":"Cipher Prime Scanner","category":"puzzle","type":"native","nativeGame":"nova","engine":"prime","tier":8,"rounds":8,"desc":"Logic • Number • Original","rule":"Find the prime number"},{"id":"nova_sum_1","name":"Neon Sum Lock","category":"puzzle","type":"native","nativeGame":"nova","engine":"sum","tier":1,"rounds":6,"desc":"Math • Logic • Original","rule":"Choose the pair-total answer"},{"id":"nova_sum_2","name":"Orbit Sum Lock","category":"puzzle","type":"native","nativeGame":"nova","engine":"sum","tier":2,"rounds":6,"desc":"Math • Logic • Original","rule":"Choose the pair-total answer"},{"id":"nova_sum_3","name":"Pixel Sum Lock","category":"puzzle","type":"native","nativeGame":"nova","engine":"sum","tier":3,"rounds":7,"desc":"Math • Logic • Original","rule":"Choose the pair-total answer"},{"id":"nova_sum_4","name":"Quantum Sum Lock","category":"puzzle","type":"native","nativeGame":"nova","engine":"sum","tier":4,"rounds":7,"desc":"Math • Logic • Original","rule":"Choose the pair-total answer"},{"id":"nova_sum_5","name":"Turbo Sum Lock","category":"puzzle","type":"native","nativeGame":"nova","engine":"sum","tier":5,"rounds":7,"desc":"Math • Logic • Original","rule":"Choose the pair-total answer"},{"id":"nova_sum_6","name":"Crystal Sum Lock","category":"puzzle","type":"native","nativeGame":"nova","engine":"sum","tier":6,"rounds":8,"desc":"Math • Logic • Original","rule":"Choose the pair-total answer"},{"id":"nova_sum_7","name":"Nova Sum Lock","category":"puzzle","type":"native","nativeGame":"nova","engine":"sum","tier":7,"rounds":8,"desc":"Math • Logic • Original","rule":"Choose the pair-total answer"},{"id":"nova_sum_8","name":"Cipher Sum Lock","category":"puzzle","type":"native","nativeGame":"nova","engine":"sum","tier":8,"rounds":8,"desc":"Math • Logic • Original","rule":"Choose the pair-total answer"},{"id":"nova_difference_1","name":"Neon Delta Lock","category":"puzzle","type":"native","nativeGame":"nova","engine":"difference","tier":1,"rounds":6,"desc":"Math • Logic • Original","rule":"Solve the difference"},{"id":"nova_difference_2","name":"Orbit Delta Lock","category":"puzzle","type":"native","nativeGame":"nova","engine":"difference","tier":2,"rounds":6,"desc":"Math • Logic • Original","rule":"Solve the difference"},{"id":"nova_difference_3","name":"Pixel Delta Lock","category":"puzzle","type":"native","nativeGame":"nova","engine":"difference","tier":3,"rounds":7,"desc":"Math • Logic • Original","rule":"Solve the difference"},{"id":"nova_difference_4","name":"Quantum Delta Lock","category":"puzzle","type":"native","nativeGame":"nova","engine":"difference","tier":4,"rounds":7,"desc":"Math • Logic • Original","rule":"Solve the difference"},{"id":"nova_difference_5","name":"Turbo Delta Lock","category":"puzzle","type":"native","nativeGame":"nova","engine":"difference","tier":5,"rounds":7,"desc":"Math • Logic • Original","rule":"Solve the difference"},{"id":"nova_difference_6","name":"Crystal Delta Lock","category":"puzzle","type":"native","nativeGame":"nova","engine":"difference","tier":6,"rounds":8,"desc":"Math • Logic • Original","rule":"Solve the difference"},{"id":"nova_difference_7","name":"Nova Delta Lock","category":"puzzle","type":"native","nativeGame":"nova","engine":"difference","tier":7,"rounds":8,"desc":"Math • Logic • Original","rule":"Solve the difference"},{"id":"nova_difference_8","name":"Cipher Delta Lock","category":"puzzle","type":"native","nativeGame":"nova","engine":"difference","tier":8,"rounds":8,"desc":"Math • Logic • Original","rule":"Solve the difference"},{"id":"nova_sequence_1","name":"Neon Sequence Forge","category":"puzzle","type":"native","nativeGame":"nova","engine":"sequence","tier":1,"rounds":6,"desc":"Pattern • Logic • Original","rule":"Continue the changing sequence"},{"id":"nova_sequence_2","name":"Orbit Sequence Forge","category":"puzzle","type":"native","nativeGame":"nova","engine":"sequence","tier":2,"rounds":6,"desc":"Pattern • Logic • Original","rule":"Continue the changing sequence"},{"id":"nova_sequence_3","name":"Pixel Sequence Forge","category":"puzzle","type":"native","nativeGame":"nova","engine":"sequence","tier":3,"rounds":7,"desc":"Pattern • Logic • Original","rule":"Continue the changing sequence"},{"id":"nova_sequence_4","name":"Quantum Sequence Forge","category":"puzzle","type":"native","nativeGame":"nova","engine":"sequence","tier":4,"rounds":7,"desc":"Pattern • Logic • Original","rule":"Continue the changing sequence"},{"id":"nova_sequence_5","name":"Turbo Sequence Forge","category":"puzzle","type":"native","nativeGame":"nova","engine":"sequence","tier":5,"rounds":7,"desc":"Pattern • Logic • Original","rule":"Continue the changing sequence"},{"id":"nova_sequence_6","name":"Crystal Sequence Forge","category":"puzzle","type":"native","nativeGame":"nova","engine":"sequence","tier":6,"rounds":8,"desc":"Pattern • Logic • Original","rule":"Continue the changing sequence"},{"id":"nova_sequence_7","name":"Nova Sequence Forge","category":"puzzle","type":"native","nativeGame":"nova","engine":"sequence","tier":7,"rounds":8,"desc":"Pattern • Logic • Original","rule":"Continue the changing sequence"},{"id":"nova_sequence_8","name":"Cipher Sequence Forge","category":"puzzle","type":"native","nativeGame":"nova","engine":"sequence","tier":8,"rounds":8,"desc":"Pattern • Logic • Original","rule":"Continue the changing sequence"},{"id":"nova_missing_1","name":"Neon Missing Node","category":"puzzle","type":"native","nativeGame":"nova","engine":"missing","tier":1,"rounds":6,"desc":"Pattern • Logic • Original","rule":"Recover the missing value"},{"id":"nova_missing_2","name":"Orbit Missing Node","category":"puzzle","type":"native","nativeGame":"nova","engine":"missing","tier":2,"rounds":6,"desc":"Pattern • Logic • Original","rule":"Recover the missing value"},{"id":"nova_missing_3","name":"Pixel Missing Node","category":"puzzle","type":"native","nativeGame":"nova","engine":"missing","tier":3,"rounds":7,"desc":"Pattern • Logic • Original","rule":"Recover the missing value"},{"id":"nova_missing_4","name":"Quantum Missing Node","category":"puzzle","type":"native","nativeGame":"nova","engine":"missing","tier":4,"rounds":7,"desc":"Pattern • Logic • Original","rule":"Recover the missing value"},{"id":"nova_missing_5","name":"Turbo Missing Node","category":"puzzle","type":"native","nativeGame":"nova","engine":"missing","tier":5,"rounds":7,"desc":"Pattern • Logic • Original","rule":"Recover the missing value"},{"id":"nova_missing_6","name":"Crystal Missing Node","category":"puzzle","type":"native","nativeGame":"nova","engine":"missing","tier":6,"rounds":8,"desc":"Pattern • Logic • Original","rule":"Recover the missing value"},{"id":"nova_missing_7","name":"Nova Missing Node","category":"puzzle","type":"native","nativeGame":"nova","engine":"missing","tier":7,"rounds":8,"desc":"Pattern • Logic • Original","rule":"Recover the missing value"},{"id":"nova_missing_8","name":"Cipher Missing Node","category":"puzzle","type":"native","nativeGame":"nova","engine":"missing","tier":8,"rounds":8,"desc":"Pattern • Logic • Original","rule":"Recover the missing value"},{"id":"nova_wordlen_1","name":"Neon Word Gauge","category":"puzzle","type":"native","nativeGame":"nova","engine":"wordlen","tier":1,"rounds":6,"desc":"Word • Precision • Original","rule":"Choose the word with the requested length"},{"id":"nova_wordlen_2","name":"Orbit Word Gauge","category":"puzzle","type":"native","nativeGame":"nova","engine":"wordlen","tier":2,"rounds":6,"desc":"Word • Precision • Original","rule":"Choose the word with the requested length"},{"id":"nova_wordlen_3","name":"Pixel Word Gauge","category":"puzzle","type":"native","nativeGame":"nova","engine":"wordlen","tier":3,"rounds":7,"desc":"Word • Precision • Original","rule":"Choose the word with the requested length"},{"id":"nova_wordlen_4","name":"Quantum Word Gauge","category":"puzzle","type":"native","nativeGame":"nova","engine":"wordlen","tier":4,"rounds":7,"desc":"Word • Precision • Original","rule":"Choose the word with the requested length"},{"id":"nova_wordlen_5","name":"Turbo Word Gauge","category":"puzzle","type":"native","nativeGame":"nova","engine":"wordlen","tier":5,"rounds":7,"desc":"Word • Precision • Original","rule":"Choose the word with the requested length"},{"id":"nova_wordlen_6","name":"Crystal Word Gauge","category":"puzzle","type":"native","nativeGame":"nova","engine":"wordlen","tier":6,"rounds":8,"desc":"Word • Precision • Original","rule":"Choose the word with the requested length"},{"id":"nova_wordlen_7","name":"Nova Word Gauge","category":"puzzle","type":"native","nativeGame":"nova","engine":"wordlen","tier":7,"rounds":8,"desc":"Word • Precision • Original","rule":"Choose the word with the requested length"},{"id":"nova_wordlen_8","name":"Cipher Word Gauge","category":"puzzle","type":"native","nativeGame":"nova","engine":"wordlen","tier":8,"rounds":8,"desc":"Word • Precision • Original","rule":"Choose the word with the requested length"},{"id":"nova_vowels_1","name":"Neon Vowel Radar","category":"puzzle","type":"native","nativeGame":"nova","engine":"vowels","tier":1,"rounds":6,"desc":"Word • Logic • Original","rule":"Count the vowels"},{"id":"nova_vowels_2","name":"Orbit Vowel Radar","category":"puzzle","type":"native","nativeGame":"nova","engine":"vowels","tier":2,"rounds":6,"desc":"Word • Logic • Original","rule":"Count the vowels"},{"id":"nova_vowels_3","name":"Pixel Vowel Radar","category":"puzzle","type":"native","nativeGame":"nova","engine":"vowels","tier":3,"rounds":7,"desc":"Word • Logic • Original","rule":"Count the vowels"},{"id":"nova_vowels_4","name":"Quantum Vowel Radar","category":"puzzle","type":"native","nativeGame":"nova","engine":"vowels","tier":4,"rounds":7,"desc":"Word • Logic • Original","rule":"Count the vowels"},{"id":"nova_vowels_5","name":"Turbo Vowel Radar","category":"puzzle","type":"native","nativeGame":"nova","engine":"vowels","tier":5,"rounds":7,"desc":"Word • Logic • Original","rule":"Count the vowels"},{"id":"nova_vowels_6","name":"Crystal Vowel Radar","category":"puzzle","type":"native","nativeGame":"nova","engine":"vowels","tier":6,"rounds":8,"desc":"Word • Logic • Original","rule":"Count the vowels"},{"id":"nova_vowels_7","name":"Nova Vowel Radar","category":"puzzle","type":"native","nativeGame":"nova","engine":"vowels","tier":7,"rounds":8,"desc":"Word • Logic • Original","rule":"Count the vowels"},{"id":"nova_vowels_8","name":"Cipher Vowel Radar","category":"puzzle","type":"native","nativeGame":"nova","engine":"vowels","tier":8,"rounds":8,"desc":"Word • Logic • Original","rule":"Count the vowels"},{"id":"nova_alphabet_1","name":"Neon Letter Vector","category":"puzzle","type":"native","nativeGame":"nova","engine":"alphabet","tier":1,"rounds":6,"desc":"Word • Number • Original","rule":"Convert a letter to its alphabet position"},{"id":"nova_alphabet_2","name":"Orbit Letter Vector","category":"puzzle","type":"native","nativeGame":"nova","engine":"alphabet","tier":2,"rounds":6,"desc":"Word • Number • Original","rule":"Convert a letter to its alphabet position"},{"id":"nova_alphabet_3","name":"Pixel Letter Vector","category":"puzzle","type":"native","nativeGame":"nova","engine":"alphabet","tier":3,"rounds":7,"desc":"Word • Number • Original","rule":"Convert a letter to its alphabet position"},{"id":"nova_alphabet_4","name":"Quantum Letter Vector","category":"puzzle","type":"native","nativeGame":"nova","engine":"alphabet","tier":4,"rounds":7,"desc":"Word • Number • Original","rule":"Convert a letter to its alphabet position"},{"id":"nova_alphabet_5","name":"Turbo Letter Vector","category":"puzzle","type":"native","nativeGame":"nova","engine":"alphabet","tier":5,"rounds":7,"desc":"Word • Number • Original","rule":"Convert a letter to its alphabet position"},{"id":"nova_alphabet_6","name":"Crystal Letter Vector","category":"puzzle","type":"native","nativeGame":"nova","engine":"alphabet","tier":6,"rounds":8,"desc":"Word • Number • Original","rule":"Convert a letter to its alphabet position"},{"id":"nova_alphabet_7","name":"Nova Letter Vector","category":"puzzle","type":"native","nativeGame":"nova","engine":"alphabet","tier":7,"rounds":8,"desc":"Word • Number • Original","rule":"Convert a letter to its alphabet position"},{"id":"nova_alphabet_8","name":"Cipher Letter Vector","category":"puzzle","type":"native","nativeGame":"nova","engine":"alphabet","tier":8,"rounds":8,"desc":"Word • Number • Original","rule":"Convert a letter to its alphabet position"},{"id":"nova_symbols_1","name":"Neon Symbol Sweep","category":"arcade","type":"native","nativeGame":"nova","engine":"symbols","tier":1,"rounds":6,"desc":"Visual • Counting • Original","rule":"Count the requested symbol"},{"id":"nova_symbols_2","name":"Orbit Symbol Sweep","category":"arcade","type":"native","nativeGame":"nova","engine":"symbols","tier":2,"rounds":6,"desc":"Visual • Counting • Original","rule":"Count the requested symbol"},{"id":"nova_symbols_3","name":"Pixel Symbol Sweep","category":"arcade","type":"native","nativeGame":"nova","engine":"symbols","tier":3,"rounds":7,"desc":"Visual • Counting • Original","rule":"Count the requested symbol"},{"id":"nova_symbols_4","name":"Quantum Symbol Sweep","category":"arcade","type":"native","nativeGame":"nova","engine":"symbols","tier":4,"rounds":7,"desc":"Visual • Counting • Original","rule":"Count the requested symbol"},{"id":"nova_symbols_5","name":"Turbo Symbol Sweep","category":"arcade","type":"native","nativeGame":"nova","engine":"symbols","tier":5,"rounds":7,"desc":"Visual • Counting • Original","rule":"Count the requested symbol"},{"id":"nova_symbols_6","name":"Crystal Symbol Sweep","category":"arcade","type":"native","nativeGame":"nova","engine":"symbols","tier":6,"rounds":8,"desc":"Visual • Counting • Original","rule":"Count the requested symbol"},{"id":"nova_symbols_7","name":"Nova Symbol Sweep","category":"arcade","type":"native","nativeGame":"nova","engine":"symbols","tier":7,"rounds":8,"desc":"Visual • Counting • Original","rule":"Count the requested symbol"},{"id":"nova_symbols_8","name":"Cipher Symbol Sweep","category":"arcade","type":"native","nativeGame":"nova","engine":"symbols","tier":8,"rounds":8,"desc":"Visual • Counting • Original","rule":"Count the requested symbol"},{"id":"nova_coordinate_1","name":"Neon Grid Beacon","category":"arcade","type":"native","nativeGame":"nova","engine":"coordinate","tier":1,"rounds":6,"desc":"Spatial • Logic • Original","rule":"Read a coordinate target"},{"id":"nova_coordinate_2","name":"Orbit Grid Beacon","category":"arcade","type":"native","nativeGame":"nova","engine":"coordinate","tier":2,"rounds":6,"desc":"Spatial • Logic • Original","rule":"Read a coordinate target"},{"id":"nova_coordinate_3","name":"Pixel Grid Beacon","category":"arcade","type":"native","nativeGame":"nova","engine":"coordinate","tier":3,"rounds":7,"desc":"Spatial • Logic • Original","rule":"Read a coordinate target"},{"id":"nova_coordinate_4","name":"Quantum Grid Beacon","category":"arcade","type":"native","nativeGame":"nova","engine":"coordinate","tier":4,"rounds":7,"desc":"Spatial • Logic • Original","rule":"Read a coordinate target"},{"id":"nova_coordinate_5","name":"Turbo Grid Beacon","category":"arcade","type":"native","nativeGame":"nova","engine":"coordinate","tier":5,"rounds":7,"desc":"Spatial • Logic • Original","rule":"Read a coordinate target"},{"id":"nova_coordinate_6","name":"Crystal Grid Beacon","category":"arcade","type":"native","nativeGame":"nova","engine":"coordinate","tier":6,"rounds":8,"desc":"Spatial • Logic • Original","rule":"Read a coordinate target"},{"id":"nova_coordinate_7","name":"Nova Grid Beacon","category":"arcade","type":"native","nativeGame":"nova","engine":"coordinate","tier":7,"rounds":8,"desc":"Spatial • Logic • Original","rule":"Read a coordinate target"},{"id":"nova_coordinate_8","name":"Cipher Grid Beacon","category":"arcade","type":"native","nativeGame":"nova","engine":"coordinate","tier":8,"rounds":8,"desc":"Spatial • Logic • Original","rule":"Read a coordinate target"},{"id":"nova_fraction_1","name":"Neon Fraction Flux","category":"puzzle","type":"native","nativeGame":"nova","engine":"fraction","tier":1,"rounds":6,"desc":"Math • Comparison • Original","rule":"Choose the larger fraction"},{"id":"nova_fraction_2","name":"Orbit Fraction Flux","category":"puzzle","type":"native","nativeGame":"nova","engine":"fraction","tier":2,"rounds":6,"desc":"Math • Comparison • Original","rule":"Choose the larger fraction"},{"id":"nova_fraction_3","name":"Pixel Fraction Flux","category":"puzzle","type":"native","nativeGame":"nova","engine":"fraction","tier":3,"rounds":7,"desc":"Math • Comparison • Original","rule":"Choose the larger fraction"},{"id":"nova_fraction_4","name":"Quantum Fraction Flux","category":"puzzle","type":"native","nativeGame":"nova","engine":"fraction","tier":4,"rounds":7,"desc":"Math • Comparison • Original","rule":"Choose the larger fraction"},{"id":"nova_fraction_5","name":"Turbo Fraction Flux","category":"puzzle","type":"native","nativeGame":"nova","engine":"fraction","tier":5,"rounds":7,"desc":"Math • Comparison • Original","rule":"Choose the larger fraction"},{"id":"nova_fraction_6","name":"Crystal Fraction Flux","category":"puzzle","type":"native","nativeGame":"nova","engine":"fraction","tier":6,"rounds":8,"desc":"Math • Comparison • Original","rule":"Choose the larger fraction"},{"id":"nova_fraction_7","name":"Nova Fraction Flux","category":"puzzle","type":"native","nativeGame":"nova","engine":"fraction","tier":7,"rounds":8,"desc":"Math • Comparison • Original","rule":"Choose the larger fraction"},{"id":"nova_fraction_8","name":"Cipher Fraction Flux","category":"puzzle","type":"native","nativeGame":"nova","engine":"fraction","tier":8,"rounds":8,"desc":"Math • Comparison • Original","rule":"Choose the larger fraction"},{"id":"nova_binary_1","name":"Neon Bit Decoder","category":"puzzle","type":"native","nativeGame":"nova","engine":"binary","tier":1,"rounds":6,"desc":"Tech • Number • Original","rule":"Convert a binary signal"},{"id":"nova_binary_2","name":"Orbit Bit Decoder","category":"puzzle","type":"native","nativeGame":"nova","engine":"binary","tier":2,"rounds":6,"desc":"Tech • Number • Original","rule":"Convert a binary signal"},{"id":"nova_binary_3","name":"Pixel Bit Decoder","category":"puzzle","type":"native","nativeGame":"nova","engine":"binary","tier":3,"rounds":7,"desc":"Tech • Number • Original","rule":"Convert a binary signal"},{"id":"nova_binary_4","name":"Quantum Bit Decoder","category":"puzzle","type":"native","nativeGame":"nova","engine":"binary","tier":4,"rounds":7,"desc":"Tech • Number • Original","rule":"Convert a binary signal"},{"id":"nova_binary_5","name":"Turbo Bit Decoder","category":"puzzle","type":"native","nativeGame":"nova","engine":"binary","tier":5,"rounds":7,"desc":"Tech • Number • Original","rule":"Convert a binary signal"},{"id":"nova_binary_6","name":"Crystal Bit Decoder","category":"puzzle","type":"native","nativeGame":"nova","engine":"binary","tier":6,"rounds":8,"desc":"Tech • Number • Original","rule":"Convert a binary signal"},{"id":"nova_binary_7","name":"Nova Bit Decoder","category":"puzzle","type":"native","nativeGame":"nova","engine":"binary","tier":7,"rounds":8,"desc":"Tech • Number • Original","rule":"Convert a binary signal"},{"id":"nova_binary_8","name":"Cipher Bit Decoder","category":"puzzle","type":"native","nativeGame":"nova","engine":"binary","tier":8,"rounds":8,"desc":"Tech • Number • Original","rule":"Convert a binary signal"},{"id":"nova_sides_1","name":"Neon Shape Circuit","category":"arcade","type":"native","nativeGame":"nova","engine":"sides","tier":1,"rounds":6,"desc":"Visual • Logic • Original","rule":"Match a shape to its side count"},{"id":"nova_sides_2","name":"Orbit Shape Circuit","category":"arcade","type":"native","nativeGame":"nova","engine":"sides","tier":2,"rounds":6,"desc":"Visual • Logic • Original","rule":"Match a shape to its side count"},{"id":"nova_sides_3","name":"Pixel Shape Circuit","category":"arcade","type":"native","nativeGame":"nova","engine":"sides","tier":3,"rounds":7,"desc":"Visual • Logic • Original","rule":"Match a shape to its side count"},{"id":"nova_sides_4","name":"Quantum Shape Circuit","category":"arcade","type":"native","nativeGame":"nova","engine":"sides","tier":4,"rounds":7,"desc":"Visual • Logic • Original","rule":"Match a shape to its side count"},{"id":"nova_sides_5","name":"Turbo Shape Circuit","category":"arcade","type":"native","nativeGame":"nova","engine":"sides","tier":5,"rounds":7,"desc":"Visual • Logic • Original","rule":"Match a shape to its side count"},{"id":"nova_sides_6","name":"Crystal Shape Circuit","category":"arcade","type":"native","nativeGame":"nova","engine":"sides","tier":6,"rounds":8,"desc":"Visual • Logic • Original","rule":"Match a shape to its side count"},{"id":"nova_sides_7","name":"Nova Shape Circuit","category":"arcade","type":"native","nativeGame":"nova","engine":"sides","tier":7,"rounds":8,"desc":"Visual • Logic • Original","rule":"Match a shape to its side count"},{"id":"nova_sides_8","name":"Cipher Shape Circuit","category":"arcade","type":"native","nativeGame":"nova","engine":"sides","tier":8,"rounds":8,"desc":"Visual • Logic • Original","rule":"Match a shape to its side count"},{"id":"nova_xor_1","name":"Neon Switch Logic","category":"puzzle","type":"native","nativeGame":"nova","engine":"xor","tier":1,"rounds":6,"desc":"Logic • Circuit • Original","rule":"Evaluate an XOR switch rule"},{"id":"nova_xor_2","name":"Orbit Switch Logic","category":"puzzle","type":"native","nativeGame":"nova","engine":"xor","tier":2,"rounds":6,"desc":"Logic • Circuit • Original","rule":"Evaluate an XOR switch rule"},{"id":"nova_xor_3","name":"Pixel Switch Logic","category":"puzzle","type":"native","nativeGame":"nova","engine":"xor","tier":3,"rounds":7,"desc":"Logic • Circuit • Original","rule":"Evaluate an XOR switch rule"},{"id":"nova_xor_4","name":"Quantum Switch Logic","category":"puzzle","type":"native","nativeGame":"nova","engine":"xor","tier":4,"rounds":7,"desc":"Logic • Circuit • Original","rule":"Evaluate an XOR switch rule"},{"id":"nova_xor_5","name":"Turbo Switch Logic","category":"puzzle","type":"native","nativeGame":"nova","engine":"xor","tier":5,"rounds":7,"desc":"Logic • Circuit • Original","rule":"Evaluate an XOR switch rule"},{"id":"nova_xor_6","name":"Crystal Switch Logic","category":"puzzle","type":"native","nativeGame":"nova","engine":"xor","tier":6,"rounds":8,"desc":"Logic • Circuit • Original","rule":"Evaluate an XOR switch rule"},{"id":"nova_xor_7","name":"Nova Switch Logic","category":"puzzle","type":"native","nativeGame":"nova","engine":"xor","tier":7,"rounds":8,"desc":"Logic • Circuit • Original","rule":"Evaluate an XOR switch rule"},{"id":"nova_xor_8","name":"Cipher Switch Logic","category":"puzzle","type":"native","nativeGame":"nova","engine":"xor","tier":8,"rounds":8,"desc":"Logic • Circuit • Original","rule":"Evaluate an XOR switch rule"},{"id":"nova_clock_1","name":"Neon Clock Shift","category":"puzzle","type":"native","nativeGame":"nova","engine":"clock","tier":1,"rounds":6,"desc":"Time • Logic • Original","rule":"Advance a clock by a given number of hours"},{"id":"nova_clock_2","name":"Orbit Clock Shift","category":"puzzle","type":"native","nativeGame":"nova","engine":"clock","tier":2,"rounds":6,"desc":"Time • Logic • Original","rule":"Advance a clock by a given number of hours"},{"id":"nova_clock_3","name":"Pixel Clock Shift","category":"puzzle","type":"native","nativeGame":"nova","engine":"clock","tier":3,"rounds":7,"desc":"Time • Logic • Original","rule":"Advance a clock by a given number of hours"},{"id":"nova_clock_4","name":"Quantum Clock Shift","category":"puzzle","type":"native","nativeGame":"nova","engine":"clock","tier":4,"rounds":7,"desc":"Time • Logic • Original","rule":"Advance a clock by a given number of hours"},{"id":"nova_clock_5","name":"Turbo Clock Shift","category":"puzzle","type":"native","nativeGame":"nova","engine":"clock","tier":5,"rounds":7,"desc":"Time • Logic • Original","rule":"Advance a clock by a given number of hours"},{"id":"nova_clock_6","name":"Crystal Clock Shift","category":"puzzle","type":"native","nativeGame":"nova","engine":"clock","tier":6,"rounds":8,"desc":"Time • Logic • Original","rule":"Advance a clock by a given number of hours"},{"id":"nova_clock_7","name":"Nova Clock Shift","category":"puzzle","type":"native","nativeGame":"nova","engine":"clock","tier":7,"rounds":8,"desc":"Time • Logic • Original","rule":"Advance a clock by a given number of hours"},{"id":"nova_clock_8","name":"Cipher Clock Shift","category":"puzzle","type":"native","nativeGame":"nova","engine":"clock","tier":8,"rounds":8,"desc":"Time • Logic • Original","rule":"Advance a clock by a given number of hours"}];
         gamesDatabase.push(...novaGames);
 
-        // ===== Two additional ORIGINAL UltraArcade games =====
+        // ===== Two additional ORIGINAL NitroArcade games =====
         // Original block-placement puzzle; no Block Blast assets/branding/code.
         const ultraBlockGame = {
             id:'ultra_block_burst', name:'Block Burst', category:'puzzle',
             type:'native', nativeGame:'specialOriginal', engine:'blockburst',
-            desc:'Place shapes, clear rows and columns • Original UltraArcade'
+            desc:'Place shapes, clear rows and columns • Original NitroArcade'
         };
         // Original endless three-lane runner; no Subway Surfers assets/branding/code.
         const ultraRunnerGame = {
             id:'ultra_metro_dash', name:'Metro Dash', category:'arcade',
             type:'native', nativeGame:'specialOriginal', engine:'metrodash',
-            desc:'Three-lane dodge-and-collect runner • Original UltraArcade'
+            desc:'Three-lane dodge-and-collect runner • Original NitroArcade'
         };
-        const ultraVoxelGame={id:'ultra_voxel_frontier',name:'Voxel Frontier 3D',category:'arcade',type:'native',nativeGame:'specialOriginal',engine:'voxel3d',desc:'First-person 3D block world • mine, place and explore • Original UltraArcade'};
-        const ultraFootballGame={id:'ultra_stadium_strike',name:'Stadium Strike 3D',category:'sports',type:'native',nativeGame:'specialOriginal',engine:'football3d',desc:'3D football • dribble, shoot, defend and score • Original UltraArcade'};
+        const ultraVoxelGame={id:'ultra_voxel_frontier',name:'Voxel Frontier 3D',category:'arcade',type:'native',nativeGame:'specialOriginal',engine:'voxel3d',desc:'First-person 3D block world • mine, place and explore • Original NitroArcade'};
+        const ultraFootballGame={id:'ultra_stadium_strike',name:'Stadium Strike 3D',category:'sports',type:'native',nativeGame:'specialOriginal',engine:'football3d',desc:'3D football • dribble, shoot, defend and score • Original NitroArcade'};
         const ultraFlightGame={id:'ultra_sky_pilot',name:'Sky Pilot 3D',category:'arcade',type:'native',nativeGame:'specialOriginal',engine:'flight3d',desc:'Full 3D flight mission • detailed airport • runway takeoff/landing • 8-ring course • clouds, mountains and scenery • 10 energy-drone targets • flight HUD'};
         const ultraMazeGame={id:'ultra_brick_maze_90s',name:'Brick Maze 95',category:'arcade',type:'native',nativeGame:'specialOriginal',engine:'brickmaze3d',desc:'Randomized first-person 90s brick labyrinth • six unique souvenirs • roaming creatures • minimap • timer • sprinting • green exit mission'};
-        gamesDatabase.push(ultraBlockGame, ultraRunnerGame, ultraVoxelGame, ultraFootballGame, ultraFlightGame, ultraMazeGame);
+        const ultraTheDayGame={id:'ultra_the_day',name:'School Nightmare',category:'arcade',type:'native',nativeGame:'specialOriginal',engine:'theday',desc:'3D school adventure • race for the last parking slot • escape school • football finale • Original NitroArcade'};
+        const ultraNightWatchGame={id:'ultra_night_watch',name:'Night Watch',category:'arcade',type:'native',nativeGame:'specialOriginal',engine:'nightwatch',desc:'Polished security-night survival • camera network • doors • lights • power management • roaming mascots • Original NitroArcade'};
+        gamesDatabase.push(ultraBlockGame, ultraRunnerGame, ultraVoxelGame, ultraFootballGame, ultraFlightGame, ultraMazeGame, ultraTheDayGame, ultraNightWatchGame);
 
 
 
@@ -2053,7 +2159,7 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
                 const card=document.createElement('article');
                 card.className='game-card'; card.dataset.gameId=game.id; card.dataset.arcadePart='small'; card.onclick=()=>launchGame(game);
                 card.innerHTML=`<button class="favorite-btn" data-fav-id="${game.id}" title="Favorite">☆</button>
-                <div class="thumb thumb-newgame"><div class="thumb-label">ULTRAARCADE ORIGINAL</div><div class="play-pill">▶</div></div>
+                <div class="thumb thumb-newgame"><div class="thumb-label">NITROARCADE ORIGINAL</div><div class="play-pill">▶</div></div>
                 <div class="game-meta"><div><h3>${game.name}</h3><p>${game.desc}</p></div><div class="meta-right"><span class="play-count" data-count-id="${game.id}">0 plays</span><div class="tag">PLAY NOW</div></div></div>`;
                 card.querySelector('.favorite-btn').onclick=e=>toggleFavorite(e,game.id);
                 grid.appendChild(card);
@@ -2068,7 +2174,7 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
                 const card=document.createElement('article');
                 card.className='game-card';card.dataset.gameId=game.id; card.dataset.arcadePart='small';card.onclick=()=>launchGame(game);
                 card.innerHTML=`<button class="favorite-btn" data-fav-id="${game.id}" title="Favorite">☆</button>
-                <div class="thumb thumb-ultra"><div class="thumb-label">ULTRAARCADE ORIGINAL</div><div class="play-pill">▶</div></div>
+                <div class="thumb thumb-ultra"><div class="thumb-label">NITROARCADE ORIGINAL</div><div class="play-pill">▶</div></div>
                 <div class="game-meta"><div><h3>${game.name}</h3><p>${game.desc}</p></div><div class="meta-right"><span class="play-count" data-count-id="${game.id}">0 plays</span><div class="tag">PLAY NOW</div></div></div>`;
                 card.querySelector('.favorite-btn').onclick=e=>toggleFavorite(e,game.id);
                 grid.appendChild(card);
@@ -2095,13 +2201,13 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
 
         function addSpecialOriginalCards(){
             const grid=document.getElementById('gameGrid'); if(!grid)return;
-            [ultraBlockGame,ultraRunnerGame,ultraVoxelGame,ultraFootballGame,ultraFlightGame,ultraMazeGame].forEach((game,i)=>{
+            [ultraBlockGame,ultraRunnerGame,ultraVoxelGame,ultraFootballGame,ultraFlightGame,ultraMazeGame,ultraTheDayGame,ultraNightWatchGame].forEach((game,i)=>{
                 const card=document.createElement('article');
-                card.className='game-card'; card.dataset.gameId=game.id; card.dataset.arcadePart=['voxel3d','football3d','flight3d','brickmaze3d'].includes(game.engine)?'big':'small'; card.onclick=()=>launchGame(game);
+                card.className='game-card'; card.dataset.gameId=game.id; card.dataset.arcadePart=['voxel3d','football3d','flight3d','brickmaze3d','theday','nightwatch'].includes(game.engine)?'big':'small'; card.onclick=()=>launchGame(game);
                 card.innerHTML=`<button class="favorite-btn" data-fav-id="${game.id}" title="Favorite">☆</button>
                 <div class="thumb special-original-thumb ${i?'runner-thumb':'burst-thumb'}">
-                    <div class="thumb-label">ULTRAARCADE ORIGINAL</div>
-                    <div class="special-card-icon">${['▦','⇧','◫','⚽','✈','▥'][i]}</div><div class="play-pill">▶</div>
+                    <div class="thumb-label">NITROARCADE ORIGINAL</div>
+                    <div class="special-card-icon">${['▦','⇧','◫','⚽','✈','▥','🌅','📹'][i]}</div><div class="play-pill">▶</div>
                 </div>
                 <div class="game-meta"><div><h3>${game.name}</h3><p>${game.desc}</p></div>
                 <div class="meta-right"><span class="play-count" data-count-id="${game.id}">0 plays</span><div class="tag">PLAY NOW</div></div></div>`;
@@ -2117,7 +2223,7 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
             currentArcadePart=part;
             const info={
               small:['Small Games','Quick-play arcade games, puzzles and score challenges.'],
-              big:['Big Games','Larger UltraArcade experiences with worlds, missions and longer sessions.'],
+              big:['Big Games','Larger NitroArcade experiences with worlds, missions and longer sessions.'],
               challenge:['Challenge','Beat the Hacker Challenge to discover the secret game.']
             };
             const title=document.getElementById('libraryPartTitle'),sub=document.getElementById('libraryPartSubtitle');
@@ -2177,7 +2283,7 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
         }
 
         function resetArcadeStats(){
-            if(!confirm('Reset local UltraArcade play counts, favorites and recent games?'))return;
+            if(!confirm('Reset local NitroArcade play counts, favorites and recent games?'))return;
             localStorage.removeItem('crazyarcade-play-counts');
             localStorage.removeItem('crazyarcade-favorites');
             localStorage.removeItem('crazyarcade-recent');
@@ -2248,7 +2354,7 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
             const grid=document.getElementById('gameGrid');if(!grid)return;
             premiumGames.forEach(game=>{
                 const card=document.createElement('article');card.className='game-card';card.dataset.gameId=game.id; card.dataset.arcadePart='small';card.onclick=()=>launchGame(game);
-                card.innerHTML=`<button class="favorite-btn" data-fav-id="${game.id}" title="Favorite">☆</button><div class="thumb premium-thumb"><div class="thumb-label">NEW • ULTRAARCADE ORIGINAL</div><div class="play-pill">▶</div></div><div class="game-meta"><div><h3>${game.name}</h3><p>${game.desc}</p></div><div class="meta-right"><span class="play-count" data-count-id="${game.id}">0 plays</span><div class="tag">PLAY NOW</div></div></div>`;
+                card.innerHTML=`<button class="favorite-btn" data-fav-id="${game.id}" title="Favorite">☆</button><div class="thumb premium-thumb"><div class="thumb-label">NEW • NITROARCADE ORIGINAL</div><div class="play-pill">▶</div></div><div class="game-meta"><div><h3>${game.name}</h3><p>${game.desc}</p></div><div class="meta-right"><span class="play-count" data-count-id="${game.id}">0 plays</span><div class="tag">PLAY NOW</div></div></div>`;
                 card.querySelector('.favorite-btn').onclick=e=>toggleFavorite(e,game.id);grid.appendChild(card);
             });
         }
@@ -2343,7 +2449,7 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
         const TOY_KEY='crazyarcade-owned-toys';
         const TOYS=[
             {id:'rubber_duck',name:'Pixel Duck',icon:'🐤',price:3,desc:'A tiny arcade desk duck.'},
-            {id:'robot',name:'Pocket Bot',icon:'🤖',price:5,desc:'A miniature UltraArcade robot.'},
+            {id:'robot',name:'Pocket Bot',icon:'🤖',price:5,desc:'A miniature NitroArcade robot.'},
             {id:'ufo',name:'Mini UFO',icon:'🛸',price:7,desc:'Definitely from somewhere suspicious.'},
             {id:'bear',name:'Arcade Bear',icon:'🧸',price:8,desc:'Soft, collectible and extremely serious.'},
             {id:'rocket',name:'Desk Rocket',icon:'🚀',price:10,desc:'For very important imaginary launches.'},
@@ -2448,7 +2554,7 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
             let round=0, score=0, dead=false;
             const total=game.rounds||7;
             host.innerHTML=`<div class="nova-shell"><div class="nova-panel">
-                <div class="nova-head"><div><div class="mega-kicker">ULTRAARCADE ORIGINAL // NOVA ${String(game.tier).padStart(2,'0')}</div><div class="nova-title">${game.name}</div></div><div class="nova-rule">${game.rule}</div></div>
+                <div class="nova-head"><div><div class="mega-kicker">NITROARCADE ORIGINAL // NOVA ${String(game.tier).padStart(2,'0')}</div><div class="nova-title">${game.name}</div></div><div class="nova-rule">${game.rule}</div></div>
                 <div class="nova-board"><div class="nova-center">
                     <div id="novaPrompt" class="nova-question">READY?</div>
                     <div id="novaOptions" class="nova-options"></div>
@@ -2557,6 +2663,403 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
             if(game.engine==='football3d') return startStadiumStrike3D(host,game);
             if(game.engine==='flight3d') return startSkyPilot3D(host,game);
             if(game.engine==='brickmaze3d') return startBrickMaze95(host,game);
+            if(game.engine==='theday') return startTheDay(host,game);
+            if(game.engine==='nightwatch') return startNightWatch(host,game);
+        }
+
+
+
+        function startNightWatch(host,game){
+          stopNativeGame();
+          host.innerHTML=`<div class="nwf">
+            <div class="nwf-top"><b>NIGHT WATCH</b><span id="nwfTime">12 AM</span><span id="nwfPower">POWER 100%</span></div>
+            <div class="nwf-office" id="nwfOffice">
+              <div class="nwf-hall left"><span>WEST HALL</span><div class="nwf-eyes" id="nwfEyesL">● ●</div></div>
+              <div class="nwf-hall right"><span>EAST HALL</span><div class="nwf-eyes" id="nwfEyesR">● ●</div></div>
+              <div class="nwf-desk"><div class="nwf-fan">✣</div><div class="nwf-screen">SECURITY<br><small>CAMERAS READY</small></div></div>
+              <div class="nwf-buttons left"><button id="nwfLightL">LIGHT</button><button id="nwfDoorL">DOOR</button></div>
+              <div class="nwf-buttons right"><button id="nwfLightR">LIGHT</button><button id="nwfDoorR">DOOR</button></div>
+              <div class="nwf-shutter left" id="nwfShutterL"></div><div class="nwf-shutter right" id="nwfShutterR"></div>
+              <button class="nwf-open" id="nwfOpen">▲ OPEN CAMERAS</button>
+            </div>
+            <div class="nwf-cams" id="nwfCams">
+              <div class="nwf-feed"><canvas id="nwfCanvas" width="1000" height="600"></canvas><b id="nwfCamTitle">CAM 1 · SHOW STAGE</b></div>
+              <div class="nwf-map" id="nwfMap"></div>
+              <button class="nwf-lower" id="nwfLower">▼ LOWER MONITOR</button>
+            </div>
+            <div class="nwf-bottom"><span id="nwfUsage">USAGE ▮</span><span>Survive until 6 AM</span></div>
+            <div class="nwf-cover" id="nwfCover"><div class="nwf-card"><small>NITROARCADE BIG GAME</small><h2>NIGHT WATCH</h2><p>Watch the camera network, check both halls, and shut the correct door before a roaming mascot reaches the office.</p><button id="nwfStart">BEGIN NIGHT</button></div></div>
+          </div>`;
+
+          const office=host.querySelector('#nwfOffice'),cams=host.querySelector('#nwfCams'),cover=host.querySelector('#nwfCover');
+          const cv=host.querySelector('#nwfCanvas'),c=cv.getContext('2d'),timeEl=host.querySelector('#nwfTime'),powerEl=host.querySelector('#nwfPower'),usageEl=host.querySelector('#nwfUsage');
+          const title=host.querySelector('#nwfCamTitle'),map=host.querySelector('#nwfMap');
+          let running=false, cameraUp=false, leftDoor=false,rightDoor=false,leftLight=false,rightLight=false,power=100,t=0,last=performance.now(),raf=0,cam=0;
+          const rooms=['SHOW STAGE','DINING','PRIZE ROOM','ARCADE','PARTY ROOM','STORAGE','WEST HALL','EAST HALL','OFFICE'];
+          const bots=[
+            {name:'PATCH',color:'#d55f55',path:[0,1,4,6,8],step:0,wait:7},
+            {name:'BOLT',color:'#4e79d8',path:[0,2,3,7,8],step:0,wait:9},
+            {name:'MOTH',color:'#a96bc0',path:[5,4,3,6,8],step:0,wait:11}
+          ];
+          rooms.forEach((name,i)=>{let b=document.createElement('button');b.textContent='CAM '+(i+1);b.onclick=()=>{cam=i;title.textContent=`CAM ${i+1} · ${name}`;drawFeed()};map.appendChild(b)});
+
+          function resetBots(){bots[0].step=0;bots[1].step=0;bots[2].step=0}
+          function roomOf(b){return b.path[b.step]}
+          function drawMascot(x,y,b){
+            c.fillStyle=b.color;c.beginPath();c.arc(x,y,55,0,Math.PI*2);c.fill();
+            c.fillStyle='#17191c';c.fillRect(x-48,y+38,96,120);
+            c.fillStyle='#fff';c.beginPath();c.arc(x-19,y-10,7,0,7);c.arc(x+19,y-10,7,0,7);c.fill();
+            c.fillStyle='#111';c.beginPath();c.arc(x-19,y-10,3,0,7);c.arc(x+19,y-10,3,0,7);c.fill();
+            c.fillStyle='#fff';c.font='bold 15px monospace';c.fillText(b.name,x-28,y+185);
+          }
+          function drawFeed(){
+            let g=c.createLinearGradient(0,0,0,600);g.addColorStop(0,'#34393d');g.addColorStop(1,'#080a0b');c.fillStyle=g;c.fillRect(0,0,1000,600);
+            c.strokeStyle='#555b60';c.lineWidth=2;
+            for(let x=0;x<1000;x+=100){c.beginPath();c.moveTo(x,0);c.lineTo(x,600);c.stroke()}
+            for(let y=0;y<600;y+=75){c.beginPath();c.moveTo(0,y);c.lineTo(1000,y);c.stroke()}
+            bots.filter(b=>roomOf(b)===cam).forEach((b,i)=>drawMascot(390+i*210,260,b));
+            c.fillStyle='rgba(255,255,255,.09)';
+            for(let i=0;i<120;i++)c.fillRect(Math.random()*1000,Math.random()*600,20+Math.random()*120,1);
+            c.fillStyle='#fff';c.font='bold 20px monospace';c.fillText(`CAM ${cam+1} // ${rooms[cam]}`,25,35);
+          }
+          function updateOffice(){
+            host.querySelector('#nwfShutterL').classList.toggle('down',leftDoor);
+            host.querySelector('#nwfShutterR').classList.toggle('down',rightDoor);
+            const atL=bots.some(b=>roomOf(b)===8 && b.path[Math.max(0,b.step-1)]===6);
+            const atR=bots.some(b=>roomOf(b)===8 && b.path[Math.max(0,b.step-1)]===7);
+            host.querySelector('#nwfEyesL').style.opacity=leftLight&&atL?'1':'0';
+            host.querySelector('#nwfEyesR').style.opacity=rightLight&&atR?'1':'0';
+            office.classList.toggle('lit-l',leftLight);office.classList.toggle('lit-r',rightLight);
+          }
+          function finish(win,b){
+            running=false;cover.style.display='grid';
+            cover.innerHTML=win?`<div class="nwf-card win"><small>SHIFT COMPLETE</small><h2>6:00 AM</h2><p>The front doors unlock. You survived Night Watch.</p><button id="nwfAgain">PLAY AGAIN</button></div>`:
+            `<div class="nwf-card lose"><small>SHIFT FAILED</small><h2>${b.name} GOT IN</h2><p>You made it to ${timeEl.textContent}. Watch the hall routes and save power.</p><button id="nwfAgain">RETRY</button></div>`;
+            host.querySelector('#nwfAgain').onclick=start;
+          }
+          function start(){
+            power=100;t=0;cameraUp=leftDoor=rightDoor=leftLight=rightLight=false;resetBots();cover.style.display='none';cams.style.display='none';office.style.display='block';running=true;last=performance.now();updateOffice();
+          }
+          function loop(now){
+            const dt=Math.min(.05,(now-last)/1000||.016);last=now;
+            if(running){
+              t+=dt;
+              const use=1+(cameraUp?1:0)+(leftDoor?1:0)+(rightDoor?1:0)+(leftLight?1:0)+(rightLight?1:0);
+              power=Math.max(0,power-dt*(.045+.027*(use-1)));
+              const hour=Math.min(6,Math.floor(t/18));timeEl.textContent=hour===0?'12 AM':hour+' AM';powerEl.textContent='POWER '+Math.ceil(power)+'%';usageEl.textContent='USAGE '+'▮'.repeat(use);
+              if(power<=0){leftDoor=rightDoor=leftLight=rightLight=false;updateOffice()}
+              bots.forEach((b,i)=>{
+                if(Math.random()<dt/Math.max(3,b.wait-t/80)){
+                  if(roomOf(b)===8){
+                    const cameLeft=b.path[Math.max(0,b.step-1)]===6, blocked=cameLeft?leftDoor:rightDoor;
+                    if(blocked){b.step=Math.max(0,b.step-2)}
+                    else finish(false,b);
+                  }else b.step=Math.min(b.path.length-1,b.step+1);
+                }
+              });
+              if(cameraUp)drawFeed();updateOffice();if(t>=108)finish(true);
+            }
+            raf=requestAnimationFrame(loop);
+          }
+          host.querySelector('#nwfDoorL').onclick=()=>{if(power){leftDoor=!leftDoor;updateOffice()}};
+          host.querySelector('#nwfDoorR').onclick=()=>{if(power){rightDoor=!rightDoor;updateOffice()}};
+          host.querySelector('#nwfLightL').onclick=()=>{if(power){leftLight=true;updateOffice();setTimeout(()=>{leftLight=false;updateOffice()},900)}};
+          host.querySelector('#nwfLightR').onclick=()=>{if(power){rightLight=true;updateOffice();setTimeout(()=>{rightLight=false;updateOffice()},900)}};
+          host.querySelector('#nwfOpen').onclick=()=>{if(power){cameraUp=true;office.style.display='none';cams.style.display='grid';drawFeed()}};
+          host.querySelector('#nwfLower').onclick=()=>{cameraUp=false;cams.style.display='none';office.style.display='block'};
+          host.querySelector('#nwfStart').onclick=start;
+          raf=requestAnimationFrame(loop);
+          activeNativeCleanup=()=>cancelAnimationFrame(raf);
+        }
+
+        function startTheDay(host,game){
+          stopNativeGame();
+          host.innerHTML=`<div class="snfp" tabindex="0">
+            <div class="snfp-hud">
+              <div><b>SCHOOL NIGHTMARE</b><span id="snp">CHALLENGE 1 · PARKING PANIC</span></div>
+              <div><span id="sns">SCORE 0000</span><span id="snstat">LAP TO SCHOOL</span></div>
+            </div>
+            <canvas id="sncv" width="1280" height="720"></canvas>
+            <div class="snfp-foot"><span id="sno">Race to the final parking slot.</span><span id="snctrl">WASD / ARROWS · SPACE boost</span></div>
+            <div class="snfp-cover" id="sncover"><div class="snfp-card">
+              <small>NITROARCADE DELUXE FIRST-PERSON STORY GAME</small><h2>SCHOOL NIGHTMARE</h2>
+              <p>Three completely different first-person challenges in one chaotic school day.</p>
+              <div class="snfp-list"><b>🏎 1 · PARKING PANIC — arcade kart-style race</b><b>🏫 2 · AFTER THE PRANK — stealth escape</b><b>⚽ 3 · FINAL WHISTLE — first-person football</b></div>
+              <button id="snstart">START THE DAY</button>
+            </div></div>
+          </div>`;
+
+          const sh=host.querySelector('.snfp'),cv=host.querySelector('#sncv'),c=cv.getContext('2d'),cover=host.querySelector('#sncover'),
+                pEl=host.querySelector('#snp'),sEl=host.querySelector('#sns'),stat=host.querySelector('#snstat'),obj=host.querySelector('#sno'),ctrl=host.querySelector('#snctrl');
+          let running=false,dead=false,raf=0,last=performance.now(),t=0,part=1,score=0,keys={};
+          const clamp=(v,a,b)=>Math.max(a,Math.min(b,v)), lerp=(a,b,n)=>a+(b-a)*n;
+          function text(s,x,y,z=20,col='#fff',align='left'){c.fillStyle=col;c.font=`900 ${z}px Arial`;c.textAlign=align;c.fillText(s,x,y)}
+          function rr(x,y,w,h,r,col){c.beginPath();c.roundRect(x,y,w,h,r);c.fillStyle=col;c.fill()}
+          function vignette(){let g=c.createRadialGradient(640,360,180,640,360,690);g.addColorStop(.55,'transparent');g.addColorStop(1,'rgba(0,0,0,.58)');c.fillStyle=g;c.fillRect(0,0,1280,720)}
+          function finish(title,msg,next){
+            running=false;cover.style.display='grid';cover.innerHTML=`<div class="snfp-card"><small>CHALLENGE COMPLETE</small><h2>${title}</h2><p>${msg}</p><strong>SCORE ${String(score).padStart(4,'0')}</strong><button id="snn">${next===4?'FINISH THE DAY':'NEXT CHALLENGE'}</button></div>`;
+            cover.querySelector('#snn').onclick=()=>{if(next===4){cover.innerHTML=`<div class="snfp-card"><small>SCHOOL SURVIVED</small><h2>WHAT A DAY.</h2><p>You won the parking race, escaped the school, and finished the football match.</p><strong>FINAL SCORE ${String(score).padStart(4,'0')}</strong><button id="snr">PLAY AGAIN</button></div>`;cover.querySelector('#snr').onclick=()=>{score=0;cover.style.display='none';startRace();running=true;sh.focus()}}else{cover.style.display='none';next===2?startStealth():startFootball();running=true;sh.focus()}}
+          }
+
+          /* ---------- CHALLENGE 1: first-person arcade parking race ---------- */
+          let race={x:0,z:0,v:0,boost:100,rival:0,cones:[],turn:0};
+          function startRace(){
+            part=1;t=0;race={x:0,z:0,v:0,boost:100,rival:0,cones:Array.from({length:18},(_,i)=>({x:(Math.random()-.5)*13,z:45+i*22})),turn:0};
+            pEl.textContent='CHALLENGE 1 · PARKING PANIC';stat.textContent='BOOST 100%';obj.textContent='Beat the rival through traffic and take the glowing LAST SLOT.';ctrl.textContent='WASD / ARROWS steer · SPACE boost';
+          }
+          function raceFrame(dt){
+            let steer=(keys.d||keys.arrowright?1:0)-(keys.a||keys.arrowleft?1:0),gas=(keys.w||keys.arrowup)?1:0,brake=(keys.s||keys.arrowdown)?1:0,boost=keys[' ']&&race.boost>0;
+            race.v+=gas*26*dt-brake*34*dt;race.v*=.986;race.v=clamp(race.v,0,boost?43:30);if(boost){race.v+=28*dt;race.boost=Math.max(0,race.boost-28*dt)}else race.boost=Math.min(100,race.boost+8*dt);
+            race.x=clamp(race.x+steer*(5+race.v*.13)*dt,-7.5,7.5);race.z+=race.v*dt;race.rival+=27*dt;
+            // sky, distant city/school
+            let sky=c.createLinearGradient(0,0,0,360);sky.addColorStop(0,'#65b9ef');sky.addColorStop(1,'#e9f7ff');c.fillStyle=sky;c.fillRect(0,0,1280,360);
+            c.fillStyle='#d69b6e';c.fillRect(390,105,500,205);c.fillStyle='#963e36';c.fillRect(365,90,550,28);text('ULTRA HIGH',640,150,30,'#fff','center');
+            for(let i=0;i<7;i++){c.fillStyle='#9fd9ef';c.fillRect(420+i*67,185,42,55)}
+            // first-person road
+            c.fillStyle='#526044';c.fillRect(0,310,1280,410);let bend=Math.sin(race.z*.012)*110-race.x*34;
+            c.fillStyle='#3c4248';c.beginPath();c.moveTo(535+bend*.1,310);c.lineTo(745+bend*.1,310);c.lineTo(1180+bend,720);c.lineTo(100+bend,720);c.closePath();c.fill();
+            // lane markers
+            for(let i=1;i<12;i++){let d=((i*24-race.z)%264+264)%264+12,sc=1/(d*.012+.15),yy=310+380*sc/7,xx=640+bend*(yy-310)/410;c.fillStyle='#f4edc9';c.fillRect(xx-5*sc,yy,10*sc,32*sc)}
+            // roadside trees / lamps give speed depth
+            for(let i=0;i<20;i++){let d=((i*19-race.z)%380+380)%380+18,sc=130/d,yy=310+400*sc/7,side=i%2?-1:1,xx=640+side*(150+250*sc)+bend*(yy-310)/410;c.fillStyle='#725036';c.fillRect(xx-5*sc,yy-35*sc,10*sc,35*sc);c.fillStyle='#3d8d48';c.beginPath();c.arc(xx,yy-45*sc,22*sc,0,7);c.fill()}
+            // traffic/cones
+            race.cones.forEach((o,i)=>{let d=o.z-race.z;if(d>3&&d<130){let sc=150/d,yy=315+400*sc/7,xx=640+(o.x-race.x)*32*sc+bend*(yy-310)/410;c.fillStyle='#ff7b27';c.beginPath();c.moveTo(xx,yy-35*sc);c.lineTo(xx-14*sc,yy);c.lineTo(xx+14*sc,yy);c.fill();if(Math.abs(o.x-race.x)<1.2&&d<6){race.v*=.45;o.z+=300}}});
+            // rival car in front/behind
+            let rd=race.rival-race.z+18;if(rd>3&&rd<100){let sc=145/rd,yy=315+400*sc/7,xx=640+(2-race.x)*30*sc;rr(xx-38*sc,yy-38*sc,76*sc,38*sc,5*sc,'#4278df');c.fillStyle='#bce6f7';c.fillRect(xx-22*sc,yy-31*sc,44*sc,16*sc)}
+            // cockpit
+            c.fillStyle='#14171b';c.beginPath();c.moveTo(0,720);c.lineTo(0,610);c.quadraticCurveTo(220,545,430,625);c.lineTo(850,625);c.quadraticCurveTo(1060,545,1280,610);c.lineTo(1280,720);c.fill();
+            c.strokeStyle='#333b43';c.lineWidth=18;c.beginPath();c.arc(640,735,150,Math.PI,Math.PI*2);c.stroke();rr(555,635,170,62,10,'#080b0e');text(Math.round(race.v*7)+' km/h',640,675,24,'#71e39b','center');
+            stat.textContent='BOOST '+Math.ceil(race.boost)+'%';
+            // finish parking zone
+            if(race.z>330){text('PARKING LOT →',1080,340,20,'#7dff9c','right');if(race.z>390){if(race.z>race.rival){score+=1400;finish('LAST SLOT SECURED!','You won the morning race and slid into the final parking space.',2)}else finish('RIVAL GOT THERE FIRST','You reached school, but the blue rival stole the final slot.',2)}}
+            vignette();
+          }
+
+          /* ---------- CHALLENGE 2: ray-cast first-person stealth school ---------- */
+          const MAP=[
+            '1111111111111111','1000000010000001','1011110010111101','1000010000000101',
+            '1110011111000101','1000000001000001','1011110101011101','1000000101000001',
+            '1011100000011101','1000101111000001','1100101000010111','1000001000000001',
+            '1011101111011101','1000000000000001','1000111111100001','1111111111111111'
+          ];
+          let st={x:1.7,y:1.7,a:0,passes:[],guards:[],exit:{x:14.2,y:14.2},caught:0};
+          function wallAt(x,y){let X=Math.floor(x),Y=Math.floor(y);return X<0||Y<0||Y>=MAP.length||X>=MAP[0].length||MAP[Y][X]==='1'}
+          function startStealth(){
+            part=2;t=0;st={x:1.7,y:1.7,a:.1,passes:[{x:6.5,y:2.5,g:0},{x:13.5,y:6.5,g:0},{x:4.5,y:13.5,g:0}],guards:[{x:7.5,y:3.5,a:1.5},{x:12.5,y:9.5,a:3},{x:7.5,y:13.5,a:0}],exit:{x:14.2,y:14.2},caught:0};
+            pEl.textContent='CHALLENGE 2 · AFTER THE PRANK';stat.textContent='PASSES 0 / 3';obj.textContent='Sneak through the school, collect 3 hall passes, and find the EXIT without getting caught.';ctrl.textContent='WASD move · ← → turn · SHIFT sprint';
+          }
+          function raycast(){
+            // ceiling + floor
+            let cg=c.createLinearGradient(0,0,0,360);cg.addColorStop(0,'#101923');cg.addColorStop(1,'#26384a');c.fillStyle=cg;c.fillRect(0,0,1280,360);
+            let fg=c.createLinearGradient(0,360,0,720);fg.addColorStop(0,'#b9aa8a');fg.addColorStop(1,'#4b4438');c.fillStyle=fg;c.fillRect(0,360,1280,360);
+
+            const FOV=Math.PI/2.8,rays=400,sw=1280/rays;
+            for(let i=0;i<rays;i++){
+              let ang=st.a-FOV/2+FOV*i/rays,cs=Math.cos(ang),sn=Math.sin(ang),d=.04,hx=0,hy=0;
+              while(d<24&&!wallAt(st.x+cs*d,st.y+sn*d))d+=.035;
+              hx=st.x+cs*d;hy=st.y+sn*d;d*=Math.cos(ang-st.a);
+              let hh=Math.min(720,650/(d+.03)), shade=clamp(235-d*11,42,210);
+              // Alternating painted-brick / school-panel walls based on cell coordinates.
+              let cell=(Math.floor(hx)+Math.floor(hy))&1;
+              let r=cell?shade*.68:shade*.58,g=cell?shade*.72:shade*.67,b=cell?shade*.73:shade*.78;
+              c.fillStyle=`rgb(${r},${g},${b})`;c.fillRect(i*sw,360-hh/2,sw+1,hh);
+              // chair-rail stripe + subtle brick seams
+              if(i%10===0){c.fillStyle='rgba(255,255,255,.055)';c.fillRect(i*sw,360-hh*.18,sw*2,3)}
+              if(i%24===0){c.fillStyle='rgba(0,0,0,.10)';c.fillRect(i*sw,360-hh/2,1,hh)}
+            }
+
+            // ceiling fluorescent lights for depth
+            for(let k=1;k<7;k++){
+              let yy=350-k*48,ww=260-k*27;
+              c.fillStyle=`rgba(220,244,255,${.17-k*.012})`;
+              c.fillRect(640-ww/2,yy,ww,8);
+            }
+
+            // project school props / objectives / staff
+            let props=[
+              ...st.passes.filter(q=>!q.g).map(q=>({...q,type:'pass'})),
+              ...st.guards.map(q=>({...q,type:'guard'})),
+              {...st.exit,type:'exit'}
+            ];
+            props.map(o=>{
+              let dx=o.x-st.x,dy=o.y-st.y,dist=Math.hypot(dx,dy),ang=Math.atan2(dy,dx)-st.a;
+              while(ang>Math.PI)ang-=Math.PI*2;while(ang<-Math.PI)ang+=Math.PI*2;
+              return{o,dist,ang};
+            }).filter(q=>Math.abs(q.ang)<FOV*.58&&q.dist>.2)
+              .sort((a,b)=>b.dist-a.dist)
+              .forEach(q=>{
+                let sx=640+q.ang/FOV*1280,sz=clamp(450/q.dist,18,285),sy=370+sz*.32;
+                if(q.o.type==='pass'){
+                  // floating hall pass
+                  c.save();c.translate(sx,sy);c.rotate(Math.sin(t*2+q.dist)*.08);
+                  rr(-sz*.38,-sz*.32,sz*.76,sz*.46,6,'#6dffb0');
+                  text('HALL PASS',0,-sz*.03,Math.max(9,sz*.105),'#173b2b','center');c.restore();
+                } else if(q.o.type==='exit'){
+                  rr(sx-sz*.58,sy-sz*1.5,sz*1.16,sz*1.58,4,'#265b3d');
+                  c.fillStyle='#8effb2';c.fillRect(sx-sz*.42,sy-sz*1.30,sz*.84,sz*.22);
+                  text('EXIT',sx,sy-sz*1.13,Math.max(12,sz*.17),'#10291c','center');
+                  c.fillStyle='#d8b66b';c.beginPath();c.arc(sx+sz*.38,sy-sz*.66,sz*.045,0,7);c.fill();
+                } else {
+                  // stylised staff character with head, torso, legs and alert marker
+                  c.fillStyle='#d9a37f';c.beginPath();c.arc(sx,sy-sz*.82,sz*.19,0,7);c.fill();
+                  rr(sx-sz*.24,sy-sz*.62,sz*.48,sz*.62,7,'#5b3e93');
+                  c.fillStyle='#20242a';c.fillRect(sx-sz*.20,sy,sz*.14,sz*.45);c.fillRect(sx+sz*.06,sy,sz*.14,sz*.45);
+                  if(q.dist<4.3){text('!',sx,sy-sz*1.13,Math.max(18,sz*.25),'#ff5d68','center')}
+                }
+              });
+
+            // first-person hands + flashlight vignette
+            c.fillStyle='#20252c';c.beginPath();c.moveTo(0,720);c.lineTo(0,665);c.lineTo(250,625);c.lineTo(390,720);c.fill();
+            c.beginPath();c.moveTo(1280,720);c.lineTo(1280,665);c.lineTo(1030,625);c.lineTo(890,720);c.fill();
+
+            // objective HUD + compass
+            rr(24,22,315,70,10,'rgba(4,10,17,.72)');
+            text('AFTER THE PRANK',43,49,16,'#8ed8ff');
+            text('Find passes • Avoid staff • Reach EXIT',43,73,12,'#dbeafe');
+            rr(520,22,240,42,21,'rgba(4,10,17,.68)');
+            const dir=['E','S','W','N'][Math.round((((st.a%(Math.PI*2))+Math.PI*2)%(Math.PI*2))/(Math.PI/2))%4];
+            text('COMPASS  '+dir,640,49,14,'#fff','center');
+            vignette();
+          }
+          function stealthFrame(dt){
+            let turn=(keys.arrowright?1:0)-(keys.arrowleft?1:0);st.a+=turn*2.1*dt;let f=(keys.w?1:0)-(keys.s?1:0),side=(keys.d?1:0)-(keys.a?1:0),spd=(keys.shift?4.8:3.2),nx=st.x+(Math.cos(st.a)*f+Math.cos(st.a+Math.PI/2)*side)*spd*dt,ny=st.y+(Math.sin(st.a)*f+Math.sin(st.a+Math.PI/2)*side)*spd*dt;if(!wallAt(nx,st.y))st.x=nx;if(!wallAt(st.x,ny))st.y=ny;
+            st.guards.forEach((g,i)=>{g.a+=Math.sin(t*.5+i)*.012;let d=Math.hypot(st.x-g.x,st.y-g.y);if(d<4.2){let aim=Math.atan2(st.y-g.y,st.x-g.x),dif=Math.atan2(Math.sin(aim-g.a),Math.cos(aim-g.a));if(Math.abs(dif)<.8){g.a=aim;let nx=g.x+Math.cos(g.a)*1.25*dt,ny=g.y+Math.sin(g.a)*1.25*dt;if(!wallAt(nx,g.y))g.x=nx;if(!wallAt(g.x,ny))g.y=ny}}else g.a+=.35*dt;if(d<.65){st.x=1.7;st.y=1.7;st.caught++;score=Math.max(0,score-100)}});st.passes.forEach(q=>{if(!q.g&&Math.hypot(st.x-q.x,st.y-q.y)<.65){q.g=1;score+=250}});let got=st.passes.filter(q=>q.g).length;stat.textContent=`PASSES ${got}/3 · CAUGHT ${st.caught}`;if(Math.hypot(st.x-st.exit.x,st.y-st.exit.y)<.8){score+=got===3?900:200;finish('ESCAPED SCHOOL!',got===3?'Perfect stealth route: all passes collected.':'You escaped, but missed some hall passes.',3)}raycast();
+          }
+
+          /* ---------- CHALLENGE 3: polished first-person football ---------- */
+          let fb={x:0,z:26,ball:{x:0,z:8,vx:0,vz:0},def:[],goals:0,keeper:0,charge:0,flash:0};
+          function respawnFootball(){
+            fb.x=0;fb.z=26;
+            fb.ball={x:0,z:8,vx:0,vz:0};
+          }
+          function startFootball(){
+            part=3;t=0;
+            fb={x:0,z:26,ball:{x:0,z:8,vx:0,vz:0},def:[{x:-7,z:-3},{x:7,z:-13},{x:-1,z:-23}],goals:0,keeper:0,charge:0,flash:0};
+            pEl.textContent='CHALLENGE 3 · FINAL WHISTLE';
+            stat.textContent='GOALS 0 / 3';
+            obj.textContent='Dribble toward goal, beat the defenders, and score 3.';
+            ctrl.textContent='WASD / ARROWS move · Hold SPACE to charge · release to shoot';
+          }
+          function fbScreen(wx,wz){
+            // Camera always faces the opponent goal (-Z). Near objects are larger.
+            let depth=fb.z-wz;
+            if(depth<.35)return null;
+            let sc=520/(depth+3);
+            return {x:640+(wx-fb.x)*sc,y:350+235/(depth+2),sc:clamp(sc/22,.22,2.6),depth};
+          }
+          function footballFrame(dt){
+            let mx=(keys.d||keys.arrowright?1:0)-(keys.a||keys.arrowleft?1:0);
+            let mz=(keys.s||keys.arrowdown?1:0)-(keys.w||keys.arrowup?1:0);
+            let ml=Math.hypot(mx,mz)||1;
+            fb.x=clamp(fb.x+mx/ml*9*dt,-19,19);
+            fb.z=clamp(fb.z+mz/ml*9*dt,-34,35);
+
+            let b=fb.ball,dx=b.x-fb.x,dz=b.z-fb.z,bd=Math.hypot(dx,dz);
+            // close-control dribbling: ball stays playable instead of getting lost
+            if(bd<2.35 && Math.hypot(b.vx,b.vz)<10){
+              b.vx += (fb.x-b.x)*2.1*dt;
+              b.vz += (-5-b.vz)*.45*dt;
+            }
+            if(keys[' ']) fb.charge=clamp(fb.charge+65*dt,0,100);
+            if(!keys[' '] && fb.charge>0 && bd<3.1){
+              let power=13+fb.charge*.16;
+              // Shoot toward the goal, with horizontal aim based on player/ball position.
+              b.vx=(b.x-fb.x)*2.0;
+              b.vz=-power;
+              fb.flash=.14;fb.charge=0;
+            } else if(!keys[' '] && bd>=3.1) fb.charge=0;
+
+            // defenders chase the ball but leave lanes
+            fb.def.forEach((g,i)=>{
+              let gx=b.x-g.x,gz=b.z-g.z,ll=Math.hypot(gx,gz)||1;
+              g.x=clamp(g.x+gx/ll*(2.2+i*.28)*dt,-18,18);
+              g.z=clamp(g.z+gz/ll*(2.2+i*.28)*dt,-34,20);
+              if(ll<1.25){b.vx=(gx/ll)*7;b.vz=(gz/ll)*7}
+            });
+            fb.keeper=Math.sin(t*2.0)*4.1;
+
+            b.x+=b.vx*dt;b.z+=b.vz*dt;b.vx*=.987;b.vz*=.987;
+            fb.flash=Math.max(0,fb.flash-dt);
+
+            // Goal line and keeper save.
+            if(b.z<-36){
+              if(Math.abs(b.x)<6.4){
+                if(Math.abs(b.x-fb.keeper)<1.8){
+                  b.z=-33;b.vz=10;b.vx+=(b.x-fb.keeper)*2.2;
+                }else{
+                  fb.goals++;score+=650;stat.textContent=`GOALS ${fb.goals} / 3`;
+                  if(fb.goals>=3){finish('HAT TRICK!','Three goals. Final whistle. School Nightmare complete.',4);return}
+                  respawnFootball();
+                }
+              } else respawnFootball();
+            }
+            // hard failsafe requested by user
+            if(!Number.isFinite(b.x)||!Number.isFinite(b.z)||Math.abs(b.x)>28||b.z>42||b.z<-48)respawnFootball();
+
+            // Stadium / pitch
+            let sky=c.createLinearGradient(0,0,0,310);sky.addColorStop(0,'#55afe9');sky.addColorStop(1,'#dff6ff');c.fillStyle=sky;c.fillRect(0,0,1280,310);
+            c.fillStyle='#293746';c.fillRect(0,190,1280,150);
+            // crowd rows
+            for(let row=0;row<5;row++)for(let i=0;i<64;i++){c.fillStyle=['#f9d45c','#62b5ff','#ff6878','#f4f4f4','#79db8c'][(i+row)%5];c.fillRect(i*20+(row%2)*7,205+row*22,7,7)}
+            // field trapezoid
+            poly([[75,720],[1205,720],[815,310],[465,310]],'#3d9d53');
+            for(let i=0;i<8;i++){
+              let a=i/8,bn=(i+1)/8;
+              let y1=lerp(720,310,a),y2=lerp(720,310,bn);
+              let l1=lerp(75,465,a),r1=lerp(1205,815,a),l2=lerp(75,465,bn),r2=lerp(1205,815,bn);
+              if(i%2===0)poly([[l1,y1],[r1,y1],[r2,y2],[l2,y2]],'rgba(255,255,255,.045)');
+            }
+            // pitch markings and goal
+            c.strokeStyle='rgba(255,255,255,.9)';c.lineWidth=4;c.beginPath();c.moveTo(640,720);c.lineTo(640,310);c.stroke();
+            c.strokeStyle='#fff';c.lineWidth=7;c.strokeRect(510,235,260,135);
+            c.lineWidth=1;for(let i=1;i<7;i++){c.beginPath();c.moveTo(510+i*37,235);c.lineTo(510+i*37,370);c.stroke()}
+            for(let j=1;j<5;j++){c.beginPath();c.moveTo(510,235+j*27);c.lineTo(770,235+j*27);c.stroke()}
+
+            let sprites=[
+              ...fb.def.map(g=>({...g,type:'def'})),
+              {x:fb.keeper,z:-35,type:'keeper'},
+              {...b,type:'ball'}
+            ].map(o=>({o,p:fbScreen(o.x,o.z)})).filter(q=>q.p).sort((A,B)=>B.p.depth-A.p.depth);
+
+            sprites.forEach(({o,p})=>{
+              let sc=p.sc;
+              if(o.type==='ball'){
+                c.fillStyle='#fff';c.beginPath();c.arc(p.x,p.y,13*sc,0,Math.PI*2);c.fill();
+                c.strokeStyle='#111';c.lineWidth=Math.max(1,2*sc);c.stroke();
+                c.fillStyle='#111';c.beginPath();c.arc(p.x,p.y,4*sc,0,Math.PI*2);c.fill();
+              }else{
+                let col=o.type==='keeper'?'#f2b83d':'#356bd8';
+                c.fillStyle='#d5a07c';c.beginPath();c.arc(p.x,p.y-52*sc,13*sc,0,Math.PI*2);c.fill();
+                rr(p.x-18*sc,p.y-38*sc,36*sc,52*sc,5*sc,col);
+                c.fillStyle='#172033';c.fillRect(p.x-16*sc,p.y+10*sc,11*sc,34*sc);c.fillRect(p.x+5*sc,p.y+10*sc,11*sc,34*sc);
+              }
+            });
+
+            // First-person lower body + kick HUD
+            c.fillStyle='#e64f5d';poly([[470,720],[555,610],[610,720]],'#e64f5d');poly([[810,720],[725,610],[670,720]],'#e64f5d');
+            rr(455,25,370,76,12,'rgba(5,11,18,.80)');
+            text(`ULTRA  ${fb.goals}  —  0  RIVALS`,640,59,23,'#fff','center');
+            text('FIRST TO 3 GOALS',640,84,12,'#9ed8ff','center');
+            rr(480,665,320,18,9,'rgba(0,0,0,.55)');
+            rr(480,665,320*(fb.charge/100),18,9,fb.charge>75?'#ffcf4a':'#6ee7a2');
+            text(bd<3.1?'HOLD SPACE · POWER SHOT':'GET CLOSER TO THE BALL',640,650,14,bd<3.1?'#fff':'#ffd166','center');
+            if(fb.flash){c.fillStyle=`rgba(255,255,255,${fb.flash*2})`;c.fillRect(0,0,1280,720)}
+            vignette();
+          }
+
+          function poly(points,col){c.fillStyle=col;c.beginPath();c.moveTo(points[0][0],points[0][1]);for(let i=1;i<points.length;i++)c.lineTo(points[i][0],points[i][1]);c.closePath();c.fill()}
+
+          function loop(ts){
+            if(dead)return;let dt=Math.min(.04,(ts-last)/1000||.016);last=ts;
+            if(running){t+=dt;c.clearRect(0,0,1280,720);part===1?raceFrame(dt):part===2?stealthFrame(dt):footballFrame(dt);sEl.textContent='SCORE '+String(score).padStart(4,'0')}
+            raf=requestAnimationFrame(loop)
+          }
+          sh.addEventListener('keydown',e=>{keys[e.key.toLowerCase()]=true;if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(e.key))e.preventDefault()});
+          sh.addEventListener('keyup',e=>keys[e.key.toLowerCase()]=false);
+          host.querySelector('#snstart').onclick=()=>{cover.style.display='none';startRace();running=true;sh.focus()};
+          // Detailed visible attract background, so launch can never look like a dead black screen.
+          c.fillStyle='#76c3ee';c.fillRect(0,0,1280,360);c.fillStyle='#3f4850';c.fillRect(0,360,1280,360);text('SCHOOL NIGHTMARE',640,300,64,'#fff','center');text('FIRST-PERSON STORY ADVENTURE',640,345,20,'#dff4ff','center');
+          raf=requestAnimationFrame(loop);activeNativeCleanup=()=>{dead=true;cancelAnimationFrame(raf)};
         }
 
         function startBlockBurst(host,game){
@@ -2570,7 +3073,7 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
             ];
             let choices=[];
             host.innerHTML=`<div class="nova-shell"><div class="nova-panel"><div class="nova-head">
-              <div><div class="mega-kicker">ULTRAARCADE ORIGINAL</div><div class="nova-title">Block Burst</div></div>
+              <div><div class="mega-kicker">NITROARCADE ORIGINAL</div><div class="nova-title">Block Burst</div></div>
               <div class="nova-rule">Select a shape → click its top-left board position. Fill complete rows/columns to clear them.</div></div>
               <div class="nova-board"><div class="nova-center"><div id="burstBoard" class="burst-board"></div>
               <div id="burstShapes" class="burst-shapes"></div><div class="nova-status"><span>SCORE <b id="burstScore">0</b></span></div>
@@ -2613,7 +3116,7 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
             stopNativeGame();
             let dead=false, running=true, lane=1, score=0, coins=0, speed=4.2, spawn=0, coinSpawn=0, last=performance.now();
             host.innerHTML=`<div class="nova-shell"><div class="nova-panel"><div class="nova-head">
-              <div><div class="mega-kicker">ULTRAARCADE ORIGINAL</div><div class="nova-title">Metro Dash</div></div>
+              <div><div class="mega-kicker">NITROARCADE ORIGINAL</div><div class="nova-title">Metro Dash</div></div>
               <div class="nova-rule">← → / A D change lanes • ↑ / W jump • dodge barriers • collect sparks</div></div>
               <canvas class="runner-canvas" width="900" height="506" tabindex="0"></canvas>
               <div class="nova-status"><span>DISTANCE <b id="runScore">0</b></span><span>SPARKS <b id="runCoins">0</b></span></div>
@@ -2656,42 +3159,339 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
         function ultraLoadThree(){
           if(window.THREE)return Promise.resolve(window.THREE);
           if(window.__threePromise)return window.__threePromise;
-          window.__threePromise=new Promise((ok,bad)=>{const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js';s.onload=()=>ok(window.THREE);s.onerror=bad;document.head.appendChild(s)});return window.__threePromise;
+          window.__threePromise=new Promise((ok,bad)=>{
+            const urls=['https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js','https://unpkg.com/three@0.160.0/build/three.min.js'];
+            let i=0;
+            const tryNext=()=>{if(i>=urls.length){bad(new Error('Three.js failed to load'));return}const s=document.createElement('script');s.src=urls[i++];s.onload=()=>window.THREE?ok(window.THREE):tryNext();s.onerror=tryNext;document.head.appendChild(s)};
+            tryNext();
+          });return window.__threePromise;
         }
         async function startVoxelFrontier3D(host,game){
-          stopNativeGame();let stop=false;
-          host.innerHTML=`<div class="three3d-shell"><div class="three3d-bar"><b>VOXEL FRONTIER 3D</b><span>Mine • Build • Explore</span></div><div id="v3stage" class="three3d-stage"><div id="v3hud" class="three3d-hud">Blocks: 20</div></div><div class="three3d-help">Click world • WASD move • drag mouse to look • left click mine • right click place</div></div>`;
-          let T;try{T=await ultraLoadThree()}catch(e){host.querySelector('#v3stage').innerHTML='<p style="color:white;padding:25px">3D engine could not load.</p>';return}
-          const st=host.querySelector('#v3stage'),hud=host.querySelector('#v3hud'),sc=new T.Scene();sc.background=new T.Color(0x79b9e8);sc.fog=new T.Fog(0x9ed0ee,24,68);
-          const cam=new T.PerspectiveCamera(70,16/9,.1,100),ren=new T.WebGLRenderer({antialias:true});ren.setPixelRatio(Math.min(devicePixelRatio,2));st.appendChild(ren.domElement);
-          sc.add(new T.HemisphereLight(0xffffff,0x4b613a,2.4));const sun=new T.DirectionalLight(0xffffff,1.7);sun.position.set(8,15,7);sc.add(sun);
-          const geo=new T.BoxGeometry(1,1,1),mat=[new T.MeshLambertMaterial({color:0x65a94b}),new T.MeshLambertMaterial({color:0x8a6545}),new T.MeshLambertMaterial({color:0x7d8588})],blocks=[],map=new Map(),K=(x,y,z)=>x+','+y+','+z;
-          function add(x,y,z,m=0){if(map.has(K(x,y,z)))return;const b=new T.Mesh(geo,mat[m]);b.position.set(x,y,z);sc.add(b);blocks.push(b);map.set(K(x,y,z),b)}
-          for(let x=-13;x<=13;x++)for(let z=-13;z<=13;z++){let top=Math.max(0,Math.round(Math.sin(x*.4)+Math.cos(z*.35)));for(let y=-2;y<=top;y++)add(x,y,z,y===top?0:y<0?2:1)}
-          for(let y=1;y<5;y++)add(-5,y,-5,2);
-          // Decorative voxel world: clouds, trees, flowers, ruins and a glowing sun.
-          const cloudMat=new T.MeshLambertMaterial({color:0xf7fbff}),leafMat=new T.MeshLambertMaterial({color:0x3f8c43}),woodMat=new T.MeshLambertMaterial({color:0x6d4930}),flowerMat=new T.MeshLambertMaterial({color:0xff6fae}),ruinMat=new T.MeshLambertMaterial({color:0x6e7479});
-          for(let i=0;i<9;i++){let g=new T.Group();for(let j=0;j<4;j++){let c=new T.Mesh(new T.BoxGeometry(2.2,1,1.4),cloudMat);c.position.set(j*1.5,Math.sin(j)*.25,0);g.add(c)}g.position.set(-24+i*7,10+(i%3)*2,-20+(i%4)*11);sc.add(g)}
-          [[-9,-8],[8,-7],[10,8],[-10,9],[4,-11],[-12,2]].forEach(([x,z])=>{let tr=new T.Mesh(new T.BoxGeometry(.65,3,.65),woodMat);tr.position.set(x,2,z);sc.add(tr);let crown=new T.Mesh(new T.BoxGeometry(3.2,3,3.2),leafMat);crown.position.set(x,4.4,z);sc.add(crown)});
-          for(let i=0;i<18;i++){let f=new T.Mesh(new T.BoxGeometry(.18,.55,.18),flowerMat);f.position.set(-11+Math.random()*22,2,-11+Math.random()*22);sc.add(f)}
-          for(let y=1;y<7;y++){let q=new T.Mesh(geo,ruinMat);q.position.set(11,y,-11);sc.add(q)}for(let x=8;x<=11;x++){let q=new T.Mesh(geo,ruinMat);q.position.set(x,1,-11);sc.add(q)}
-          const sunBall=new T.Mesh(new T.SphereGeometry(3,12,10),new T.MeshBasicMaterial({color:0xffe28a}));sunBall.position.set(-24,20,-38);sc.add(sunBall);
-          cam.position.set(0,3,7);
-          let yaw=0,pitch=0,drag=false,lx=0,ly=0,inv=20;const keys={},ray=new T.Raycaster();
-          const kd=e=>keys[e.code]=true,ku=e=>keys[e.code]=false;
-          const down=e=>{if(e.button===2){e.preventDefault();ray.setFromCamera(new T.Vector2(0,0),cam);const q=ray.intersectObjects(blocks.filter(b=>b.parent));if(q[0]&&inv){const p=q[0].object.position.clone().add(q[0].face.normal).round();add(p.x,p.y,p.z,2);inv--;hud.textContent='Blocks: '+inv}return}drag=true;lx=e.clientX;ly=e.clientY};
-          const up=e=>{if(e.button===0&&Math.abs(e.clientX-lx)<4&&Math.abs(e.clientY-ly)<4){ray.setFromCamera(new T.Vector2(0,0),cam);const q=ray.intersectObjects(blocks.filter(b=>b.parent));if(q[0]&&q[0].object.position.y>-2){const b=q[0].object;map.delete(K(b.position.x,b.position.y,b.position.z));sc.remove(b);inv++;hud.textContent='Blocks: '+inv}}drag=false};
-          const move=e=>{if(!drag)return;yaw-=(e.clientX-lx)*.004;pitch=Math.max(-1.3,Math.min(1.3,pitch-(e.clientY-ly)*.004));lx=e.clientX;ly=e.clientY};
-          addEventListener('keydown',kd);addEventListener('keyup',ku);ren.domElement.addEventListener('mousedown',down);addEventListener('mouseup',up);addEventListener('mousemove',move);ren.domElement.oncontextmenu=e=>e.preventDefault();
-          function loop(){if(stop)return;ren.setSize(st.clientWidth,st.clientHeight,false);cam.aspect=st.clientWidth/st.clientHeight;cam.updateProjectionMatrix();cam.rotation.order='YXZ';cam.rotation.y=yaw;cam.rotation.x=pitch;const f=new T.Vector3(-Math.sin(yaw),0,-Math.cos(yaw)),r=new T.Vector3(Math.cos(yaw),0,-Math.sin(yaw)),v=new T.Vector3();if(keys.KeyW)v.add(f);if(keys.KeyS)v.sub(f);if(keys.KeyD)v.add(r);if(keys.KeyA)v.sub(r);if(v.lengthSq())cam.position.add(v.normalize().multiplyScalar(.09));cam.position.y=Math.max(2.2,cam.position.y);ren.render(sc,cam);requestAnimationFrame(loop)}
-          activeNativeCleanup=()=>{stop=true;removeEventListener('keydown',kd);removeEventListener('keyup',ku);removeEventListener('mouseup',up);removeEventListener('mousemove',move);ren.dispose()};loop();
+          stopNativeGame();
+          let stopped=false, raf=0;
+
+          host.innerHTML=`<div class="three3d-shell voxel-deluxe">
+            <div class="three3d-bar"><b>VOXEL FRONTIER 3D — WILDLANDS</b><span id="v3clock">DAY 1 • 08:00</span></div>
+            <div id="v3stage" class="three3d-stage">
+              <div class="v3-top-left"><b id="v3biome">MEADOW OUTPOST</b><small id="v3quest">QUEST • Reach the glowing Crystal Ruins</small></div>
+              <button class="v3-controls-btn" id="v3controlsBtn" type="button">⌨ CONTROLS</button>
+              <div class="v3-controls-panel" id="v3controlsPanel">
+                <div class="v3-controls-head"><b>VOXEL FRONTIER CONTROLS</b><button id="v3controlsClose" type="button">×</button></div>
+                <div class="v3-control-grid">
+                  <div><kbd>W A S D</kbd><span>Move</span></div>
+                  <div><kbd>MOUSE</kbd><span>Look around</span></div>
+                  <div><kbd>SHIFT</kbd><span>Sprint</span></div>
+                  <div><kbd>SPACE</kbd><span>Jump</span></div>
+                  <div><kbd>1 — 5</kbd><span>Select block</span></div>
+                  <div><kbd>LMB</kbd><span>Mine placed block</span></div>
+                  <div><kbd>RMB</kbd><span>Place selected block</span></div>
+                  <div><kbd>F</kbd><span>Interact / activate</span></div>
+                  <div><kbd>R</kbd><span>Respawn at outpost</span></div>
+                  <div><kbd>ESC</kbd><span>Release mouse</span></div>
+                </div>
+                <small>Click anywhere in the 3D world to capture the mouse.</small>
+              </div>
+              <div class="v3-bars"><label>HEALTH <i><em id="v3hp"></em></i></label><label>STAMINA <i><em id="v3stam"></em></i></label></div>
+              <div class="v3-cross">+</div>
+              <div class="v3-toast" id="v3toast"></div>
+              <div class="v3-hotbar" id="v3hotbar"></div>
+              <div class="v3-minimap"><canvas id="v3map" width="150" height="150"></canvas><b>N</b></div>
+            </div>
+            <div class="three3d-help">CLICK game to lock mouse • WASD move • SHIFT sprint • SPACE jump • 1–5 select • LEFT mine placed blocks • RIGHT place • F interact • R respawn • ESC unlock mouse</div>
+          </div>`;
+
+          let T;
+          try{ T=await ultraLoadThree(); }
+          catch(err){
+            host.querySelector('#v3stage').innerHTML='<div style="padding:30px;color:white">Three.js could not load. Check your internet connection.</div>';
+            return;
+          }
+
+          const st=host.querySelector('#v3stage'), clock=host.querySelector('#v3clock'),
+                biomeEl=host.querySelector('#v3biome'), questEl=host.querySelector('#v3quest'),
+                hpEl=host.querySelector('#v3hp'), stamEl=host.querySelector('#v3stam'),
+                toast=host.querySelector('#v3toast'), hotbar=host.querySelector('#v3hotbar'),
+                mapcv=host.querySelector('#v3map'), mx=mapcv.getContext('2d'),
+                controlsBtn=host.querySelector('#v3controlsBtn'), controlsPanel=host.querySelector('#v3controlsPanel'),
+                controlsClose=host.querySelector('#v3controlsClose');
+
+          const toggleControls=(show)=>controlsPanel.classList.toggle('open',show);
+          controlsBtn.addEventListener('click',e=>{e.stopPropagation();toggleControls(!controlsPanel.classList.contains('open'))});
+          controlsClose.addEventListener('click',e=>{e.stopPropagation();toggleControls(false)});
+
+          const scene=new T.Scene();
+          scene.background=new T.Color(0x87c9ee);
+          scene.fog=new T.Fog(0xa9d8ee,42,105);
+
+          const cam=new T.PerspectiveCamera(72,16/9,.1,180);
+          const ren=new T.WebGLRenderer({antialias:true,alpha:false,powerPreference:'high-performance'});
+          ren.setPixelRatio(Math.min(window.devicePixelRatio||1,1.5));
+          ren.shadowMap.enabled=true;
+          ren.shadowMap.type=T.PCFSoftShadowMap;
+          st.appendChild(ren.domElement);
+          ren.domElement.style.cssText='position:absolute;inset:0;width:100%;height:100%;display:block;z-index:1;';
+
+          const hemi=new T.HemisphereLight(0xe8f7ff,0x45513a,1.8);scene.add(hemi);
+          const sun=new T.DirectionalLight(0xfff0c2,2.2);
+          sun.position.set(-28,48,24);sun.castShadow=true;sun.shadow.mapSize.set(1024,1024);
+          sun.shadow.camera.left=-42;sun.shadow.camera.right=42;sun.shadow.camera.top=42;sun.shadow.camera.bottom=-42;
+          scene.add(sun);
+          const moon=new T.DirectionalLight(0x789fff,.2);moon.position.set(25,30,-25);scene.add(moon);
+
+          const clampN=(n,a,b)=>Math.max(a,Math.min(b,n));
+          function heightAt(x,z){
+            let y=Math.round(1.0+Math.sin(x*.19)*1.25+Math.cos(z*.17)*1.0+Math.sin((x+z)*.105)*.65);
+            if(Math.hypot(x-9,z-7)<6)y=-1;
+            if(x>15&&z<-10)y+=2;
+            return clampN(y,-1,5);
+          }
+
+          // PERFORMANCE FIX: terrain is now a few InstancedMeshes, not ~20,000 separate WebGL draw calls.
+          const cube=new T.BoxGeometry(1,1,1);
+          const terrainMats=[
+            new T.MeshLambertMaterial({color:0x5da247}),
+            new T.MeshLambertMaterial({color:0xd6bc7e}),
+            new T.MeshLambertMaterial({color:0x777e82})
+          ];
+          const byType=[[],[],[]];
+          for(let x=-32;x<=32;x++)for(let z=-32;z<=32;z++){
+            const y=heightAt(x,z);
+            const pond=Math.hypot(x-9,z-7)<6;
+            const type=pond?1:(y>=4?2:0);
+            byType[type].push([x,y,z]);
+          }
+          const dummy=new T.Object3D(), terrain=[];
+          byType.forEach((arr,type)=>{
+            const mesh=new T.InstancedMesh(cube,terrainMats[type],arr.length);
+            arr.forEach((p,i)=>{dummy.position.set(p[0],p[1],p[2]);dummy.updateMatrix();mesh.setMatrixAt(i,dummy.matrix)});
+            mesh.instanceMatrix.needsUpdate=true;mesh.receiveShadow=true;scene.add(mesh);terrain.push(mesh);
+          });
+          const under=new T.Mesh(new T.BoxGeometry(66,4,66),new T.MeshLambertMaterial({color:0x604936}));
+          under.position.set(0,-3,0);under.receiveShadow=true;scene.add(under);
+
+          const water=new T.Mesh(new T.PlaneGeometry(11.7,11.7),new T.MeshPhongMaterial({color:0x318ec6,transparent:true,opacity:.73,shininess:100}));
+          water.rotation.x=-Math.PI/2;water.position.set(9,.03,7);scene.add(water);
+
+          const woodMat=new T.MeshLambertMaterial({color:0x70482d});
+          const leafA=new T.MeshLambertMaterial({color:0x32763a}), leafB=new T.MeshLambertMaterial({color:0x4a9147});
+          function box(w,h,d,x,y,z,mat,shadow=true){
+            const q=new T.Mesh(new T.BoxGeometry(w,h,d),mat);q.position.set(x,y,z);
+            q.castShadow=shadow;q.receiveShadow=true;scene.add(q);return q;
+          }
+
+          // Forest with detailed blocky trees.
+          const treeSpots=[[-14,-13],[-19,4],[-11,16],[17,14],[24,2],[18,-17],[-24,-17],[-25,12],[3,-22],[27,-8],[-5,25],[11,21],[-28,-2]];
+          treeSpots.forEach(([x,z],idx)=>{
+            const y=heightAt(x,z)+.5,g=new T.Group();
+            for(let k=0;k<4;k++){const q=new T.Mesh(new T.BoxGeometry(.62,1,.62),woodMat);q.position.y=k+.5;q.castShadow=true;g.add(q)}
+            for(let ox=-1;ox<=1;ox++)for(let oz=-1;oz<=1;oz++){
+              const q=new T.Mesh(new T.BoxGeometry(1.35,1.15,1.35),idx%2?leafA:leafB);
+              q.position.set(ox*.82,4+(Math.abs(ox)+Math.abs(oz)===0?.55:0),oz*.82);q.castShadow=true;g.add(q);
+            }
+            g.position.set(x,y,z);scene.add(g);
+          });
+
+          // Outpost cabin.
+          const plank=new T.MeshLambertMaterial({color:0x845a35}),darkWood=new T.MeshLambertMaterial({color:0x4d3327});
+          const glass=new T.MeshPhongMaterial({color:0x83d8ef,transparent:true,opacity:.62,shininess:90});
+          box(8,.35,7,-6,heightAt(-6,4)+1.0,4,plank);
+          box(8,3,.35,-6,3.3,.7,plank);box(.35,3,7,-10,3.3,4,plank);box(.35,3,7,-2,3.3,4,plank);
+          box(3.05,3,.35,-8.5,3.3,7.3,plank);box(3.05,3,.35,-3.5,3.3,7.3,plank);
+          box(9,.45,8,-6,5.1,4,darkWood);box(1.3,1.2,.08,-7.3,3.4,.48,glass,false);box(1.3,1.2,.08,-4.7,3.4,.48,glass,false);
+          const sign=box(3,1,.18,-6,2.5,7.55,darkWood,false);sign.userData.interact='OUTPOST';
+          const lantern=new T.PointLight(0xffb45d,2.2,12);lantern.position.set(-6,4.1,4);scene.add(lantern);
+
+          // Campfire and benches.
+          const camp=new T.Group();
+          for(let i=0;i<4;i++){let q=new T.Mesh(new T.CylinderGeometry(.12,.12,1.5,6),woodMat);q.rotation.z=Math.PI/2;q.rotation.y=i*Math.PI/4;camp.add(q)}
+          const flame=new T.Mesh(new T.OctahedronGeometry(.5),new T.MeshBasicMaterial({color:0xff9b38}));flame.position.y=.62;camp.add(flame);
+          camp.position.set(-1,heightAt(-1,-2)+.65,-2);scene.add(camp);
+          const fireLight=new T.PointLight(0xff6e2c,3,13);fireLight.position.copy(camp.position);fireLight.position.y+=1;scene.add(fireLight);
+          box(3,.35,.55,-3,heightAt(-3,-4)+.7,-4,woodMat);box(3,.35,.55,1,heightAt(1,-4)+.7,-4,woodMat);
+
+          // Crystal Ruins.
+          const ruinMat=new T.MeshLambertMaterial({color:0x737b80});
+          const crystalMat=new T.MeshPhongMaterial({color:0x65e8ff,emissive:0x174b60,shininess:130});
+          const crystals=[];
+          for(let i=0;i<12;i++){
+            const a=i/12*Math.PI*2,r=4.4,x=20+Math.cos(a)*r,z=-19+Math.sin(a)*r,y=heightAt(x,z)+1;
+            box(.85,1.2+(i%3),.85,x,y+(i%3)*.45,z,ruinMat);
+            const cr=new T.Mesh(new T.OctahedronGeometry(.42+(i%3)*.13),crystalMat);
+            cr.position.set(x,y+2+(i%3)*.7,z);cr.castShadow=true;scene.add(cr);crystals.push(cr);
+          }
+          box(4,.75,4,20,heightAt(20,-19)+.7,-19,ruinMat);
+          const core=new T.Mesh(new T.OctahedronGeometry(1.1),new T.MeshPhongMaterial({color:0xa66cff,emissive:0x421b75,shininess:140}));
+          core.position.set(20,heightAt(20,-19)+2.8,-19);scene.add(core);
+          const coreLight=new T.PointLight(0xa46cff,3,15);coreLight.position.copy(core.position);scene.add(coreLight);
+
+          // Stone cave arch.
+          for(let y=0;y<4;y++)for(let x=-2;x<=2;x++){
+            if(y<3&&Math.abs(x)<1.2)continue;
+            box(1.15,1.05,1.2,-21+x,heightAt(-21+x,-7)+1+y,-7,ruinMat);
+          }
+          const caveGlow=new T.PointLight(0x6388ff,1.7,10);caveGlow.position.set(-21,2,-8);scene.add(caveGlow);
+
+          // Flowers, stones and mushrooms.
+          const flowerCols=[0xff6f9e,0xffe56c,0x8bd6ff,0xca91ff];
+          for(let i=0;i<80;i++){
+            let x=-29+Math.random()*58,z=-29+Math.random()*58;if(Math.hypot(x-9,z-7)<7)continue;
+            let q=new T.Mesh(new T.BoxGeometry(.12,.38,.12),new T.MeshLambertMaterial({color:flowerCols[i%4]}));
+            q.position.set(x,heightAt(x,z)+.7,z);scene.add(q);
+          }
+          for(let i=0;i<28;i++){
+            let x=-29+Math.random()*58,z=-29+Math.random()*58;
+            let q=new T.Mesh(new T.DodecahedronGeometry(.18+Math.random()*.3,0),new T.MeshLambertMaterial({color:0x666c70}));
+            q.position.set(x,heightAt(x,z)+.65,z);scene.add(q);
+          }
+
+          // Wildlife.
+          const animals=[];
+          function makeAnimal(x,z,col,name){
+            const mat=new T.MeshLambertMaterial({color:col}),g=new T.Group();
+            const body=new T.Mesh(new T.BoxGeometry(1.2,.7,.65),mat);body.position.y=.65;g.add(body);
+            const head=new T.Mesh(new T.BoxGeometry(.52,.52,.52),mat);head.position.set(.72,.87,0);g.add(head);
+            for(let i=0;i<4;i++){let leg=new T.Mesh(new T.BoxGeometry(.15,.52,.15),mat);leg.position.set(i<2?-.35:.35,.18,i%2?-.22:.22);g.add(leg)}
+            g.position.set(x,heightAt(x,z)+.5,z);g.userData={baseX:x,baseZ:z,phase:Math.random()*6,name};scene.add(g);animals.push(g);
+          }
+          makeAnimal(3,14,0xeee1c7,'SHEEP');makeAnimal(-15,9,0xc68a62,'DEER');makeAnimal(13,-4,0xe9d8b7,'SHEEP');makeAnimal(-2,-15,0xb87755,'FOX');
+
+          // Clouds + stars + fireflies.
+          const clouds=[];
+          for(let i=0;i<11;i++){
+            let g=new T.Group();
+            for(let j=0;j<5;j++){let q=new T.Mesh(new T.BoxGeometry(3.2,1.2,1.9),new T.MeshLambertMaterial({color:0xffffff,transparent:true,opacity:.83}));q.position.set(j*2.1,Math.sin(j)*.25,0);g.add(q)}
+            g.position.set(-58+i*12,18+(i%4)*3,-35+(i%5)*18);scene.add(g);clouds.push(g);
+          }
+          const stars=new T.Points(new T.BufferGeometry(),new T.PointsMaterial({color:0xffffff,size:.34,transparent:true,opacity:0}));
+          let starPos=[];for(let i=0;i<320;i++){let aa=Math.random()*Math.PI*2,rr=70+Math.random()*65;starPos.push(Math.cos(aa)*rr,20+Math.random()*65,Math.sin(aa)*rr)}
+          stars.geometry.setAttribute('position',new T.Float32BufferAttribute(starPos,3));scene.add(stars);
+          const fireflies=[];for(let i=0;i<22;i++){let q=new T.Mesh(new T.SphereGeometry(.055,5,4),new T.MeshBasicMaterial({color:0xffef8a}));q.position.set(-15+Math.random()*30,2+Math.random()*4,-15+Math.random()*30);scene.add(q);fireflies.push(q)}
+
+          // Dynamic placed blocks only — cheap and fully mineable.
+          const placed=[],ray=new T.Raycaster();
+          const placeMats=[
+            new T.MeshLambertMaterial({color:0x5da247}),new T.MeshLambertMaterial({color:0x8a6344}),
+            new T.MeshLambertMaterial({color:0x777e82}),new T.MeshLambertMaterial({color:0xd6bc7e}),
+            new T.MeshLambertMaterial({color:0x845a35})
+          ];
+          let yaw=0,pitch=-.12,velY=0,onGround=false,health=100,stamina=100,selected=0,inventory=[30,18,24,12,16],dayTime=8,day=1,questDone=false;
+          const names=['GRASS','DIRT','STONE','SAND','WOOD'],keys={};
+          cam.position.set(0,heightAt(0,10)+2.2,10);
+
+          function renderHotbar(){hotbar.innerHTML=names.map((n,i)=>`<div class="${i===selected?'sel':''}"><kbd>${i+1}</kbd><b>${n}</b><small>${inventory[i]}</small></div>`).join('')}
+          function say(s){toast.textContent=s;toast.classList.add('show');clearTimeout(say.t);say.t=setTimeout(()=>toast.classList.remove('show'),1500)}
+          function respawn(){cam.position.set(0,heightAt(0,10)+2.2,10);velY=0;health=100;say('RESPAWNED AT OUTPOST')}
+          function addPlaced(p,type){
+            const q=new T.Mesh(cube,placeMats[type]);q.position.copy(p).round();q.castShadow=q.receiveShadow=true;q.userData.type=type;scene.add(q);placed.push(q);return q;
+          }
+          function mine(){
+            ray.setFromCamera(new T.Vector2(0,0),cam);const hit=ray.intersectObjects(placed,false)[0];
+            if(hit&&hit.distance<6){const type=hit.object.userData.type||0;scene.remove(hit.object);placed.splice(placed.indexOf(hit.object),1);inventory[type]++;renderHotbar();say('+1 '+names[type])}
+            else say('Placed blocks can be mined');
+          }
+          function place(){
+            if(inventory[selected]<=0)return;
+            ray.setFromCamera(new T.Vector2(0,0),cam);
+            const all=[...terrain,...placed],hit=ray.intersectObjects(all,false)[0];
+            if(!hit||hit.distance>7)return;
+            const p=hit.point.clone().add(hit.face.normal.clone().multiplyScalar(.51)).round();
+            if(p.distanceTo(cam.position)<1.4)return;
+            addPlaced(p,selected);inventory[selected]--;renderHotbar();
+          }
+          function interact(){
+            if(cam.position.distanceTo(core.position)<5&&!questDone){
+              questDone=true;questEl.textContent='QUEST COMPLETE • Crystal signal restored';
+              if(typeof score==='number')score+=500;
+              core.material.color.set(0xffd66d);core.material.emissive.set(0x75430f);say('CRYSTAL CORE ACTIVATED • +500');
+            }else if(cam.position.distanceTo(sign.position)<5)say('OUTPOST 07 • WILDLANDS RESEARCH CAMP');
+          }
+
+          function keyDown(e){
+            keys[e.code]=true;
+            if(/^Digit[1-5]$/.test(e.code)){selected=Number(e.code.slice(-1))-1;renderHotbar()}
+            if(e.code==='KeyR')respawn();if(e.code==='KeyF')interact();
+            if(e.code==='Space'&&onGround){velY=.18;onGround=false}
+            if(['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.code))e.preventDefault();
+          }
+          function keyUp(e){keys[e.code]=false}
+          function mouseMove(e){
+            if(document.pointerLockElement!==ren.domElement)return;
+            yaw-=e.movementX*.0024;pitch=clampN(pitch-e.movementY*.0024,-1.35,1.35);
+          }
+          function mouseDown(e){
+            if(document.pointerLockElement!==ren.domElement){ren.domElement.requestPointerLock?.();return}
+            if(e.button===0)mine();if(e.button===2)place();
+          }
+          addEventListener('keydown',keyDown);addEventListener('keyup',keyUp);addEventListener('mousemove',mouseMove);
+          ren.domElement.addEventListener('mousedown',mouseDown);ren.domElement.oncontextmenu=e=>e.preventDefault();
+          renderHotbar();
+
+          function updateMap(){
+            mx.clearRect(0,0,150,150);mx.fillStyle='#102319';mx.fillRect(0,0,150,150);
+            mx.strokeStyle='#315d3b';for(let i=0;i<=150;i+=15){mx.beginPath();mx.moveTo(i,0);mx.lineTo(i,150);mx.stroke();mx.beginPath();mx.moveTo(0,i);mx.lineTo(150,i);mx.stroke()}
+            const dot=(x,z,col,r=3)=>{mx.fillStyle=col;mx.beginPath();mx.arc(75+x*2.05,75+z*2.05,r,0,Math.PI*2);mx.fill()};
+            dot(9,7,'#3bb5e9',10);dot(20,-19,'#b36cff',5);dot(-6,4,'#ffba65',5);dot(-21,-7,'#7187ff',4);
+            animals.forEach(q=>dot(q.position.x,q.position.z,'#eee0b9',2));dot(cam.position.x,cam.position.z,'#fff',4);
+          }
+
+          // Render once immediately. If this cannot draw, show an actual error instead of a mystery black screen.
+          function resize(){
+            const w=Math.max(480,st.clientWidth),hh=Math.max(520,st.clientHeight);
+            ren.setSize(w,hh,false);cam.aspect=w/hh;cam.updateProjectionMatrix();
+          }
+          resize();
+          cam.rotation.order='YXZ';cam.rotation.y=yaw;cam.rotation.x=pitch;
+          try{ren.render(scene,cam)}catch(err){
+            console.error('Voxel render error',err);
+            st.insertAdjacentHTML('beforeend',`<div style="position:absolute;z-index:50;inset:20px;background:#250b0be8;color:#fff;padding:20px;font:14px monospace">VOXEL RENDER ERROR<br><br>${String(err.message||err)}</div>`);
+            return;
+          }
+
+          function loop(){
+            if(stopped)return;raf=requestAnimationFrame(loop);resize();
+            cam.rotation.order='YXZ';cam.rotation.y=yaw;cam.rotation.x=pitch;
+            const f=new T.Vector3(-Math.sin(yaw),0,-Math.cos(yaw)),r=new T.Vector3(Math.cos(yaw),0,-Math.sin(yaw)),mv=new T.Vector3();
+            if(keys.KeyW)mv.add(f);if(keys.KeyS)mv.sub(f);if(keys.KeyD)mv.add(r);if(keys.KeyA)mv.sub(r);
+            const moving=mv.lengthSq()>0,sprinting=!!keys.ShiftLeft&&stamina>1;
+            const speed=sprinting?0.14:0.085;if(moving)cam.position.add(mv.normalize().multiplyScalar(speed));
+            stamina=clampN(stamina+(sprinting&&moving?-.42:.20),0,100);
+            const gy=heightAt(cam.position.x,cam.position.z)+2.0;velY-=.009;cam.position.y+=velY;
+            if(cam.position.y<=gy){cam.position.y=gy;velY=0;onGround=true}
+            cam.position.x=clampN(cam.position.x,-31,31);cam.position.z=clampN(cam.position.z,-31,31);
+
+            const now=performance.now()*.001;dayTime+=.0015;if(dayTime>=24){dayTime=0;day++}
+            const phase=(dayTime-6)/24*Math.PI*2,daylight=clampN(Math.sin(phase)*.72+.35,.08,1);
+            sun.position.set(Math.cos(phase)*55,Math.max(6,Math.sin(phase)*55),Math.sin(phase)*30);
+            sun.intensity=.25+daylight*2.15;hemi.intensity=.4+daylight*1.45;moon.intensity=(1-daylight)*.8;
+            scene.background.setHSL(.57,.55,.12+daylight*.50);scene.fog.color.copy(scene.background);stars.material.opacity=clampN(1-daylight*1.45,0,.9);
+            water.material.opacity=.69+Math.sin(now*1.5)*.035;flame.scale.setScalar(.85+Math.sin(now*10)*.15);fireLight.intensity=2.5+Math.sin(now*9)*.45;lantern.intensity=daylight<.45?2.5:.75;
+            crystals.forEach((q,i)=>q.rotation.y+=.006+i*.00025);core.rotation.y+=.009;core.position.y=heightAt(20,-19)+2.8+Math.sin(now*1.7)*.14;
+            clouds.forEach((q,i)=>{q.position.x+=.008+i*.0001;if(q.position.x>65)q.position.x=-65});
+            fireflies.forEach((q,i)=>{q.visible=daylight<.55;q.position.y+=Math.sin(now*2+i)*.0015});
+            animals.forEach(q=>{q.position.x=q.userData.baseX+Math.sin(now*.33+q.userData.phase)*2;q.position.z=q.userData.baseZ+Math.cos(now*.28+q.userData.phase)*1.6;q.position.y=heightAt(q.position.x,q.position.z)+.5});
+
+            const dr=Math.hypot(cam.position.x-20,cam.position.z+19),dp=Math.hypot(cam.position.x-9,cam.position.z-7);
+            biomeEl.textContent=dr<8?'CRYSTAL RUINS':dp<7?'MIRROR POND':cam.position.x<-16?'STONE CAVES':Math.hypot(cam.position.x+6,cam.position.z-4)<8?'MEADOW OUTPOST':'WILDLANDS';
+            clock.textContent=`DAY ${day} • ${String(Math.floor(dayTime)).padStart(2,'0')}:${String(Math.floor((dayTime%1)*60)).padStart(2,'0')}`;
+            hpEl.style.width=health+'%';stamEl.style.width=stamina+'%';updateMap();
+            ren.render(scene,cam);
+          }
+
+          activeNativeCleanup=()=>{
+            stopped=true;cancelAnimationFrame(raf);document.exitPointerLock?.();
+            removeEventListener('keydown',keyDown);removeEventListener('keyup',keyUp);removeEventListener('mousemove',mouseMove);
+            ren.domElement.removeEventListener('mousedown',mouseDown);ren.dispose();
+          };
+          say('WORLD LOADED • CLICK TO LOOK AROUND');
+          loop();
         }
+
         async function startStadiumStrike3D(host,game){
           stopNativeGame();let stop=false;
           host.innerHTML=`<div class="three3d-shell"><div class="three3d-bar"><b>STADIUM STRIKE 3D</b><span id="fscore">BLUE 0 — 0 RED</span></div><div id="fstage" class="three3d-stage"><div class="three3d-hud">WASD / arrows • SPACE shoot</div></div><div class="three3d-help">First to 5 goals wins. Dribble into range and shoot toward the red goal.</div></div>`;
           let T;try{T=await ultraLoadThree()}catch(e){host.querySelector('#fstage').innerHTML='<p style="color:white;padding:25px">3D engine could not load.</p>';return}
           const st=host.querySelector('#fstage'),scoreEl=host.querySelector('#fscore'),sc=new T.Scene();sc.background=new T.Color(0x101b28);const cam=new T.PerspectiveCamera(55,16/9,.1,100);cam.position.set(0,15,18);cam.lookAt(0,0,0);
-          const ren=new T.WebGLRenderer({antialias:true});ren.setPixelRatio(Math.min(devicePixelRatio,2));st.appendChild(ren.domElement);sc.add(new T.HemisphereLight(0xffffff,0x23452b,2.5));
+          const ren=new T.WebGLRenderer({antialias:true});ren.setPixelRatio(Math.min(devicePixelRatio,2));ren.shadowMap.enabled=true;st.appendChild(ren.domElement);st.insertAdjacentHTML('beforeend','<div class="ultra3d-badge">NIGHT CUP • FIRST TO 5</div>');sc.add(new T.HemisphereLight(0xffffff,0x23452b,2.5));
           const field=new T.Mesh(new T.PlaneGeometry(18,28),new T.MeshLambertMaterial({color:0x28733d}));field.rotation.x=-Math.PI/2;sc.add(field);
           // Stadium decoration: striped pitch, markings, stands, crowd and floodlights.
           for(let z=-12;z<=12;z+=4){let stripe=new T.Mesh(new T.PlaneGeometry(17.8,2),new T.MeshBasicMaterial({color:(Math.round(z/4)%2)?0x2d7d43:0x347f48,transparent:true,opacity:.38}));stripe.rotation.x=-Math.PI/2;stripe.position.set(0,.012,z);sc.add(stripe)}
@@ -2702,6 +3502,10 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
           for(const x of [-9,9])for(const z of [-12,12]){let pole=new T.Mesh(new T.CylinderGeometry(.08,.12,8,6),new T.MeshLambertMaterial({color:0x777f88}));pole.position.set(x,4,z);sc.add(pole);let light=new T.PointLight(0xeaf4ff,1.4,24);light.position.set(x,8,z);sc.add(light)}
           const board=new T.Mesh(new T.BoxGeometry(5,1.8,.25),new T.MeshLambertMaterial({color:0x11151b}));board.position.set(0,6,15);sc.add(board);
           const p=new T.Mesh(new T.CapsuleGeometry(.55,.8,4,8),new T.MeshLambertMaterial({color:0x58b9ee}));p.position.set(0,1,-8);sc.add(p);const cpu=new T.Mesh(new T.CapsuleGeometry(.55,.8,4,8),new T.MeshLambertMaterial({color:0xe46161}));cpu.position.set(0,1,7);sc.add(cpu);const ball=new T.Mesh(new T.SphereGeometry(.42,18,14),new T.MeshLambertMaterial({color:0xffffff}));ball.position.set(0,.45,0);sc.add(ball);
+          const mate1=p.clone(),mate2=p.clone(),red2=cpu.clone();mate1.position.set(-5,1,-2);mate2.position.set(5,1,3);red2.position.set(-5,1,4);sc.add(mate1,mate2,red2);
+          const ballShadow=new T.Mesh(new T.CircleGeometry(.48,20),new T.MeshBasicMaterial({color:0x000000,transparent:true,opacity:.3}));ballShadow.rotation.x=-Math.PI/2;ballShadow.position.y=.035;sc.add(ballShadow);
+          const adMat=new T.MeshBasicMaterial({color:0x1d89c9});for(let z=-10;z<=10;z+=4){let a=new T.Mesh(new T.BoxGeometry(.18,.75,3),adMat);a.position.set(-9.15,.4,z);sc.add(a);let b=a.clone();b.position.x=9.15;sc.add(b)}
+
           const goalMat=new T.MeshLambertMaterial({color:0xffffff});for(const z of [-13.6,13.6]){for(const x of [-2.6,2.6]){let q=new T.Mesh(new T.BoxGeometry(.2,2.3,.2),goalMat);q.position.set(x,1.15,z);sc.add(q)}let q=new T.Mesh(new T.BoxGeometry(5.4,.2,.2),goalMat);q.position.set(0,2.3,z);sc.add(q)}
           let bv=new T.Vector3(),blue=0,red=0;const keys={};const kd=e=>{keys[e.code]=true;if(e.code==='Space'&&p.position.distanceTo(ball.position)<1.6)bv.add(new T.Vector3(0,0,.48))},ku=e=>keys[e.code]=false;addEventListener('keydown',kd);addEventListener('keyup',ku);
           function reset(){ball.position.set(0,.45,0);bv.set(0,0,0);p.position.set(0,1,-8);cpu.position.set(0,1,7);scoreEl.textContent=`BLUE ${blue} — ${red} RED`}
@@ -2813,6 +3617,16 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
             // Mission completion: course + targets + safe return to runway zone.
             if(ringIndex===8&&hits===10&&!airborne&&Math.abs(plane.position.x)<9&&plane.position.z>-80&&plane.position.z<135){mission.textContent='MISSION COMPLETE — PERFECT LANDING';try{addPrizes(5)}catch(e){}}
 
+            // Deluxe living world.
+            if(!scene.userData.deluxe){
+              scene.userData.deluxe=true;
+              const ocean=new T.Mesh(new T.PlaneGeometry(900,900),new T.MeshPhongMaterial({color:0x235f83,transparent:true,opacity:.72,shininess:90}));ocean.rotation.x=-Math.PI/2;ocean.position.set(0,-1.2,-230);scene.add(ocean);scene.userData.ocean=ocean;
+              scene.userData.clouds=[];for(let i=0;i<16;i++){let g=new T.Group();for(let j=0;j<4;j++){let q=new T.Mesh(new T.SphereGeometry(3+Math.random()*2,8,6),new T.MeshLambertMaterial({color:0xffffff,transparent:true,opacity:.82}));q.position.x=j*3;g.add(q)}g.position.set(-90+Math.random()*180,18+Math.random()*22,-180+Math.random()*300);scene.add(g);scene.userData.clouds.push(g)}
+              scene.userData.city=[];for(let i=0;i<55;i++){let b=new T.Mesh(new T.BoxGeometry(2+Math.random()*4,3+Math.random()*14,2+Math.random()*4),new T.MeshLambertMaterial({color:0x3d4653}));b.position.set((Math.random()>.5?1:-1)*(35+Math.random()*55),b.geometry.parameters.height/2,-40+Math.random()*150);scene.add(b);scene.userData.city.push(b)}
+              for(let z=-65;z<115;z+=10)for(const x of [-6.8,6.8]){let l=new T.PointLight(0x9bd7ff,.45,8);l.position.set(x,.3,z);scene.add(l)}
+            }
+            scene.userData.clouds.forEach((g,i)=>{g.position.x+=.012+i*.0004;if(g.position.x>110)g.position.x=-110});
+            if(scene.userData.ocean)scene.userData.ocean.material.opacity=.69+Math.sin(performance.now()*.001)*.035;
             const desired=plane.position.clone().add(forward.clone().multiplyScalar(-15)).add(new T.Vector3(0,6.5,0));cam.position.lerp(desired,.08);cam.lookAt(plane.position.clone().add(forward.clone().multiplyScalar(9)));
             const alt=Math.max(0,plane.position.y-1.15);hud.textContent=`SPD ${Math.round(speed*210)} • ALT ${Math.round(alt*10)} • THR ${Math.round(throttle*100)}% • RINGS ${ringIndex}/8`;status.innerHTML=`ENERGY ${Math.round(energy)}%<br>TARGETS ${hits}/10`;
             ren.render(scene,cam);requestAnimationFrame(loop)
@@ -2841,7 +3655,7 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
                 objective=host.querySelector('#bmObjective'), mapWrap=host.querySelector('.bm95-map'),
                 map=host.querySelector('#bmMap'), mx=map.getContext('2d');
           const scene=new T.Scene(); scene.background=new T.Color(0x101010); scene.fog=new T.Fog(0x171717,7,31);
-          const cam=new T.PerspectiveCamera(72,16/9,.08,70), ren=new T.WebGLRenderer({antialias:false});
+          const cam=new T.PerspectiveCamera(72,16/9,.08,70), ren=new T.WebGLRenderer({antialias:true});
           ren.setPixelRatio(1); stage.appendChild(ren.domElement);
           scene.add(new T.HemisphereLight(0xc8c2a9,0x261b14,1.55));
           const lamp=new T.PointLight(0xffd8a0,2.5,18); scene.add(lamp);
@@ -2898,6 +3712,12 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
           });
 
           // Exit marker.
+          // Extra 90s labyrinth dressing: pipes, warning panels and dusty floor patches.
+          const pipeMat=new T.MeshLambertMaterial({color:0x62686a}),warnMat=new T.MeshBasicMaterial({color:0xd6a43a});
+          for(let i=0;i<18;i++){let pipe=new T.Mesh(new T.CylinderGeometry(.08,.08,3.2,7),pipeMat);pipe.rotation.z=Math.PI/2;pipe.position.set(2+Math.random()*44,3.25,2+Math.random()*44);scene.add(pipe)}
+          for(let i=0;i<10;i++){let panel=new T.Mesh(new T.BoxGeometry(.75,.5,.08),warnMat);panel.position.set(2+Math.random()*44,1.6,2+Math.random()*44);panel.rotation.y=(i%2)*Math.PI/2;scene.add(panel)}
+          for(let i=0;i<35;i++){let stain=new T.Mesh(new T.CircleGeometry(.2+Math.random()*.7,8),new T.MeshBasicMaterial({color:0x33261e,transparent:true,opacity:.25}));stain.rotation.x=-Math.PI/2;stain.position.set(Math.random()*48,.012,Math.random()*48);scene.add(stain)}
+          stage.insertAdjacentHTML('beforeend','<div class="ultra3d-badge">PROCEDURAL MAZE • 6 RELICS • 3 CREATURES</div>');
           const exit=new T.Group(),door=new T.Mesh(new T.BoxGeometry(1.8,2.7,.18),new T.MeshLambertMaterial({color:0x2f8f55,emissive:0x0b321b})),
                 sign=new T.Mesh(new T.BoxGeometry(2.3,.45,.2),new T.MeshLambertMaterial({color:0x78ff9f,emissive:0x205d30}));
           exit.add(door,sign);sign.position.y=1.75;exit.position.set((N-2)*4,1.35,(N-2)*4);scene.add(exit);
@@ -3328,7 +4148,7 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
             host.innerHTML = `
                 <div class="challenge-shell">
                     <div class="challenge-panel">
-                        <div class="challenge-kicker">ULTRAARCADE CHALLENGE</div>
+                        <div class="challenge-kicker">NITROARCADE CHALLENGE</div>
                         <div class="challenge-title">ARE YOU A HACKER?</div>
                         <div class="challenge-sub">Beat all three trials to clear the challenge.</div>
 
@@ -3530,7 +4350,7 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
                             <div class="challenge-stage-inner">
                                 <h3>ACCESS GRANTED</h3>
                                 <div class="challenge-final-score">3 / 3</div>
-                                <p>You cleared every UltraArcade challenge.</p>
+                                <p>You cleared every NitroArcade challenge.</p>
                                 <div class="secret-unlock">
                                     <div class="challenge-kicker">SECRET GAME UNLOCKED</div>
                                     <h3>WINDOSILL</h3>
@@ -3583,7 +4403,7 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
             const later=(f,m)=>{const x=setTimeout(()=>!dead&&f(),m);timers.push(x);return x};
             const every=(f,m)=>{const x=setInterval(()=>!dead&&f(),m);timers.push(x);return x};
             const on=(o,e,f)=>{o.addEventListener(e,f);listeners.push(()=>o.removeEventListener(e,f))};
-            host.innerHTML=`<div class="mega-shell"><div class="mega-panel"><div class="mega-head"><div><div class="mega-kicker">ULTRAARCADE ORIGINAL</div><div class="mega-title">${game.name}</div></div><div class="mega-help" id="megaHelp"></div></div><div id="megaBody"></div></div></div>`;
+            host.innerHTML=`<div class="mega-shell"><div class="mega-panel"><div class="mega-head"><div><div class="mega-kicker">NITROARCADE ORIGINAL</div><div class="mega-title">${game.name}</div></div><div class="mega-help" id="megaHelp"></div></div><div id="megaBody"></div></div></div>`;
             const body=host.querySelector('#megaBody'),help=host.querySelector('#megaHelp');
             function replay(){startMegaGame(host,game)}
             function finish(title,msg){body.innerHTML=`<div class="mega-ui"><div class="mega-center"><h2>${title}</h2><p style="color:var(--muted);margin:10px 0 16px">${msg}</p><button class="mega-btn primary" id="replay">PLAY AGAIN</button></div></div>`;body.querySelector('#replay').onclick=replay}
@@ -3718,7 +4538,7 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
             const later=(f,m)=>{const id=setTimeout(()=>!dead&&f(),m);timers.push(id);return id};
             const every=(f,m)=>{const id=setInterval(()=>!dead&&f(),m);timers.push(id);return id};
             const on=(o,e,f)=>{o.addEventListener(e,f);listeners.push(()=>o.removeEventListener(e,f))};
-            host.innerHTML=`<div class="ultra-shell"><div class="ultra-panel"><div class="ultra-head"><div><div class="ultra-kicker">ULTRAARCADE ORIGINAL</div><div class="ultra-title">${game.name}</div></div><div class="ultra-help" id="uhelp"></div></div><div id="ubody"></div></div></div>`;
+            host.innerHTML=`<div class="ultra-shell"><div class="ultra-panel"><div class="ultra-head"><div><div class="ultra-kicker">NITROARCADE ORIGINAL</div><div class="ultra-title">${game.name}</div></div><div class="ultra-help" id="uhelp"></div></div><div id="ubody"></div></div></div>`;
             const body=host.querySelector('#ubody'),help=host.querySelector('#uhelp');
             function finish(t,m){body.innerHTML=`<div class="ultra-ui"><div class="ultra-center"><h2>${t}</h2><p style="color:var(--muted);margin:10px 0 16px">${m}</p><button class="ultra-btn primary" id="uagain">PLAY AGAIN</button></div></div>`;body.querySelector('#uagain').onclick=()=>startUltraGame(host,game)}
             function canvas(setup){body.innerHTML='<canvas class="ultra-canvas" width="900" height="506"></canvas>';let c=body.querySelector('canvas');setup(c,c.getContext('2d'))}
@@ -3776,7 +4596,7 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
             stopNativeGame();
             let dead=false,raf=0;
             host.innerHTML=`<div class="premium-shell"><div class="premium-panel">
-                <div class="premium-head"><div><div class="challenge-kicker">ULTRAARCADE VISUALIZER</div>
+                <div class="premium-head"><div><div class="challenge-kicker">NITROARCADE VISUALIZER</div>
                 <div class="premium-title">${game.name}</div></div>
                 <div class="premium-help">Move your mouse to influence the scene</div></div>
                 <canvas class="premium-canvas" width="900" height="506"></canvas></div></div>`;
@@ -3829,7 +4649,7 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
         function startPremiumGame(host,game){
             stopNativeGame();let dead=false,raf=0,timers=[],listeners=[];
             const on=(o,e,f)=>{o.addEventListener(e,f);listeners.push(()=>o.removeEventListener(e,f))};
-            host.innerHTML=`<div class="premium-shell"><div class="premium-panel"><div class="premium-head"><div><div class="challenge-kicker">ULTRAARCADE ORIGINAL</div><div class="premium-title">${game.name}</div></div><div class="premium-help" id="phelp"></div></div><div id="pbody"></div></div></div>`;
+            host.innerHTML=`<div class="premium-shell"><div class="premium-panel"><div class="premium-head"><div><div class="challenge-kicker">NITROARCADE ORIGINAL</div><div class="premium-title">${game.name}</div></div><div class="premium-help" id="phelp"></div></div><div id="pbody"></div></div></div>`;
             const body=host.querySelector('#pbody'),help=host.querySelector('#phelp');
             const finish=(title,msg,prize=1)=>{awardPrizes(prize,game.name);body.innerHTML=`<div class="premium-ui"><div><h2>${title}</h2><p style="color:var(--muted);margin:10px 0 16px">${msg}</p><button class="btn primary" id="pagain">PLAY AGAIN</button></div></div>`;body.querySelector('#pagain').onclick=()=>startPremiumGame(host,game)};
             const canvas=(fn)=>{body.innerHTML='<canvas class="premium-canvas" width="900" height="506"></canvas>';let c=body.querySelector('canvas');fn(c,c.getContext('2d'))};
@@ -4018,7 +4838,7 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
         });
     
 
-        /* ===== UltraArcade theme controller FIX ===== */
+        /* ===== NitroArcade theme controller FIX ===== */
         const ULTRA_THEMES=['dark','light','blue','ruffle','neon','sunset','matrix'];
         function applyUltraTheme(theme){
             if(!ULTRA_THEMES.includes(theme)) theme='dark';
@@ -4044,7 +4864,7 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
 
 
 
-        /* ===== UltraArcade BGM FIX ===== */
+        /* ===== NitroArcade BGM FIX ===== */
         const ULTRA_MUSIC_KEY='ultraarcade-bgm-enabled';
         function ultraBgmEl(){ return document.getElementById('ultraBgm'); }
         function updateUltraBgmUI(){
@@ -4124,17 +4944,17 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
 
         <section class="about-page" id="aboutPage">
             <button class="btn about-back" id="aboutBack" onclick="closeAboutPage()">← BACK TO ARCADE</button>
-            <div class="about-kicker">ULTRAARCADE // ABOUT</div>
+            <div class="about-kicker">NITROARCADE // ABOUT</div>
             <h1 class="about-title">ONE ARCADE.<br><span>ENDLESS IDEAS.</span></h1>
-            <p class="about-lead">UltraArcade is a browser-based arcade platform created as a school AI project. Our goal is to bring different styles of games, challenges and experiments into one place — then keep making the arcade bigger, stranger and more fun.</p>
+            <p class="about-lead">NitroArcade is a browser-based arcade platform created as a school AI project. Our goal is to bring different styles of games, challenges and experiments into one place — then keep making the arcade bigger, stranger and more fun.</p>
 
             <div class="about-rule"></div>
 
             <div class="about-grid">
                 <div class="about-section">
                     <div class="about-kicker">01 // THE PROJECT</div>
-                    <h2>What is UltraArcade?</h2>
-                    <p>Instead of building just one game, we built an arcade around the idea of variety. UltraArcade combines original browser games, puzzles, physics-based challenges, arcade mechanics and platform features inside one unified interface.</p>
+                    <h2>What is NitroArcade?</h2>
+                    <p>Instead of building just one game, we built an arcade around the idea of variety. NitroArcade combines original browser games, puzzles, physics-based challenges, arcade mechanics and platform features inside one unified interface.</p>
                     <br>
                     <p>Our vision is to keep expanding it with genuinely different games rather than filling the library with copies of the same idea.</p>
                 </div>
@@ -4150,12 +4970,12 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
 
             <div class="team-heading">
                 <div><div class="about-kicker">02 // THE TEAM</div><h2>Meet the cast.</h2></div>
-                <p>3 MEMBERS // 1 ULTRAARCADE</p>
+                <p>3 MEMBERS // 1 NITROARCADE</p>
             </div>
             <div class="team-grid">
-                <article class="team-card"><div class="team-number">PLAYER 01</div><div class="team-avatar">P</div><h3>Prabhav</h3><p>ULTRAARCADE TEAM</p></article>
-                <article class="team-card"><div class="team-number">PLAYER 02</div><div class="team-avatar">Z</div><h3>Zayaan</h3><p>ULTRAARCADE TEAM</p></article>
-                <article class="team-card"><div class="team-number">PLAYER 03</div><div class="team-avatar">S</div><h3>Shaun</h3><p>ULTRAARCADE TEAM</p></article>
+                <article class="team-card"><div class="team-number">PLAYER 01</div><div class="team-avatar">P</div><h3>Prabhav</h3><p>NITROARCADE TEAM</p></article>
+                <article class="team-card"><div class="team-number">PLAYER 02</div><div class="team-avatar">Z</div><h3>Zayaan</h3><p>NITROARCADE TEAM</p></article>
+                <article class="team-card"><div class="team-number">PLAYER 03</div><div class="team-avatar">S</div><h3>Shaun</h3><p>NITROARCADE TEAM</p></article>
             </div>
 
             <div class="about-manifesto">
@@ -4170,7 +4990,7 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
     <div class="toy-shop" id="toyShop" aria-hidden="true">
         <div class="toy-shop-panel">
             <div class="toy-shop-head">
-                <div><div class="about-kicker">ULTRAARCADE // PRIZE COUNTER</div><h2>Prize Toy Shop</h2><p>Win prizes in the arcade, then trade them for collectible virtual toys.</p></div>
+                <div><div class="about-kicker">NITROARCADE // PRIZE COUNTER</div><h2>Prize Toy Shop</h2><p>Win prizes in the arcade, then trade them for collectible virtual toys.</p></div>
                 <div class="toy-balance">🏆 <b id="shopBalance">0</b> PRIZES</div>
                 <button id="toyShopClose" type="button" onclick="forceCloseToyShop(event)">✕</button>
             </div>
@@ -4182,7 +5002,7 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
     <audio id="ultraBgm" src="audio/music.mp3" loop preload="auto"></audio>
 
 <script>
-/* ===== UltraArcade: dedicated music for BIG 3D games ===== */
+/* ===== NitroArcade: dedicated music for BIG 3D games ===== */
 const ULTRA_3D_TRACKS = {
   flight3d:   "audio/plane.mp3",
   brickmaze3d:"audio/maze.wav",
