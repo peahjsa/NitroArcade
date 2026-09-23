@@ -1784,7 +1784,7 @@ body.theme-matrix{
     <article><b>✈ SKY PILOT 3D</b><span>Flight course • drone targets • airport • landing mission</span><em>MISSION GAME</em></article>
     <article><b>▥ BRICK MAZE 95</b><span>Random maze • six souvenirs • roaming creatures • escape objective</span><em>EXPLORATION</em></article>
     <article><b>◫ VOXEL FRONTIER 3D</b><span>Explore • mine • place blocks • generated voxel terrain</span><em>SANDBOX</em></article>
-    <article><b>⚽ STADIUM STRIKE 3D</b><small style="opacity:.6;margin-left:8px">ENHANCED</small><span>3D pitch • dribbling • defender AI • shooting and goals</span><em>SPORT</em></article>
+    <article><b>⚽ STADIUM STRIKE 3D</b><small class="nitro-engine-badge" style="opacity:.8;margin-left:8px">MODERN 3D</small><span>3D pitch • dribbling • defender AI • shooting and goals</span><em>SPORT</em></article>
   </div>
 </section>
 <div class="arcade-part-tabs">
@@ -1980,7 +1980,8 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
         const ultraMazeGame={id:'ultra_brick_maze_90s',name:'Brick Maze 95',category:'arcade',type:'native',nativeGame:'specialOriginal',engine:'brickmaze3d',desc:'Randomized first-person 90s brick labyrinth • six unique souvenirs • roaming creatures • minimap • timer • sprinting • green exit mission'};
         const ultraTheDayGame={id:'ultra_the_day',name:'School Nightmare',category:'arcade',type:'native',nativeGame:'specialOriginal',engine:'theday',desc:'3D school adventure • race for the last parking slot • escape school • football finale • Original NitroArcade'};
         const ultraNightWatchGame={id:'ultra_night_watch',name:'Night Watch',category:'arcade',type:'native',nativeGame:'specialOriginal',engine:'nightwatch',desc:'Polished security-night survival • camera network • doors • lights • power management • roaming mascots • Original NitroArcade'};
-        gamesDatabase.push(ultraBlockGame, ultraRunnerGame, ultraVoxelGame, ultraFootballGame, ultraFlightGame, ultraMazeGame, ultraTheDayGame, ultraNightWatchGame);
+        const enemiesAndYouGame={id:'enemies_and_you',name:'Enemies and You',category:'arcade',type:'native',nativeGame:'specialOriginal',engine:'enemiesyou',desc:'Arena survival • 10 waves • bosses • upgrades • original NitroArcade'};
+        gamesDatabase.push(ultraBlockGame, ultraRunnerGame, ultraVoxelGame, ultraFootballGame, ultraFlightGame, ultraMazeGame, ultraTheDayGame, ultraNightWatchGame, enemiesAndYouGame);
 
 
 
@@ -2201,13 +2202,13 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
 
         function addSpecialOriginalCards(){
             const grid=document.getElementById('gameGrid'); if(!grid)return;
-            [ultraBlockGame,ultraRunnerGame,ultraVoxelGame,ultraFootballGame,ultraFlightGame,ultraMazeGame,ultraTheDayGame,ultraNightWatchGame].forEach((game,i)=>{
+            [ultraBlockGame,ultraRunnerGame,ultraVoxelGame,ultraFootballGame,ultraFlightGame,ultraMazeGame,ultraTheDayGame,ultraNightWatchGame,enemiesAndYouGame].forEach((game,i)=>{
                 const card=document.createElement('article');
-                card.className='game-card'; card.dataset.gameId=game.id; card.dataset.arcadePart=['voxel3d','football3d','flight3d','brickmaze3d','theday','nightwatch'].includes(game.engine)?'big':'small'; card.onclick=()=>launchGame(game);
+                card.className='game-card'; card.dataset.gameId=game.id; card.dataset.arcadePart=['voxel3d','football3d','flight3d','brickmaze3d','theday','nightwatch','enemiesyou'].includes(game.engine)?'big':'small'; card.onclick=()=>launchGame(game);
                 card.innerHTML=`<button class="favorite-btn" data-fav-id="${game.id}" title="Favorite">☆</button>
                 <div class="thumb special-original-thumb ${i?'runner-thumb':'burst-thumb'}">
                     <div class="thumb-label">NITROARCADE ORIGINAL</div>
-                    <div class="special-card-icon">${['▦','⇧','◫','⚽','✈','▥','🌅','📹'][i]}</div><div class="play-pill">▶</div>
+                    <div class="special-card-icon">${['▦','⇧','◫','⚽','✈','▥','🌅','📹','⚡'][i]}</div><div class="play-pill">▶</div>
                 </div>
                 <div class="game-meta"><div><h3>${game.name}</h3><p>${game.desc}</p></div>
                 <div class="meta-right"><span class="play-count" data-count-id="${game.id}">0 plays</span><div class="tag">PLAY NOW</div></div></div>`;
@@ -2328,6 +2329,7 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
             activeRufflePlayer.load({url:SECRET_WINDOSILL_SOURCE});
             updateCurrentFavoriteVisibility?.();
         }
+
 
         function featureHackerCard(){
             const grid=document.getElementById('gameGrid');
@@ -2665,9 +2667,146 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
             if(game.engine==='brickmaze3d') return startBrickMaze95(host,game);
             if(game.engine==='theday') return startTheDay(host,game);
             if(game.engine==='nightwatch') return startNightWatch(host,game);
+            if(game.engine==='enemiesyou') return startEnemiesAndYou(host,game);
         }
 
 
+
+
+        function startEnemiesAndYou(host,game){
+          stopNativeGame();
+          host.innerHTML=`<div class="eayu">
+            <div class="eayu-top"><div><b>ENEMIES AND YOU</b><small> NITRO ARENA</small></div><div id="eyWave">WAVE 1 / 10</div><div id="eyScore">SCORE 000000</div></div>
+            <canvas id="eyCanvas" width="1280" height="720"></canvas>
+            <div class="eayu-bottom"><span id="eyStatus">HP 100 • ENERGY 100 • COINS 0</span><span>WASD move • MOUSE aim • CLICK / ARROWS energy shot • SHIFT dash • E special</span></div>
+            <div class="eayu-overlay" id="eyOverlay"><div class="eayu-card"><small>NITROARCADE ORIGINAL</small><h2>ENEMIES AND YOU</h2><p>Survive ten escalating arena waves. Every wave ends with an original boss. Collect coins, choose upgrades, and build a stronger character.</p><div class="ey-features">10 WAVES • 10 BOSSES • UPGRADES • COMBOS • POWER-UPS</div><button id="eyStart">ENTER ARENA</button></div></div>
+          </div>`;
+          const root=host.querySelector('.eayu'),cv=host.querySelector('#eyCanvas'),c=cv.getContext('2d'),overlay=host.querySelector('#eyOverlay'),waveEl=host.querySelector('#eyWave'),scoreEl=host.querySelector('#eyScore'),statusEl=host.querySelector('#eyStatus');
+          let stopped=false,raf=0,last=performance.now(),keys={},mouse={x:640,y:360,down:false},wave=1,score=0,coins=0,combo=0,comboT=0,spawnT=0,bossSpawned=false,waveKills=0,waveGoal=10;
+          let player={x:640,y:390,r:20,hp:100,maxHp:100,energy:100,speed:270,damage:18,fireRate:.19,fireT:0,dashT:0,inv:0,special:100};
+          let shots=[],enemies=[],particles=[],drops=[];
+          const enemyRoster=[
+            {name:'Bouncer',col:'#ff6d8a',type:'chaser'},{name:'Zip',col:'#66e3ff',type:'zigzag'},
+            {name:'Mochi',col:'#ffd45c',type:'orbiter'},{name:'Rivet',col:'#8dff8a',type:'chaser'},
+            {name:'Blink',col:'#b28cff',type:'zigzag'},{name:'Pebble',col:'#ff9f5c',type:'orbiter'},
+            {name:'Glitch',col:'#68f0c2',type:'zigzag'},{name:'Crank',col:'#f57dff',type:'chaser'},
+            {name:'Orbit',col:'#72a7ff',type:'orbiter'},{name:'Pogo',col:'#f6e36a',type:'zigzag'},
+            {name:'Nibbler',col:'#ff789b',type:'chaser'},{name:'Volt',col:'#67e7ff',type:'orbiter'},
+            {name:'Tumble',col:'#b5ff70',type:'zigzag'},{name:'Clank',col:'#ffa46c',type:'chaser'},
+            {name:'Pixel',col:'#d391ff',type:'orbiter'},{name:'Dash',col:'#7affd4',type:'zigzag'},
+            {name:'Boomer',col:'#ffcf62',type:'chaser'},{name:'Prism',col:'#77b6ff',type:'orbiter'},
+            {name:'Jinx',col:'#ff72d1',type:'zigzag'},{name:'Titan',col:'#91ff83',type:'chaser'}
+          ];
+          function unlockedEnemyRoster(){return enemyRoster.slice(0,Math.min(enemyRoster.length,wave*2))}
+          function newestEnemyNames(){return enemyRoster.slice((wave-1)*2,wave*2).map(e=>e.name)}
+          const colors=['#66e3ff','#ff6d8a','#ffd45c','#8dff8a','#b28cff'];
+          const clamp=(v,a,b)=>Math.max(a,Math.min(b,v)),rnd=(a,b)=>a+Math.random()*(b-a),dist=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
+          function circle(x,y,r,col){c.fillStyle=col;c.beginPath();c.arc(x,y,r,0,Math.PI*2);c.fill()}
+          function txt(s,x,y,z=18,col='#fff',align='left'){c.fillStyle=col;c.font=`900 ${z}px Arial`;c.textAlign=align;c.fillText(s,x,y)}
+          function burst(x,y,col,n=12){for(let i=0;i<n;i++)particles.push({x,y,vx:rnd(-180,180),vy:rnd(-180,180),life:rnd(.25,.7),col})}
+          function shoot(dx,dy,mult=1){let l=Math.hypot(dx,dy)||1;shots.push({x:player.x,y:player.y,vx:dx/l*620,vy:dy/l*620,r:6,damage:player.damage*mult,life:1.5});player.fireT=player.fireRate}
+          function spawnEnemy(type='chaser',boss=false){
+            let side=Math.floor(Math.random()*4),x=side===0?-35:side===1?1315:rnd(40,1240),y=side===2?-35:side===3?755:rnd(100,650);
+            if(side<2)y=rnd(100,650);else x=rnd(40,1240);
+            const scale=boss?2.1:1, base=30+wave*7;
+            let character=null;
+            if(!boss){const pool=unlockedEnemyRoster();character=pool[Math.floor(Math.random()*pool.length)];type=character.type}
+            enemies.push({x,y,r:(boss?38:18)*scale,hp:(boss?base*12:base),maxHp:(boss?base*12:base),speed:(boss?55:70)+wave*5,type,boss,phase:0,shoot:rnd(.5,1.4),name:boss?bossName():character.name,col:boss?'#ffb84d':character.col});
+          }
+          function startWave(){
+            enemies=[];shots=[];drops=[];waveKills=0;bossSpawned=false;spawnT=.4;waveGoal=8+wave*2;
+            waveEl.textContent=`WAVE ${wave} / 10`;
+            const added=newestEnemyNames();
+            overlay.style.display='grid';
+            overlay.innerHTML=`<div class="eayu-card ey-round-card"><small>WAVE ${wave} / 10</small><h2>NEW ENEMIES</h2><div class="ey-new-names">${added.map(n=>`<span>${n}</span>`).join('')}</div><p>${wave===1?'Meet your first two opponents.':'Two new characters have joined the arena.'}</p><button id="eyWaveGo">START WAVE ${wave}</button></div>`;
+            overlay.querySelector('#eyWaveGo').onclick=()=>{overlay.style.display='none'};
+
+          }
+          function bossName(){return ['THE BLOCKER','ORBIT EYE','TURBO CUBE','MIRROR','THE SWARM CORE','VOLT GIANT','PHASE ORB','NEON TOWER','CHAOS ENGINE','OMEGA ZERO'][wave-1]}
+          function showUpgrade(){
+            const opts=[
+              {n:'POWER CORE',d:'+25% shot damage',f:()=>player.damage*=1.25},
+              {n:'TURBO SHOES',d:'+12% movement speed',f:()=>player.speed*=1.12},
+              {n:'HEART MODULE',d:'+25 max HP and heal',f:()=>{player.maxHp+=25;player.hp=Math.min(player.maxHp,player.hp+35)}},
+              {n:'RAPID CHIP',d:'15% faster shots',f:()=>player.fireRate=Math.max(.08,player.fireRate*.85)},
+              {n:'ENERGY BANK',d:'Restore HP + special',f:()=>{player.hp=Math.min(player.maxHp,player.hp+45);player.special=100}}
+            ].sort(()=>Math.random()-.5).slice(0,3);
+            overlay.style.display='grid';overlay.innerHTML=`<div class="eayu-card"><small>WAVE ${wave} CLEAR</small><h2>CHOOSE AN UPGRADE</h2><div class="ey-upgrades">${opts.map((o,i)=>`<button data-u="${i}"><b>${o.n}</b><small>${o.d}</small></button>`).join('')}</div><p>COINS ${coins} • SCORE ${score}</p></div>`;
+            overlay.querySelectorAll('[data-u]').forEach(b=>b.onclick=()=>{opts[+b.dataset.u].f();wave++;if(wave>10){finishGame();return}startWave()});
+          }
+          function finishGame(){
+            stopped=true;cancelAnimationFrame(raf);overlay.style.display='grid';overlay.innerHTML=`<div class="eayu-card"><small>ARENA COMPLETE</small><h2>YOU SURVIVED.</h2><p>All ten waves and all ten arena bosses cleared.</p><strong>SCORE ${score} • COINS ${coins}</strong><button id="eyAgain">PLAY AGAIN</button></div>`;
+            try{NitroArcade?.game?.win?.(score,{coins:Math.max(5,Math.floor(coins/10))})}catch(e){}
+            overlay.querySelector('#eyAgain').onclick=()=>startEnemiesAndYou(host,game);
+          }
+          function gameOver(){
+            stopped=true;cancelAnimationFrame(raf);overlay.style.display='grid';overlay.innerHTML=`<div class="eayu-card"><small>ARENA RUN ENDED</small><h2>WAVE ${wave}</h2><p>SCORE ${score} • COINS ${coins}</p><button id="eyRetry">RETRY</button></div>`;
+            overlay.querySelector('#eyRetry').onclick=()=>startEnemiesAndYou(host,game);
+          }
+          function update(dt){
+            let mx=(keys.KeyD?1:0)-(keys.KeyA?1:0),my=(keys.KeyS?1:0)-(keys.KeyW?1:0),ml=Math.hypot(mx,my)||1;
+            player.x=clamp(player.x+mx/ml*player.speed*dt,28,1252);player.y=clamp(player.y+my/ml*player.speed*dt,95,690);
+            player.fireT=Math.max(0,player.fireT-dt);player.dashT=Math.max(0,player.dashT-dt);player.inv=Math.max(0,player.inv-dt);player.special=Math.min(100,player.special+dt*3.2);
+            if((mouse.down)&&player.fireT<=0)shoot(mouse.x-player.x,mouse.y-player.y);
+            let ax=(keys.ArrowRight?1:0)-(keys.ArrowLeft?1:0),ay=(keys.ArrowDown?1:0)-(keys.ArrowUp?1:0);if((ax||ay)&&player.fireT<=0)shoot(ax,ay);
+            spawnT-=dt;
+            if(waveKills<waveGoal&&spawnT<=0){spawnEnemy(['chaser','zigzag','orbiter'][Math.min(2,Math.floor((wave-1)/3))]);spawnT=Math.max(.28,.95-wave*.055)}
+            if(waveKills>=waveGoal&&!bossSpawned&&enemies.filter(e=>!e.boss).length===0){bossSpawned=true;spawnEnemy('boss',true)}
+            shots.forEach(s=>{s.x+=s.vx*dt;s.y+=s.vy*dt;s.life-=dt});
+            enemies.forEach(e=>{
+              let dx=player.x-e.x,dy=player.y-e.y,l=Math.hypot(dx,dy)||1;e.phase+=dt;
+              let wob=e.type==='zigzag'?Math.sin(e.phase*6)*85:0;
+              e.x+=(dx/l*e.speed + -dy/l*wob)*dt;e.y+=(dy/l*e.speed + dx/l*wob)*dt;
+              if(e.boss){e.shoot-=dt;if(e.shoot<=0){for(let a=0;a<Math.PI*2;a+=Math.PI/5)shots.push({x:e.x,y:e.y,vx:Math.cos(a)*210,vy:Math.sin(a)*210,r:8,damage:-10,enemy:true,life:3});e.shoot=Math.max(.55,1.25-wave*.045)}}
+              if(dist(e,player)<e.r+player.r&&player.inv<=0){player.hp-=e.boss?18:10;player.inv=.8;burst(player.x,player.y,'#ff6d7a',16);if(player.hp<=0)gameOver()}
+            });
+            shots.forEach(s=>{
+              if(s.enemy){if(dist(s,player)<s.r+player.r&&player.inv<=0){player.hp-=10;player.inv=.7;s.life=0;if(player.hp<=0)gameOver()}return}
+              enemies.forEach(e=>{if(s.life>0&&e.hp>0&&dist(s,e)<s.r+e.r){e.hp-=s.damage;s.life=0;burst(s.x,s.y,e.col,5);if(e.hp<=0){score+=e.boss?1000:100+combo*10;coins+=e.boss?20:1;combo++;comboT=2.2;player.special=Math.min(100,player.special+(e.boss?25:4));burst(e.x,e.y,e.col,e.boss?35:14);if(!e.boss)waveKills++;if(Math.random()<.13)drops.push({x:e.x,y:e.y,type:Math.random()<.55?'heal':'coin',r:10});if(e.boss)setTimeout(showUpgrade,650)}}})
+            });
+            drops.forEach(d=>{if(dist(d,player)<34){if(d.type==='heal')player.hp=Math.min(player.maxHp,player.hp+18);else coins+=5;d.dead=true}});
+            particles.forEach(p=>{p.x+=p.vx*dt;p.y+=p.vy*dt;p.vx*=.96;p.vy*=.96;p.life-=dt});
+            comboT-=dt;if(comboT<=0)combo=0;
+            shots=shots.filter(s=>s.life>0&&s.x>-50&&s.x<1330&&s.y>40&&s.y<770);enemies=enemies.filter(e=>e.hp>0);particles=particles.filter(p=>p.life>0);drops=drops.filter(d=>!d.dead);
+            scoreEl.textContent='SCORE '+String(score).padStart(6,'0');statusEl.textContent=`HP ${Math.ceil(player.hp)}/${player.maxHp} • SPECIAL ${Math.floor(player.special)} • COINS ${coins} • COMBO x${Math.max(1,combo)}`;
+          }
+          function draw(){
+            let bg=c.createLinearGradient(0,0,0,720);bg.addColorStop(0,'#111a35');bg.addColorStop(1,'#080914');c.fillStyle=bg;c.fillRect(0,0,1280,720);
+            c.strokeStyle='rgba(80,180,255,.10)';c.lineWidth=1;for(let x=0;x<1280;x+=64){c.beginPath();c.moveTo(x,80);c.lineTo(x,720);c.stroke()}for(let y=80;y<720;y+=64){c.beginPath();c.moveTo(0,y);c.lineTo(1280,y);c.stroke()}
+            c.fillStyle='#17284a';c.fillRect(0,80,1280,8);c.fillRect(0,704,1280,16);
+            drops.forEach(d=>{circle(d.x,d.y,13,d.type==='heal'?'#68ff9b':'#ffd55f');txt(d.type==='heal'?'+':'¢',d.x,d.y+5,13,'#172018','center')});
+            particles.forEach(p=>{c.globalAlpha=Math.max(0,p.life*1.7);circle(p.x,p.y,3,p.col);c.globalAlpha=1});
+            shots.forEach(s=>circle(s.x,s.y,s.r,s.enemy?'#ff697e':'#7cecff'));
+            enemies.forEach(e=>{
+              c.save();c.translate(e.x,e.y);
+              if(e.boss){
+                c.fillStyle=e.col;c.beginPath();for(let i=0;i<8;i++){let a=i*Math.PI/4,r=i%2?e.r*.72:e.r;c.lineTo(Math.cos(a)*r,Math.sin(a)*r)}c.closePath();c.fill();
+                txt(e.name,0,-e.r-18,13,'#fff','center');
+              } else {
+                c.fillStyle=e.col;c.beginPath();c.roundRect(-e.r,-e.r,e.r*2,e.r*2,7);c.fill();
+                circle(-6,-3,3,'#10131d');circle(6,-3,3,'#10131d');
+                c.strokeStyle='rgba(255,255,255,.55)';c.lineWidth=2;c.beginPath();c.arc(0,4,7,.15,Math.PI-.15);c.stroke();
+                txt(e.name,0,-e.r-9,11,'#fff','center');
+              }
+              c.restore();if(e.boss){c.fillStyle='#29151a';c.fillRect(e.x-80,e.y+e.r+15,160,8);c.fillStyle='#ff735f';c.fillRect(e.x-80,e.y+e.r+15,160*(e.hp/e.maxHp),8)}
+            });
+            c.save();c.translate(player.x,player.y);if(player.inv>0)c.globalAlpha=.45+.35*Math.sin(performance.now()*.03);circle(0,0,player.r,'#58c8ff');circle(-7,-4,4,'#08131e');circle(7,-4,4,'#08131e');c.strokeStyle='#d8f8ff';c.lineWidth=4;c.beginPath();c.arc(0,0,27,-Math.PI*.8,Math.PI*.8);c.stroke();c.restore();
+            c.fillStyle='#17202d';c.fillRect(24,104,300,18);c.fillStyle='#62e68c';c.fillRect(24,104,300*(player.hp/player.maxHp),18);txt('HP',28,99,11,'#bfead0');
+            c.fillStyle='#17202d';c.fillRect(24,140,300,12);c.fillStyle='#8e7dff';c.fillRect(24,140,300*(player.special/100),12);txt('SPECIAL [E]',28,136,10,'#d5ceff');
+            txt(`ENEMIES ${Math.max(0,waveGoal-waveKills)}${bossSpawned?' • BOSS ACTIVE':''}`,1250,116,14,'#fff','right');
+            if(combo>1)txt(`COMBO x${combo}`,640,118,24,'#ffd45c','center');
+          }
+          function loop(now){if(stopped)return;let dt=Math.min(.033,(now-last)/1000);last=now;update(dt);draw();raf=requestAnimationFrame(loop)}
+          const kd=e=>{
+            keys[e.code]=true;
+            if((e.code==='ShiftLeft'||e.code==='ShiftRight')&&player.dashT<=0){let dx=(keys.KeyD?1:0)-(keys.KeyA?1:0),dy=(keys.KeyS?1:0)-(keys.KeyW?1:0),l=Math.hypot(dx,dy)||1;player.x=clamp(player.x+dx/l*115,30,1250);player.y=clamp(player.y+dy/l*115,100,690);player.dashT=1.1;player.inv=.28;burst(player.x,player.y,'#68e8ff',18)}
+            if(e.code==='KeyE'&&player.special>=100){player.special=0;enemies.forEach(en=>{en.hp-=player.damage*2.4;burst(en.x,en.y,'#b38cff',10)});burst(player.x,player.y,'#b38cff',45)}
+          };
+          const ku=e=>keys[e.code]=false,mm=e=>{let r=cv.getBoundingClientRect();mouse.x=(e.clientX-r.left)*1280/r.width;mouse.y=(e.clientY-r.top)*720/r.height},md=()=>mouse.down=true,mu=()=>mouse.down=false;
+          addEventListener('keydown',kd);addEventListener('keyup',ku);cv.addEventListener('mousemove',mm);cv.addEventListener('mousedown',md);addEventListener('mouseup',mu);
+          activeNativeCleanup=()=>{stopped=true;cancelAnimationFrame(raf);removeEventListener('keydown',kd);removeEventListener('keyup',ku);removeEventListener('mouseup',mu);cv.removeEventListener('mousemove',mm);cv.removeEventListener('mousedown',md)};
+          host.querySelector('#eyStart').onclick=()=>{startWave();last=performance.now();raf=requestAnimationFrame(loop);root.focus?.()};
+        }
 
         function startNightWatch(host,game){
           stopNativeGame();
@@ -2784,7 +2923,7 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
             <div class="snfp-cover" id="sncover"><div class="snfp-card">
               <small>NITROARCADE DELUXE FIRST-PERSON STORY GAME</small><h2>SCHOOL NIGHTMARE</h2>
               <p>Three completely different first-person challenges in one chaotic school day.</p>
-              <div class="snfp-list"><b>🏎 1 · PARKING PANIC — arcade kart-style race</b><b>🏫 2 · AFTER THE PRANK — stealth escape</b><b>⚽ 3 · FINAL WHISTLE — first-person football</b></div>
+              <div class="snfp-list"><b>🏎 1 · PARKING PANIC — high-speed school traffic race</b><b>🏃 2 · AFTER THE PRANK — endless-runner escape</b><b>⚽ 3 · FINAL WHISTLE — first-person football</b></div>
               <button id="snstart">START THE DAY</button>
             </div></div>
           </div>`;
@@ -2809,30 +2948,54 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
           }
           function raceFrame(dt){
             let steer=(keys.d||keys.arrowright?1:0)-(keys.a||keys.arrowleft?1:0),gas=(keys.w||keys.arrowup)?1:0,brake=(keys.s||keys.arrowdown)?1:0,boost=keys[' ']&&race.boost>0;
-            race.v+=gas*26*dt-brake*34*dt;race.v*=.986;race.v=clamp(race.v,0,boost?43:30);if(boost){race.v+=28*dt;race.boost=Math.max(0,race.boost-28*dt)}else race.boost=Math.min(100,race.boost+8*dt);
-            race.x=clamp(race.x+steer*(5+race.v*.13)*dt,-7.5,7.5);race.z+=race.v*dt;race.rival+=27*dt;
-            // sky, distant city/school
-            let sky=c.createLinearGradient(0,0,0,360);sky.addColorStop(0,'#65b9ef');sky.addColorStop(1,'#e9f7ff');c.fillStyle=sky;c.fillRect(0,0,1280,360);
-            c.fillStyle='#d69b6e';c.fillRect(390,105,500,205);c.fillStyle='#963e36';c.fillRect(365,90,550,28);text('ULTRA HIGH',640,150,30,'#fff','center');
-            for(let i=0;i<7;i++){c.fillStyle='#9fd9ef';c.fillRect(420+i*67,185,42,55)}
-            // first-person road
-            c.fillStyle='#526044';c.fillRect(0,310,1280,410);let bend=Math.sin(race.z*.012)*110-race.x*34;
-            c.fillStyle='#3c4248';c.beginPath();c.moveTo(535+bend*.1,310);c.lineTo(745+bend*.1,310);c.lineTo(1180+bend,720);c.lineTo(100+bend,720);c.closePath();c.fill();
-            // lane markers
-            for(let i=1;i<12;i++){let d=((i*24-race.z)%264+264)%264+12,sc=1/(d*.012+.15),yy=310+380*sc/7,xx=640+bend*(yy-310)/410;c.fillStyle='#f4edc9';c.fillRect(xx-5*sc,yy,10*sc,32*sc)}
-            // roadside trees / lamps give speed depth
-            for(let i=0;i<20;i++){let d=((i*19-race.z)%380+380)%380+18,sc=130/d,yy=310+400*sc/7,side=i%2?-1:1,xx=640+side*(150+250*sc)+bend*(yy-310)/410;c.fillStyle='#725036';c.fillRect(xx-5*sc,yy-35*sc,10*sc,35*sc);c.fillStyle='#3d8d48';c.beginPath();c.arc(xx,yy-45*sc,22*sc,0,7);c.fill()}
-            // traffic/cones
-            race.cones.forEach((o,i)=>{let d=o.z-race.z;if(d>3&&d<130){let sc=150/d,yy=315+400*sc/7,xx=640+(o.x-race.x)*32*sc+bend*(yy-310)/410;c.fillStyle='#ff7b27';c.beginPath();c.moveTo(xx,yy-35*sc);c.lineTo(xx-14*sc,yy);c.lineTo(xx+14*sc,yy);c.fill();if(Math.abs(o.x-race.x)<1.2&&d<6){race.v*=.45;o.z+=300}}});
-            // rival car in front/behind
-            let rd=race.rival-race.z+18;if(rd>3&&rd<100){let sc=145/rd,yy=315+400*sc/7,xx=640+(2-race.x)*30*sc;rr(xx-38*sc,yy-38*sc,76*sc,38*sc,5*sc,'#4278df');c.fillStyle='#bce6f7';c.fillRect(xx-22*sc,yy-31*sc,44*sc,16*sc)}
-            // cockpit
-            c.fillStyle='#14171b';c.beginPath();c.moveTo(0,720);c.lineTo(0,610);c.quadraticCurveTo(220,545,430,625);c.lineTo(850,625);c.quadraticCurveTo(1060,545,1280,610);c.lineTo(1280,720);c.fill();
-            c.strokeStyle='#333b43';c.lineWidth=18;c.beginPath();c.arc(640,735,150,Math.PI,Math.PI*2);c.stroke();rr(555,635,170,62,10,'#080b0e');text(Math.round(race.v*7)+' km/h',640,675,24,'#71e39b','center');
+            race.v+=gas*29*dt-brake*38*dt;race.v*=.985;race.v=clamp(race.v,0,boost?46:32);
+            if(boost){race.v+=32*dt;race.boost=Math.max(0,race.boost-30*dt)}else race.boost=Math.min(100,race.boost+9*dt);
+            race.x=clamp(race.x+steer*(5.5+race.v*.14)*dt,-7.5,7.5);race.z+=race.v*dt;race.rival+=27.5*dt;
+            const shake=boost?Math.sin(t*42)*2.2:0;
+            c.save();c.translate(shake,boost?Math.cos(t*35)*1.3:0);
+            // layered sunrise sky + skyline
+            let sky=c.createLinearGradient(0,0,0,360);sky.addColorStop(0,'#1687d5');sky.addColorStop(.58,'#75d4ff');sky.addColorStop(1,'#f5d7a4');c.fillStyle=sky;c.fillRect(-10,-10,1300,380);
+            c.fillStyle='rgba(255,238,170,.85)';c.beginPath();c.arc(1030,115,55,0,7);c.fill();
+            for(let i=0;i<15;i++){let x=i*95-40,hg=45+(i%5)*17;c.fillStyle=i%2?'#607486':'#4f6578';c.fillRect(x,270-hg,75,hg)}
+            // detailed school facade
+            c.fillStyle='#df9257';c.fillRect(360,92,560,220);c.fillStyle='#7b2830';c.fillRect(330,72,620,28);
+            c.fillStyle='#f6e3bd';c.fillRect(600,100,80,212);text('NITRO HIGH',640,139,27,'#fff','center');
+            for(let i=0;i<8;i++){let wx=390+i*65;c.fillStyle='#82d5ee';c.fillRect(wx,174,40,48);c.fillStyle='rgba(255,255,255,.35)';c.fillRect(wx+5,179,30,5)}
+            c.fillStyle='#303942';c.fillRect(605,232,70,80);text('SCHOOL',640,260,11,'#fff','center');
+            // road + bend
+            c.fillStyle='#456338';c.fillRect(-10,310,1300,420);let bend=Math.sin(race.z*.012)*115-race.x*34;
+            c.fillStyle='#272d34';c.beginPath();c.moveTo(525+bend*.1,310);c.lineTo(755+bend*.1,310);c.lineTo(1210+bend,730);c.lineTo(70+bend,730);c.closePath();c.fill();
+            c.fillStyle='#4d5359';c.beginPath();c.moveTo(540+bend*.1,310);c.lineTo(740+bend*.1,310);c.lineTo(1090+bend,720);c.lineTo(190+bend,720);c.closePath();c.fill();
+            // curbs
+            c.strokeStyle='#f5f5f5';c.lineWidth=6;c.beginPath();c.moveTo(535+bend*.1,310);c.lineTo(1150+bend,720);c.stroke();c.beginPath();c.moveTo(745+bend*.1,310);c.lineTo(130+bend,720);c.stroke();
+            // moving lane markers
+            for(let i=1;i<16;i++){let d=((i*19-race.z*1.25)%304+304)%304+10,sc=1/(d*.011+.13),yy=310+390*sc/7,xx=640+bend*(yy-310)/410;c.fillStyle='#fff1b5';c.fillRect(xx-4*sc,yy,8*sc,27*sc)}
+            // scenery: trees, lamps, signs, parked cars
+            for(let i=0;i<24;i++){let d=((i*17-race.z)%408+408)%408+14,sc=135/d,yy=310+405*sc/7,side=i%2?-1:1,xx=640+side*(165+270*sc)+bend*(yy-310)/410;
+              if(i%4===0){c.fillStyle='#4a535c';c.fillRect(xx-3*sc,yy-75*sc,6*sc,75*sc);c.fillStyle='#fff6c7';c.beginPath();c.arc(xx,yy-80*sc,10*sc,0,7);c.fill()}
+              else {c.fillStyle='#714b2f';c.fillRect(xx-5*sc,yy-38*sc,10*sc,38*sc);c.fillStyle=i%3?'#258842':'#36a353';c.beginPath();c.arc(xx,yy-51*sc,24*sc,0,7);c.fill()}
+            }
+            // traffic: cones plus cars/buses based on cone index
+            race.cones.forEach((o,i)=>{let d=o.z-race.z;if(d>3&&d<135){let sc=155/d,yy=315+400*sc/7,xx=640+(o.x-race.x)*32*sc+bend*(yy-310)/410;
+              if(i%5===0){rr(xx-32*sc,yy-48*sc,64*sc,48*sc,6*sc,'#e8b13e');c.fillStyle='#9ad8ed';c.fillRect(xx-22*sc,yy-40*sc,44*sc,17*sc);text('BUS',xx,yy-8*sc,Math.max(7,10*sc),'#4b3512','center')}
+              else if(i%3===0){rr(xx-29*sc,yy-30*sc,58*sc,30*sc,5*sc,i%2?'#e65c68':'#50a0e8');c.fillStyle='#bde8f7';c.fillRect(xx-17*sc,yy-25*sc,34*sc,11*sc)}
+              else {c.fillStyle='#ff7b27';c.beginPath();c.moveTo(xx,yy-35*sc);c.lineTo(xx-14*sc,yy);c.lineTo(xx+14*sc,yy);c.fill()}
+              if(Math.abs(o.x-race.x)<1.2&&d<6){race.v*=.45;o.z+=300}
+            }});
+            // rival with taillights and nameplate
+            let rd=race.rival-race.z+18;if(rd>3&&rd<110){let sc=150/rd,yy=315+400*sc/7,xx=640+(2-race.x)*30*sc;rr(xx-40*sc,yy-40*sc,80*sc,40*sc,7*sc,'#3e73e6');c.fillStyle='#a9e7ff';c.fillRect(xx-23*sc,yy-33*sc,46*sc,15*sc);c.fillStyle='#ff4141';c.fillRect(xx-31*sc,yy-7*sc,12*sc,6*sc);c.fillRect(xx+19*sc,yy-7*sc,12*sc,6*sc);text('RIVAL',xx,yy-48*sc,Math.max(8,10*sc),'#fff','center')}
+            // boost speed lines
+            if(boost)for(let i=0;i<24;i++){let x=(i*173+t*900)%1280,y=330+(i*79)%350;c.strokeStyle='rgba(120,225,255,.42)';c.lineWidth=2;c.beginPath();c.moveTo(x,y);c.lineTo(x+(x-640)*.09,y+45);c.stroke()}
+            // richer cockpit
+            let dash=c.createLinearGradient(0,590,0,720);dash.addColorStop(0,'#202832');dash.addColorStop(1,'#07090c');c.fillStyle=dash;c.beginPath();c.moveTo(-10,730);c.lineTo(-10,610);c.quadraticCurveTo(210,535,430,620);c.lineTo(850,620);c.quadraticCurveTo(1070,535,1290,610);c.lineTo(1290,730);c.fill();
+            c.strokeStyle='#394654';c.lineWidth=20;c.beginPath();c.arc(640,735,150,Math.PI,Math.PI*2);c.stroke();
+            rr(548,628,184,72,12,'#05080b');text(Math.round(race.v*7)+' km/h',640,661,25,boost?'#6be8ff':'#71e39b','center');text(boost?'NITRO BOOST':'DRIVE',640,686,10,'#b7c6d3','center');
+            // boost gauge
+            rr(28,28,270,58,12,'rgba(4,9,15,.78)');text('NITRO',45,51,12,'#9cecff');c.fillStyle='#24323d';c.fillRect(45,61,225,10);c.fillStyle=boost?'#61eaff':'#64e39a';c.fillRect(45,61,225*race.boost/100,10);
             stat.textContent='BOOST '+Math.ceil(race.boost)+'%';
-            // finish parking zone
-            if(race.z>330){text('PARKING LOT →',1080,340,20,'#7dff9c','right');if(race.z>390){if(race.z>race.rival){score+=1400;finish('LAST SLOT SECURED!','You won the morning race and slid into the final parking space.',2)}else finish('RIVAL GOT THERE FIRST','You reached school, but the blue rival stole the final slot.',2)}}
-            vignette();
+            if(race.z>300){text('SCHOOL PARKING →',1180,355,18,'#9cffb4','right')}
+            if(race.z>390){if(race.z>race.rival){score+=1400;finish('LAST SLOT SECURED!','You won the morning race and slid into the final parking space.',2)}else finish('RIVAL GOT THERE FIRST','You reached school, but the blue rival stole the final slot.',2)}
+            vignette();c.restore();
           }
 
           /* ---------- CHALLENGE 2: ray-cast first-person stealth school ---------- */
@@ -2842,88 +3005,130 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
             '1011100000011101','1000101111000001','1100101000010111','1000001000000001',
             '1011101111011101','1000000000000001','1000111111100001','1111111111111111'
           ];
-          let st={x:1.7,y:1.7,a:0,passes:[],guards:[],exit:{x:14.2,y:14.2},caught:0};
-          function wallAt(x,y){let X=Math.floor(x),Y=Math.floor(y);return X<0||Y<0||Y>=MAP.length||X>=MAP[0].length||MAP[Y][X]==='1'}
+          /* ---------- CHALLENGE 2: AFTER THE PRANK — original three-lane chase runner ---------- */
+          let st={lane:1,x:0,y:0,vy:0,speed:18,distance:0,passes:0,coins:0,teacherGap:16,slide:0,obstacles:[],pickups:[],spawn:0,pickSpawn:0,flash:0};
+          const RUN_LANES=[-4.4,0,4.4];
           function startStealth(){
-            part=2;t=0;st={x:1.7,y:1.7,a:.1,passes:[{x:6.5,y:2.5,g:0},{x:13.5,y:6.5,g:0},{x:4.5,y:13.5,g:0}],guards:[{x:7.5,y:3.5,a:1.5},{x:12.5,y:9.5,a:3},{x:7.5,y:13.5,a:0}],exit:{x:14.2,y:14.2},caught:0};
-            pEl.textContent='CHALLENGE 2 · AFTER THE PRANK';stat.textContent='PASSES 0 / 3';obj.textContent='Sneak through the school, collect 3 hall passes, and find the EXIT without getting caught.';ctrl.textContent='WASD move · ← → turn · SHIFT sprint';
+            part=2;t=0;
+            st={lane:1,x:0,y:0,vy:0,speed:18,distance:0,passes:0,coins:0,teacherGap:16,slide:0,obstacles:[],pickups:[],spawn:.7,pickSpawn:.4,flash:0};
+            pEl.textContent='CHALLENGE 2 · AFTER THE PRANK';
+            stat.textContent='ESCAPE 0 / 650m · PASSES 0 / 3';
+            obj.textContent='RUN! Switch lanes, jump and slide through a packed school while the teacher chases you.';
+            ctrl.textContent='A/D or ←/→ lanes · W/↑/SPACE jump · S/↓ slide';
           }
-          function raycast(){
-            // ceiling + floor
-            let cg=c.createLinearGradient(0,0,0,360);cg.addColorStop(0,'#101923');cg.addColorStop(1,'#26384a');c.fillStyle=cg;c.fillRect(0,0,1280,360);
-            let fg=c.createLinearGradient(0,360,0,720);fg.addColorStop(0,'#b9aa8a');fg.addColorStop(1,'#4b4438');c.fillStyle=fg;c.fillRect(0,360,1280,360);
-
-            const FOV=Math.PI/2.8,rays=400,sw=1280/rays;
-            for(let i=0;i<rays;i++){
-              let ang=st.a-FOV/2+FOV*i/rays,cs=Math.cos(ang),sn=Math.sin(ang),d=.04,hx=0,hy=0;
-              while(d<24&&!wallAt(st.x+cs*d,st.y+sn*d))d+=.035;
-              hx=st.x+cs*d;hy=st.y+sn*d;d*=Math.cos(ang-st.a);
-              let hh=Math.min(720,650/(d+.03)), shade=clamp(235-d*11,42,210);
-              // Alternating painted-brick / school-panel walls based on cell coordinates.
-              let cell=(Math.floor(hx)+Math.floor(hy))&1;
-              let r=cell?shade*.68:shade*.58,g=cell?shade*.72:shade*.67,b=cell?shade*.73:shade*.78;
-              c.fillStyle=`rgb(${r},${g},${b})`;c.fillRect(i*sw,360-hh/2,sw+1,hh);
-              // chair-rail stripe + subtle brick seams
-              if(i%10===0){c.fillStyle='rgba(255,255,255,.055)';c.fillRect(i*sw,360-hh*.18,sw*2,3)}
-              if(i%24===0){c.fillStyle='rgba(0,0,0,.10)';c.fillRect(i*sw,360-hh/2,1,hh)}
+          function runnerProject(lane,z,y=0){
+            const depth=Math.max(.5,z), horizon=238;
+            const scale=560/(depth+8);
+            return {x:640+RUN_LANES[lane]*scale,y:horizon+430/(depth*.085+1)-y*scale,scale:Math.max(.18,scale/38),depth};
+          }
+          function spawnRunnerObstacle(){
+            const types=['desk','locker','cart','books','barrier'];
+            st.obstacles.push({lane:Math.floor(Math.random()*3),z:66+Math.random()*12,type:types[Math.floor(Math.random()*types.length)],hit:false});
+          }
+          function spawnRunnerPickup(){
+            const livePasses=st.pickups.filter(q=>q.type==='pass'&&!q.got).length;
+            const isPass=(st.passes+livePasses)<3 && Math.random()<.24;
+            st.pickups.push({lane:Math.floor(Math.random()*3),z:62+Math.random()*10,y:isPass?1.2:(Math.random()<.45?2.6:.7),type:isPass?'pass':'token',got:false});
+          }
+          function drawRunnerWorld(){
+            // bright school corridor with strong forward-motion perspective
+            let sky=c.createLinearGradient(0,0,0,300);sky.addColorStop(0,'#bfe8ff');sky.addColorStop(1,'#edf8ff');c.fillStyle=sky;c.fillRect(0,0,1280,300);
+            c.fillStyle='#d8d1bd';c.fillRect(0,300,1280,420);
+            const hz=238;
+            // walls
+            c.fillStyle='#e8dfc7';c.beginPath();c.moveTo(0,0);c.lineTo(470,hz);c.lineTo(470,720);c.lineTo(0,720);c.fill();
+            c.beginPath();c.moveTo(1280,0);c.lineTo(810,hz);c.lineTo(810,720);c.lineTo(1280,720);c.fill();
+            // floor lane perspective
+            c.fillStyle='#6d8394';c.beginPath();c.moveTo(470,hz);c.lineTo(810,hz);c.lineTo(1180,720);c.lineTo(100,720);c.closePath();c.fill();
+            c.strokeStyle='rgba(255,255,255,.35)';c.lineWidth=3;
+            [560,720].forEach(x=>{c.beginPath();c.moveTo(640+(x-640)*.18,hz);c.lineTo(640+(x-640)*3.2,720);c.stroke()});
+            // speed stripes / floor tiles
+            for(let i=0;i<14;i++){
+              let z=((i*7-(st.distance*.75)%7)+7)%98+2, p=runnerProject(1,z);
+              c.strokeStyle=`rgba(255,255,255,${Math.min(.25,.04+p.scale*.04)})`;c.lineWidth=Math.max(1,p.scale*2);
+              c.beginPath();c.moveTo(640-11*p.scale,p.y);c.lineTo(640+11*p.scale,p.y);c.stroke();
             }
-
-            // ceiling fluorescent lights for depth
-            for(let k=1;k<7;k++){
-              let yy=350-k*48,ww=260-k*27;
-              c.fillStyle=`rgba(220,244,255,${.17-k*.012})`;
-              c.fillRect(640-ww/2,yy,ww,8);
+            // corridor windows / lockers as scenery
+            for(let side of [-1,1])for(let i=0;i<7;i++){
+              let z=((i*15-(st.distance*.45)%15)+15)%105+4,p=runnerProject(1,z),w=50*p.scale,hg=95*p.scale;
+              let x=640+side*(9.2*p.scale+120);
+              c.fillStyle=side<0?'#7db7d1':'#55718b';c.fillRect(x-w/2,p.y-hg,w,hg);
+              c.fillStyle='rgba(255,255,255,.22)';c.fillRect(x-w*.35,p.y-hg*.84,w*.7,3*p.scale);
             }
-
-            // project school props / objectives / staff
-            let props=[
-              ...st.passes.filter(q=>!q.g).map(q=>({...q,type:'pass'})),
-              ...st.guards.map(q=>({...q,type:'guard'})),
-              {...st.exit,type:'exit'}
-            ];
-            props.map(o=>{
-              let dx=o.x-st.x,dy=o.y-st.y,dist=Math.hypot(dx,dy),ang=Math.atan2(dy,dx)-st.a;
-              while(ang>Math.PI)ang-=Math.PI*2;while(ang<-Math.PI)ang+=Math.PI*2;
-              return{o,dist,ang};
-            }).filter(q=>Math.abs(q.ang)<FOV*.58&&q.dist>.2)
-              .sort((a,b)=>b.dist-a.dist)
-              .forEach(q=>{
-                let sx=640+q.ang/FOV*1280,sz=clamp(450/q.dist,18,285),sy=370+sz*.32;
-                if(q.o.type==='pass'){
-                  // floating hall pass
-                  c.save();c.translate(sx,sy);c.rotate(Math.sin(t*2+q.dist)*.08);
-                  rr(-sz*.38,-sz*.32,sz*.76,sz*.46,6,'#6dffb0');
-                  text('HALL PASS',0,-sz*.03,Math.max(9,sz*.105),'#173b2b','center');c.restore();
-                } else if(q.o.type==='exit'){
-                  rr(sx-sz*.58,sy-sz*1.5,sz*1.16,sz*1.58,4,'#265b3d');
-                  c.fillStyle='#8effb2';c.fillRect(sx-sz*.42,sy-sz*1.30,sz*.84,sz*.22);
-                  text('EXIT',sx,sy-sz*1.13,Math.max(12,sz*.17),'#10291c','center');
-                  c.fillStyle='#d8b66b';c.beginPath();c.arc(sx+sz*.38,sy-sz*.66,sz*.045,0,7);c.fill();
-                } else {
-                  // stylised staff character with head, torso, legs and alert marker
-                  c.fillStyle='#d9a37f';c.beginPath();c.arc(sx,sy-sz*.82,sz*.19,0,7);c.fill();
-                  rr(sx-sz*.24,sy-sz*.62,sz*.48,sz*.62,7,'#5b3e93');
-                  c.fillStyle='#20242a';c.fillRect(sx-sz*.20,sy,sz*.14,sz*.45);c.fillRect(sx+sz*.06,sy,sz*.14,sz*.45);
-                  if(q.dist<4.3){text('!',sx,sy-sz*1.13,Math.max(18,sz*.25),'#ff5d68','center')}
-                }
-              });
-
-            // first-person hands + flashlight vignette
-            c.fillStyle='#20252c';c.beginPath();c.moveTo(0,720);c.lineTo(0,665);c.lineTo(250,625);c.lineTo(390,720);c.fill();
-            c.beginPath();c.moveTo(1280,720);c.lineTo(1280,665);c.lineTo(1030,625);c.lineTo(890,720);c.fill();
-
-            // objective HUD + compass
-            rr(24,22,315,70,10,'rgba(4,10,17,.72)');
-            text('AFTER THE PRANK',43,49,16,'#8ed8ff');
-            text('Find passes • Avoid staff • Reach EXIT',43,73,12,'#dbeafe');
-            rr(520,22,240,42,21,'rgba(4,10,17,.68)');
-            const dir=['E','S','W','N'][Math.round((((st.a%(Math.PI*2))+Math.PI*2)%(Math.PI*2))/(Math.PI/2))%4];
-            text('COMPASS  '+dir,640,49,14,'#fff','center');
+            // pickups
+            [...st.pickups].sort((a,b)=>b.z-a.z).forEach(o=>{
+              if(o.got)return;let p=runnerProject(o.lane,o.z,o.y);
+              if(o.type==='pass'){
+                c.save();c.translate(p.x,p.y);c.rotate(Math.sin(t*5)*.12);rr(-35*p.scale,-25*p.scale,70*p.scale,44*p.scale,6*p.scale,'#68ffb0');text('PASS',0,2*p.scale,Math.max(9,13*p.scale),'#123c29','center');c.restore();
+              }else{
+                c.fillStyle='#ffd85c';c.beginPath();c.arc(p.x,p.y,13*p.scale,0,7);c.fill();text('N',p.x,p.y+5*p.scale,Math.max(8,12*p.scale),'#704d00','center');
+              }
+            });
+            // obstacles
+            [...st.obstacles].sort((a,b)=>b.z-a.z).forEach(o=>{
+              if(o.hit)return;let p=runnerProject(o.lane,o.z,0),s=p.scale;
+              if(o.type==='desk'){rr(p.x-45*s,p.y-55*s,90*s,48*s,5*s,'#8b5a35');c.fillStyle='#51351f';c.fillRect(p.x-36*s,p.y-7*s,8*s,48*s);c.fillRect(p.x+28*s,p.y-7*s,8*s,48*s)}
+              else if(o.type==='locker'){rr(p.x-32*s,p.y-120*s,64*s,120*s,4*s,'#52799b');c.strokeStyle='#b8d3e6';c.strokeRect(p.x-25*s,p.y-105*s,50*s,38*s)}
+              else if(o.type==='cart'){rr(p.x-46*s,p.y-58*s,92*s,55*s,7*s,'#e28d42');c.fillStyle='#222';c.beginPath();c.arc(p.x-30*s,p.y,10*s,0,7);c.arc(p.x+30*s,p.y,10*s,0,7);c.fill()}
+              else if(o.type==='books'){['#e45b5b','#5f8fe8','#efc452'].forEach((co,i)=>rr(p.x-38*s+i*8*s,p.y-(18+i*16)*s,76*s,15*s,3*s,co))}
+              else {rr(p.x-55*s,p.y-62*s,110*s,62*s,6*s,'#e65050');text('WET FLOOR',p.x,p.y-28*s,Math.max(8,11*s),'#fff','center')}
+            });
+            // player from behind
+            const px=640+(st.x/4.4)*150, py=585-st.y*44+(st.slide>0?35:0);
+            c.fillStyle='#252b35';c.fillRect(px-18,py-6,15,74);c.fillRect(px+3,py-6,15,74);
+            rr(px-31,py-82,62,78,13,'#3f79d7');c.fillStyle='#d6a17f';c.beginPath();c.arc(px,py-103,23,0,7);c.fill();
+            // chasing teacher silhouette
+            const chaseSize=clamp(125-(st.teacherGap-6)*4,58,125);
+            c.fillStyle='rgba(35,26,45,.84)';c.beginPath();c.arc(95,555-chaseSize*.55,chaseSize*.17,0,7);c.fill();rr(95-chaseSize*.22,555-chaseSize*.43,chaseSize*.44,chaseSize*.55,10,'rgba(72,43,89,.9)');
+            text(st.teacherGap<9?'TEACHER CLOSE!':'TEACHER',95,590,13,st.teacherGap<9?'#ff6868':'#fff','center');
+            // HUD
+            rr(22,20,350,82,12,'rgba(5,12,20,.78)');text('AFTER THE PRANK — ESCAPE RUN',42,48,16,'#8ee5ff');text(`${Math.floor(st.distance)} / 650m   •   PASSES ${st.passes}/3   •   TOKENS ${st.coins}`,42,76,13,'#fff');
+            rr(930,22,320,54,12,'rgba(5,12,20,.72)');text('CHASE DISTANCE',950,45,11,'#b8d8ea');c.fillStyle='#243443';c.fillRect(950,55,270,9);c.fillStyle=st.teacherGap<9?'#ff5d68':'#65e6a4';c.fillRect(950,55,270*clamp(st.teacherGap/18,0,1),9);
+            if(st.flash>0){c.fillStyle=`rgba(255,80,80,${st.flash*.32})`;c.fillRect(0,0,1280,720)}
             vignette();
           }
           function stealthFrame(dt){
-            let turn=(keys.arrowright?1:0)-(keys.arrowleft?1:0);st.a+=turn*2.1*dt;let f=(keys.w?1:0)-(keys.s?1:0),side=(keys.d?1:0)-(keys.a?1:0),spd=(keys.shift?4.8:3.2),nx=st.x+(Math.cos(st.a)*f+Math.cos(st.a+Math.PI/2)*side)*spd*dt,ny=st.y+(Math.sin(st.a)*f+Math.sin(st.a+Math.PI/2)*side)*spd*dt;if(!wallAt(nx,st.y))st.x=nx;if(!wallAt(st.x,ny))st.y=ny;
-            st.guards.forEach((g,i)=>{g.a+=Math.sin(t*.5+i)*.012;let d=Math.hypot(st.x-g.x,st.y-g.y);if(d<4.2){let aim=Math.atan2(st.y-g.y,st.x-g.x),dif=Math.atan2(Math.sin(aim-g.a),Math.cos(aim-g.a));if(Math.abs(dif)<.8){g.a=aim;let nx=g.x+Math.cos(g.a)*1.25*dt,ny=g.y+Math.sin(g.a)*1.25*dt;if(!wallAt(nx,g.y))g.x=nx;if(!wallAt(g.x,ny))g.y=ny}}else g.a+=.35*dt;if(d<.65){st.x=1.7;st.y=1.7;st.caught++;score=Math.max(0,score-100)}});st.passes.forEach(q=>{if(!q.g&&Math.hypot(st.x-q.x,st.y-q.y)<.65){q.g=1;score+=250}});let got=st.passes.filter(q=>q.g).length;stat.textContent=`PASSES ${got}/3 · CAUGHT ${st.caught}`;if(Math.hypot(st.x-st.exit.x,st.y-st.exit.y)<.8){score+=got===3?900:200;finish('ESCAPED SCHOOL!',got===3?'Perfect stealth route: all passes collected.':'You escaped, but missed some hall passes.',3)}raycast();
+            st.speed=Math.min(30,18+st.distance/110);
+            st.distance+=st.speed*dt;
+            st.spawn-=dt;st.pickSpawn-=dt;
+            if(st.spawn<=0){spawnRunnerObstacle();st.spawn=Math.max(.42,1.15-st.speed*.018)+Math.random()*.35}
+            if(st.pickSpawn<=0){spawnRunnerPickup();st.pickSpawn=.55+Math.random()*.8}
+            // lane input is edge-triggered so holding a key doesn't teleport across lanes
+            if(!st._left&&(keys.a||keys.arrowleft)){st.lane=Math.max(0,st.lane-1);st._left=true}
+            if(!(keys.a||keys.arrowleft))st._left=false;
+            if(!st._right&&(keys.d||keys.arrowright)){st.lane=Math.min(2,st.lane+1);st._right=true}
+            if(!(keys.d||keys.arrowright))st._right=false;
+            st.x=lerp(st.x,RUN_LANES[st.lane],Math.min(1,dt*12));
+            const jump=keys.w||keys.arrowup||keys.space;
+            if(jump&&st.y<=.01&&!st._jump){st.vy=9.2;st._jump=true}
+            if(!jump)st._jump=false;
+            st.vy-=22*dt;st.y=Math.max(0,st.y+st.vy*dt);if(st.y===0&&st.vy<0)st.vy=0;
+            st.slide=(keys.s||keys.arrowdown)&&st.y<.15?.32:Math.max(0,st.slide-dt);
+            // move world toward player
+            st.obstacles.forEach(o=>o.z-=st.speed*dt);
+            st.pickups.forEach(o=>o.z-=st.speed*dt);
+            // collision: jump clears low objects/books/barrier; slide clears locker-style overhead risk less effectively.
+            st.obstacles.forEach(o=>{
+              if(o.hit||o.z>3.2||o.z<-.8||o.lane!==st.lane)return;
+              let safe=st.y>1.15 || (st.slide>0 && o.type==='locker');
+              o.hit=true;
+              if(!safe){st.teacherGap=Math.max(4,st.teacherGap-5);score=Math.max(0,score-80);st.flash=1}
+              else score+=35;
+            });
+            st.pickups.forEach(o=>{
+              if(o.got||o.z>3.4||o.z<-.8||o.lane!==st.lane)return;
+              if(Math.abs(st.y-o.y)<1.9 || (o.y<1.4&&st.y<2.2)){o.got=true;if(o.type==='pass'){st.passes++;score+=300}else{st.coins++;score+=40};st.teacherGap=Math.min(18,st.teacherGap+.6)}
+            });
+            st.obstacles=st.obstacles.filter(o=>o.z>-4);st.pickups=st.pickups.filter(o=>o.z>-4);
+            st.teacherGap=Math.min(18,st.teacherGap+dt*.55);st.flash=Math.max(0,st.flash-dt*2.5);
+            stat.textContent=`ESCAPE ${Math.floor(st.distance)} / 650m · PASSES ${st.passes}/3 · TOKENS ${st.coins}`;
+            if(st.teacherGap<=4.05){st.distance=Math.max(0,st.distance-35);st.teacherGap=12;score=Math.max(0,score-180)}
+            if(st.distance>=650){
+              score+=st.passes>=3?1100:550;
+              finish('ESCAPED THE SCHOOL!',st.passes>=3?`Perfect getaway — all 3 hall passes and ${st.coins} Nitro tokens collected.`:`You escaped with ${st.passes}/3 hall passes and ${st.coins} Nitro tokens.`,3);
+              return;
+            }
+            drawRunnerWorld();
           }
 
           /* ---------- CHALLENGE 3: polished first-person football ---------- */
@@ -3158,23 +3363,56 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
 
         function ultraPolish3DRenderer(ren,T,exposure=1.05){
           try{
-            ren.setPixelRatio(Math.min(window.devicePixelRatio||1,1.75));
+            // Balanced high-quality defaults: crisp enough for desktop without exploding GPU cost.
+            ren.setPixelRatio(Math.min(window.devicePixelRatio||1,1.8));
             ren.shadowMap.enabled=true;
-            if(T.PCFSoftShadowMap) ren.shadowMap.type=T.PCFSoftShadowMap;
+            if(T.VSMShadowMap) ren.shadowMap.type=T.VSMShadowMap;
+            else if(T.PCFSoftShadowMap) ren.shadowMap.type=T.PCFSoftShadowMap;
             if('outputColorSpace' in ren && T.SRGBColorSpace) ren.outputColorSpace=T.SRGBColorSpace;
-            if(T.ACESFilmicToneMapping){ren.toneMapping=T.ACESFilmicToneMapping;ren.toneMappingExposure=exposure;}
+            if(T.NeutralToneMapping) ren.toneMapping=T.NeutralToneMapping;
+            else if(T.ACESFilmicToneMapping) ren.toneMapping=T.ACESFilmicToneMapping;
+            ren.toneMappingExposure=exposure;
+            ren.debug && (ren.debug.checkShaderErrors=true);
+            ren.domElement.dataset.nitroRenderer='modern';
           }catch(e){console.warn('Nitro 3D polish fallback',e)}
           return ren;
         }
+        // NitroArcade modern Three.js loader.
+        // r186 is loaded as an ES module. The old r160 global build remains a compatibility fallback.
         function ultraLoadThree(){
           if(window.THREE)return Promise.resolve(window.THREE);
           if(window.__threePromise)return window.__threePromise;
-          window.__threePromise=new Promise((ok,bad)=>{
-            const urls=['./scripts/three.min.js','https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js','https://unpkg.com/three@0.160.0/build/three.min.js'];
-            let i=0;
-            const tryNext=()=>{if(i>=urls.length){bad(new Error('Three.js failed to load'));return}const s=document.createElement('script');s.src=urls[i++];s.onload=()=>window.THREE?ok(window.THREE):tryNext();s.onerror=tryNext;document.head.appendChild(s)};
-            tryNext();
-          });return window.__threePromise;
+          window.__threePromise=(async()=>{
+            try{
+              const T=await import('https://cdn.jsdelivr.net/npm/three@0.186.0/build/three.module.js');
+              window.THREE=T;
+              window.NITRO_THREE_REVISION=T.REVISION||'186';
+              document.documentElement.dataset.threeRevision=window.NITRO_THREE_REVISION;
+              console.info('[NitroArcade] Three.js modern engine r'+window.NITRO_THREE_REVISION);
+              return T;
+            }catch(moduleErr){
+              console.warn('[NitroArcade] Modern Three.js failed; using r160 compatibility fallback.',moduleErr);
+              return await new Promise((ok,bad)=>{
+                const urls=['./scripts/three.min.js','https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js','https://unpkg.com/three@0.160.0/build/three.min.js'];
+                let i=0;
+                const tryNext=()=>{
+                  if(i>=urls.length){bad(new Error('Three.js failed to load'));return}
+                  const s=document.createElement('script');s.src=urls[i++];
+                  s.onload=()=>{
+                    if(window.THREE){
+                      window.NITRO_THREE_REVISION=window.THREE.REVISION||'160';
+                      document.documentElement.dataset.threeRevision=window.NITRO_THREE_REVISION;
+                      ok(window.THREE);
+                    }else tryNext();
+                  };
+                  s.onerror=tryNext;
+                  document.head.appendChild(s);
+                };
+                tryNext();
+              });
+            }
+          })();
+          return window.__threePromise;
         }
         async function startVoxelFrontier3D(host,game){
           stopNativeGame();
@@ -3623,16 +3861,32 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
           const crowdColors=[0xffd85c,0x63b7ff,0xff6f7d,0xffffff];for(let i=0;i<110;i++){let side=i%2?-10.1:10.1,z=-13+Math.random()*26,y=2+Math.random()*3.3;let fan=new T.Mesh(new T.BoxGeometry(.25,.35,.25),new T.MeshLambertMaterial({color:crowdColors[i%4]}));fan.position.set(side,y,z);sc.add(fan)}
           for(const x of [-9,9])for(const z of [-12,12]){let pole=new T.Mesh(new T.CylinderGeometry(.08,.12,8,6),new T.MeshLambertMaterial({color:0x777f88}));pole.position.set(x,4,z);sc.add(pole);let light=new T.PointLight(0xeaf4ff,1.4,24);light.position.set(x,8,z);sc.add(light)}
           const board=new T.Mesh(new T.BoxGeometry(5,1.8,.25),new T.MeshLambertMaterial({color:0x11151b}));board.position.set(0,6,15);sc.add(board);
-          const p=new T.Mesh(new T.CapsuleGeometry(.55,.8,4,8),new T.MeshLambertMaterial({color:0x58b9ee}));p.position.set(0,1,-8);p.castShadow=true;sc.add(p);const cpu=new T.Mesh(new T.CapsuleGeometry(.55,.8,4,8),new T.MeshLambertMaterial({color:0xe46161}));cpu.position.set(0,1,7);cpu.castShadow=true;sc.add(cpu);const ball=new T.Mesh(new T.SphereGeometry(.42,18,14),new T.MeshStandardMaterial({color:0xffffff,roughness:.62,metalness:.02}));ball.position.set(0,.45,0);ball.castShadow=true;sc.add(ball);
-          const mate1=p.clone(),mate2=p.clone(),red2=cpu.clone();mate1.position.set(-5,1,-2);mate2.position.set(5,1,3);red2.position.set(-5,1,4);sc.add(mate1,mate2,red2);
+          function footballer(color){
+            const g=new T.Group(),mat=new T.MeshStandardMaterial({color,roughness:.72,metalness:.02});
+            const body=new T.Mesh(new T.CylinderGeometry(.48,.55,1.05,12),mat);body.position.y=.92;body.castShadow=true;g.add(body);
+            const head=new T.Mesh(new T.SphereGeometry(.31,14,10),new T.MeshStandardMaterial({color:0xd9a27f,roughness:.8}));head.position.y=1.72;head.castShadow=true;g.add(head);
+            const legMat=new T.MeshStandardMaterial({color:0x202733,roughness:.8});
+            for(const x of [-.2,.2]){const leg=new T.Mesh(new T.BoxGeometry(.18,.58,.2),legMat);leg.position.set(x,.3,0);leg.castShadow=true;g.add(leg)}
+            return g;
+          }
+          const p=footballer(0x58b9ee);p.position.set(0,0,-8);sc.add(p);
+          const cpu=footballer(0xe46161);cpu.position.set(0,0,7);sc.add(cpu);
+          const ball=new T.Mesh(new T.SphereGeometry(.42,24,18),new T.MeshStandardMaterial({color:0xffffff,roughness:.62,metalness:.02}));ball.position.set(0,.45,0);ball.castShadow=true;sc.add(ball);
+          const mate1=footballer(0x58b9ee),mate2=footballer(0x58b9ee),red2=footballer(0xe46161);mate1.position.set(-5,0,-2);mate2.position.set(5,0,3);red2.position.set(-5,0,4);sc.add(mate1,mate2,red2);
           const ballShadow=new T.Mesh(new T.CircleGeometry(.48,20),new T.MeshBasicMaterial({color:0x000000,transparent:true,opacity:.3}));ballShadow.rotation.x=-Math.PI/2;ballShadow.position.y=.035;sc.add(ballShadow);
           const adMat=new T.MeshBasicMaterial({color:0x1d89c9});for(let z=-10;z<=10;z+=4){let a=new T.Mesh(new T.BoxGeometry(.18,.75,3),adMat);a.position.set(-9.15,.4,z);sc.add(a);let b=a.clone();b.position.x=9.15;sc.add(b)}
 
           const goalMat=new T.MeshLambertMaterial({color:0xffffff});for(const z of [-13.6,13.6]){for(const x of [-2.6,2.6]){let q=new T.Mesh(new T.BoxGeometry(.2,2.3,.2),goalMat);q.position.set(x,1.15,z);sc.add(q)}let q=new T.Mesh(new T.BoxGeometry(5.4,.2,.2),goalMat);q.position.set(0,2.3,z);sc.add(q)}
           let bv=new T.Vector3(),blue=0,red=0;const keys={};const kd=e=>{keys[e.code]=true;if(e.code==='Space'&&p.position.distanceTo(ball.position)<1.6)bv.add(new T.Vector3(0,0,.48))},ku=e=>keys[e.code]=false;addEventListener('keydown',kd);addEventListener('keyup',ku);
-          function reset(){ball.position.set(0,.45,0);bv.set(0,0,0);p.position.set(0,1,-8);cpu.position.set(0,1,7);scoreEl.textContent=`BLUE ${blue} — ${red} RED`}
+          function reset(){ball.position.set(0,.45,0);bv.set(0,0,0);p.position.set(0,0,-8);cpu.position.set(0,0,7);scoreEl.textContent=`BLUE ${blue} — ${red} RED`}
           function loop(){if(stop)return;ren.setSize(st.clientWidth,st.clientHeight,false);cam.aspect=st.clientWidth/st.clientHeight;cam.updateProjectionMatrix();let v=new T.Vector3((keys.KeyD||keys.ArrowRight?1:0)-(keys.KeyA||keys.ArrowLeft?1:0),0,(keys.KeyS||keys.ArrowDown?1:0)-(keys.KeyW||keys.ArrowUp?1:0));if(v.lengthSq())p.position.add(v.normalize().multiplyScalar(.11));p.position.x=Math.max(-8.2,Math.min(8.2,p.position.x));p.position.z=Math.max(-13,Math.min(13,p.position.z));let c=ball.position.clone().sub(cpu.position).setY(0);if(c.length()>.7)cpu.position.add(c.normalize().multiplyScalar(.065));if(p.position.distanceTo(ball.position)<1.15)bv.add(ball.position.clone().sub(p.position).setY(0).normalize().multiplyScalar(.018));if(cpu.position.distanceTo(ball.position)<1.15)bv.add(ball.position.clone().sub(cpu.position).setY(0).normalize().multiplyScalar(.02));ball.position.add(bv);bv.multiplyScalar(.975);if(Math.abs(ball.position.x)>8.5){ball.position.x=Math.sign(ball.position.x)*8.5;bv.x*=-.7}if(ball.position.z>14){if(Math.abs(ball.position.x)<2.7){blue++;try{NitroArcade.flash('#65c8ff');NitroArcade.confetti(28)}catch(e){}}reset()}if(ball.position.z<-14){if(Math.abs(ball.position.x)<2.7){red++;try{NitroArcade.flash('#ff6b72')}catch(e){}}reset()}if(blue>=5||red>=5){scoreEl.textContent=(blue>=5?'BLUE':'RED')+' WINS — restarting';blue=red=0}ren.render(sc,cam);requestAnimationFrame(loop)}
-          activeNativeCleanup=()=>{stop=true;removeEventListener('keydown',kd);removeEventListener('keyup',ku);ren.dispose()};loop();
+          window.addEventListener('error',window.__nitroStadiumError=function stadiumError(ev){
+            if(stop)return;
+            const msg=String(ev?.error?.message||ev?.message||'Unknown renderer error');
+            console.error('[Stadium Strike]',ev?.error||ev);
+            if(st&&!st.querySelector('.stadium-error'))st.insertAdjacentHTML('beforeend',`<div class="stadium-error" style="position:absolute;inset:15px;z-index:20;padding:18px;border-radius:12px;background:#160b0bee;color:#fff;border:1px solid #ff7373"><b>STADIUM RENDER ERROR</b><br><small>${msg.replace(/[<>]/g,'')}</small></div>`);
+          });
+          activeNativeCleanup=()=>{stop=true;removeEventListener('keydown',kd);removeEventListener('keyup',ku);if(window.__nitroStadiumError)removeEventListener('error',window.__nitroStadiumError);ren.dispose()};loop();
         }
 
 
@@ -5510,5 +5764,55 @@ document.addEventListener("keydown",(e)=>{
 <style id="voxelCameraFixCSS">
 .voxel-deluxe .v3-controls-btn:after{content:" • MOUSE LOOK";opacity:.65}
 </style>
+
+
+
+
+<style id="nitroModern3DEngineCSS">
+.nitro-engine-badge{padding:3px 7px;border:1px solid #7ee7ff55;border-radius:999px;background:#59dfff12;color:#bdf5ff;letter-spacing:.08em;font-size:9px}
+.three3d-stage canvas{image-rendering:auto;filter:saturate(1.055) contrast(1.025);box-shadow:inset 0 0 0 1px #ffffff10,0 20px 65px #0009}
+.three3d-shell{background:radial-gradient(circle at 50% 0,#16263b 0,#070b12 58%,#020305 100%)}
+.three3d-bar{backdrop-filter:blur(12px);border-bottom:1px solid #ffffff18}
+</style>
+<script>
+/* Nitro modern-engine diagnostics. F3 debug panel can read this without changing any game API. */
+window.Nitro3DEngine={
+  targetRevision:'186',
+  get revision(){return window.NITRO_THREE_REVISION||window.THREE?.REVISION||'not loaded'},
+  get renderer(){return 'WebGL2 / modern Three.js module with r160 fallback'},
+  info(){return {target:this.targetRevision,revision:this.revision,renderer:this.renderer}}
+};
+</script>
+
+
+<script id="nitroFeatureRegistry">
+window.NitroArcadeFeatures = Object.freeze({
+  engine:["Three.js r186 ES-module engine","r160 compatibility fallback","VSM/soft shadow pipeline","modern color space","Neutral/ACES tone mapping","adaptive pixel ratio","renderer diagnostics"],
+  platform:["Nitro Core event bus","namespaced save system","audio manager","keyboard/gamepad input manager","FPS/quality monitor","achievements","missions","XP + levels","arcade coins","local leaderboards","stats","daily challenge","streaks","autosave","save backup/import","favorites","recent games","random game picker","search engine","theme manager","accessibility controls","notifications","generated sound effects","screen shake","camera flash/fade","confetti particles","debug panel","crash handler","fullscreen helper","pause manager","touch controls","session timer","secret unlock system","screensaver/attract mode","relative Nitro/Macro router","credits registry","Three.js utilities"],
+  games:["Voxel Wildlands discoveries/relics/caches/weather/beacons","International Airport Pilot world","Stadium Strike enhanced arena","School Nightmare three-lane prank escape runner"]
+});
+window.listNitroFeatures=()=>window.NitroArcadeFeatures;
+</script>
+
+
+<style id="enemiesAndYouCSS">
+.eayu{position:relative;width:100%;min-height:620px;background:#060912;border:1px solid #273958;border-radius:15px;overflow:hidden;color:#fff;font-family:Arial,sans-serif}
+.eayu-top,.eayu-bottom{height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;background:#080d18;border-bottom:1px solid #273958;letter-spacing:.05em}.eayu-bottom{height:38px;border-top:1px solid #273958;border-bottom:0;font-size:11px;color:#b9c9db}
+.eayu-top b{font-size:18px}.eayu-top small{font-size:9px;color:#67ddff}.eayu canvas{display:block;width:100%;aspect-ratio:16/9;background:#080914}
+.eayu-overlay{position:absolute;inset:52px 0 38px;display:grid;place-items:center;background:rgba(3,6,13,.72);backdrop-filter:blur(5px);z-index:5}
+.eayu-card{width:min(680px,88%);padding:28px;border-radius:18px;background:linear-gradient(145deg,#101a30,#080c17);border:1px solid #4a6b9b;box-shadow:0 25px 80px #000b;text-align:center}
+.eayu-card h2{font-size:34px;margin:8px 0}.eayu-card p{color:#b9c9dc;line-height:1.55}.ey-features{margin:18px 0;color:#70e4ff;font-weight:900;font-size:12px;letter-spacing:.12em}
+.eayu-card button,.ey-upgrades button{border:1px solid #63ddff;background:linear-gradient(135deg,#1678a5,#5d49bf);color:white;border-radius:12px;padding:13px 18px;font-weight:900;cursor:pointer}
+.ey-upgrades{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0}.ey-upgrades button{display:flex;min-height:100px;flex-direction:column;justify-content:center;gap:8px}.ey-upgrades small{opacity:.75}
+@media(max-width:700px){.ey-upgrades{grid-template-columns:1fr}.eayu-top{font-size:10px}.eayu-top b{font-size:14px}}
+</style>
+
+
+<style id="enemiesAndYouNamedRosterCSS">
+.ey-new-names{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0}
+.ey-new-names span{padding:17px 12px;border:1px solid #5fe2ff;border-radius:12px;background:linear-gradient(145deg,#132844,#17132f);font-size:20px;font-weight:1000;letter-spacing:.08em;box-shadow:inset 0 0 25px #49dfff12}
+.ey-round-card h2{margin-bottom:5px}
+</style>
+
 </body>
 </html>
