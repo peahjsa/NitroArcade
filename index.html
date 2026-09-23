@@ -2679,26 +2679,36 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
             <div class="eayu-top"><div><b>ENEMIES AND YOU</b><small> NITRO ARENA</small></div><div id="eyWave">WAVE 1 / 10</div><div id="eyScore">SCORE 000000</div></div>
             <canvas id="eyCanvas" width="1280" height="720"></canvas>
             <div class="eayu-bottom"><span id="eyStatus">HP 100 • ENERGY 100 • COINS 0</span><span>WASD move • MOUSE aim • CLICK / ARROWS energy shot • SHIFT dash • E special</span></div>
-            <div class="eayu-overlay" id="eyOverlay"><div class="eayu-card"><small>NITROARCADE ORIGINAL</small><h2>ENEMIES AND YOU</h2><p>Survive ten escalating arena waves. Every wave ends with an original boss. Collect coins, choose upgrades, and build a stronger character.</p><div class="ey-features">10 WAVES • 10 BOSSES • UPGRADES • COMBOS • POWER-UPS</div><button id="eyStart">ENTER ARENA</button></div></div>
+            <div class="eayu-overlay" id="eyOverlay"><div class="eayu-card"><small>NITROARCADE ORIGINAL</small><div class="ey-monster-banner">DARE TO MESS AROUNG WITH THESE MONSTERS?</div><h2>ENEMIES AND YOU</h2><p>Survive ten escalating arena waves. Every wave ends with an original boss. Collect coins, choose upgrades, and build a stronger character.</p><div class="ey-features">10 WAVES • 10 BOSSES • UPGRADES • COMBOS • POWER-UPS</div><button id="eyStart">ENTER ARENA</button></div></div>
           </div>`;
           const root=host.querySelector('.eayu'),cv=host.querySelector('#eyCanvas'),c=cv.getContext('2d'),overlay=host.querySelector('#eyOverlay'),waveEl=host.querySelector('#eyWave'),scoreEl=host.querySelector('#eyScore'),statusEl=host.querySelector('#eyStatus');
           let stopped=false,raf=0,last=performance.now(),keys={},mouse={x:640,y:360,down:false},wave=1,score=0,coins=0,combo=0,comboT=0,spawnT=0,bossSpawned=false,waveKills=0,waveGoal=10;
           let player={x:640,y:390,r:20,hp:100,maxHp:100,energy:100,speed:270,damage:18,fireRate:.19,fireT:0,dashT:0,inv:0,special:100};
-          let shots=[],enemies=[],particles=[],drops=[];
+          let shots=[],enemies=[],particles=[],drops=[],hazards=[],decoys=[]; player.freezeT=0;
           const enemyRoster=[
-            {name:'Bouncer',col:'#ff6d8a',type:'chaser'},{name:'Zip',col:'#66e3ff',type:'zigzag'},
-            {name:'Mochi',col:'#ffd45c',type:'orbiter'},{name:'Rivet',col:'#8dff8a',type:'chaser'},
-            {name:'Blink',col:'#b28cff',type:'zigzag'},{name:'Pebble',col:'#ff9f5c',type:'orbiter'},
-            {name:'Glitch',col:'#68f0c2',type:'zigzag'},{name:'Crank',col:'#f57dff',type:'chaser'},
-            {name:'Orbit',col:'#72a7ff',type:'orbiter'},{name:'Pogo',col:'#f6e36a',type:'zigzag'},
-            {name:'Nibbler',col:'#ff789b',type:'chaser'},{name:'Volt',col:'#67e7ff',type:'orbiter'},
-            {name:'Tumble',col:'#b5ff70',type:'zigzag'},{name:'Clank',col:'#ffa46c',type:'chaser'},
-            {name:'Pixel',col:'#d391ff',type:'orbiter'},{name:'Dash',col:'#7affd4',type:'zigzag'},
-            {name:'Boomer',col:'#ffcf62',type:'chaser'},{name:'Prism',col:'#77b6ff',type:'orbiter'},
-            {name:'Jinx',col:'#ff72d1',type:'zigzag'},{name:'Titan',col:'#91ff83',type:'chaser'}
+            {name:'Bouncer',col:'#ff6d8a',type:'chaser',power:'CHARGE',powerDesc:'Bursts straight toward you.'},
+            {name:'Zip',col:'#66e3ff',type:'zigzag',power:'SPEED DASH',powerDesc:'Suddenly accelerates.'},
+            {name:'Mochi',col:'#ffd45c',type:'orbiter',power:'SPLIT',powerDesc:'Splits into two mini Mochis.'},
+            {name:'Rivet',col:'#8dff8a',type:'chaser',power:'FRONT SHIELD',powerDesc:'Blocks shots from the front.'},
+            {name:'Blink',col:'#b28cff',type:'zigzag',power:'CLOAK',powerDesc:'Turns nearly invisible.'},
+            {name:'Pebble',col:'#ff9f5c',type:'orbiter',power:'SHOCKWAVE',powerDesc:'Sends out a stun shockwave.'},
+            {name:'Glitch',col:'#68f0c2',type:'zigzag',power:'TELEPORT',powerDesc:'Jumps around the arena.'},
+            {name:'Crank',col:'#f57dff',type:'chaser',power:'BLAST ZONE',powerDesc:'Drops timed blast zones.'},
+            {name:'Orbit',col:'#72a7ff',type:'orbiter',power:'SATELLITES',powerDesc:'Fires orbiting energy bolts.'},
+            {name:'Pogo',col:'#f6e36a',type:'zigzag',power:'POUNCE',powerDesc:'Leaps toward your position.'},
+            {name:'Nibbler',col:'#ff789b',type:'chaser',power:'DRAIN',powerDesc:'Steals HP on contact.'},
+            {name:'Volt',col:'#67e7ff',type:'orbiter',power:'CHAIN SPARK',powerDesc:'Fires electric sparks.'},
+            {name:'Tumble',col:'#b5ff70',type:'zigzag',power:'ROLL',powerDesc:'Rolls in a fast straight line.'},
+            {name:'Clank',col:'#ffa46c',type:'chaser',power:'MAGNET',powerDesc:'Pulls you toward itself.'},
+            {name:'Pixel',col:'#d391ff',type:'orbiter',power:'DECOYS',powerDesc:'Creates fake copies.'},
+            {name:'Dash',col:'#7affd4',type:'zigzag',power:'ENERGY TRAIL',powerDesc:'Leaves dangerous trails.'},
+            {name:'Boomer',col:'#ffcf62',type:'chaser',power:'FINAL BLAST',powerDesc:'Creates a blast when defeated.'},
+            {name:'Prism',col:'#77b6ff',type:'orbiter',power:'PRISM SHOT',powerDesc:'Fires shots in several directions.'},
+            {name:'Jinx',col:'#ff72d1',type:'zigzag',power:'FREEZE',powerDesc:'Freezes your movement briefly.'},
+            {name:'Titan',col:'#91ff83',type:'chaser',power:'FORTRESS',powerDesc:'Becomes temporarily invulnerable.'}
           ];
           function unlockedEnemyRoster(){return enemyRoster.slice(0,Math.min(enemyRoster.length,wave*2))}
-          function newestEnemyNames(){return enemyRoster.slice((wave-1)*2,wave*2).map(e=>e.name)}
+          function newestEnemies(){return enemyRoster.slice((wave-1)*2,wave*2)}
           const colors=['#66e3ff','#ff6d8a','#ffd45c','#8dff8a','#b28cff'];
           const clamp=(v,a,b)=>Math.max(a,Math.min(b,v)),rnd=(a,b)=>a+Math.random()*(b-a),dist=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
           function circle(x,y,r,col){c.fillStyle=col;c.beginPath();c.arc(x,y,r,0,Math.PI*2);c.fill()}
@@ -2711,14 +2721,14 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
             const scale=boss?2.1:1, base=30+wave*7;
             let character=null;
             if(!boss){const pool=unlockedEnemyRoster();character=pool[Math.floor(Math.random()*pool.length)];type=character.type}
-            enemies.push({x,y,r:(boss?38:18)*scale,hp:(boss?base*12:base),maxHp:(boss?base*12:base),speed:(boss?55:70)+wave*5,type,boss,phase:0,shoot:rnd(.5,1.4),name:boss?bossName():character.name,col:boss?'#ffb84d':character.col});
+            enemies.push({x,y,r:(boss?38:18)*scale,hp:(boss?base*12:base),maxHp:(boss?base*12:base),speed:(boss?55:70)+wave*5,type,boss,phase:0,shoot:rnd(.5,1.4),abilityT:rnd(.7,2.0),abilityOn:0,shield:0,cloaked:false,splitLevel:0,name:boss?bossName():character.name,col:boss?'#ffb84d':character.col,power:boss?'BOSS':character.power,powerDesc:boss?'':character.powerDesc});
           }
           function startWave(){
-            enemies=[];shots=[];drops=[];waveKills=0;bossSpawned=false;spawnT=.4;waveGoal=8+wave*2;
+            enemies=[];shots=[];drops=[];hazards=[];decoys=[];waveKills=0;bossSpawned=false;spawnT=.4;waveGoal=8+wave*2;
             waveEl.textContent=`WAVE ${wave} / 10`;
-            const added=newestEnemyNames();
+            const added=newestEnemies();
             overlay.style.display='grid';
-            overlay.innerHTML=`<div class="eayu-card ey-round-card"><small>WAVE ${wave} / 10</small><h2>NEW ENEMIES</h2><div class="ey-new-names">${added.map(n=>`<span>${n}</span>`).join('')}</div><p>${wave===1?'Meet your first two opponents.':'Two new characters have joined the arena.'}</p><button id="eyWaveGo">START WAVE ${wave}</button></div>`;
+            overlay.innerHTML=`<div class="eayu-card ey-round-card"><small>WAVE ${wave} / 10</small><div class="ey-monster-banner mini">DARE TO MESS AROUNG WITH THESE MONSTERS?</div><h2>2 NEW ENEMIES</h2><div class="ey-new-names">${added.map(n=>`<span><b>${n.name}</b><em>POWER: ${n.power}</em><small>${n.powerDesc}</small></span>`).join('')}</div><p>${wave===1?'Learn their powers before they learn you.':'The arena just got more dangerous.'}</p><button id="eyWaveGo">START WAVE ${wave}</button></div>`;
             overlay.querySelector('#eyWaveGo').onclick=()=>{overlay.style.display='none'};
 
           }
@@ -2745,7 +2755,7 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
           }
           function update(dt){
             let mx=(keys.KeyD?1:0)-(keys.KeyA?1:0),my=(keys.KeyS?1:0)-(keys.KeyW?1:0),ml=Math.hypot(mx,my)||1;
-            player.x=clamp(player.x+mx/ml*player.speed*dt,28,1252);player.y=clamp(player.y+my/ml*player.speed*dt,95,690);
+            player.freezeT=Math.max(0,player.freezeT-dt);let moveScale=player.freezeT>0?0.12:1;player.x=clamp(player.x+mx/ml*player.speed*moveScale*dt,28,1252);player.y=clamp(player.y+my/ml*player.speed*moveScale*dt,95,690);
             player.fireT=Math.max(0,player.fireT-dt);player.dashT=Math.max(0,player.dashT-dt);player.inv=Math.max(0,player.inv-dt);player.special=Math.min(100,player.special+dt*3.2);
             if((mouse.down)&&player.fireT<=0)shoot(mouse.x-player.x,mouse.y-player.y);
             let ax=(keys.ArrowRight?1:0)-(keys.ArrowLeft?1:0),ay=(keys.ArrowDown?1:0)-(keys.ArrowUp?1:0);if((ax||ay)&&player.fireT<=0)shoot(ax,ay);
@@ -2756,17 +2766,46 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
             enemies.forEach(e=>{
               let dx=player.x-e.x,dy=player.y-e.y,l=Math.hypot(dx,dy)||1;e.phase+=dt;
               let wob=e.type==='zigzag'?Math.sin(e.phase*6)*85:0;
-              e.x+=(dx/l*e.speed + -dy/l*wob)*dt;e.y+=(dy/l*e.speed + dx/l*wob)*dt;
+              e.abilityT-=dt;e.abilityOn=Math.max(0,e.abilityOn-dt);
+              let speedBoost=1;
+              if(!e.boss){
+                if(e.name==='Bouncer'&&e.abilityT<=0){e.abilityOn=.42;e.abilityT=2.4;burst(e.x,e.y,e.col,8)}
+                if(e.name==='Zip'&&e.abilityT<=0){e.abilityOn=.7;e.abilityT=2.1}
+                if(e.name==='Blink'){if(e.abilityT<=0){e.cloaked=!e.cloaked;e.abilityT=e.cloaked?1.45:2.0}}
+                if(e.name==='Rivet'){e.shield=(Math.sin(e.phase*1.7)>-.15)?1:0}
+                if(e.name==='Glitch'&&e.abilityT<=0){e.x=clamp(player.x+rnd(-250,250),45,1235);e.y=clamp(player.y+rnd(-210,210),105,680);e.abilityT=2.5;burst(e.x,e.y,e.col,12)}
+                if(e.name==='Crank'&&e.abilityT<=0){hazards.push({type:'blast',x:e.x,y:e.y,r:12,maxR:72,t:1.15,hit:false,col:e.col});e.abilityT=2.8}
+                if(e.name==='Pebble'&&e.abilityT<=0&&l<230){hazards.push({type:'shock',x:e.x,y:e.y,r:12,maxR:150,t:.75,hit:false,col:e.col});e.abilityT=3.0}
+                if(e.name==='Orbit'&&e.abilityT<=0){for(let a=0;a<Math.PI*2;a+=Math.PI/2)shots.push({x:e.x,y:e.y,vx:Math.cos(a)*180,vy:Math.sin(a)*180,r:6,damage:-8,enemy:true,life:2.4});e.abilityT=2.6}
+                if(e.name==='Pogo'&&e.abilityT<=0){e.x+=dx/l*115;e.y+=dy/l*115;e.abilityT=2.3;burst(e.x,e.y,e.col,8)}
+                if(e.name==='Volt'&&e.abilityT<=0){let a=Math.atan2(dy,dx);shots.push({x:e.x,y:e.y,vx:Math.cos(a)*310,vy:Math.sin(a)*310,r:7,damage:-9,enemy:true,life:2});e.abilityT=1.9}
+                if(e.name==='Tumble'&&e.abilityT<=0){e.abilityOn=.85;e.abilityT=2.6}
+                if(e.name==='Clank'&&l<250){player.x=clamp(player.x-dx/l*34*dt,28,1252);player.y=clamp(player.y-dy/l*34*dt,95,690)}
+                if(e.name==='Pixel'&&e.abilityT<=0){decoys.push({x:e.x+70,y:e.y-30,t:1.8,col:e.col},{x:e.x-60,y:e.y+45,t:1.8,col:e.col});e.abilityT=3.1}
+                if(e.name==='Dash'&&e.abilityT<=0){e.abilityOn=.8;e.abilityT=2.3}
+                if(e.name==='Prism'&&e.abilityT<=0){for(let a=0;a<Math.PI*2;a+=Math.PI/3)shots.push({x:e.x,y:e.y,vx:Math.cos(a)*220,vy:Math.sin(a)*220,r:6,damage:-8,enemy:true,life:2.5});e.abilityT=2.7}
+                if(e.name==='Jinx'&&e.abilityT<=0){let a=Math.atan2(dy,dx);shots.push({x:e.x,y:e.y,vx:Math.cos(a)*240,vy:Math.sin(a)*240,r:9,damage:-5,enemy:true,freeze:true,life:2.6});e.abilityT=2.9}
+                if(e.name==='Titan'&&e.abilityT<=0){e.abilityOn=1.25;e.abilityT=3.5;burst(e.x,e.y,'#ffffff',12)}
+                speedBoost=(e.name==='Bouncer'&&e.abilityOn>0)?3.0:(e.name==='Zip'&&e.abilityOn>0)?2.35:(e.name==='Tumble'&&e.abilityOn>0)?2.0:(e.name==='Dash'&&e.abilityOn>0)?2.15:1;
+                if(e.name==='Dash'&&e.abilityOn>0&&Math.random()<dt*12)hazards.push({type:'trail',x:e.x,y:e.y,r:22,maxR:22,t:.8,hit:false,col:e.col});
+              }
+              e.x+=(dx/l*e.speed*speedBoost + -dy/l*wob)*dt;e.y+=(dy/l*e.speed*speedBoost + dx/l*wob)*dt;
               if(e.boss){e.shoot-=dt;if(e.shoot<=0){for(let a=0;a<Math.PI*2;a+=Math.PI/5)shots.push({x:e.x,y:e.y,vx:Math.cos(a)*210,vy:Math.sin(a)*210,r:8,damage:-10,enemy:true,life:3});e.shoot=Math.max(.55,1.25-wave*.045)}}
-              if(dist(e,player)<e.r+player.r&&player.inv<=0){player.hp-=e.boss?18:10;player.inv=.8;burst(player.x,player.y,'#ff6d7a',16);if(player.hp<=0)gameOver()}
+              if(dist(e,player)<e.r+player.r&&player.inv<=0){let hit=e.boss?18:10;if(e.name==='Nibbler'){hit=8;e.hp=Math.min(e.maxHp,e.hp+14)}player.hp-=hit;player.inv=.8;burst(player.x,player.y,'#ff6d7a',16);if(player.hp<=0)gameOver()}
             });
             shots.forEach(s=>{
-              if(s.enemy){if(dist(s,player)<s.r+player.r&&player.inv<=0){player.hp-=10;player.inv=.7;s.life=0;if(player.hp<=0)gameOver()}return}
-              enemies.forEach(e=>{if(s.life>0&&e.hp>0&&dist(s,e)<s.r+e.r){e.hp-=s.damage;s.life=0;burst(s.x,s.y,e.col,5);if(e.hp<=0){score+=e.boss?1000:100+combo*10;coins+=e.boss?20:1;combo++;comboT=2.2;player.special=Math.min(100,player.special+(e.boss?25:4));burst(e.x,e.y,e.col,e.boss?35:14);if(!e.boss)waveKills++;if(Math.random()<.13)drops.push({x:e.x,y:e.y,type:Math.random()<.55?'heal':'coin',r:10});if(e.boss)setTimeout(showUpgrade,650)}}})
+              if(s.enemy){if(dist(s,player)<s.r+player.r&&player.inv<=0){player.hp-=s.freeze?5:10;if(s.freeze)player.freezeT=1.35;player.inv=.7;s.life=0;if(player.hp<=0)gameOver()}return}
+              enemies.forEach(e=>{if(s.life>0&&e.hp>0&&dist(s,e)<s.r+e.r){let blocked=(e.name==='Rivet'&&e.shield)||(e.name==='Titan'&&e.abilityOn>0);if(blocked){s.life=0;burst(s.x,s.y,'#ffffff',4);return}e.hp-=s.damage;s.life=0;burst(s.x,s.y,e.col,5);if(e.hp<=0){
+                  if(e.name==='Mochi'&&e.splitLevel<1){for(let k=0;k<2;k++)enemies.push({x:e.x+rnd(-25,25),y:e.y+rnd(-25,25),r:11,hp:Math.max(12,e.maxHp*.28),maxHp:Math.max(12,e.maxHp*.28),speed:e.speed*1.25,type:'chaser',boss:false,phase:0,shoot:9,abilityT:9,abilityOn:0,shield:0,cloaked:false,splitLevel:1,name:'Mini Mochi',col:e.col,power:'SPLIT',powerDesc:''})}
+                  if(e.name==='Boomer')hazards.push({type:'blast',x:e.x,y:e.y,r:10,maxR:105,t:.8,hit:false,col:e.col});
+                  score+=e.boss?1000:100+combo*10;coins+=e.boss?20:1;combo++;comboT=2.2;player.special=Math.min(100,player.special+(e.boss?25:4));burst(e.x,e.y,e.col,e.boss?35:14);if(!e.boss)waveKills++;if(Math.random()<.13)drops.push({x:e.x,y:e.y,type:Math.random()<.55?'heal':'coin',r:10});if(e.boss)setTimeout(showUpgrade,650)}}})
             });
             drops.forEach(d=>{if(dist(d,player)<34){if(d.type==='heal')player.hp=Math.min(player.maxHp,player.hp+18);else coins+=5;d.dead=true}});
             particles.forEach(p=>{p.x+=p.vx*dt;p.y+=p.vy*dt;p.vx*=.96;p.vy*=.96;p.life-=dt});
+            hazards.forEach(z=>{z.t-=dt;if(z.type==='shock'||z.type==='blast')z.r+=(z.maxR-z.r)*Math.min(1,dt*7);if(!z.hit&&dist(z,player)<z.r+player.r){z.hit=true;if(z.type==='shock'){player.freezeT=Math.max(player.freezeT,.65);player.hp-=6}else if(z.type==='blast'){player.hp-=12;player.inv=.55}else if(z.type==='trail'){player.hp-=5;player.inv=.35}if(player.hp<=0)gameOver()}});
+            decoys.forEach(d=>d.t-=dt);
             comboT-=dt;if(comboT<=0)combo=0;
+            hazards=hazards.filter(z=>z.t>0);decoys=decoys.filter(d=>d.t>0);
             shots=shots.filter(s=>s.life>0&&s.x>-50&&s.x<1330&&s.y>40&&s.y<770);enemies=enemies.filter(e=>e.hp>0);particles=particles.filter(p=>p.life>0);drops=drops.filter(d=>!d.dead);
             scoreEl.textContent='SCORE '+String(score).padStart(6,'0');statusEl.textContent=`HP ${Math.ceil(player.hp)}/${player.maxHp} • SPECIAL ${Math.floor(player.special)} • COINS ${coins} • COMBO x${Math.max(1,combo)}`;
           }
@@ -2776,9 +2815,11 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
             c.fillStyle='#17284a';c.fillRect(0,80,1280,8);c.fillRect(0,704,1280,16);
             drops.forEach(d=>{circle(d.x,d.y,13,d.type==='heal'?'#68ff9b':'#ffd55f');txt(d.type==='heal'?'+':'¢',d.x,d.y+5,13,'#172018','center')});
             particles.forEach(p=>{c.globalAlpha=Math.max(0,p.life*1.7);circle(p.x,p.y,3,p.col);c.globalAlpha=1});
-            shots.forEach(s=>circle(s.x,s.y,s.r,s.enemy?'#ff697e':'#7cecff'));
+            hazards.forEach(z=>{c.save();c.globalAlpha=Math.max(.15,Math.min(.75,z.t));c.strokeStyle=z.col;c.lineWidth=z.type==='trail'?8:5;c.beginPath();c.arc(z.x,z.y,z.r,0,Math.PI*2);c.stroke();c.restore()});
+            decoys.forEach(d=>{c.save();c.globalAlpha=Math.min(.45,d.t);c.fillStyle=d.col;c.beginPath();c.roundRect(d.x-18,d.y-18,36,36,7);c.fill();txt('Pixel?',d.x,d.y-28,10,'#ddd','center');c.restore()});
+            shots.forEach(s=>circle(s.x,s.y,s.r,s.freeze?'#a9efff':s.enemy?'#ff697e':'#7cecff'));
             enemies.forEach(e=>{
-              c.save();c.translate(e.x,e.y);
+              c.save();c.translate(e.x,e.y);if(e.cloaked)c.globalAlpha=.16;
               if(e.boss){
                 c.fillStyle=e.col;c.beginPath();for(let i=0;i<8;i++){let a=i*Math.PI/4,r=i%2?e.r*.72:e.r;c.lineTo(Math.cos(a)*r,Math.sin(a)*r)}c.closePath();c.fill();
                 txt(e.name,0,-e.r-18,13,'#fff','center');
@@ -2786,14 +2827,14 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
                 c.fillStyle=e.col;c.beginPath();c.roundRect(-e.r,-e.r,e.r*2,e.r*2,7);c.fill();
                 circle(-6,-3,3,'#10131d');circle(6,-3,3,'#10131d');
                 c.strokeStyle='rgba(255,255,255,.55)';c.lineWidth=2;c.beginPath();c.arc(0,4,7,.15,Math.PI-.15);c.stroke();
-                txt(e.name,0,-e.r-9,11,'#fff','center');
+                txt(e.name,0,-e.r-12,11,'#fff','center');txt(e.power,0,e.r+17,8,e.col,'center');
               }
               c.restore();if(e.boss){c.fillStyle='#29151a';c.fillRect(e.x-80,e.y+e.r+15,160,8);c.fillStyle='#ff735f';c.fillRect(e.x-80,e.y+e.r+15,160*(e.hp/e.maxHp),8)}
             });
             c.save();c.translate(player.x,player.y);if(player.inv>0)c.globalAlpha=.45+.35*Math.sin(performance.now()*.03);circle(0,0,player.r,'#58c8ff');circle(-7,-4,4,'#08131e');circle(7,-4,4,'#08131e');c.strokeStyle='#d8f8ff';c.lineWidth=4;c.beginPath();c.arc(0,0,27,-Math.PI*.8,Math.PI*.8);c.stroke();c.restore();
             c.fillStyle='#17202d';c.fillRect(24,104,300,18);c.fillStyle='#62e68c';c.fillRect(24,104,300*(player.hp/player.maxHp),18);txt('HP',28,99,11,'#bfead0');
             c.fillStyle='#17202d';c.fillRect(24,140,300,12);c.fillStyle='#8e7dff';c.fillRect(24,140,300*(player.special/100),12);txt('SPECIAL [E]',28,136,10,'#d5ceff');
-            txt(`ENEMIES ${Math.max(0,waveGoal-waveKills)}${bossSpawned?' • BOSS ACTIVE':''}`,1250,116,14,'#fff','right');
+            txt(`ENEMIES ${Math.max(0,waveGoal-waveKills)}${bossSpawned?' • BOSS ACTIVE':''}`,1250,116,14,'#fff','right');if(player.freezeT>0)txt('❄ FROZEN',640,165,20,'#bcefff','center');
             if(combo>1)txt(`COMBO x${combo}`,640,118,24,'#ffd45c','center');
           }
           function loop(now){if(stopped)return;let dt=Math.min(.033,(now-last)/1000);last=now;update(dt);draw();raf=requestAnimationFrame(loop)}
@@ -5812,6 +5853,16 @@ window.listNitroFeatures=()=>window.NitroArcadeFeatures;
 .ey-new-names{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0}
 .ey-new-names span{padding:17px 12px;border:1px solid #5fe2ff;border-radius:12px;background:linear-gradient(145deg,#132844,#17132f);font-size:20px;font-weight:1000;letter-spacing:.08em;box-shadow:inset 0 0 25px #49dfff12}
 .ey-round-card h2{margin-bottom:5px}
+</style>
+
+
+<style id="enemiesAndYouPowersCSS">
+.ey-monster-banner{margin:10px auto 14px;padding:11px 18px;max-width:680px;border:2px solid #ff596f;border-radius:10px;background:linear-gradient(90deg,#45101c,#24102f,#45101c);box-shadow:0 0 28px #ff496044,inset 0 0 18px #ff496022;color:#fff;font-weight:1000;letter-spacing:.12em;text-align:center;text-shadow:0 0 10px #ff5a6f}
+.ey-monster-banner.mini{font-size:12px;margin-bottom:12px}
+.ey-new-names span{display:flex!important;flex-direction:column;align-items:center;justify-content:center;min-height:108px}
+.ey-new-names span b{font-size:21px}
+.ey-new-names span em{font-style:normal;font-size:12px;color:#71e7ff;margin-top:7px;letter-spacing:.08em}
+.ey-new-names span small{display:block;margin-top:5px;color:#c9d1e5;font-size:11px;line-height:1.25}
 </style>
 
 </body>
