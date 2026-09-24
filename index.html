@@ -1162,6 +1162,8 @@
         @media(prefers-reduced-motion:reduce){.viz-cube,.viz-orbit,.viz-wave i{animation:none!important}}
 
 
+        .trophy-guide{margin-top:12px;max-width:650px;padding:10px 12px;border:1px solid rgba(255,212,77,.25);border-radius:9px;background:rgba(255,212,77,.05);display:flex;gap:9px;align-items:flex-start}.trophy-guide b{color:#ffd44d;font-size:10px;white-space:nowrap}.trophy-guide span{color:var(--muted);font-size:10px;line-height:1.45}.toy-art svg{display:block;margin:auto;filter:drop-shadow(0 8px 16px rgba(0,0,0,.3))}
+
         /* ===== ABOUT PAGE ===== */
         .about-page{display:none;min-height:720px;padding:58px 0 90px}
         .about-page.active{display:block}
@@ -1684,10 +1686,11 @@ body.theme-matrix{
 #macroArcadeLink:hover{filter:brightness(1.12);transform:translateY(-2px)}
 
 </style>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
-<button id="macroArcadeLink" type="button" onclick="window.location.href='https://peahjsa.github.io/NitroArcade/macroarcade.html'">↗ VISIT MACRO ARCADE</button>
+<button id="macroArcadeLink" type="button" onclick="window.location.href='/macroarcade'">↗ VISIT MACRO ARCADE</button>
 
     <header class="navbar">
         <div class="brand">
@@ -1725,7 +1728,7 @@ body.theme-matrix{
             <button class="btn" onclick="showArcadePart('big')">Big Games</button>
             <button class="btn" onclick="showArcadePart('challenge')">Challenge</button>
             <button class="btn" onclick="openAboutPage(event)">About</button>
-            <button class="btn btn-primary" onclick="openLogin()">Log In</button>
+            <button class="btn btn-primary" id="nitroAccountBtn" onclick="openLogin()">Log In</button>
         </div>
     </header>
 
@@ -1882,13 +1885,24 @@ body.theme-matrix{
     </main>
 
     <div class="modal-overlay" id="loginModal">
-        <div class="modal">
-            <h3>Log in to NitroArcade</h3>
-            <input type="text" id="usernameInput" placeholder="Username">
-            <input type="password" placeholder="Password">
-            <div class="modal-row">
+        <div class="modal nitro-auth-modal">
+            <h3 id="nitroAuthTitle">NitroArcade Account</h3>
+            <p id="nitroAuthStatus" class="nitro-auth-status">Log in or create an account to join the online arcade.</p>
+            <input type="text" id="usernameInput" placeholder="Username (used when signing up)" maxlength="24" autocomplete="username">
+            <input type="email" id="nitroEmailInput" placeholder="Email" autocomplete="email">
+            <input type="password" id="nitroPasswordInput" placeholder="Password" minlength="6" autocomplete="current-password">
+            <div class="nitro-auth-user" id="nitroSignedInPanel" hidden>
+                <strong id="nitroSignedInName">Signed in</strong>
+                <span id="nitroSignedInEmail"></span>
+            </div>
+            <div class="modal-row" id="nitroAuthActions">
                 <button class="btn" onclick="closeLogin()">Cancel</button>
+                <button class="btn" onclick="nitroSignUp()">Create Account</button>
                 <button class="btn btn-primary" onclick="handleLogin()">Log In</button>
+            </div>
+            <div class="modal-row" id="nitroSignedInActions" hidden>
+                <button class="btn" onclick="closeLogin()">Close</button>
+                <button class="btn btn-primary" onclick="nitroSignOut()">Log Out</button>
             </div>
         </div>
     </div>
@@ -1896,10 +1910,12 @@ body.theme-matrix{
     <div class="modal-overlay" id="aboutModal">
         <div class="modal">
             <h3>About NitroArcade</h3>
-            <p style="color:var(--muted);font-size:13px;line-height:1.6;margin-bottom:16px;">
-                NitroArcade is a browser-based arcade platform project. This version demonstrates
-                a polished game library interface and Flash compatibility through Ruffle.
-            </p>
+            <div style="color:var(--muted);font-size:12px;line-height:1.7;margin-bottom:16px;display:grid;gap:10px;">
+                <p><strong style="color:var(--text)">NitroArcade</strong> is an original browser arcade built as a connected game platform rather than a single game. It grew from the earlier CyberArcade, CrazyArcade and UltraArcade projects into the current Small Games, Big Games and Challenge system.</p>
+                <p>The arcade includes original native games, larger 3D experiences, Hacker Challenge secrets, the hidden Windosill reward through Ruffle, themes, achievements, statistics, recent games, the Prize Toy Shop, Player Hub and shared platform systems.</p>
+                <p><strong style="color:var(--text)">NitroArcade Online</strong> adds account sign-up/login and community comments using Supabase. Public browser code uses only the project's publishable key; database permissions are protected by Row Level Security.</p>
+                <p><strong style="color:var(--text)">Project team:</strong> Prabhav, Zayaan and Shaun. NitroArcade also links to its partner arcade, MacroArcade.</p>
+            </div>
             <div class="modal-row">
                 <button class="btn btn-primary" onclick="closeAbout()">Close</button>
             </div>
@@ -1981,6 +1997,7 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
         const ultraTheDayGame={id:'ultra_the_day',name:'School Nightmare',category:'arcade',type:'native',nativeGame:'specialOriginal',engine:'theday',desc:'3D school adventure • race for the last parking slot • escape school • football finale • Original NitroArcade'};
         const ultraNightWatchGame={id:'ultra_night_watch',name:'Night Watch',category:'arcade',type:'native',nativeGame:'specialOriginal',engine:'nightwatch',desc:'Polished security-night survival • camera network • doors • lights • power management • roaming mascots • Original NitroArcade'};
         const enemiesAndYouGame={id:'enemies_and_you',name:'Enemies and You',category:'arcade',type:'native',nativeGame:'specialOriginal',engine:'enemiesyou',desc:'Arena survival • 10 waves • bosses • upgrades • original NitroArcade'};
+        const techQuizGame={id:'nitro_tech_quiz',name:'Tech Quiz',category:'quiz',type:'native',nativeGame:'specialOriginal',engine:'techquiz',desc:'Computers • AI • web • hardware • cybersecurity • NitroArcade Original'};
         gamesDatabase.push(ultraBlockGame, ultraRunnerGame, ultraVoxelGame, ultraFootballGame, ultraFlightGame, ultraMazeGame, ultraTheDayGame, ultraNightWatchGame, enemiesAndYouGame);
 
 
@@ -2202,13 +2219,13 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
 
         function addSpecialOriginalCards(){
             const grid=document.getElementById('gameGrid'); if(!grid)return;
-            [ultraBlockGame,ultraRunnerGame,ultraVoxelGame,ultraFootballGame,ultraFlightGame,ultraMazeGame,ultraTheDayGame,ultraNightWatchGame,enemiesAndYouGame].forEach((game,i)=>{
+            [ultraBlockGame,ultraRunnerGame,ultraVoxelGame,ultraFootballGame,ultraFlightGame,ultraMazeGame,ultraTheDayGame,ultraNightWatchGame,enemiesAndYouGame,techQuizGame].forEach((game,i)=>{
                 const card=document.createElement('article');
                 card.className='game-card'; card.dataset.gameId=game.id; card.dataset.arcadePart=['voxel3d','football3d','flight3d','brickmaze3d','theday','nightwatch','enemiesyou'].includes(game.engine)?'big':'small'; card.onclick=()=>launchGame(game);
                 card.innerHTML=`<button class="favorite-btn" data-fav-id="${game.id}" title="Favorite">☆</button>
                 <div class="thumb special-original-thumb ${i?'runner-thumb':'burst-thumb'}">
                     <div class="thumb-label">NITROARCADE ORIGINAL</div>
-                    <div class="special-card-icon">${['▦','⇧','◫','⚽','✈','▥','🌅','📹','⚡'][i]}</div><div class="play-pill">▶</div>
+                    <div class="special-card-icon">${['▦','⇧','◫','⚽','✈','▥','🌅','📹','⚡','⌘'][i]||'⌘'}</div><div class="play-pill">▶</div>
                 </div>
                 <div class="game-meta"><div><h3>${game.name}</h3><p>${game.desc}</p></div>
                 <div class="meta-right"><span class="play-count" data-count-id="${game.id}">0 plays</span><div class="tag">PLAY NOW</div></div></div>`;
@@ -2453,7 +2470,7 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
             {id:'rubber_duck',name:'Pixel Duck',icon:'🐤',price:3,desc:'A tiny arcade desk duck.'},
             {id:'robot',name:'Pocket Bot',icon:'🤖',price:5,desc:'A miniature NitroArcade robot.'},
             {id:'ufo',name:'Mini UFO',icon:'🛸',price:7,desc:'Definitely from somewhere suspicious.'},
-            {id:'bear',name:'Arcade Bear',icon:'🧸',price:8,desc:'Soft, collectible and extremely serious.'},
+            {id:'bear',name:'Arcade Bear',icon:'🐻',price:8,desc:'Soft, collectible and extremely serious.',art:`<svg viewBox="0 0 120 120" width="82" height="82" aria-label="Arcade Bear"><circle cx="32" cy="30" r="18" fill="#8b5a3c"/><circle cx="88" cy="30" r="18" fill="#8b5a3c"/><circle cx="60" cy="58" r="42" fill="#a86f48"/><circle cx="46" cy="52" r="5" fill="#111"/><circle cx="74" cy="52" r="5" fill="#111"/><ellipse cx="60" cy="70" rx="18" ry="14" fill="#d6a277"/><circle cx="60" cy="66" r="5" fill="#17120f"/><path d="M52 76 Q60 83 68 76" fill="none" stroke="#17120f" stroke-width="4" stroke-linecap="round"/><rect x="29" y="91" width="62" height="20" rx="10" fill="#a86f48"/></svg>`},
             {id:'rocket',name:'Desk Rocket',icon:'🚀',price:10,desc:'For very important imaginary launches.'},
             {id:'dino',name:'Neon Dino',icon:'🦖',price:12,desc:'A prehistoric prize-counter legend.'},
             {id:'crystal',name:'Mystery Crystal',icon:'💎',price:15,desc:'Nobody knows what it actually does.'},
@@ -2464,7 +2481,7 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
         function renderToyShop(){
             const balance=getPrizes(),owned=ownedToys(),grid=document.getElementById('toyGrid'),inv=document.getElementById('toyInventory');
             const sb=document.getElementById('shopBalance');if(sb)sb.textContent=balance;
-            if(grid)grid.innerHTML=TOYS.map(t=>{const has=owned.includes(t.id);return `<article class="toy-card"><div class="toy-art">${t.icon}</div><h3>${t.name}</h3><p>${t.desc}</p><div class="toy-price">🏆 ${t.price}</div><button class="toy-buy ${has?'toy-owned':''}" data-toy="${t.id}" ${has||balance<t.price?'disabled':''}>${has?'OWNED':balance<t.price?'NEED '+(t.price-balance)+' MORE':'BUY TOY'}</button></article>`}).join('');
+            if(grid)grid.innerHTML=TOYS.map(t=>{const has=owned.includes(t.id);return `<article class="toy-card"><div class="toy-art">${t.art||t.icon}</div><h3>${t.name}</h3><p>${t.desc}</p><div class="toy-price">🏆 ${t.price}</div><button class="toy-buy ${has?'toy-owned':''}" data-toy="${t.id}" ${has||balance<t.price?'disabled':''}>${has?'OWNED':balance<t.price?'NEED '+(t.price-balance)+' MORE':'BUY TOY'}</button></article>`}).join('');
             grid?.querySelectorAll('[data-toy]').forEach(b=>b.addEventListener('click',()=>buyToy(b.dataset.toy)));
             if(inv)inv.innerHTML=owned.length?owned.map(id=>{const t=TOYS.find(x=>x.id===id);return t?`<span class="inventory-item">${t.icon} ${t.name}</span>`:''}).join(''):'<span class="inventory-item">No toys yet — earn some prizes!</span>';
         }
@@ -2636,7 +2653,7 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
                     opts.innerHTML=`<button class="nova-option" id="novaAgain">PLAY AGAIN</button>`;
                     msg.textContent=score===total?'PERFECT CLEAR!':score>=Math.ceil(total*.7)?'Strong clear!':'Clear — try for a higher score.';
                     const prize=Math.max(1,Math.floor(score/2));
-                    try{addPrizes(prize)}catch(e){}
+                    try{awardPrizes(prize)}catch(e){}
                     host.querySelector('#novaAgain').onclick=()=>startNovaGame(host,game);
                     return;
                 }
@@ -2668,6 +2685,7 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
             if(game.engine==='theday') return startTheDay(host,game);
             if(game.engine==='nightwatch') return startNightWatch(host,game);
             if(game.engine==='enemiesyou') return startEnemiesAndYou(host,game);
+            if(game.engine==='techquiz') return startNitroTechQuiz(host,game);
         }
 
 
@@ -4122,7 +4140,7 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
             targets.forEach((t,i)=>{if(t.userData.alive){t.rotation.y+=.012;t.position.y+=Math.sin(performance.now()*.0015+i)*.006}});
 
             // Mission completion: course + targets + safe return to runway zone.
-            if(ringIndex===8&&hits===10&&!airborne&&Math.abs(plane.position.x)<9&&plane.position.z>-80&&plane.position.z<135){mission.textContent='MISSION COMPLETE — PERFECT LANDING';try{addPrizes(5)}catch(e){}}
+            if(ringIndex===8&&hits===10&&!airborne&&Math.abs(plane.position.x)<9&&plane.position.z>-80&&plane.position.z<135){mission.textContent='MISSION COMPLETE — PERFECT LANDING';try{awardPrizes(5,'International Airport')}catch(e){}}
 
             // Deluxe living world.
             if(!scene.userData.deluxe){
@@ -4279,7 +4297,7 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
 
             if(got===6&&cam.position.distanceTo(exit.position)<1.6&&!won){
               won=true;objective.textContent='MAZE COMPLETE!';say('ALL SOUVENIRS RECOVERED!');
-              try{addPrizes(4)}catch(e){}
+              try{awardPrizes(4,'Voxel Frontier')}catch(e){}
               setTimeout(()=>{host.querySelector('#bmStart').classList.remove('hide');host.querySelector('#bmStart').innerHTML=`<div><h1>MAZE COMPLETE</h1><p>You recovered all 6 souvenirs.</p><button class="bm95-btn" id="bmAgain">NEW RANDOM MAZE</button></div>`;host.querySelector('#bmAgain').onclick=()=>startBrickMaze95(host,game)},800)
             }
             const sec=Math.floor((performance.now()-startTime)/1000);hud.innerHTML=`SOUVENIRS ${got}/6<br>TIME ${Math.floor(sec/60)}:${String(sec%60).padStart(2,'0')}<br>RUN ${run?'ON':'OFF'}`;
@@ -5200,6 +5218,40 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
             activeNativeCleanup=()=>{dead=true;timers.forEach(clearTimeout);if(raf)cancelAnimationFrame(raf);listeners.forEach(f=>{try{f()}catch(e){}})};
         }
 
+        function startNitroTechQuiz(host,game){
+            stopNativeGame();
+            const bank=[
+              ['What does CPU stand for?',['Central Processing Unit','Computer Power Utility','Central Program User','Core Processing Upload'],0,'CPU means Central Processing Unit.'],
+              ['Which language primarily styles web pages?',['Python','CSS','SQL','C++'],1,'CSS controls the visual presentation of web pages.'],
+              ['What does RAM mainly provide?',['Temporary working memory','Permanent file storage','Internet access','Graphics output'],0,'RAM holds data and programs currently being used.'],
+              ['Which technology gives a web page its basic structure?',['HTML','Bluetooth','PNG','BIOS'],0,'HTML describes page structure and content.'],
+              ['Which device is normally used for long-term storage?',['SSD','RAM','CPU cache','Register'],0,'An SSD keeps data when power is off.'],
+              ['What is phishing?',['A trick to steal sensitive information','A CPU cooling method','Video compression','A Wi-Fi booster'],0,'Phishing uses deceptive messages or sites to obtain sensitive information.'],
+              ['What is an algorithm?',['A step-by-step procedure','A type of monitor','A network cable','A file extension'],0,'An algorithm is a defined sequence of steps for a task or problem.'],
+              ['Which is an operating system?',['Linux','HTML','JPEG','USB'],0,'Linux is an operating-system family.'],
+              ['What does URL stand for?',['Uniform Resource Locator','Universal Router Link','User Resource Login','Unified Runtime Language'],0,'URL means Uniform Resource Locator.'],
+              ['Which component commonly renders 3D graphics?',['GPU','Keyboard','SSD','Router'],0,'GPUs are designed for highly parallel graphics processing.'],
+              ['Machine learning mainly involves what?',['Learning patterns from data','Physically repairing computers','Connecting displays','Formatting passwords'],0,'Machine-learning models learn patterns from data.'],
+              ['Binary uses which digits?',['0 and 1','1 and 2','0 and 9','2 and 8'],0,'Binary is base 2 and uses 0 and 1.'],
+              ['Which is a database query language?',['SQL','CSS','SVG','MP3'],0,'SQL is widely used with relational databases.'],
+              ['What does DNS help find?',['An IP address for a domain','Battery percentage','CPU temperature','Screen resolution'],0,'DNS resolves domain names to network information such as IP addresses.'],
+              ['JavaScript in a browser is commonly used for what?',['Interactive page behavior','Cooling the CPU','Replacing the monitor','Charging a battery'],0,'JavaScript commonly provides logic and interaction on web pages.']
+            ];
+            let qs=bank.slice().sort(()=>Math.random()-.5).slice(0,10),idx=0,score=0,locked=false;
+            host.innerHTML='<div class="techq"><div class="techq-panel" id="techqPanel"></div></div>';
+            const panel=host.querySelector('#techqPanel');
+            function draw(){
+              locked=false; const q=qs[idx];
+              panel.innerHTML=`<div class="techq-top"><div><div class="techq-kicker">NITROARCADE // TECH QUIZ</div><b>QUESTION ${idx+1} / ${qs.length}</b></div><div class="techq-score">SCORE ${score}</div></div><div class="techq-progress"><i style="width:${(idx/qs.length)*100}%"></i></div><div class="techq-question">${q[0]}</div><div class="techq-options"></div><div class="techq-feedback" id="tqFeed">Choose the best answer.</div><button class="techq-next" id="tqNext" hidden>${idx===qs.length-1?'RESULTS':'NEXT QUESTION'} →</button>`;
+              const opts=panel.querySelector('.techq-options');
+              q[1].forEach((label,n)=>{const b=document.createElement('button');b.className='techq-option';b.textContent=label;b.onclick=()=>answer(n,b);opts.appendChild(b)});
+              panel.querySelector('#tqNext').onclick=()=>{idx++;if(idx>=qs.length)finish();else draw()};
+            }
+            function answer(n,b){if(locked)return;locked=true;const q=qs[idx],buttons=[...panel.querySelectorAll('.techq-option')];buttons[q[2]].classList.add('good');if(n===q[2]){score+=100;b.classList.add('good')}else b.classList.add('bad');buttons.forEach(x=>x.disabled=true);panel.querySelector('#tqFeed').textContent=(n===q[2]?'✓ +100 — ':'✕ ')+q[3];panel.querySelector('#tqNext').hidden=false}
+            function finish(){const pct=Math.round(score/(qs.length*100)*100);try{if(score>=800&&window.NitroArcade?.game?.win)window.NitroArcade.game.win(score,{coins:Math.max(1,Math.floor(score/200))})}catch(e){}panel.innerHTML=`<div class="techq-result"><div class="techq-kicker">QUIZ COMPLETE</div><strong>${pct}%</strong><h2>${score} / ${qs.length*100} POINTS</h2><p>${pct>=80?'Excellent tech knowledge.':pct>=60?'Solid run — a few topics left to master.':'Good start — try another randomized round.'}</p><button class="techq-next" id="tqAgain">PLAY AGAIN</button></div>`;panel.querySelector('#tqAgain').onclick=()=>startNitroTechQuiz(host,game)}
+            activeNativeCleanup=()=>{}; draw();
+        }
+
         function returnToDashboard() {
             cleanupPlayer();
             gameView.style.display = 'none';
@@ -5236,12 +5288,8 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
             loginModal.style.display = 'none';
         }
 
-        function handleLogin() {
-            const username = document.getElementById('usernameInput').value.trim();
-            if (username) {
-                document.querySelector('.btn-primary').textContent = '👤 ' + username;
-            }
-            closeLogin();
+        async function handleLogin() {
+            return window.NitroOnline?.login();
         }
 
         function openAbout() {
@@ -5496,7 +5544,7 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
     <div class="toy-shop" id="toyShop" aria-hidden="true">
         <div class="toy-shop-panel">
             <div class="toy-shop-head">
-                <div><div class="about-kicker">NITROARCADE // PRIZE COUNTER</div><h2>Prize Toy Shop</h2><p>Win prizes in the arcade, then trade them for collectible virtual toys.</p></div>
+                <div><div class="about-kicker">NITROARCADE // PRIZE COUNTER</div><h2>Prize Toy Shop</h2><p>Win trophies in supported NitroArcade games, then trade them for collectible virtual toys.</p><div class="trophy-guide"><b>HOW TO EARN 🏆</b><span>Finish supported Small Games • clear Nova missions • complete Voxel Frontier objectives • finish the International Airport mission. Your reward pops up as “🏆 +N prizes”.</span></div></div>
                 <div class="toy-balance">🏆 <b id="shopBalance">0</b> PRIZES</div>
                 <button id="toyShopClose" type="button" onclick="forceCloseToyShop(event)">✕</button>
             </div>
@@ -5688,10 +5736,16 @@ document.addEventListener("keydown",(e)=>{
       <hr style="border-color:#ffffff22"><h3>📅 DAILY CHALLENGE</h3>
       <p>${d?`Play <b>${d.game.name}</b> today.`:"Game library is still loading."}</p>
       <h3>🕹 RECENT</h3><p>${N.recent.all().slice(0,8).join(" • ")||"Nothing yet"}</p>
-      <button id="npBackup">Export Save</button> <button id="npConfetti">Test Confetti</button>
-      <p style="opacity:.65;margin-top:20px">Ctrl+Alt+N: hub • F3: debug panel</p>`;
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
+        <button id="npGlueExport" class="btn btn-primary">🧷 Export .gluestick</button>
+        <button id="npGlueImport" class="btn">📂 Import .gluestick</button>
+        <button id="npConfetti" class="btn">✨ Test Confetti</button>
+      </div>
+      <p style="opacity:.65;margin-top:20px">SHISO v2 • NitroArcade's native save package • Ctrl+Alt+N: hub • F3: debug panel</p>`;
     document.body.appendChild(box);box.querySelector("#npClose").onclick=()=>box.remove();
-    box.querySelector("#npBackup").onclick=N.backup.download;box.querySelector("#npConfetti").onclick=()=>N.confetti(70);
+    box.querySelector("#npGlueExport").onclick=()=>nitroExportGlue();
+    box.querySelector("#npGlueImport").onclick=()=>nitroImportGlue();
+    box.querySelector("#npConfetti").onclick=()=>N.confetti(70);
   };
   addEventListener("keydown",e=>{if(e.ctrlKey&&e.altKey&&e.code==="KeyN"){e.preventDefault();N.dashboard()}});
 
@@ -5864,6 +5918,312 @@ window.listNitroFeatures=()=>window.NitroArcadeFeatures;
 .ey-new-names span em{font-style:normal;font-size:12px;color:#71e7ff;margin-top:7px;letter-spacing:.08em}
 .ey-new-names span small{display:block;margin-top:5px;color:#c9d1e5;font-size:11px;line-height:1.25}
 </style>
+
+<style id="nitroTechQuizFixedCSS">
+.guest-thumb{background:radial-gradient(circle at 28% 35%,rgba(92,255,133,.22),transparent 23%),radial-gradient(circle at 72% 62%,rgba(108,197,239,.18),transparent 26%),linear-gradient(145deg,#07150d,#020605)!important}.guest-thumb::before{width:190px!important;height:58px!important;left:62px!important;top:78px!important;border-radius:999px!important;background:repeating-linear-gradient(90deg,#67e879 0 24px,#42bd61 24px 48px)!important;transform:rotate(-10deg);box-shadow:0 0 30px rgba(92,255,133,.25)!important}
+.techq{width:100%;min-height:560px;padding:22px;display:grid;place-items:center;background:radial-gradient(circle at 50% 0,rgba(108,197,239,.12),transparent 35%),#020508}.techq-panel{width:min(820px,100%);border:1px solid var(--line);border-radius:16px;background:var(--panel);padding:24px}.techq-top{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:18px}.techq-kicker{font-size:10px;color:var(--accent);font-weight:900;letter-spacing:1.4px}.techq-score{font-size:12px;color:var(--muted)}.techq-progress{height:7px;background:var(--panel-2);border-radius:99px;overflow:hidden;margin-bottom:22px}.techq-progress i{display:block;height:100%;background:var(--accent);transition:width .25s ease}.techq-question{font-size:clamp(21px,3vw,32px);line-height:1.2;margin-bottom:20px}.techq-options{display:grid;grid-template-columns:1fr 1fr;gap:10px}.techq-option{min-height:68px;text-align:left;border:1px solid var(--line);border-radius:11px;background:var(--panel-2);color:var(--text);padding:13px 15px;cursor:pointer;font-weight:750}.techq-option:hover{border-color:var(--accent)}.techq-option.good{border-color:#52d879;background:rgba(82,216,121,.12)}.techq-option.bad{border-color:#ff6877;background:rgba(255,104,119,.10)}.techq-feedback{min-height:48px;margin-top:16px;color:var(--muted);font-size:12px;line-height:1.5}.techq-next{border:1px solid var(--accent);background:var(--accent);color:#061018;border-radius:9px;padding:10px 15px;font-weight:900;cursor:pointer}.techq-next[hidden]{display:none}.techq-result{text-align:center;padding:24px 0}.techq-result strong{display:block;font-size:64px;color:var(--accent);letter-spacing:-3px}.techq-result p{color:var(--muted);margin:10px 0 18px}@media(max-width:650px){.techq-options{grid-template-columns:1fr}}
+</style>
+
+<style id="nitroOnlineCSS">
+.nitro-online-section{margin-top:34px;border:1px solid var(--line);border-radius:16px;background:var(--panel);padding:18px}
+.nitro-online-head{display:flex;justify-content:space-between;gap:14px;align-items:center;margin-bottom:14px;flex-wrap:wrap}
+.nitro-online-head h2{font-size:20px;margin:0} .nitro-online-head p{font-size:11px;color:var(--muted);margin-top:4px}
+.nitro-online-badge{border:1px solid var(--line);border-radius:999px;padding:6px 9px;font-size:10px;color:var(--muted)}
+.nitro-comment-compose{display:flex;gap:8px;margin-bottom:14px} .nitro-comment-compose input{flex:1;background:#080a0c;border:1px solid var(--line);color:var(--text);border-radius:9px;padding:11px 12px;outline:none}
+.nitro-comments{display:grid;gap:9px;max-height:420px;overflow:auto} .nitro-comment{border:1px solid var(--line);border-radius:10px;padding:11px 12px;background:rgba(255,255,255,.018)}
+.nitro-comment-top{display:flex;justify-content:space-between;gap:10px;margin-bottom:5px} .nitro-comment-user{font-size:11px;font-weight:850;color:var(--accent)} .nitro-comment-time{font-size:9px;color:var(--muted)}
+.nitro-comment-body{font-size:12px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere} .nitro-comment-actions{display:flex;justify-content:flex-end;margin-top:7px}
+.nitro-comment-actions button{border:0;background:transparent;color:var(--muted);cursor:pointer;font-size:10px} .nitro-online-empty{padding:20px;text-align:center;color:var(--muted);font-size:11px}
+.nitro-save-tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px} .nitro-save-tools input{display:none}
+.nitro-auth-status{color:var(--muted);font-size:11px;line-height:1.5;margin:-5px 0 12px} .nitro-auth-status.error{color:#ff8f8f} .nitro-auth-status.ok{color:#8fe0aa}
+.nitro-auth-user{border:1px solid var(--line);border-radius:9px;padding:10px 11px;margin-bottom:10px;display:grid;gap:3px} .nitro-auth-user span{font-size:10px;color:var(--muted)}
+@media(max-width:650px){.nitro-comment-compose{flex-direction:column}}
+</style>
+
+<script id="nitroSupabaseOnline">
+(() => {
+  const PROJECT_URL = "https://qvheedcbirbynoqpdjo.supabase.co";
+  const PUBLISHABLE_KEY = "sb_publishable_46vc-dDq7L7dZCFa2JxasQ_zAAshGkA";
+  const N = window.NitroOnline = window.NitroOnline || {};
+  const $ = id => document.getElementById(id);
+  const safe = v => String(v ?? '');
+  let client = null, session = null, realtime = null;
+
+  function status(msg, kind='') {
+    const el=$('nitroAuthStatus'); if(!el)return;
+    el.textContent=msg; el.className='nitro-auth-status '+kind;
+  }
+  function toast(msg) {
+    if(typeof window.showToast==='function') window.showToast(msg);
+    else console.log('[NitroArcade]',msg);
+  }
+  function usernameFor(user) {
+    return user?.user_metadata?.username || user?.email?.split('@')[0] || 'Player';
+  }
+  async function ensureProfile(user, requestedName='') {
+    if(!client || !user) return;
+    const username=(requestedName || usernameFor(user)).trim().slice(0,24);
+    try {
+      await client.from('profiles').upsert({id:user.id,username},{onConflict:'id'});
+    } catch(e) { console.warn('Profile sync:',e); }
+  }
+  function updateAccountUI() {
+    const user=session?.user || null, btn=$('nitroAccountBtn');
+    if(btn) btn.textContent=user ? '👤 '+usernameFor(user) : 'Log In';
+    const signed=$('nitroSignedInPanel'), actions=$('nitroAuthActions'), signedActions=$('nitroSignedInActions');
+    if(signed) signed.hidden=!user; if(actions) actions.hidden=!!user; if(signedActions) signedActions.hidden=!user;
+    if(user) {
+      $('nitroSignedInName').textContent=usernameFor(user);
+      $('nitroSignedInEmail').textContent=user.email || '';
+      status('Connected to NitroArcade Online.','ok');
+    } else status('Log in or create an account to join the online arcade.');
+    updateOnlineBadge();
+  }
+  function updateOnlineBadge() {
+    const el=$('nitroOnlineBadge'); if(!el)return;
+    el.textContent=session?.user ? '● '+usernameFor(session.user) : '○ Guest';
+  }
+
+  N.login=async function() {
+    if(!client) return status('Supabase did not load. Check your internet connection.','error');
+    if(session?.user) return updateAccountUI();
+    const email=$('nitroEmailInput')?.value.trim(), password=$('nitroPasswordInput')?.value || '';
+    if(!email || !password) return status('Enter your email and password.','error');
+    status('Logging in…');
+    const {data,error}=await client.auth.signInWithPassword({email,password});
+    if(error) return status(error.message,'error');
+    session=data.session; updateAccountUI(); closeLogin(); toast('Logged in to NitroArcade');
+    loadComments();
+  };
+
+  window.nitroSignUp=async function() {
+    if(!client) return status('Supabase did not load.','error');
+    const username=$('usernameInput')?.value.trim(), email=$('nitroEmailInput')?.value.trim(), password=$('nitroPasswordInput')?.value || '';
+    if(!username || !email || password.length<6) return status('Enter a username, email, and password of at least 6 characters.','error');
+    status('Creating account…');
+    const {data,error}=await client.auth.signUp({email,password,options:{data:{username}}});
+    if(error) return status(error.message,'error');
+    if(data.user) await ensureProfile(data.user,username);
+    session=data.session;
+    updateAccountUI();
+    status(data.session ? 'Account created — you are signed in.' : 'Account created. Check your email if confirmation is enabled.','ok');
+    if(data.session) { closeLogin(); loadComments(); }
+  };
+
+  window.nitroSignOut=async function() {
+    if(client) await client.auth.signOut();
+    session=null; updateAccountUI(); closeLogin(); toast('Logged out');
+  };
+
+  window.nitroPostComment=async function() {
+    if(!session?.user) { openLogin(); return status('Log in before posting a comment.','error'); }
+    const input=$('nitroCommentInput'), content=input?.value.trim();
+    if(!content) return;
+    if(content.length>500) return toast('Comments can be up to 500 characters.');
+    const payload={user_id:session.user.id,content};
+    let {error}=await client.from('comments').insert(payload);
+    if(error) {
+      // Compatibility fallback if the SQL used "body" rather than "content".
+      const alt=await client.from('comments').insert({user_id:session.user.id,body:content});
+      error=alt.error;
+    }
+    if(error) return toast('Comment failed: '+error.message);
+    input.value=''; await loadComments();
+  };
+
+  window.nitroDeleteComment=async function(id) {
+    if(!session?.user || !id) return;
+    const {error}=await client.from('comments').delete().eq('id',id).eq('user_id',session.user.id);
+    if(error) toast('Delete failed: '+error.message); else loadComments();
+  };
+
+  function renderComments(rows) {
+    const box=$('nitroComments'); if(!box)return;
+    if(!rows?.length) { box.innerHTML='<div class="nitro-online-empty">No comments yet. Be the first 👀</div>'; return; }
+    box.replaceChildren(...rows.map(row=>{
+      const wrap=document.createElement('div'); wrap.className='nitro-comment';
+      const top=document.createElement('div'); top.className='nitro-comment-top';
+      const who=document.createElement('span'); who.className='nitro-comment-user';
+      who.textContent=row.profiles?.username || row.username || 'Nitro Player';
+      const when=document.createElement('span'); when.className='nitro-comment-time';
+      when.textContent=row.created_at ? new Date(row.created_at).toLocaleString() : '';
+      top.append(who,when);
+      const body=document.createElement('div'); body.className='nitro-comment-body'; body.textContent=row.content ?? row.body ?? '';
+      wrap.append(top,body);
+      if(session?.user?.id===row.user_id) {
+        const acts=document.createElement('div'); acts.className='nitro-comment-actions';
+        const del=document.createElement('button'); del.textContent='Delete'; del.onclick=()=>nitroDeleteComment(row.id);
+        acts.append(del); wrap.append(acts);
+      }
+      return wrap;
+    }));
+  }
+
+  async function loadComments() {
+    if(!client) return;
+    let result=await client.from('comments').select('id,user_id,content,created_at,profiles(username)').order('created_at',{ascending:false}).limit(50);
+    if(result.error) result=await client.from('comments').select('id,user_id,body,created_at,profiles(username)').order('created_at',{ascending:false}).limit(50);
+    if(result.error) {
+      const box=$('nitroComments'); if(box) box.innerHTML='<div class="nitro-online-empty">Comments database error: '+safe(result.error.message)+'</div>';
+      return;
+    }
+    renderComments(result.data);
+  }
+  N.loadComments=loadComments;
+
+  function makeOnlineSection() {
+    if($('nitroOnlineSection')) return;
+    const section=document.createElement('section'); section.id='nitroOnlineSection'; section.className='nitro-online-section';
+    section.innerHTML=`
+      <div class="nitro-online-head"><div><h2>Arcade Comments</h2><p>Online NitroArcade lobby • account required to post</p></div><span class="nitro-online-badge" id="nitroOnlineBadge">○ Guest</span></div>
+      <div class="nitro-comment-compose"><input id="nitroCommentInput" maxlength="500" placeholder="Write a comment…"><button class="btn btn-primary" onclick="nitroPostComment()">Post</button></div>
+      <div class="nitro-comments" id="nitroComments"><div class="nitro-online-empty">Loading comments…</div></div>
+      `;
+    const recent=document.querySelector('.recent-strip');
+    if(recent?.parentElement) recent.insertAdjacentElement('afterend',section);
+    else document.getElementById('dashboardView')?.append(section);
+    $('nitroCommentInput')?.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();nitroPostComment();}});
+  }
+
+  async function init() {
+    makeOnlineSection();
+    if(!window.supabase?.createClient) {
+      $('nitroComments').innerHTML='<div class="nitro-online-empty">Supabase library failed to load.</div>'; return;
+    }
+    client=window.supabase.createClient(PROJECT_URL,PUBLISHABLE_KEY);
+    const {data}=await client.auth.getSession(); session=data.session;
+    updateAccountUI(); await loadComments();
+    client.auth.onAuthStateChange((_event,newSession)=>{session=newSession;updateAccountUI();setTimeout(loadComments,0);});
+    try {
+      realtime=client.channel('nitro-comments-live')
+        .on('postgres_changes',{event:'*',schema:'public',table:'comments'},()=>loadComments())
+        .subscribe();
+    } catch(e) { console.warn('Realtime comments unavailable:',e); }
+  }
+  document.readyState==='loading' ? document.addEventListener('DOMContentLoaded',init) : init();
+})();
+</script>
+
+
+
+
+
+
+<script id="nitroGlueStickFormat">
+(() => {
+  const G=window.NitroGlue={};
+  const MAGIC='NITROARCADE_GLUESTICK_SHISO';
+  const FORMAT_NAME='SHISO';
+  const VERSION=2;
+  function collect() {
+    const storage={};
+    for(let i=0;i<localStorage.length;i++) {
+      const k=localStorage.key(i);
+      if(k && (k.startsWith('nitroarcade:') || k.startsWith('crazyarcade-') || k.startsWith('ultraarcade-'))) storage[k]=localStorage.getItem(k);
+    }
+    return {
+      magic:MAGIC,
+      format:FORMAT_NAME,
+      version:VERSION,
+      mime:'application/x-nitro-gluestick+json',
+      createdAt:new Date().toISOString(),
+      app:'NitroArcade',
+      kind:'save',
+      storage
+    };
+  }
+  G.export=()=>{
+    try {
+      const payload=JSON.stringify(collect(),null,2);
+      const filename='NitroArcade-SHISO-'+new Date().toISOString().slice(0,10)+'.gluestick';
+      const blob=new Blob([payload],{type:'application/octet-stream'});
+      const url=URL.createObjectURL(blob);
+      const a=document.createElement('a');
+      a.href=url;
+      a.download=filename;
+      a.style.display='none';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(()=>{
+        try { a.remove(); URL.revokeObjectURL(url); } catch(_) {}
+      },1500);
+      if(typeof showToast==='function') showToast('Exported '+filename);
+      return true;
+    } catch(e) {
+      console.error('SHISO export failed',e);
+      alert('SHISO export failed: '+(e?.message||e));
+      return false;
+    }
+  };
+  G.importFile=async(file)=>{
+    if(!file)return;
+    try {
+      const data=JSON.parse(await file.text());
+      const legacyV1 = data.magic==='NITROARCADE_GLUESTICK' && data.version===1;
+      const shisoV2 = data.magic===MAGIC && data.format===FORMAT_NAME && data.version===VERSION;
+      if((!legacyV1 && !shisoV2) || !data.storage || typeof data.storage!=='object') throw new Error('Not a valid NitroArcade .gluestick / SHISO file');
+      const count=Object.keys(data.storage).length;
+      if(!confirm('Import '+count+' NitroArcade save entries? This will replace matching local save data.')) return;
+      for(const [k,v] of Object.entries(data.storage)) {
+        if(k.startsWith('nitroarcade:') || k.startsWith('crazyarcade-') || k.startsWith('ultraarcade-')) localStorage.setItem(k,String(v));
+      }
+      alert('NitroArcade .gluestick imported successfully. The arcade will reload now.');
+      location.reload();
+    } catch(e) { alert('Could not import .gluestick: '+e.message); }
+  };
+  G.inspect=async(file)=>JSON.parse(await file.text());
+  Object.freeze(G);
+})();
+</script>
+
+
+<script id="nitroShisoHubPatch">
+(() => {
+  const addBadge=()=>{
+    const hub=[...document.querySelectorAll('*')].find(el =>
+      el.children.length===0 && /PLAYER HUB/i.test(el.textContent||'')
+    );
+    if(hub && !document.getElementById('nitroShisoBadge')){
+      const b=document.createElement('span');
+      b.id='nitroShisoBadge';
+      b.textContent=' .GLUESTICK // SHISO v2';
+      b.style.cssText='display:inline-block;margin-left:10px;padding:4px 7px;border:1px solid var(--line);border-radius:999px;font:800 9px Inter,sans-serif;letter-spacing:.08em;color:var(--accent);vertical-align:middle';
+      hub.appendChild(b);
+    }
+  };
+  document.addEventListener('click',()=>setTimeout(addBadge,20));
+  document.readyState==='loading'?document.addEventListener('DOMContentLoaded',addBadge):addBadge();
+})();
+</script>
+
+
+<script id="nitroShisoGlobalControls">
+(() => {
+  function ensureGlueInput(){
+    let input=document.getElementById('nitroGlueImport');
+    if(!input){
+      input=document.createElement('input');
+      input.type='file';
+      input.id='nitroGlueImport';
+      input.accept='.gluestick';
+      input.style.display='none';
+      input.addEventListener('change',e=>{
+        const file=e.target.files && e.target.files[0];
+        if(file && window.NitroGlue) window.NitroGlue.importFile(file);
+        e.target.value='';
+      });
+      document.body.appendChild(input);
+    }
+    return input;
+  }
+  window.nitroExportGlue=()=>window.NitroGlue?.export();
+  window.nitroImportGlue=()=>ensureGlueInput().click();
+  document.readyState==='loading'
+    ? document.addEventListener('DOMContentLoaded',ensureGlueInput)
+    : ensureGlueInput();
+})();
+</script>
+
 
 </body>
 </html>
