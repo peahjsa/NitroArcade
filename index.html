@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NitroArcade</title>
+    <link rel="icon" type="image/x-icon" href="./favicon.ico">
+    <link rel="shortcut icon" href="./favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@ruffle-rs/ruffle">
         </script>
@@ -69,6 +71,12 @@
             height: 29px;
             max-width: 180px;
             object-fit: contain;
+        }
+        .nitro-brand-icon{
+            width:29px;
+            min-width:29px;
+            max-width:29px;
+            image-rendering:auto;
         }
 
         .brand-fallback {
@@ -1201,6 +1209,16 @@
         /* ===== UNIQUE PROCEDURAL VISUAL FOR EVERY ARCADE CARD ===== */
         .game-card .thumb{position:relative;overflow:hidden;isolation:isolate}
         .game-card .thumb > *{position:relative;z-index:2}
+        /* Small-game preview wrapper must fill the thumbnail. The generic rule above
+           otherwise changes it to position:relative and collapses it to zero height. */
+        .game-card .thumb > .small-game-shot{
+            position:absolute!important;
+            inset:0!important;
+            width:100%;
+            height:100%;
+            z-index:2!important;
+            display:block;
+        }
         .card-vfx{position:absolute!important;inset:0;z-index:1!important;pointer-events:none;overflow:hidden;opacity:.82}
         .card-vfx .vfx-a,.card-vfx .vfx-b,.card-vfx .vfx-c{position:absolute;display:block}
 
@@ -1945,12 +1963,12 @@ body.theme-matrix{
     <header class="navbar">
         <div class="brand">
             <img
-                src="images/logo.png"
-                alt="NitroArcade"
-                class="logo-img"
-                onerror="this.style.display='none';document.getElementById('brandFallback').style.display='block';"
+                src="./favicon.ico"
+                alt=""
+                class="logo-img nitro-brand-icon"
+                onerror="this.style.display='none';"
             >
-            <div class="brand-fallback" id="brandFallback">NitroArcade</div>
+            <div class="brand-fallback" id="brandFallback" style="display:block">NitroArcade</div>
             <div class="brand-dot"></div>
         </div>
 
