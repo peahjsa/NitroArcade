@@ -1955,6 +1955,74 @@ body.theme-matrix{
 
 </style>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style id="nitroVaultSuiteCSS">
+#nitroVaultOverlay{position:fixed;inset:0;z-index:100020;display:none;background:rgba(2,5,10,.96);color:#f4f7fb;font-family:Inter,system-ui,Segoe UI,Arial,sans-serif}
+#nitroVaultOverlay.open{display:grid;grid-template-rows:auto 1fr}
+.nv-top{height:66px;display:flex;align-items:center;gap:10px;padding:10px 14px;background:#070d16;border-bottom:1px solid #26364a;box-shadow:0 8px 30px #0009}
+.nv-brand{font-weight:1000;font-size:18px;letter-spacing:-.5px}.nv-brand b{color:#6ee7ff}
+.nv-tabs{display:flex;gap:6px;flex:1;justify-content:center}
+.nv-tab,.nv-close,.nv-btn{border:1px solid #32465f;border-radius:10px;background:#111c29;color:#eaf4ff;padding:9px 11px;font:900 10px Inter,sans-serif;cursor:pointer}
+.nv-tab.active{border-color:#6ee7ff;background:#102536;box-shadow:0 0 0 1px #6ee7ff2c}
+.nv-close{background:#351820;border-color:#7b3345;color:#ffc2cf}
+.nv-body{min-height:0;overflow:auto;padding:18px;background:
+ radial-gradient(circle at 16% 10%,rgba(105,232,255,.08),transparent 26%),
+ radial-gradient(circle at 84% 20%,rgba(170,140,255,.08),transparent 26%),#05080d}
+.nv-page{display:none;max-width:1180px;margin:0 auto}.nv-page.active{display:block}
+.nv-hero{display:flex;justify-content:space-between;gap:20px;align-items:flex-end;margin-bottom:16px;padding:18px;border:1px solid #25364a;border-radius:16px;background:linear-gradient(145deg,#0c1520,#081019)}
+.nv-kicker{font-size:9px;letter-spacing:1.5px;color:#6ee7ff;font-weight:1000}.nv-hero h2{margin:4px 0;font-size:28px}.nv-hero p{margin:0;color:#9eafc2;font-size:11px;line-height:1.55;max-width:760px}
+.nv-counter{white-space:nowrap;padding:9px 11px;border:1px solid #30435a;border-radius:999px;background:#0c1621;font-size:10px;color:#b8c7d7}
+.nv-grid{display:grid;gap:12px}
+.nv-network{grid-template-columns:repeat(3,minmax(0,1fr))}
+.nv-node{position:relative;min-height:178px;padding:15px;border:1px solid #2a3b50;border-radius:15px;background:#0b121b;overflow:hidden}
+.nv-node::after{content:"";position:absolute;inset:auto -20px -30px auto;width:110px;height:110px;border-radius:50%;background:radial-gradient(circle,#6ee7ff14,transparent 70%)}
+.nv-node.locked{filter:saturate(.25);opacity:.58}.nv-node.unlocked{border-color:#39758c;box-shadow:inset 0 0 30px #62e6ff08}
+.nv-node.complete{border-color:#579c72;background:linear-gradient(145deg,#0b1815,#0a1218)}
+.nv-node .nv-num{font:1000 9px ui-monospace,Consolas,monospace;color:#7589a2;letter-spacing:1.2px}
+.nv-node h3{font-size:16px;margin:8px 0 6px}.nv-node p{font-size:10px;color:#9faec0;line-height:1.5;margin:0 0 11px}
+.nv-condition{display:inline-block;padding:5px 7px;border:1px solid #2c4056;border-radius:7px;background:#0a1018;color:#aebfd1;font-size:8px;line-height:1.3}
+.nv-signal{margin-top:11px;padding:8px;border-radius:8px;background:#061019;border:1px dashed #29465a;font:900 10px ui-monospace,Consolas,monospace;color:#7ce5ff;letter-spacing:.7px}
+.nv-final{margin-top:14px;padding:16px;border:1px solid #4d3f77;border-radius:15px;background:radial-gradient(circle at 80% 20%,#9c77ff17,transparent 30%),linear-gradient(145deg,#141027,#0b1018)}
+.nv-final.ready{border-color:#8e71ff;box-shadow:0 0 32px #8e71ff16}.nv-final h3{margin:0 0 6px}.nv-final p{color:#a9b4c5;font-size:10px;line-height:1.5;margin:0 0 10px}
+
+.nv-room-layout{display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:13px}
+.nv-room-shell{border:1px solid #2b3c51;border-radius:16px;overflow:hidden;background:#080c12}
+.nv-room-toolbar{display:flex;gap:7px;flex-wrap:wrap;align-items:center;padding:9px;border-bottom:1px solid #26364a;background:#0a121c}
+.nv-room-toolbar select{border:1px solid #33475f;border-radius:8px;background:#101a27;color:#eaf5ff;padding:8px;font-size:9px}
+#nvPrizeRoom{position:relative;aspect-ratio:16/9;min-height:420px;overflow:hidden;background:linear-gradient(#101b2b 0 65%,#1c1516 65%);user-select:none}
+#nvPrizeRoom[data-theme="neon"]{background:radial-gradient(circle at 50% 30%,#17294a,#090d16 65%);box-shadow:inset 0 0 80px #6ee7ff0b}
+#nvPrizeRoom[data-theme="retro"]{background:linear-gradient(#4b3654 0 65%,#2c2029 65%)}
+#nvPrizeRoom[data-theme="cozy"]{background:linear-gradient(#46372f 0 65%,#2b211c 65%)}
+#nvPrizeRoom[data-theme="matrix"]{background:linear-gradient(#08150d 0 65%,#07100a 65%)}
+.nv-wall-line{position:absolute;left:0;right:0;top:65%;height:3px;background:#ffffff18}
+.nv-shelf{position:absolute;height:12px;border-radius:5px;background:#5e4635;box-shadow:0 8px 13px #0007}.nv-shelf.one{left:8%;right:54%;top:30%}.nv-shelf.two{left:58%;right:8%;top:43%}
+.nv-desk{position:absolute;left:26%;right:26%;bottom:9%;height:16px;background:#72533e;border-radius:5px}.nv-desk::before,.nv-desk::after{content:"";position:absolute;top:12px;width:12px;height:95px;background:#503a2c}.nv-desk::before{left:8%}.nv-desk::after{right:8%}
+.nv-room-sign{position:absolute;left:50%;top:8%;transform:translateX(-50%);padding:8px 16px;border:1px solid #6ee7ff55;border-radius:9px;background:#07101bdc;color:#dffaff;font-size:11px;font-weight:1000;letter-spacing:1.2px}
+.nv-toy-object{position:absolute;display:grid;place-items:center;width:74px;height:74px;font-size:48px;cursor:grab;transform-origin:center;touch-action:none;filter:drop-shadow(0 10px 9px #0008);transition:filter .15s}
+.nv-toy-object:active{cursor:grabbing}.nv-toy-object.selected{outline:2px solid #6ee7ff;border-radius:12px;background:#6ee7ff0a}
+.nv-toy-object svg{max-width:70px;max-height:70px}.nv-room-side{display:grid;align-content:start;gap:10px}
+.nv-cardbox{border:1px solid #293b50;border-radius:13px;background:#0a121c;padding:11px}.nv-cardbox h3{font-size:12px;margin:0 0 8px}.nv-cardbox p{font-size:9px;line-height:1.5;color:#92a4b9;margin:0}
+.nv-inventory{display:grid;gap:6px;max-height:340px;overflow:auto}.nv-inv-item{display:grid;grid-template-columns:35px 1fr;gap:8px;align-items:center;border:1px solid #27394d;border-radius:9px;background:#0d1621;padding:7px;cursor:pointer}.nv-inv-item.locked{opacity:.35;filter:grayscale(1);cursor:default}.nv-inv-icon{font-size:24px;text-align:center}.nv-inv-item b{display:block;font-size:9px}.nv-inv-item span{display:block;font-size:8px;color:#8799ae;margin-top:2px}
+.nv-selection{display:grid;grid-template-columns:1fr 1fr;gap:6px}.nv-selection .nv-btn{padding:7px;font-size:8px}
+
+.nv-card-controls{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px}.nv-card-controls button{border:1px solid #2d4056;border-radius:9px;background:#0d1621;color:#b9c9da;padding:7px 10px;font-size:9px;font-weight:900;cursor:pointer}.nv-card-controls button.active{border-color:#6ee7ff;color:#e8fbff}
+.nv-cards{grid-template-columns:repeat(4,minmax(0,1fr))}
+.nv-collect-card{position:relative;min-height:290px;border-radius:16px;padding:10px;perspective:900px;cursor:pointer}
+.nv-card-inner{position:absolute;inset:0;transition:transform .45s;transform-style:preserve-3d}.nv-collect-card.flipped .nv-card-inner{transform:rotateY(180deg)}
+.nv-card-face{position:absolute;inset:0;backface-visibility:hidden;border:1px solid #34465c;border-radius:15px;overflow:hidden;background:#0c141f;box-shadow:0 15px 34px #0006}
+.nv-card-back{transform:rotateY(180deg);padding:15px;background:linear-gradient(145deg,#10192a,#0a1019)}
+.nv-card-back h3{font-size:15px;margin:5px 0}.nv-card-back p{font-size:9px;color:#9facbe;line-height:1.55}.nv-card-back .nv-card-stat{margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:6px}.nv-card-stat span{padding:7px;border:1px solid #2c3c50;border-radius:7px;background:#09111a;font-size:8px}
+.nv-card-art{height:178px;position:relative;display:grid;place-items:center;font-size:72px;background:
+ radial-gradient(circle at 50% 45%,hsla(var(--h),90%,60%,.32),transparent 30%),
+ linear-gradient(145deg,hsla(var(--h),65%,24%,.48),#081018)}
+.nv-card-art::after{content:"";position:absolute;inset:0;background-image:linear-gradient(#ffffff05 1px,transparent 1px),linear-gradient(90deg,#ffffff05 1px,transparent 1px);background-size:18px 18px}
+.nv-card-info{padding:11px}.nv-card-rarity{font-size:8px;font-weight:1000;letter-spacing:1px;color:hsl(var(--h) 85% 72%)}.nv-card-info h3{margin:4px 0;font-size:14px}.nv-card-info p{margin:0;color:#8fa1b7;font-size:8px;line-height:1.45}
+.nv-card-lock{position:absolute;inset:0;z-index:4;display:grid;place-items:center;background:#05080dea;color:#74859a;font-size:26px}.nv-collect-card.unlocked .nv-card-lock{display:none}
+.nv-foil .nv-card-face::before{content:"FOIL";position:absolute;right:7px;top:7px;z-index:5;padding:4px 6px;border-radius:999px;background:linear-gradient(90deg,#72eaff,#f58cff,#ffe06a);color:#071018;font-size:7px;font-weight:1000}
+.nv-progress{height:9px;border-radius:99px;background:#17212d;overflow:hidden;margin-top:8px}.nv-progress i{display:block;height:100%;background:linear-gradient(90deg,#6ee7ff,#aa8cff)}
+@media(max-width:900px){.nv-network{grid-template-columns:1fr 1fr}.nv-room-layout{grid-template-columns:1fr}.nv-room-side{grid-template-columns:1fr 1fr}.nv-cards{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:620px){.nv-top{height:auto;align-items:flex-start;flex-wrap:wrap}.nv-tabs{order:3;width:100%;overflow:auto;justify-content:flex-start}.nv-body{padding:9px}.nv-network,.nv-cards{grid-template-columns:1fr}.nv-room-side{grid-template-columns:1fr}#nvPrizeRoom{min-height:300px}.nv-hero{align-items:flex-start;flex-direction:column}}
+</style>
 </head>
 
 <body>
@@ -1995,6 +2063,7 @@ body.theme-matrix{
             <button class="btn" onclick="showArcadePart('small')">Small Games</button>
             <button class="btn" onclick="showArcadePart('big')">Big Games</button>
             <button class="btn" onclick="showArcadePart('challenge')">Challenge</button>
+            <button class="btn" type="button" onclick="NitroVault.open('network')" title="Secret Network, Prize Room and Nitro Cards">◈ Vault</button>
             <button class="btn" onclick="openAboutPage(event)">About</button>
             <button class="btn btn-primary" id="nitroAccountBtn" onclick="openLogin()">Log In</button>
         </div>
@@ -6707,5 +6776,239 @@ window.listNitroFeatures=()=>window.NitroArcadeFeatures;
 </script>
 
 
+
+<div id="nitroVaultOverlay" aria-hidden="true">
+  <div class="nv-top">
+    <div class="nv-brand">NITRO <b>VAULT</b></div>
+    <div class="nv-tabs">
+      <button class="nv-tab active" data-nvtab="network">SECRET NETWORK</button>
+      <button class="nv-tab" data-nvtab="room">PRIZE ROOM</button>
+      <button class="nv-tab" data-nvtab="cards">NITRO CARDS</button>
+    </div>
+    <button class="nv-close" id="nvClose">CLOSE</button>
+  </div>
+
+  <div class="nv-body">
+    <section class="nv-page active" id="nvPageNetwork">
+      <div class="nv-hero">
+        <div><div class="nv-kicker">NITROARCADE // SIGNAL MAP</div><h2>Secret Network</h2><p>A hidden progression system connected to things you already do around NitroArcade. Nodes reveal themselves when the arcade detects the right evidence. No random guessing and no fake “hacking” — the clues come from your actual arcade history.</p></div>
+        <div class="nv-counter"><b id="nvNetworkCount">0 / 7</b> SIGNALS</div>
+      </div>
+      <div class="nv-grid nv-network" id="nvNetworkGrid"></div>
+      <div class="nv-final" id="nvNetworkFinal">
+        <h3>ROOT SIGNAL // ???</h3>
+        <p id="nvFinalText">Recover every network signal to reveal the root transmission.</p>
+        <button class="nv-btn" id="nvClaimFinal" disabled>LOCKED</button>
+      </div>
+    </section>
+
+    <section class="nv-page" id="nvPageRoom">
+      <div class="nv-hero">
+        <div><div class="nv-kicker">YOUR PRIZES // YOUR SPACE</div><h2>Prize Room</h2><p>Your Prize Shop toys finally have somewhere to live. Drag owned toys into the room, arrange them on shelves or the desk, rotate them, resize them, switch room themes and save the whole layout locally.</p></div>
+        <div class="nv-counter"><b id="nvOwnedToyCount">0 / 8</b> TOYS OWNED</div>
+      </div>
+      <div class="nv-room-layout">
+        <div class="nv-room-shell">
+          <div class="nv-room-toolbar">
+            <select id="nvRoomTheme"><option value="neon">Neon Room</option><option value="retro">Retro Purple</option><option value="cozy">Cozy Shelf</option><option value="matrix">Matrix Room</option></select>
+            <button class="nv-btn" id="nvRoomSave">SAVE LAYOUT</button>
+            <button class="nv-btn" id="nvRoomAuto">AUTO ARRANGE</button>
+            <button class="nv-btn" id="nvRoomReset">RESET</button>
+          </div>
+          <div id="nvPrizeRoom" data-theme="neon">
+            <div class="nv-room-sign">NITRO PRIZE ROOM</div>
+            <div class="nv-shelf one"></div><div class="nv-shelf two"></div><div class="nv-desk"></div><div class="nv-wall-line"></div>
+          </div>
+        </div>
+        <aside class="nv-room-side">
+          <div class="nv-cardbox"><h3>Toy Inventory</h3><div class="nv-inventory" id="nvRoomInventory"></div></div>
+          <div class="nv-cardbox"><h3>Selected Toy</h3><p id="nvSelectedToyText">Select a placed toy to edit it.</p><div class="nv-selection" style="margin-top:8px">
+            <button class="nv-btn" data-nvaction="left">↺ ROTATE</button><button class="nv-btn" data-nvaction="right">↻ ROTATE</button>
+            <button class="nv-btn" data-nvaction="smaller">− SIZE</button><button class="nv-btn" data-nvaction="bigger">+ SIZE</button>
+            <button class="nv-btn" data-nvaction="front">BRING FRONT</button><button class="nv-btn" data-nvaction="remove">REMOVE</button>
+          </div></div>
+          <div class="nv-cardbox"><h3>How it saves</h3><p>The room is local to this browser and is included automatically in NitroArcade save backups because it uses a <code>nitroarcade:</code> storage key.</p></div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="nv-page" id="nvPageCards">
+      <div class="nv-hero">
+        <div><div class="nv-kicker">COLLECTION // NO RANDOM PACKS</div><h2>Nitro Cards</h2><p>Collect cards by actually playing games, unlocking secrets and owning Prize Shop toys. Rarity is cosmetic; there are no paid or random packs. Mastery can turn certain unlocked cards into FOIL versions.</p><div class="nv-progress"><i id="nvCardProgress" style="width:0%"></i></div></div>
+        <div class="nv-counter"><b id="nvCardCount">0 / 18</b> COLLECTED</div>
+      </div>
+      <div class="nv-card-controls" id="nvCardFilters">
+        <button class="active" data-nvfilter="all">ALL</button><button data-nvfilter="game">GAMES</button><button data-nvfilter="toy">TOYS</button><button data-nvfilter="secret">SECRETS</button><button data-nvfilter="unlocked">UNLOCKED</button>
+      </div>
+      <div class="nv-grid nv-cards" id="nvCardGrid"></div>
+    </section>
+  </div>
+</div>
+
+<script id="nitroVaultSuiteJS">
+(()=>{
+'use strict';
+const $=s=>document.querySelector(s);
+const overlay=$('#nitroVaultOverlay');
+const NETWORK_KEY='nitroarcade:secret-network-v1',ROOM_KEY='nitroarcade:prize-room-v1',CARD_KEY='nitroarcade:nitro-cards-v1';
+
+const fallbackToys=[
+{id:'rubber_duck',name:'Pixel Duck',icon:'🐤'},{id:'robot',name:'Pocket Bot',icon:'🤖'},{id:'ufo',name:'Mini UFO',icon:'🛸'},{id:'bear',name:'Arcade Bear',icon:'🐻'},
+{id:'rocket',name:'Desk Rocket',icon:'🚀'},{id:'dino',name:'Neon Dino',icon:'🦖'},{id:'crystal',name:'Mystery Crystal',icon:'💎'},{id:'crown',name:'Arcade Crown',icon:'👑'}
+];
+const toyList=()=>typeof TOYS!=='undefined'?TOYS:fallbackToys;
+const owned=()=>{try{return JSON.parse(localStorage.getItem(typeof TOY_KEY!=='undefined'?TOY_KEY:'crazyarcade-owned-toys')||'[]')}catch(e){return[]}};
+const plays=()=>{try{return JSON.parse(localStorage.getItem('crazyarcade-play-counts')||'{}')}catch(e){return{}}};
+const totalPlays=()=>Object.values(plays()).reduce((a,b)=>a+(Number(b)||0),0);
+const hasPlayed=id=>(plays()[id]||0)>0;
+const bigPlayTotal=()=>['ultra_voxel_frontier','ultra_stadium_strike','ultra_sky_pilot','ultra_brick_maze_90s','ultra_night_watch','enemies_and_you'].reduce((n,id)=>n+(plays()[id]||0),0);
+const secretWindosill=()=>localStorage.getItem('crazyarcade-secret-windosill')==='unlocked';
+const currentTheme=()=>localStorage.getItem('ultraarcade-theme')||localStorage.getItem('crazyarcade-theme')||'dark';
+const safeRead=(k,f)=>{try{return JSON.parse(localStorage.getItem(k)||'null')??f}catch(e){return f}};
+const safeWrite=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
+const hue=s=>{let h=0;for(const ch of String(s))h=(h*31+ch.charCodeAt(0))>>>0;return h%360};
+const toast=t=>typeof showToast==='function'?showToast(t):(window.NitroArcade?.notify?window.NitroArcade.notify(t,'NITRO VAULT'):console.log(t));
+function rewardPrizes(n,reason){
+ if(typeof awardPrizes==='function')return awardPrizes(n,reason);
+ const k='crazyarcade-prizes',v=Math.max(0,parseInt(localStorage.getItem(k)||'0',10)||0)+n;localStorage.setItem(k,String(v));if(typeof updatePrizeCounter==='function')updatePrizeCounter();toast('🏆 +'+n+' prizes • '+reason)
+}
+
+/* SECRET NETWORK */
+const networkNodes=[
+{id:'boot',title:'BOOT ECHO',condition:'Open the Secret Network.',signal:'NV://BOOT-READY',check:()=>true},
+{id:'plays',title:'ARCADE TRACE',condition:'Reach 10 total game launches.',signal:'TRACE://10-PLAY-HANDSHAKE',check:()=>totalPlays()>=10},
+{id:'hacker',title:'CHALLENGE PULSE',condition:'Launch Hacker Challenge at least once.',signal:'CHALLENGE://GREEN-PULSE',check:()=>hasPlayed('hackerchallenge')},
+{id:'big',title:'LARGE SIGNAL',condition:'Launch Big Games at least 3 times total.',signal:'BIG://THREE-DOORS-OPEN',check:()=>bigPlayTotal()>=3},
+{id:'theme',title:'MATRIX ECHO',condition:'Switch NitroArcade to the Matrix theme.',signal:'THEME://00FF66',check:()=>currentTheme()==='matrix'},
+{id:'crystal',title:'CRYSTAL HANDSHAKE',condition:'Own the Mystery Crystal from the Prize Shop.',signal:'PRIZE://CRYSTAL-15',check:()=>owned().includes('crystal')},
+{id:'windosill',title:'GREEN DOOR',condition:'Unlock the secret Windosill reward.',signal:'SECRET://WINDOW-IS-OPEN',check:()=>secretWindosill()}
+];
+function networkState(){const s=safeRead(NETWORK_KEY,{seen:[],final:false});if(!Array.isArray(s.seen))s.seen=[];return s}
+function refreshNetwork(){
+ const s=networkState();let newly=0;
+ networkNodes.forEach(n=>{if(n.check()&&!s.seen.includes(n.id)){s.seen.push(n.id);newly++}});
+ safeWrite(NETWORK_KEY,s);
+ const grid=$('#nvNetworkGrid');grid.innerHTML='';
+ networkNodes.forEach((n,i)=>{
+  const unlocked=s.seen.includes(n.id),el=document.createElement('article');el.className='nv-node '+(unlocked?'complete':'locked');
+  el.innerHTML='<div class="nv-num">NODE '+String(i+1).padStart(2,'0')+'</div><h3>'+n.title+'</h3><p>'+n.condition+'</p><span class="nv-condition">'+(unlocked?'SIGNAL RECOVERED':'SIGNAL LOCKED')+'</span>'+(unlocked?'<div class="nv-signal">'+n.signal+'</div>':'');
+  grid.appendChild(el)
+ });
+ $('#nvNetworkCount').textContent=s.seen.length+' / '+networkNodes.length;
+ const ready=s.seen.length===networkNodes.length,final=$('#nvNetworkFinal'),btn=$('#nvClaimFinal');
+ final.classList.toggle('ready',ready);btn.disabled=!ready||s.final;btn.textContent=s.final?'ROOT SIGNAL CLAIMED':ready?'DECODE ROOT SIGNAL':'LOCKED';
+ $('#nvFinalText').textContent=s.final?'ROOT://NITRO-VAULT-13 • A hidden Nitro Card was added to your collection.':ready?'All seven nodes agree. Decode the root transmission for a one-time reward.':'Recover every network signal to reveal the root transmission.';
+ if(newly)toast(newly+' new Secret Network signal'+(newly===1?'':'s')+' recovered.');
+}
+function claimNetworkFinal(){
+ const s=networkState();if(s.seen.length!==networkNodes.length||s.final)return;s.final=true;safeWrite(NETWORK_KEY,s);rewardPrizes(5,'Secret Network completed');const cs=cardState();cs.root=true;safeWrite(CARD_KEY,cs);refreshNetwork();renderCards();toast('ROOT SIGNAL DECODED: NITRO-VAULT-13')
+}
+
+/* PRIZE ROOM */
+let selectedToy=null,drag=null,zCounter=20;
+function defaultRoom(){return{theme:'neon',items:{}}}
+function roomState(){const s=safeRead(ROOM_KEY,defaultRoom());s.items=s.items||{};s.theme=s.theme||'neon';return s}
+function roomSave(s){safeWrite(ROOM_KEY,s)}
+function renderRoom(){
+ const s=roomState(),room=$('#nvPrizeRoom');room.dataset.theme=s.theme;$('#nvRoomTheme').value=s.theme;
+ const ids=owned();$('#nvOwnedToyCount').textContent=ids.length+' / '+toyList().length;
+ room.querySelectorAll('.nv-toy-object').forEach(x=>x.remove());
+ ids.forEach((id,i)=>{
+  const toy=toyList().find(t=>t.id===id);if(!toy)return;
+  if(!s.items[id])s.items[id]={x:10+(i%4)*21,y:30+Math.floor(i/4)*34,r:0,scale:1,z:i+1};
+  const p=s.items[id],el=document.createElement('div');el.className='nv-toy-object'+(selectedToy===id?' selected':'');el.dataset.toy=id;
+  el.style.left=p.x+'%';el.style.top=p.y+'%';el.style.transform='translate(-50%,-50%) rotate('+p.r+'deg) scale('+p.scale+')';el.style.zIndex=p.z||1;
+  el.innerHTML=toy.art||toy.icon;el.title=toy.name;el.addEventListener('pointerdown',startDrag);room.appendChild(el)
+ });
+ roomSave(s);renderRoomInventory();updateSelectedToy()
+}
+function renderRoomInventory(){
+ const box=$('#nvRoomInventory'),ids=owned();box.innerHTML='';
+ toyList().forEach(t=>{
+  const has=ids.includes(t.id),el=document.createElement('div');el.className='nv-inv-item'+(has?'':' locked');
+  el.innerHTML='<div class="nv-inv-icon">'+(t.icon||'◆')+'</div><div><b>'+t.name+'</b><span>'+(has?'OWNED • click to select':'LOCKED • buy in Prize Shop')+'</span></div>';
+  if(has)el.onclick=()=>{selectedToy=t.id;renderRoom()};box.appendChild(el)
+ })
+}
+function startDrag(e){
+ e.preventDefault();selectedToy=e.currentTarget.dataset.toy;const room=$('#nvPrizeRoom'),r=room.getBoundingClientRect();drag={room,r,id:selectedToy};e.currentTarget.setPointerCapture?.(e.pointerId);document.addEventListener('pointermove',moveDrag);document.addEventListener('pointerup',endDrag,{once:true});renderRoom()
+}
+function moveDrag(e){
+ if(!drag)return;const s=roomState(),p=s.items[drag.id]||{};p.x=Math.max(4,Math.min(96,(e.clientX-drag.r.left)/drag.r.width*100));p.y=Math.max(8,Math.min(93,(e.clientY-drag.r.top)/drag.r.height*100));p.z=++zCounter;s.items[drag.id]=p;roomSave(s);
+ const el=drag.room.querySelector('[data-toy="'+drag.id+'"]');if(el){el.style.left=p.x+'%';el.style.top=p.y+'%';el.style.zIndex=p.z}
+}
+function endDrag(){document.removeEventListener('pointermove',moveDrag);drag=null;updateSelectedToy()}
+function updateSelectedToy(){const toy=toyList().find(t=>t.id===selectedToy);$('#nvSelectedToyText').textContent=toy?'Editing '+toy.name+'. Drag it in the room or use the controls below.':'Select a placed toy to edit it.'}
+function editToy(action){
+ if(!selectedToy)return toast('Select a toy first.');const s=roomState(),p=s.items[selectedToy];if(!p)return;
+ if(action==='left')p.r=(p.r||0)-15;if(action==='right')p.r=(p.r||0)+15;if(action==='smaller')p.scale=Math.max(.45,(p.scale||1)-.1);if(action==='bigger')p.scale=Math.min(1.8,(p.scale||1)+.1);if(action==='front')p.z=++zCounter;if(action==='remove'){delete s.items[selectedToy];selectedToy=null}
+ roomSave(s);renderRoom()
+}
+function autoArrange(){
+ const s=roomState(),ids=owned(),spots=[[18,28],[34,28],[66,41],[82,41],[38,70],[50,70],[62,70],[50,87]];
+ ids.forEach((id,i)=>s.items[id]={x:spots[i%spots.length][0],y:spots[i%spots.length][1],r:0,scale:1,z:i+1});roomSave(s);renderRoom();toast('Prize Room auto-arranged.')
+}
+function resetRoom(){if(!confirm('Reset your Prize Room layout?'))return;safeWrite(ROOM_KEY,defaultRoom());selectedToy=null;renderRoom();toast('Prize Room reset.')}
+
+/* NITRO CARDS */
+const cardDefs=[
+{id:'g_hacker',type:'game',name:'Hacker Challenge',icon:'⌨️',rarity:'RARE',desc:'The challenge that hides a second game behind three completed trials.',unlock:'Play Hacker Challenge.',check:()=>hasPlayed('hackerchallenge'),foil:()=>plays().hackerchallenge>=5,atk:74,skill:92},
+{id:'g_voxel',type:'game',name:'Voxel Frontier',icon:'⛏️',rarity:'EPIC',desc:'A blocky expedition of landmarks, relics, trails, caves and discoveries.',unlock:'Play Voxel Frontier.',check:()=>hasPlayed('ultra_voxel_frontier'),foil:()=>plays().ultra_voxel_frontier>=5,atk:82,skill:88},
+{id:'g_sky',type:'game',name:'Sky Pilot',icon:'✈️',rarity:'RARE',desc:'Airport flight missions, rings, drones and a landing challenge.',unlock:'Play Sky Pilot.',check:()=>hasPlayed('ultra_sky_pilot'),foil:()=>plays().ultra_sky_pilot>=5,atk:79,skill:90},
+{id:'g_maze',type:'game',name:'Brick Maze 95',icon:'🧱',rarity:'RARE',desc:'A procedural 90s brick labyrinth with souvenirs, enemies and an exit race.',unlock:'Play Brick Maze 95.',check:()=>hasPlayed('ultra_brick_maze_90s'),foil:()=>plays().ultra_brick_maze_90s>=5,atk:70,skill:94},
+{id:'g_night',type:'game',name:'Night Watch',icon:'📹',rarity:'EPIC',desc:'Camera management, roaming mascots, doors, lights and limited power.',unlock:'Play Night Watch.',check:()=>hasPlayed('ultra_night_watch'),foil:()=>plays().ultra_night_watch>=5,atk:88,skill:86},
+{id:'g_eay',type:'game',name:'Enemies and You',icon:'⚡',rarity:'EPIC',desc:'Twenty enemy powers, bosses and upgrades in one of NitroArcade’s largest combat games.',unlock:'Play Enemies and You.',check:()=>hasPlayed('enemies_and_you'),foil:()=>plays().enemies_and_you>=5,atk:96,skill:84},
+{id:'g_tech',type:'game',name:'Tech Quiz',icon:'🧠',rarity:'UNCOMMON',desc:'Computers, AI, web, hardware and cybersecurity knowledge in a quick quiz.',unlock:'Play Tech Quiz.',check:()=>hasPlayed('nitro_tech_quiz'),foil:()=>plays().nitro_tech_quiz>=5,atk:58,skill:99},
+{id:'g_snake',type:'game',name:'Crazy Snake',icon:'🐍',rarity:'COMMON',desc:'Classic growing-snake pressure inside NitroArcade’s Small Games library.',unlock:'Play Crazy Snake.',check:()=>hasPlayed('crazysnake'),foil:()=>plays().crazysnake>=5,atk:61,skill:76},
+{id:'g_brick',type:'game',name:'Brick Breaker',icon:'🟦',rarity:'COMMON',desc:'Paddle angles, rebounds and a wall of bricks.',unlock:'Play Brick Breaker.',check:()=>hasPlayed('brickbreaker'),foil:()=>plays().brickbreaker>=5,atk:65,skill:72},
+
+{id:'t_duck',type:'toy',name:'Pixel Duck',icon:'🐤',rarity:'COMMON',desc:'The smallest prize-room resident and an arcade desk classic.',unlock:'Own Pixel Duck.',check:()=>owned().includes('rubber_duck'),foil:()=>owned().includes('rubber_duck')&&totalPlays()>=20,atk:42,skill:81},
+{id:'t_bot',type:'toy',name:'Pocket Bot',icon:'🤖',rarity:'UNCOMMON',desc:'Compact robot prize with suspiciously serious arcade energy.',unlock:'Own Pocket Bot.',check:()=>owned().includes('robot'),foil:()=>owned().includes('robot')&&totalPlays()>=25,atk:71,skill:83},
+{id:'t_ufo',type:'toy',name:'Mini UFO',icon:'🛸',rarity:'RARE',desc:'A tiny spacecraft from somewhere that the Prize Shop refuses to explain.',unlock:'Own Mini UFO.',check:()=>owned().includes('ufo'),foil:()=>owned().includes('ufo')&&totalPlays()>=30,atk:77,skill:88},
+{id:'t_bear',type:'toy',name:'Arcade Bear',icon:'🐻',rarity:'RARE',desc:'Soft collectible. Extremely serious expression.',unlock:'Own Arcade Bear.',check:()=>owned().includes('bear'),foil:()=>owned().includes('bear')&&totalPlays()>=35,atk:68,skill:74},
+{id:'t_rocket',type:'toy',name:'Desk Rocket',icon:'🚀',rarity:'RARE',desc:'Built for imaginary launches from the Prize Room desk.',unlock:'Own Desk Rocket.',check:()=>owned().includes('rocket'),foil:()=>owned().includes('rocket')&&totalPlays()>=40,atk:89,skill:79},
+{id:'t_dino',type:'toy',name:'Neon Dino',icon:'🦖',rarity:'EPIC',desc:'A prehistoric prize-counter legend with maximum shelf presence.',unlock:'Own Neon Dino.',check:()=>owned().includes('dino'),foil:()=>owned().includes('dino')&&totalPlays()>=45,atk:91,skill:72},
+{id:'t_crystal',type:'toy',name:'Mystery Crystal',icon:'💎',rarity:'EPIC',desc:'The crystal that also activates a Secret Network handshake.',unlock:'Own Mystery Crystal.',check:()=>owned().includes('crystal'),foil:()=>owned().includes('crystal')&&networkState().seen.includes('crystal'),atk:84,skill:96},
+{id:'t_crown',type:'toy',name:'Arcade Crown',icon:'👑',rarity:'LEGENDARY',desc:'The final Prize Shop shelf flex.',unlock:'Own Arcade Crown.',check:()=>owned().includes('crown'),foil:()=>owned().includes('crown')&&owned().length===toyList().length,atk:98,skill:93},
+{id:'s_wind',type:'secret',name:'Windosill',icon:'🪟',rarity:'LEGENDARY',desc:'The hidden reward behind Hacker Challenge.',unlock:'Unlock Windosill.',check:()=>secretWindosill(),foil:()=>networkState().final,atk:100,skill:100}
+];
+function cardState(){const s=safeRead(CARD_KEY,{seen:[],root:false,allReward:false});if(!Array.isArray(s.seen))s.seen=[];return s}
+let cardFilter='all';
+function renderCards(){
+ const s=cardState();let changed=false;
+ cardDefs.forEach(card=>{if(card.check()&&!s.seen.includes(card.id)){s.seen.push(card.id);changed=true}});
+ if(changed)safeWrite(CARD_KEY,s);
+ const unlockedCount=cardDefs.filter(x=>s.seen.includes(x.id)).length;$('#nvCardCount').textContent=unlockedCount+' / '+cardDefs.length;$('#nvCardProgress').style.width=(unlockedCount/cardDefs.length*100)+'%';
+ if(unlockedCount===cardDefs.length&&!s.allReward){s.allReward=true;safeWrite(CARD_KEY,s);rewardPrizes(3,'Nitro Cards collection complete');toast('FULL NITRO CARD COLLECTION COMPLETE!')}
+ const grid=$('#nvCardGrid');grid.innerHTML='';
+ cardDefs.filter(card=>cardFilter==='all'||cardFilter===card.type||(cardFilter==='unlocked'&&s.seen.includes(card.id))).forEach(card=>{
+  const unlocked=s.seen.includes(card.id),foil=unlocked&&card.foil(),h=hue(card.id),el=document.createElement('article');el.className='nv-collect-card '+(unlocked?'unlocked ':'')+(foil?'nv-foil':'');el.style.setProperty('--h',h);
+  el.innerHTML='<div class="nv-card-inner"><div class="nv-card-face"><div class="nv-card-art">'+(unlocked?card.icon:'◆')+'</div><div class="nv-card-info"><div class="nv-card-rarity">'+card.rarity+' // '+card.type.toUpperCase()+'</div><h3>'+(unlocked?card.name:'LOCKED CARD')+'</h3><p>'+(unlocked?card.desc:card.unlock)+'</p></div><div class="nv-card-lock">🔒</div></div><div class="nv-card-face nv-card-back"><div class="nv-card-rarity">'+card.rarity+'</div><h3>'+card.name+'</h3><p>'+card.desc+'</p><p><b>UNLOCK:</b> '+card.unlock+'</p><div class="nv-card-stat"><span>POWER <b>'+card.atk+'</b></span><span>SKILL <b>'+card.skill+'</b></span><span>FOIL <b>'+(foil?'YES':'NO')+'</b></span><span>TYPE <b>'+card.type.toUpperCase()+'</b></span></div></div></div>';
+  if(unlocked)el.onclick=()=>el.classList.toggle('flipped');grid.appendChild(el)
+ });
+}
+
+/* UI */
+function showPage(name){
+ document.querySelectorAll('.nv-tab').forEach(b=>b.classList.toggle('active',b.dataset.nvtab===name));document.querySelectorAll('.nv-page').forEach(p=>p.classList.remove('active'));$('#nvPage'+name[0].toUpperCase()+name.slice(1)).classList.add('active');
+ if(name==='network')refreshNetwork();if(name==='room')renderRoom();if(name==='cards')renderCards()
+}
+function open(page='network'){overlay.classList.add('open');overlay.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';showPage(page)}
+function close(){overlay.classList.remove('open');overlay.setAttribute('aria-hidden','true');document.body.style.overflow=''}
+window.NitroVault={open,close,refresh:()=>{refreshNetwork();renderRoom();renderCards()}};
+
+document.querySelectorAll('.nv-tab').forEach(b=>b.onclick=()=>showPage(b.dataset.nvtab));$('#nvClose').onclick=close;$('#nvClaimFinal').onclick=claimNetworkFinal;
+$('#nvRoomTheme').onchange=()=>{const s=roomState();s.theme=$('#nvRoomTheme').value;roomSave(s);renderRoom()};
+$('#nvRoomSave').onclick=()=>{roomSave(roomState());toast('Prize Room layout saved.')};$('#nvRoomAuto').onclick=autoArrange;$('#nvRoomReset').onclick=resetRoom;
+document.querySelectorAll('[data-nvaction]').forEach(b=>b.onclick=()=>editToy(b.dataset.nvaction));
+document.querySelectorAll('[data-nvfilter]').forEach(b=>b.onclick=()=>{cardFilter=b.dataset.nvfilter;document.querySelectorAll('[data-nvfilter]').forEach(x=>x.classList.toggle('active',x===b));renderCards()});
+window.addEventListener('keydown',e=>{if(overlay.classList.contains('open')&&e.key==='Escape')close()});
+
+document.addEventListener('click',e=>{
+ if(e.target?.id==='prizeShopBtn'||e.target?.closest?.('#prizeShopBtn'))setTimeout(()=>{renderRoom();renderCards();refreshNetwork()},50)
+});
+setInterval(()=>{if(overlay.classList.contains('open')){refreshNetwork();renderCards()}},2500);
+})();
+</script>
 </body>
 </html>
