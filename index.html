@@ -7357,7 +7357,7 @@ function openJsLab(){
 }
 function saveJsCode(){current.jsCode=$('#ngsJsEditor').value;markDirty()}
 function makeJsWorker(code){
- const source=\`"use strict";
+ const source=`"use strict";
 self.fetch=undefined;self.XMLHttpRequest=undefined;self.WebSocket=undefined;self.EventSource=undefined;self.importScripts=undefined;self.indexedDB=undefined;self.caches=undefined;
 const H={start:[],tick:[],coin:[],damage:[],win:[]};
 const send=(action,value)=>postMessage({type:"action",action,value});
@@ -7373,7 +7373,7 @@ const Nitro=Object.freeze({
  complete:()=>send("complete",1)
 });
 onmessage=e=>{const m=e.data||{};if(m.type!=="event"||!H[m.name])return;for(const fn of H[m.name]){try{fn(Object.freeze(m.data||{}))}catch(err){postMessage({type:"error",message:"Runtime "+m.name+": "+err.message})}}};
-try{(0,eval)(\${JSON.stringify(code).replace(/</g,'\\u003c')});postMessage({type:"ready"})}catch(err){postMessage({type:"error",message:err.name+": "+err.message})}\`;
+try{(0,eval)(${JSON.stringify(code).replace(/</g,'\\u003c')});postMessage({type:"ready"})}catch(err){postMessage({type:"error",message:err.name+": "+err.message})}`;
  const blob=new Blob([source],{type:'text/javascript'}),url=URL.createObjectURL(blob),w=new Worker(url);setTimeout(()=>URL.revokeObjectURL(url),1000);return w
 }
 function applyJsAction(action,value){
