@@ -6953,6 +6953,7 @@ const $=s=>document.querySelector(s);
 const overlay=$('#ngsOverlay'),canvas=$('#ngsCanvas'),g=canvas.getContext('2d');
 const spriteCanvas=$('#ngsSpriteCanvas'),sg=spriteCanvas.getContext('2d');
 const W=24,H=14,S=40,STORE='nitroarcade:user-games:v2',DRAFT='nitroarcade:studio-draft:v2',FORMAT='NITROGAME2';
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v)),pick=a=>a[Math.floor(Math.random()*a.length)];
 
 const FEATURES=[
 'Platformer template','Maze Quest template','Survival Dodge template','24×14 level grid','Brush tool','Rectangle tool','Flood-fill tool','Eyedropper tool',
