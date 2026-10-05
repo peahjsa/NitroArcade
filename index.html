@@ -2006,6 +2006,9 @@ body.theme-matrix{
 .ngs-modal{position:fixed;inset:0;z-index:100004;display:none;place-items:center;padding:18px;background:#000c}.ngs-modal.open{display:grid}.ngs-modalcard{width:min(920px,100%);max-height:92vh;overflow:auto;background:#0b121c;border:1px solid #34475f;border-radius:17px;padding:18px;box-shadow:0 30px 90px #000d}.ngs-modalcard h3{margin:0 0 5px}.ngs-modalcard p{color:#9cabbf;font-size:10px;line-height:1.5}
 .ngs-modalgrid{display:grid;grid-template-columns:1fr 1fr;gap:15px}.ngs-scriptgrid{display:grid;grid-template-columns:170px 1fr;gap:12px}.ngs-scriptlist{display:grid;gap:6px;align-content:start}.ngs-scriptlist button{border:1px solid #2b3d52;border-radius:8px;background:#101a27;color:#c8d6e5;padding:9px;text-align:left;font-size:9px;cursor:pointer}.ngs-scriptlist button.active{border-color:#69e8ff;background:#102431}
 #ngsScriptEditor{width:100%;min-height:330px;font:11px/1.5 ui-monospace,Consolas,monospace;tab-size:2}
+#ngsJsEditor{width:100%;min-height:360px;font:11px/1.5 ui-monospace,Consolas,monospace;tab-size:2;white-space:pre}
+.ngs-jsdocs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:9px}.ngs-jsdocs div{border:1px solid #27394d;border-radius:9px;background:#08111a;padding:8px;font:9px/1.45 ui-monospace,Consolas,monospace;color:#a9bbcf}.ngs-jsdocs b{color:#70e8ff}
+#ngsJsResult{white-space:pre-wrap;font:9px/1.45 ui-monospace,Consolas,monospace;background:#071019;border:1px solid #27394d;border-radius:9px;padding:9px;min-height:70px;color:#a9d6b9}
 #ngsScriptResult{white-space:pre-wrap;font:9px/1.45 ui-monospace,Consolas,monospace;background:#071019;border:1px solid #27394d;border-radius:9px;padding:9px;min-height:70px;color:#a9d6b9}
 .ngs-spritewrap{display:grid;grid-template-columns:minmax(300px,420px) 1fr;gap:15px}
 #ngsSpriteCanvas{width:100%;max-width:420px;aspect-ratio:1;background:#071019;border:1px solid #32475e;border-radius:12px;image-rendering:pixelated;touch-action:none}
@@ -6893,6 +6896,7 @@ window.listNitroFeatures=()=>window.NitroArcadeFeatures;
         <button class="ngs-btn" id="ngsValidate">✓ CHECK</button>
         <button class="ngs-btn" id="ngsSpriteBtn">🎨 CHARACTER ART</button>
         <button class="ngs-btn" id="ngsScriptBtn">⌘ NITROSCRIPT</button>
+        <button class="ngs-btn" id="ngsJsBtn">JS CODE</button>
         <button class="ngs-btn" id="ngsShot">PNG</button>
         <button class="ngs-btn" id="ngsClear">CLEAR</button>
         <button class="ngs-btn" id="ngsStop" style="display:none">■ STOP TEST</button>
@@ -6988,6 +6992,25 @@ window.listNitroFeatures=()=>window.NitroArcadeFeatures;
   </div>
 </div>
 
+<div class="ngs-modal" id="ngsJsModal">
+  <div class="ngs-modalcard">
+    <h3>JavaScript Code Lab</h3>
+    <p>Write real JavaScript for your game. It runs inside a dedicated Web Worker sandbox, not in the NitroArcade page. The sandbox exposes only the NitroJS game API below and is terminated when play test stops.</p>
+    <textarea id="ngsJsEditor" spellcheck="false"></textarea>
+    <div class="ngs-spritebuttons" style="margin:8px 0">
+      <button class="ngs-btn" id="ngsJsExample">LOAD EXAMPLE</button>
+      <button class="ngs-btn primary" id="ngsJsCheck">CHECK + TEST SANDBOX</button>
+      <button class="ngs-btn good" id="ngsJsDone">SAVE CODE</button>
+    </div>
+    <div id="ngsJsResult">JavaScript has not been checked yet.</div>
+    <div class="ngs-jsdocs">
+      <div><b>EVENTS</b><br>Nitro.onStart(fn)<br>Nitro.onTick(fn)<br>Nitro.onCoin(fn)<br>Nitro.onDamage(fn)<br>Nitro.onWin(fn)</div>
+      <div><b>ACTIONS</b><br>Nitro.say(text)<br>Nitro.player.speed(n)<br>Nitro.player.jump(n)<br>Nitro.world.gravity(n)<br>Nitro.enemyA.speed(n)<br>Nitro.enemyB.speed(n)<br>Nitro.turret.fireEvery(n)<br>Nitro.complete()</div>
+    </div>
+    <p style="margin-top:10px">Shared <b>.nitrogame</b> files and NAG2 codes include this JavaScript. The code cannot directly access the DOM, localStorage, cookies, NitroArcade accounts, or the page window.</p>
+  </div>
+</div>
+
 <div class="ngs-modal" id="ngsShareBox">
   <div class="ngs-modalcard ngs-sharecard">
     <h3>Share Nitro Game</h3>
@@ -7039,7 +7062,7 @@ const FEATURES=[
 'Win state','Procedural level generator','Build validator','Start-count validation','Goal validation','Portal-pair validation','Reachability estimate',
 'Complexity score','Local creation library','Mini level thumbnails','Duplicate saved game','Delete saved game','Autosave draft','Unsaved-change indicator',
 'Share code','Share URL','Auto-import share URL','.nitrogame export','.nitrogame import','PNG level export','Game description','Saved custom colors',
-'Saved custom sprites','Saved NitroScripts','Backward import normalization','Maximum 24 saved creations','Feature counter','Engine-function counter'
+'Saved custom sprites','Saved NitroScripts','Sandboxed JavaScript editor','Worker-isolated JavaScript runtime','JavaScript onStart event','JavaScript onTick event','JavaScript onCoin event','JavaScript onDamage event','JavaScript onWin event','JavaScript game API','Shared JavaScript code','Backward import normalization','Maximum 24 saved creations','Feature counter','Engine-function counter'
 ];
 
 const tileDefs=[
@@ -7081,6 +7104,25 @@ enemyB:'# Enemy B\nMODE PATROL\nSPEED 105\nRANGE 300\nSHOOT 0\nPROJECTILE_SPEED 
 turret:'# Turret\nMODE SENTRY\nSPEED 0\nRANGE 500\nSHOOT 1.4\nPROJECTILE_SPEED 260\nBURST 1\nCONTACT 0\nTELEPORT 0\nSPREAD 0'
 };
 
+const jsDefault=`// NitroJS example
+Nitro.onStart(() => {
+  Nitro.say("My custom JavaScript is running!");
+  Nitro.enemyA.speed(120);
+});
+
+Nitro.onCoin(e => {
+  if (e.coins >= 3) Nitro.player.speed(1.35);
+});
+
+Nitro.onDamage(e => {
+  if (e.hp < 40) Nitro.player.jump(640);
+});
+
+Nitro.onTick(e => {
+  // e.time is seconds since the play test started.
+});
+`;
+
 const scriptPresets={
 chaser:'MODE CHASE\nSPEED 110\nRANGE 420\nSHOOT 1.6\nPROJECTILE_SPEED 250\nBURST 1\nCONTACT 25\nTELEPORT 0\nSPREAD 0',
 patrol:'MODE PATROL\nSPEED 90\nRANGE 260\nSHOOT 2.2\nPROJECTILE_SPEED 220\nBURST 1\nCONTACT 20\nTELEPORT 0\nSPREAD 0',
@@ -7091,6 +7133,7 @@ chaos:'MODE WANDER\nSPEED 125\nRANGE 520\nSHOOT 1.25\nPROJECTILE_SPEED 290\nBURS
 const input={keys:new Set(),virtual:new Set()};
 let current=newGame(),selected=1,editTool='brush',painting=false,rectStart=null,play=false,runtime=null,undo=[],redo=[],raf=0,last=0,dirty=false,autosaveTimer=0;
 let scriptTarget='enemyA',spriteTarget='player',spriteTool='pencil',spritePainting=false;
+let jsWorker=null,jsTickClock=0;
 
 function uid(){return 'ng_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,7)}
 function blankSprite(){return Array(256).fill(null)}
@@ -7115,7 +7158,7 @@ function newGame(){
  const colors={...themes.neon};
  return {format:FORMAT,id:uid(),name:'Untitled Nitro Game',description:'',mode:'platformer',theme:'neon',rule:'goal',timer:60,speed:1,lives:3,gravity:1350,jump:520,w:W,h:H,tiles,colors,
   sprites:{player:presetSprite('player',colors.accent),enemyA:presetSprite('enemyA',colors.enemyA),enemyB:presetSprite('enemyB',colors.enemyB),turret:presetSprite('turret','#ff77bd')},
-  scripts:{...scriptDefaults},updatedAt:Date.now()};
+  scripts:{...scriptDefaults},jsCode:jsDefault,updatedAt:Date.now()};
 }
 function clone(v){return JSON.parse(JSON.stringify(v))}
 function idx(x,y){return y*W+x}
@@ -7233,7 +7276,7 @@ function saveCurrent(){
 }
 function normalise(game){
  const base=newGame(),g2={...base,...clone(game)};g2.format=FORMAT;g2.w=W;g2.h=H;if(!Array.isArray(g2.tiles))g2.tiles=Array(W*H).fill(0);g2.tiles=g2.tiles.slice(0,W*H);while(g2.tiles.length<W*H)g2.tiles.push(0);
- g2.colors={...base.colors,...(g2.colors||{})};g2.sprites={...base.sprites,...(g2.sprites||{})};g2.scripts={...scriptDefaults,...(g2.scripts||{})};return g2
+ g2.colors={...base.colors,...(g2.colors||{})};g2.sprites={...base.sprites,...(g2.sprites||{})};g2.scripts={...scriptDefaults,...(g2.scripts||{})};g2.jsCode=typeof g2.jsCode==='string'?g2.jsCode:jsDefault;return g2
 }
 function renderMini(cv,game){
  const c=cv.getContext('2d'),cw=cv.width/game.w,ch=cv.height/game.h,col=game.theme==='custom'?game.colors:(themes[game.theme]||themes.neon);c.fillStyle=col.bg;c.fillRect(0,0,cv.width,cv.height);
@@ -7307,8 +7350,57 @@ function resetPlayer(full=false){
  const r=runtime,start=current.tiles.findIndex(v=>v===2),spawn=r&&r.respawnIndex>=0?r.respawnIndex:start,pos=xy(spawn);r.px=(pos.x+.5)*S;r.py=(pos.y+.5)*S;r.vx=r.vy=0;r.inv=1.0;if(full)r.hp=100
 }
 function damagePlayer(amount){
- const r=runtime;if(!r||r.inv>0||r.dead||r.won)return;r.hp-=amount;r.inv=.65;if(r.hp<=0){r.lives--;if(r.lives<=0){r.dead=true;toast('GAME OVER — press STOP TEST to edit.')}else{r.hp=100;resetPlayer();toast('Life lost. '+r.lives+' left.')}}
+ const r=runtime;if(!r||r.inv>0||r.dead||r.won)return;r.hp-=amount;r.inv=.65;jsEvent('damage',{amount:Number(amount)||0,hp:r.hp,lives:r.lives});if(r.hp<=0){r.lives--;if(r.lives<=0){r.dead=true;toast('GAME OVER — press STOP TEST to edit.')}else{r.hp=100;resetPlayer();toast('Life lost. '+r.lives+' left.')}}
 }
+function openJsLab(){
+ $('#ngsJsEditor').value=current.jsCode||jsDefault;$('#ngsJsResult').textContent='JavaScript has not been checked yet.';$('#ngsJsModal').classList.add('open')
+}
+function saveJsCode(){current.jsCode=$('#ngsJsEditor').value;markDirty()}
+function makeJsWorker(code){
+ const source=\`"use strict";
+self.fetch=undefined;self.XMLHttpRequest=undefined;self.WebSocket=undefined;self.EventSource=undefined;self.importScripts=undefined;self.indexedDB=undefined;self.caches=undefined;
+const H={start:[],tick:[],coin:[],damage:[],win:[]};
+const send=(action,value)=>postMessage({type:"action",action,value});
+const add=(name,fn)=>{if(typeof fn==="function")H[name].push(fn)};
+const Nitro=Object.freeze({
+ onStart:fn=>add("start",fn),onTick:fn=>add("tick",fn),onCoin:fn=>add("coin",fn),onDamage:fn=>add("damage",fn),onWin:fn=>add("win",fn),
+ say:text=>send("say",String(text).slice(0,140)),
+ player:Object.freeze({speed:v=>send("player.speed",v),jump:v=>send("player.jump",v)}),
+ world:Object.freeze({gravity:v=>send("world.gravity",v)}),
+ enemyA:Object.freeze({speed:v=>send("enemyA.speed",v)}),
+ enemyB:Object.freeze({speed:v=>send("enemyB.speed",v)}),
+ turret:Object.freeze({fireEvery:v=>send("turret.fireEvery",v)}),
+ complete:()=>send("complete",1)
+});
+onmessage=e=>{const m=e.data||{};if(m.type!=="event"||!H[m.name])return;for(const fn of H[m.name]){try{fn(Object.freeze(m.data||{}))}catch(err){postMessage({type:"error",message:"Runtime "+m.name+": "+err.message})}}};
+try{(0,eval)(\${JSON.stringify(code).replace(/</g,'\\u003c')});postMessage({type:"ready"})}catch(err){postMessage({type:"error",message:err.name+": "+err.message})}\`;
+ const blob=new Blob([source],{type:'text/javascript'}),url=URL.createObjectURL(blob),w=new Worker(url);setTimeout(()=>URL.revokeObjectURL(url),1000);return w
+}
+function applyJsAction(action,value){
+ if(!runtime)return;const n=Number(value);
+ if(action==='say')return toast(String(value).slice(0,140));
+ if(action==='player.speed'&&Number.isFinite(n))runtime.jsSpeed=clamp(n,.25,3);
+ if(action==='player.jump'&&Number.isFinite(n))runtime.jsJump=clamp(n,100,1200);
+ if(action==='world.gravity'&&Number.isFinite(n))runtime.jsGravity=clamp(n,100,3200);
+ if(action==='enemyA.speed'&&Number.isFinite(n))runtime.enemyCfgA.speed=clamp(n,0,350);
+ if(action==='enemyB.speed'&&Number.isFinite(n))runtime.enemyCfgB.speed=clamp(n,0,350);
+ if(action==='turret.fireEvery'&&Number.isFinite(n))runtime.turretCfg.shoot=clamp(n,.15,20);
+ if(action==='complete')testWin()
+}
+function startJsRuntime(){
+ stopJsRuntime();const code=String(current.jsCode||'').trim();if(!code)return;
+ try{new Function(code)}catch(err){toast('JavaScript syntax error: '+err.message);return}
+ jsWorker=makeJsWorker(code);jsWorker.onmessage=e=>{const m=e.data||{};if(m.type==='action')applyJsAction(m.action,m.value);if(m.type==='error')toast('JS: '+m.message)};jsWorker.onerror=e=>toast('JS worker error: '+e.message);jsTickClock=0
+}
+function jsEvent(name,data={}){if(jsWorker)try{jsWorker.postMessage({type:'event',name,data})}catch(e){}}
+function stopJsRuntime(){if(jsWorker){try{jsWorker.terminate()}catch(e){}jsWorker=null}}
+function testJsSandbox(){
+ saveJsCode();let code=current.jsCode||'';try{new Function(code)}catch(err){$('#ngsJsResult').textContent='SYNTAX ERROR\\n'+err.message;$('#ngsJsResult').style.color='#ff9fb0';return}
+ const w=makeJsWorker(code);let done=false,t=setTimeout(()=>{if(done)return;done=true;w.terminate();$('#ngsJsResult').textContent='Sandbox timed out. Check for an infinite loop.';$('#ngsJsResult').style.color='#ff9fb0'},700);
+ w.onmessage=e=>{if(done)return;const m=e.data||{};if(m.type==='ready'){done=true;clearTimeout(t);w.terminate();$('#ngsJsResult').textContent='COMPILED + SANDBOX STARTED OK\\nThe code is isolated in a Worker and can use the NitroJS API.';$('#ngsJsResult').style.color='#a9efc2'}else if(m.type==='error'){done=true;clearTimeout(t);w.terminate();$('#ngsJsResult').textContent='SANDBOX ERROR\\n'+m.message;$('#ngsJsResult').style.color='#ff9fb0'}}
+ w.onerror=e=>{if(done)return;done=true;clearTimeout(t);w.terminate();$('#ngsJsResult').textContent='WORKER ERROR\\n'+e.message;$('#ngsJsResult').style.color='#ff9fb0'}
+}
+
 function startTest(){
  readForm();const start=current.tiles.findIndex(v=>v===2);if(start<0){toast('Place a START tile first.');return}if(current.mode!=='dodge'&&current.tiles.findIndex(v=>v===3)<0){toast('Place a GOAL tile first.');return}
  const scA=compileScript(current.scripts.enemyA),scB=compileScript(current.scripts.enemyB),scT=compileScript(current.scripts.turret);if(scA.errors.length||scB.errors.length||scT.errors.length){toast('Fix NitroScript errors before testing.');openScripts();return}
@@ -7317,11 +7409,12 @@ function startTest(){
  runtime={px:(pos.x+.5)*S,py:(pos.y+.5)*S,vx:0,vy:0,w:22,h:30,onGround:false,lives:current.lives,hp:100,inv:0,coins:0,totalCoins,time:current.timer,won:false,dead:false,respawnIndex:start,keys:0,
   collected:new Set(),openDoors:new Set(),portalCd:0,enemyShots:[],enemyCfgA:scA.cfg,enemyCfgB:scB.cfg,turretCfg:scT.cfg,
   enemies:current.tiles.map((v,i)=>(v===6||v===17)?makeEnemy(v,i):null).filter(Boolean),turrets:current.tiles.map((v,i)=>v===8?makeTurret(i):null).filter(Boolean)};
+ startJsRuntime();jsEvent('start',{mode:current.mode,name:current.name});
  last=performance.now();cancelAnimationFrame(raf);raf=requestAnimationFrame(playLoop)
 }
 function makeEnemy(type,i){const p=xy(i),cfg=type===6?compileScript(current.scripts.enemyA).cfg:compileScript(current.scripts.enemyB).cfg;return{type,x:(p.x+.5)*S,y:(p.y+.5)*S,baseX:(p.x+.5)*S,baseY:(p.y+.5)*S,dir:Math.random()<.5?-1:1,angle:Math.random()*Math.PI*2,turn:1,shoot:Math.random()*Math.max(.1,cfg.shoot),tele:cfg.teleport||999,inv:0}}
 function makeTurret(i){const p=xy(i),cfg=compileScript(current.scripts.turret).cfg;return{x:(p.x+.5)*S,y:(p.y+.5)*S,shoot:Math.random()*Math.max(.1,cfg.shoot)}}
-function stopTest(){play=false;runtime=null;input.keys.clear();input.virtual.clear();cancelAnimationFrame(raf);$('#ngsPlay').style.display='inline-block';$('#ngsStop').style.display='none';$('#ngsStatus').textContent='EDIT MODE';$('#ngsPlayHud').classList.remove('show');$('#ngsVirtual').classList.remove('show');drawEditor()}
+function stopTest(){stopJsRuntime();play=false;runtime=null;input.keys.clear();input.virtual.clear();cancelAnimationFrame(raf);$('#ngsPlay').style.display='inline-block';$('#ngsStop').style.display='none';$('#ngsStatus').textContent='EDIT MODE';$('#ngsPlayHud').classList.remove('show');$('#ngsVirtual').classList.remove('show');drawEditor()}
 function fireFrom(x,y,cfg){
  if(!runtime||cfg.shoot<=0)return;const base=Math.atan2(runtime.py-y,runtime.px-x),burst=Math.max(1,cfg.burst),spread=cfg.spread*Math.PI/180;
  for(let k=0;k<burst;k++){const off=burst===1?0:(k/(burst-1)-.5)*spread;runtime.enemyShots.push({x,y,vx:Math.cos(base+off)*cfg.projectileSpeed,vy:Math.sin(base+off)*cfg.projectileSpeed,life:5})}
@@ -7351,7 +7444,7 @@ function nearbyDoor(){
 function updateSpecialTiles(){
  const r=runtime;if(r.portalCd>0)return;
  const hazard=touchTile(4);if(hazard)damagePlayer(35);
- const coin=touchTile(5);if(coin&&!r.collected.has(coin.i)){r.collected.add(coin.i);r.coins++;toast('Coin '+r.coins+'/'+r.totalCoins)}
+ const coin=touchTile(5);if(coin&&!r.collected.has(coin.i)){r.collected.add(coin.i);r.coins++;toast('Coin '+r.coins+'/'+r.totalCoins);jsEvent('coin',{coins:r.coins,total:r.totalCoins})}
  const cp=touchTile(9);if(cp&&r.respawnIndex!==cp.i){r.respawnIndex=cp.i;toast('Checkpoint activated.')}
  const key=touchTile(10);if(key&&!r.collected.has(key.i)){r.collected.add(key.i);r.keys++;toast('Key collected.')}
  const heal=touchTile(14);if(heal&&!r.collected.has(heal.i)){r.collected.add(heal.i);r.hp=Math.min(100,r.hp+45);toast('Health restored.')}
@@ -7361,24 +7454,24 @@ function updateSpecialTiles(){
 }
 function movementMultiplier(){return touchTile(15)?.55:1}
 function updatePlatformer(dt){
- const r=runtime,mul=movementMultiplier(),sp=250*current.speed*mul,left=held('KeyA','a','ArrowLeft','arrowleft'),right=held('KeyD','d','ArrowRight','arrowright'),jump=held('KeyW','w','ArrowUp','arrowup','Space',' ');
- r.vx=((right?1:0)-(left?1:0))*sp;if(jump&&r.onGround&&!r.jumpLock){r.vy=-current.jump;r.onGround=false;r.jumpLock=true}if(!jump)r.jumpLock=false;r.vy+=current.gravity*dt;
+ const r=runtime,mul=movementMultiplier(),sp=250*(r.jsSpeed??current.speed)*mul,left=held('KeyA','a','ArrowLeft','arrowleft'),right=held('KeyD','d','ArrowRight','arrowright'),jump=held('KeyW','w','ArrowUp','arrowup','Space',' ');
+ r.vx=((right?1:0)-(left?1:0))*sp;if(jump&&r.onGround&&!r.jumpLock){r.vy=-(r.jsJump??current.jump);r.onGround=false;r.jumpLock=true}if(!jump)r.jumpLock=false;r.vy+=(r.jsGravity??current.gravity)*dt;
  let nx=r.px+r.vx*dt;if(!rectHitsSolid(nx,r.py,r.w,r.h))r.px=nx;let ny=r.py+r.vy*dt;r.onGround=false;
  if(!rectHitsSolid(r.px,ny,r.w,r.h))r.py=ny;else{if(r.vy>0)r.onGround=true;r.vy=0}
- if(touchTile(7)){r.vy=-Math.max(current.jump*1.3,650);r.onGround=false}
+ if(touchTile(7)){r.vy=-Math.max((r.jsJump??current.jump)*1.3,650);r.onGround=false}
 }
 function updateTopdown(dt){
- const r=runtime,mul=movementMultiplier(),sp=(current.mode==='dodge'?300:235)*current.speed*mul,dx=(held('KeyD','d','ArrowRight','arrowright')?1:0)-(held('KeyA','a','ArrowLeft','arrowleft')?1:0),dy=(held('KeyS','s','ArrowDown','arrowdown')?1:0)-(held('KeyW','w','ArrowUp','arrowup')?1:0),m=Math.hypot(dx,dy)||1;
+ const r=runtime,mul=movementMultiplier(),sp=(current.mode==='dodge'?300:235)*(r.jsSpeed??current.speed)*mul,dx=(held('KeyD','d','ArrowRight','arrowright')?1:0)-(held('KeyA','a','ArrowLeft','arrowleft')?1:0),dy=(held('KeyS','s','ArrowDown','arrowdown')?1:0)-(held('KeyW','w','ArrowUp','arrowup')?1:0),m=Math.hypot(dx,dy)||1;
  const nx=r.px+dx/m*sp*dt,ny=r.py+dy/m*sp*dt;if(!rectHitsSolid(nx,r.py,22,22))r.px=nx;if(!rectHitsSolid(r.px,ny,22,22))r.py=ny
 }
 function playUpdate(dt){
- const r=runtime;if(!r||r.dead||r.won)return;r.time-=dt;r.inv=Math.max(0,r.inv-dt);r.portalCd=Math.max(0,r.portalCd-dt);
+ const r=runtime;if(!r||r.dead||r.won)return;r.time-=dt;r.inv=Math.max(0,r.inv-dt);r.portalCd=Math.max(0,r.portalCd-dt);jsTickClock+=dt;if(jsTickClock>=.1){jsTickClock=0;jsEvent('tick',{time:current.timer-r.time,remaining:r.time,hp:r.hp,lives:r.lives,coins:r.coins})}
  if(current.mode==='platformer')updatePlatformer(dt);else updateTopdown(dt);
  r.enemies.forEach(e=>updateEnemy(e,e.type===6?r.enemyCfgA:r.enemyCfgB,dt));updateTurrets(dt);updateProjectiles(dt);updateSpecialTiles();
  if(r.py>canvas.height+60){damagePlayer(999);return}
  if((current.rule==='survive'||current.mode==='dodge')&&r.time<=0)testWin();else if(current.rule!=='survive'&&current.mode!=='dodge'&&r.time<=0){r.dead=true;toast('Time up.')}
 }
-function testWin(){if(runtime.won)return;runtime.won=true;toast('PLAY TEST COMPLETE — your game can be beaten!')}
+function testWin(){if(runtime.won)return;runtime.won=true;jsEvent('win',{coins:runtime.coins,time:runtime.time});toast('PLAY TEST COMPLETE — your game can be beaten!')}
 function drawPlay(){
  drawEditor();const r=runtime;if(!r)return;
  r.collected.forEach(i=>{const p=xy(i);g.fillStyle=activeColors().bg;g.fillRect(p.x*S+3,p.y*S+3,S-6,S-6)});
@@ -7409,8 +7502,8 @@ function validateGame(){
 
 function rleEncode(a){let out=[],last=a[0]||0,count=0;for(const v of a){if(v===last)count++;else{out.push(last.toString(36)+'.'+count.toString(36));last=v;count=1}}out.push(last.toString(36)+'.'+count.toString(36));return out.join('_')}
 function rleDecode(s){const out=[];String(s||'').split('_').forEach(p=>{const q=p.split('.'),v=parseInt(q[0]||'0',36),n=parseInt(q[1]||'0',36);for(let i=0;i<n;i++)out.push(v)});return out}
-function pack(game){return{v:2,id:game.id,n:game.name,d:game.description,m:game.mode,h:game.theme,r:game.rule,ti:game.timer,s:game.speed,l:game.lives,g:game.gravity,j:game.jump,t:rleEncode(game.tiles),c:game.colors,sp:game.sprites,sc:game.scripts}}
-function unpack(p){if(!p||!p.v)throw new Error('Unsupported Nitro game version');return normalise({format:FORMAT,id:uid(),name:p.n||'Shared Nitro Game',description:p.d||'',mode:p.m||'platformer',theme:p.h||'neon',rule:p.r||'goal',timer:p.ti||60,speed:p.s||1,lives:p.l||3,gravity:p.g||1350,jump:p.j||520,tiles:rleDecode(p.t),colors:p.c,sprites:p.sp,scripts:p.sc,updatedAt:Date.now()})}
+function pack(game){return{v:2,id:game.id,n:game.name,d:game.description,m:game.mode,h:game.theme,r:game.rule,ti:game.timer,s:game.speed,l:game.lives,g:game.gravity,j:game.jump,t:rleEncode(game.tiles),c:game.colors,sp:game.sprites,sc:game.scripts,js:game.jsCode||''}}
+function unpack(p){if(!p||!p.v)throw new Error('Unsupported Nitro game version');return normalise({format:FORMAT,id:uid(),name:p.n||'Shared Nitro Game',description:p.d||'',mode:p.m||'platformer',theme:p.h||'neon',rule:p.r||'goal',timer:p.ti||60,speed:p.s||1,lives:p.l||3,gravity:p.g||1350,jump:p.j||520,tiles:rleDecode(p.t),colors:p.c,sprites:p.sp,scripts:p.sc,jsCode:p.js||jsDefault,updatedAt:Date.now()})}
 function b64e(s){const b=new TextEncoder().encode(s);let x='';for(const n of b)x+=String.fromCharCode(n);return btoa(x).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')}
 function b64d(s){s=s.replace(/-/g,'+').replace(/_/g,'/');while(s.length%4)s+='=';const x=atob(s),b=Uint8Array.from(x,c=>c.charCodeAt(0));return new TextDecoder().decode(b)}
 function shareCode(){readForm();return 'NAG2-'+b64e(JSON.stringify(pack(current)))}
@@ -7432,10 +7525,10 @@ document.querySelectorAll('[data-edittool]').forEach(b=>b.onclick=()=>{editTool=
 $('#ngsClose').onclick=close;
 $('#ngsNew').onclick=()=>{if(confirm('Start a new game? Unsaved changes will be lost.')){stopTest();current=newGame();undo=[];redo=[];dirty=false;syncForm();drawEditor()}};
 $('#ngsGenerate').onclick=generateLevel;$('#ngsSave').onclick=saveCurrent;$('#ngsPlay').onclick=startTest;$('#ngsStop').onclick=stopTest;$('#ngsUndo').onclick=undoPaint;$('#ngsRedo').onclick=redoPaint;$('#ngsClear').onclick=clearLevel;$('#ngsValidate').onclick=validateGame;$('#ngsShot').onclick=screenshot;
-$('#ngsSpriteBtn').onclick=openSpriteLab;$('#ngsScriptBtn').onclick=openScripts;
+$('#ngsSpriteBtn').onclick=openSpriteLab;$('#ngsScriptBtn').onclick=openScripts;$('#ngsJsBtn').onclick=openJsLab;$('#ngsJsExample').onclick=()=>{$('#ngsJsEditor').value=jsDefault};$('#ngsJsCheck').onclick=testJsSandbox;$('#ngsJsDone').onclick=()=>{saveJsCode();$('#ngsJsModal').classList.remove('open');toast('JavaScript saved in this game.')};
 $('#ngsName').oninput=()=>{current.name=$('#ngsName').value;markDirty()};$('#ngsMode').onchange=()=>{current.mode=$('#ngsMode').value;if(current.mode==='dodge'){$('#ngsRule').value='survive';current.rule='survive'}markDirty();drawEditor()};
 $('#ngsTheme').onchange=()=>{current.theme=$('#ngsTheme').value;if(current.theme!=='custom')current.colors={...themes[current.theme]};buildColors();buildPalette();markDirty();drawEditor()};
-$('#ngsRule').onchange=()=>{current.rule=$('#ngsRule').value;markDirty()};$('#ngsTimer').onchange=()=>{current.timer=Number($('#ngsTimer').value)||60;markDirty()};$('#ngsSpeed').oninput=()=>{current.speed=Number($('#ngsSpeed').value)||1;markDirty()};$('#ngsLives').onchange=()=>{current.lives=Number($('#ngsLives').value)||3;markDirty()};$('#ngsGravity').oninput=()=>{current.gravity=Number($('#ngsGravity').value)||1350;markDirty()};$('#ngsJump').oninput=()=>{current.jump=Number($('#ngsJump').value)||520;markDirty()};$('#ngsDescription').oninput=()=>{current.description=$('#ngsDescription').value;markDirty()};
+$('#ngsRule').onchange=()=>{current.rule=$('#ngsRule').value;markDirty()};$('#ngsTimer').onchange=()=>{current.timer=Number($('#ngsTimer').value)||60;markDirty()};$('#ngsSpeed').oninput=()=>{current.speed=Number($('#ngsSpeed').value)||1;markDirty()};$('#ngsLives').onchange=()=>{current.lives=Number($('#ngsLives').value)||3;markDirty()};$('#ngsGravity').oninput=()=>{current.gravity=Number($('#ngsGravity').value)||1350;markDirty()};$('#ngsJump').oninput=()=>{current.jump=Number($('#ngsJump').value)||520;markDirty()};$('#ngsDescription').oninput=()=>{current.description=$('#ngsDescription').value;markDirty()};$('#ngsJsEditor').oninput=()=>{current.jsCode=$('#ngsJsEditor').value;markDirty()};
 
 document.querySelectorAll('[data-script]').forEach(b=>b.onclick=()=>switchScript(b.dataset.script));
 document.querySelectorAll('[data-scriptpreset]').forEach(b=>b.onclick=()=>applyScriptPreset(b.dataset.scriptpreset));
@@ -7454,7 +7547,7 @@ const blockedCodes=new Set(['KeyW','KeyA','KeyS','KeyD','ArrowUp','ArrowDown','A
 window.addEventListener('keydown',e=>{
  if(!overlay.classList.contains('open'))return;
  if(play&&blockedCodes.has(e.code)){e.preventDefault();input.keys.add(e.code);input.keys.add(String(e.key).toLowerCase());canvas.focus({preventScroll:true})}
- if(e.key==='Escape'){if($('#ngsFeaturesModal').classList.contains('open'))$('#ngsFeaturesModal').classList.remove('open');else if($('#ngsSpriteModal').classList.contains('open'))$('#ngsSpriteModal').classList.remove('open');else if($('#ngsScriptModal').classList.contains('open'))$('#ngsScriptModal').classList.remove('open');else if(shareBox.classList.contains('open'))shareBox.classList.remove('open');else if(play)stopTest();else close()}
+ if(e.key==='Escape'){if($('#ngsFeaturesModal').classList.contains('open'))$('#ngsFeaturesModal').classList.remove('open');else if($('#ngsSpriteModal').classList.contains('open'))$('#ngsSpriteModal').classList.remove('open');else if($('#ngsScriptModal').classList.contains('open'))$('#ngsScriptModal').classList.remove('open');else if($('#ngsJsModal').classList.contains('open'))$('#ngsJsModal').classList.remove('open');else if(shareBox.classList.contains('open'))shareBox.classList.remove('open');else if(play)stopTest();else close()}
 });
 window.addEventListener('keyup',e=>{input.keys.delete(e.code);input.keys.delete(String(e.key).toLowerCase())});
 window.addEventListener('blur',()=>input.keys.clear());
