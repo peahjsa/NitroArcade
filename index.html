@@ -6399,7 +6399,7 @@ document.addEventListener("keydown",(e)=>{
 /* NitroArcade Gameplay Integration v2 */
 (()=>{
  const N=window.NitroArcade=window.NitroArcade||{}; if(N.__integrationV2)return; N.__integrationV2=true;
- const id=()=>window.currentGame?.id||"unknown", name=()=>window.currentGame?.name||id();
+ const id=()=>{try{return typeof currentGame!=="undefined"&&currentGame?.id?currentGame.id:(window.currentGame?.id||"unknown")}catch{return window.currentGame?.id||"unknown"}}, name=()=>{try{return typeof currentGame!=="undefined"&&currentGame?.name?currentGame.name:(window.currentGame?.name||id())}catch{return window.currentGame?.name||id()}};
  if(!N.achievements)N.achievements={unlock(i,t=i,d=""){let a=N.save?.get?.("achievements",[])||[];if(a.includes(i))return false;a.push(i);N.save?.set?.("achievements",a);N.notify?.(d||t,"🏆 "+t);return true},all:()=>N.save?.get?.("achievements",[])||[]};
  if(!N.missions){const defs={play3:{goal:3,text:"Play 3 games"},win1:{goal:1,text:"Win a game"}};N.missions={progress(i,n=1){let p=N.save?.get?.("missions",{})||{};p[i]=Math.min(defs[i]?.goal||999,(p[i]||0)+n);N.save?.set?.("missions",p);if(defs[i]&&p[i]===defs[i].goal)N.notify?.(defs[i].text,"✅ MISSION COMPLETE");return p[i]},all:()=>N.save?.get?.("missions",{})||{}}}
  N.game={
