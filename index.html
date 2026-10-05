@@ -6897,7 +6897,7 @@ function refreshNetwork(){
  $('#nvNetworkCount').textContent=s.seen.length+' / '+networkNodes.length;
  const ready=s.seen.length===networkNodes.length,final=$('#nvNetworkFinal'),btn=$('#nvClaimFinal');
  final.classList.toggle('ready',ready);btn.disabled=!ready||s.final;btn.textContent=s.final?'ROOT SIGNAL CLAIMED':ready?'DECODE ROOT SIGNAL':'LOCKED';
- $('#nvFinalText').textContent=s.final?'ROOT://NITRO-VAULT-13 • A hidden Nitro Card was added to your collection.':ready?'All seven nodes agree. Decode the root transmission for a one-time reward.':'Recover every network signal to reveal the root transmission.';
+ $('#nvFinalText').textContent=s.final?'ROOT://NITRO-VAULT-13 • Your Windosill Nitro Card was upgraded to FOIL.':ready?'All seven nodes agree. Decode the root transmission for a one-time reward.':'Recover every network signal to reveal the root transmission.';
  if(newly)toast(newly+' new Secret Network signal'+(newly===1?'':'s')+' recovered.');
 }
 function claimNetworkFinal(){
@@ -6931,7 +6931,8 @@ function renderRoomInventory(){
  })
 }
 function startDrag(e){
- e.preventDefault();selectedToy=e.currentTarget.dataset.toy;const room=$('#nvPrizeRoom'),r=room.getBoundingClientRect();drag={room,r,id:selectedToy};e.currentTarget.setPointerCapture?.(e.pointerId);document.addEventListener('pointermove',moveDrag);document.addEventListener('pointerup',endDrag,{once:true});renderRoom()
+ e.preventDefault();selectedToy=e.currentTarget.dataset.toy;const room=$('#nvPrizeRoom'),r=room.getBoundingClientRect();drag={room,r,id:selectedToy};e.currentTarget.setPointerCapture?.(e.pointerId);document.addEventListener('pointermove',moveDrag);document.addEventListener('pointerup',endDrag,{once:true});
+ room.querySelectorAll('.nv-toy-object').forEach(el=>el.classList.toggle('selected',el.dataset.toy===selectedToy));updateSelectedToy()
 }
 function moveDrag(e){
  if(!drag)return;const s=roomState(),p=s.items[drag.id]||{};p.x=Math.max(4,Math.min(96,(e.clientX-drag.r.left)/drag.r.width*100));p.y=Math.max(8,Math.min(93,(e.clientY-drag.r.top)/drag.r.height*100));p.z=++zCounter;s.items[drag.id]=p;roomSave(s);
