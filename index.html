@@ -1955,6 +1955,55 @@ body.theme-matrix{
 
 </style>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style id="nitroGameStudioStyles">
+#ngsOverlay{position:fixed;inset:0;z-index:100000;background:#05080d;color:#eef6ff;display:none;font-family:Inter,system-ui,Segoe UI,Arial,sans-serif}
+#ngsOverlay.open{display:grid;grid-template-rows:auto 1fr}
+.ngs-topbar{height:64px;display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid #243244;background:#091019;box-shadow:0 8px 30px #0008}
+.ngs-brand{font-weight:1000;letter-spacing:-.5px;white-space:nowrap}.ngs-brand b{color:#69e8ff}
+.ngs-topbar input,.ngs-topbar select,.ngs-field input,.ngs-field select,.ngs-field textarea,.ngs-sharebox textarea{
+  border:1px solid #2d4057;border-radius:9px;background:#0e1621;color:#eff8ff;padding:9px 10px;outline:none
+}
+.ngs-topbar input:focus,.ngs-topbar select:focus,.ngs-field input:focus,.ngs-field select:focus,.ngs-field textarea:focus,.ngs-sharebox textarea:focus{border-color:#67dff8}
+#ngsName{min-width:210px;max-width:330px;font-weight:800}
+.ngs-spacer{flex:1}
+.ngs-btn{border:1px solid #33465e;border-radius:9px;background:#152131;color:#eaf5ff;padding:9px 11px;font:900 10px Inter,sans-serif;cursor:pointer;letter-spacing:.2px}
+.ngs-btn:hover{filter:brightness(1.12);transform:translateY(-1px)}
+.ngs-btn.primary{background:linear-gradient(135deg,#69e8ff,#8d83ff);border:0;color:#071019}
+.ngs-btn.good{background:#153527;border-color:#2d7851;color:#a7f7c8}
+.ngs-btn.warn{background:#332518;border-color:#7a542d;color:#ffe0a9}
+.ngs-btn.danger{background:#351820;border-color:#7d3344;color:#ffc3d0}
+.ngs-shell{min-height:0;display:grid;grid-template-columns:245px minmax(0,1fr) 275px}
+.ngs-panel{min-height:0;overflow:auto;background:#091019;border-right:1px solid #243244}
+.ngs-panel.right{border-right:0;border-left:1px solid #243244}
+.ngs-panel-inner{padding:14px}
+.ngs-section-title{font:1000 9px Inter,sans-serif;letter-spacing:1.4px;color:#8292a8;margin:3px 0 9px}
+.ngs-palette{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.ngs-tool{min-height:57px;border:1px solid #2a394d;border-radius:10px;background:#0d1621;color:#dce8f5;padding:8px;text-align:left;cursor:pointer}
+.ngs-tool.active{border-color:#66e8ff;box-shadow:0 0 0 1px #66e8ff33;background:#10202c}
+.ngs-tool strong{display:block;font-size:11px;margin-bottom:3px}.ngs-tool span{font-size:9px;color:#8fa0b5}
+.ngs-swatch{display:inline-grid;place-items:center;width:21px;height:21px;border-radius:6px;margin-right:5px;background:#182738;vertical-align:middle}
+.ngs-field{display:grid;gap:5px;margin-bottom:10px}.ngs-field label{font-size:9px;color:#93a4ba;font-weight:900;letter-spacing:.5px}.ngs-field textarea{min-height:72px;resize:vertical}
+.ngs-stagewrap{position:relative;min-width:0;min-height:0;background:radial-gradient(circle at 50% 40%,#101a27,#05080d 70%);overflow:hidden}
+.ngs-stagebar{height:45px;display:flex;align-items:center;gap:8px;padding:7px 10px;border-bottom:1px solid #223146;background:#08111b}
+.ngs-modepill{padding:5px 8px;border-radius:999px;background:#112132;border:1px solid #2c4056;color:#a9bfd4;font-size:9px;font-weight:900}
+.ngs-stagehost{position:absolute;inset:45px 0 0;display:grid;place-items:center;padding:16px}
+#ngsCanvas{width:min(100%,1080px);height:auto;max-height:100%;aspect-ratio:12/7;border:1px solid #2f4359;border-radius:13px;background:#071019;box-shadow:0 28px 75px #000b;touch-action:none}
+.ngs-stagehint{position:absolute;left:50%;bottom:23px;transform:translateX(-50%);padding:7px 10px;border-radius:999px;background:#06101bd9;border:1px solid #2d4057;color:#9eb0c3;font-size:9px;pointer-events:none}
+.ngs-library{display:grid;gap:8px}
+.ngs-libcard{display:grid;grid-template-columns:66px 1fr auto;gap:9px;align-items:center;padding:8px;border:1px solid #27384c;border-radius:10px;background:#0c151f}
+.ngs-libcard canvas{width:66px;height:42px;border-radius:6px;background:#05090d}
+.ngs-libcard b{display:block;font-size:10px}.ngs-libcard span{display:block;font-size:8px;color:#8fa0b4;margin-top:3px}
+.ngs-libactions{display:grid;gap:4px}.ngs-libactions button{border:1px solid #2a3c51;background:#111c29;color:#dce8f4;border-radius:6px;font-size:8px;padding:5px;cursor:pointer}
+.ngs-empty{padding:15px;border:1px dashed #2c3b4f;border-radius:10px;color:#7f91a7;font-size:10px;line-height:1.45}
+.ngs-statgrid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px}.ngs-stat{padding:8px;border:1px solid #27394d;border-radius:9px;background:#0c141e}.ngs-stat b{display:block;font-size:12px}.ngs-stat span{font-size:8px;color:#8fa0b4}
+.ngs-sharebox{position:fixed;inset:0;z-index:100003;display:none;place-items:center;padding:20px;background:#000b}
+.ngs-sharebox.open{display:grid}.ngs-sharecard{width:min(640px,100%);background:#0c131d;border:1px solid #34475f;border-radius:16px;padding:18px;box-shadow:0 30px 90px #000c}.ngs-sharecard h3{margin:0 0 6px}.ngs-sharecard p{color:#9cabbf;font-size:11px;line-height:1.5}.ngs-sharecard textarea{width:100%;min-height:125px;font:11px/1.45 ui-monospace,Consolas,monospace}
+.ngs-playhud{position:absolute;z-index:5;left:20px;top:58px;display:none;gap:7px;flex-wrap:wrap;pointer-events:none}.ngs-playhud.show{display:flex}.ngs-playchip{padding:6px 8px;border-radius:8px;background:#06111ddd;border:1px solid #2d4259;color:#dceaf7;font-size:9px}
+.ngs-help{font-size:10px;color:#91a2b8;line-height:1.55}.ngs-help b{color:#e9f4ff}
+@media(max-width:1050px){.ngs-shell{grid-template-columns:210px minmax(0,1fr)}.ngs-panel.right{display:none}}
+@media(max-width:730px){.ngs-shell{grid-template-columns:1fr}.ngs-panel{display:none}.ngs-topbar{overflow-x:auto}.ngs-stagehost{padding:7px}.ngs-stagehint{bottom:11px}}
+</style>
 </head>
 
 <body>
@@ -1995,6 +2044,7 @@ body.theme-matrix{
             <button class="btn" onclick="showArcadePart('small')">Small Games</button>
             <button class="btn" onclick="showArcadePart('big')">Big Games</button>
             <button class="btn" onclick="showArcadePart('challenge')">Challenge</button>
+            <button class="btn" type="button" onclick="NitroGameStudio.open()">Game Studio</button>
             <button class="btn" onclick="openAboutPage(event)">About</button>
             <button class="btn btn-primary" id="nitroAccountBtn" onclick="openLogin()">Log In</button>
         </div>
@@ -6707,5 +6757,347 @@ window.listNitroFeatures=()=>window.NitroArcadeFeatures;
 </script>
 
 
+
+<div id="ngsOverlay" aria-hidden="true">
+  <div class="ngs-topbar">
+    <div class="ngs-brand">NITRO <b>GAME STUDIO</b></div>
+    <input id="ngsName" maxlength="42" value="Untitled Nitro Game" aria-label="Game name">
+    <select id="ngsMode" aria-label="Game type">
+      <option value="platformer">Platformer</option>
+      <option value="maze">Maze Quest</option>
+      <option value="dodge">Survival Dodge</option>
+    </select>
+    <div class="ngs-spacer"></div>
+    <button class="ngs-btn" id="ngsNew">NEW</button>
+    <button class="ngs-btn good" id="ngsSave">SAVE</button>
+    <button class="ngs-btn primary" id="ngsPlay">▶ PLAY TEST</button>
+    <button class="ngs-btn" id="ngsShare">SHARE</button>
+    <button class="ngs-btn danger" id="ngsClose">CLOSE</button>
+  </div>
+
+  <div class="ngs-shell">
+    <aside class="ngs-panel">
+      <div class="ngs-panel-inner">
+        <div class="ngs-section-title">BUILD PALETTE</div>
+        <div class="ngs-palette" id="ngsPalette"></div>
+
+        <div class="ngs-section-title" style="margin-top:16px">GAME SETTINGS</div>
+        <div class="ngs-field"><label>THEME</label><select id="ngsTheme"><option value="neon">Neon Night</option><option value="sunset">Sunset</option><option value="matrix">Matrix</option><option value="ice">Ice Lab</option><option value="candy">Candy Pop</option></select></div>
+        <div class="ngs-field"><label>WIN RULE</label><select id="ngsRule"><option value="goal">Reach Goal</option><option value="coins">Collect All + Goal</option><option value="survive">Survive Timer</option></select></div>
+        <div class="ngs-field"><label>TIMER (SECONDS)</label><input id="ngsTimer" type="number" min="10" max="300" value="60"></div>
+        <div class="ngs-field"><label>PLAYER SPEED</label><select id="ngsSpeed"><option value="0.85">Slow</option><option value="1" selected>Normal</option><option value="1.2">Fast</option><option value="1.45">Turbo</option></select></div>
+        <div class="ngs-field"><label>DESCRIPTION</label><textarea id="ngsDescription" maxlength="220" placeholder="What is your game about?"></textarea></div>
+
+        <div class="ngs-section-title">EDITOR HELP</div>
+        <div class="ngs-help"><b>Left click / drag:</b> paint tiles<br><b>Right click:</b> erase<br><b>Start:</b> exactly one spawn point<br><b>Goal:</b> finish tile<br><b>Enemy:</b> patrol/chase depending on game type<br><b>Turret:</b> shoots during play test</div>
+      </div>
+    </aside>
+
+    <section class="ngs-stagewrap">
+      <div class="ngs-stagebar">
+        <span class="ngs-modepill" id="ngsStatus">EDIT MODE</span>
+        <button class="ngs-btn" id="ngsUndo">↶ UNDO</button>
+        <button class="ngs-btn" id="ngsClear">CLEAR</button>
+        <button class="ngs-btn" id="ngsStop" style="display:none">■ STOP TEST</button>
+        <span class="ngs-modepill" id="ngsPointerInfo">24 × 14 GRID</span>
+      </div>
+      <div class="ngs-stagehost"><canvas id="ngsCanvas" width="960" height="560"></canvas></div>
+      <div class="ngs-playhud" id="ngsPlayHud"></div>
+      <div class="ngs-stagehint" id="ngsHint">Choose a tile, then paint your level.</div>
+    </section>
+
+    <aside class="ngs-panel right">
+      <div class="ngs-panel-inner">
+        <div class="ngs-section-title">MY CREATIONS</div>
+        <div class="ngs-library" id="ngsLibrary"></div>
+        <div class="ngs-section-title" style="margin-top:16px">GAME CHECK</div>
+        <div class="ngs-statgrid">
+          <div class="ngs-stat"><b id="ngsCountCoins">0</b><span>COINS</span></div>
+          <div class="ngs-stat"><b id="ngsCountEnemies">0</b><span>ENEMIES</span></div>
+          <div class="ngs-stat"><b id="ngsCountHazards">0</b><span>HAZARDS</span></div>
+          <div class="ngs-stat"><b id="ngsCountBlocks">0</b><span>BLOCKS</span></div>
+        </div>
+        <div class="ngs-section-title" style="margin-top:16px">SHARING</div>
+        <div class="ngs-help">Games save <b>locally in this browser</b>. To send one to a friend, use <b>SHARE</b> and copy a Nitro share code/link or export a <b>.nitrogame</b> file. No public upload is required.</div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<div class="ngs-sharebox" id="ngsShareBox">
+  <div class="ngs-sharecard">
+    <h3>Share Nitro Game</h3>
+    <p>Copy the code or link and send it to a friend. They can open Game Studio and paste the code. Share links import the game automatically when NitroArcade opens.</p>
+    <textarea id="ngsShareCode" spellcheck="false"></textarea>
+    <div class="btnRow" style="justify-content:flex-start;margin-top:10px">
+      <button class="ngs-btn primary" id="ngsCopyCode">COPY CODE</button>
+      <button class="ngs-btn" id="ngsCopyLink">COPY LINK</button>
+      <button class="ngs-btn" id="ngsExport">EXPORT .nitrogame</button>
+      <button class="ngs-btn" id="ngsImportBtn">IMPORT FILE</button>
+      <button class="ngs-btn" id="ngsPaste">PASTE CODE</button>
+      <button class="ngs-btn danger" id="ngsShareClose">CLOSE</button>
+    </div>
+    <input id="ngsImportFile" type="file" accept=".nitrogame,application/json" hidden>
+  </div>
+</div>
+
+<script id="nitroGameStudioScript">
+(()=>{
+'use strict';
+
+const $=s=>document.querySelector(s);
+const overlay=$('#ngsOverlay'), canvas=$('#ngsCanvas'), g=canvas.getContext('2d');
+const W=24,H=14,S=40,STORE='nitroarcade:user-games:v1',FORMAT='NITROGAME1';
+const tileDefs=[
+  {id:0,key:'erase',name:'Erase',icon:'⌫',hint:'Remove tile'},
+  {id:1,key:'block',name:'Block',icon:'■',hint:'Solid wall/platform'},
+  {id:2,key:'start',name:'Start',icon:'◆',hint:'Player spawn'},
+  {id:3,key:'goal',name:'Goal',icon:'⚑',hint:'Finish point'},
+  {id:4,key:'hazard',name:'Hazard',icon:'▲',hint:'Costs a life'},
+  {id:5,key:'coin',name:'Coin',icon:'●',hint:'Collectible'},
+  {id:6,key:'enemy',name:'Enemy',icon:'☻',hint:'Patrol or chase'},
+  {id:7,key:'bounce',name:'Bounce',icon:'↥',hint:'Launch pad'},
+  {id:8,key:'turret',name:'Turret',icon:'✦',hint:'Shoots at player'}
+];
+const tileColor={0:'#071019',1:'#38546a',2:'#69e8ff',3:'#7cefa5',4:'#ff6178',5:'#ffd66b',6:'#b48cff',7:'#ff9c68',8:'#ff77bd'};
+const themeMap={
+  neon:{bg:'#071019',grid:'#122231',accent:'#69e8ff'},
+  sunset:{bg:'#21131b',grid:'#3b2029',accent:'#ff8c68'},
+  matrix:{bg:'#06100a',grid:'#102a19',accent:'#6dff9b'},
+  ice:{bg:'#0a1620',grid:'#173044',accent:'#9beaff'},
+  candy:{bg:'#211423',grid:'#3a203e',accent:'#ff86c8'}
+};
+
+let current=newGame(), selected=1, painting=false, play=false, runtime=null, undo=[], raf=0, last=0;
+
+function uid(){return 'ng_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,6)}
+function newGame(){
+  const tiles=Array(W*H).fill(0);
+  for(let x=0;x<W;x++) tiles[(H-1)*W+x]=1;
+  tiles[(H-2)*W+2]=2;
+  tiles[(H-2)*W+(W-3)]=3;
+  return {format:FORMAT,id:uid(),name:'Untitled Nitro Game',description:'',mode:'platformer',theme:'neon',rule:'goal',timer:60,speed:1,w:W,h:H,tiles,updatedAt:Date.now()};
+}
+function clone(v){return JSON.parse(JSON.stringify(v))}
+function idx(x,y){return y*W+x}
+function tileAt(x,y){if(x<0||y<0||x>=W||y>=H)return 1;return current.tiles[idx(x,y)]||0}
+function setTile(x,y,v){
+  if(x<0||y<0||x>=W||y>=H)return;
+  if(v===2){for(let i=0;i<current.tiles.length;i++)if(current.tiles[i]===2)current.tiles[i]=0}
+  if(v===3){for(let i=0;i<current.tiles.length;i++)if(current.tiles[i]===3)current.tiles[i]=0}
+  current.tiles[idx(x,y)]=v; current.updatedAt=Date.now();
+}
+function pushUndo(){undo.push(current.tiles.slice());if(undo.length>30)undo.shift()}
+function syncForm(){
+  $('#ngsName').value=current.name;$('#ngsMode').value=current.mode;$('#ngsTheme').value=current.theme;$('#ngsRule').value=current.rule;
+  $('#ngsTimer').value=current.timer;$('#ngsSpeed').value=String(current.speed);$('#ngsDescription').value=current.description||'';
+}
+function readForm(){
+  current.name=($('#ngsName').value||'Untitled Nitro Game').trim().slice(0,42);
+  current.mode=$('#ngsMode').value;current.theme=$('#ngsTheme').value;current.rule=$('#ngsRule').value;
+  current.timer=Math.max(10,Math.min(300,Number($('#ngsTimer').value)||60));
+  current.speed=Number($('#ngsSpeed').value)||1;current.description=$('#ngsDescription').value.slice(0,220);current.updatedAt=Date.now();
+}
+function toast(t){if(window.showToast)window.showToast(t);else{const h=$('#ngsHint');h.textContent=t;clearTimeout(h._t);h._t=setTimeout(()=>h.textContent=play?'Play test running.':'Choose a tile, then paint your level.',1400)}}
+function buildPalette(){
+  const box=$('#ngsPalette');box.innerHTML='';
+  tileDefs.forEach(t=>{
+    const b=document.createElement('button');b.className='ngs-tool'+(t.id===selected?' active':'');b.dataset.tile=t.id;
+    b.innerHTML='<strong><span class="ngs-swatch" style="color:'+tileColor[t.id]+'">'+t.icon+'</span>'+t.name+'</strong><span>'+t.hint+'</span>';
+    b.onclick=()=>{selected=t.id;buildPalette()};box.appendChild(b);
+  });
+}
+function drawEditor(){
+  const th=themeMap[current.theme]||themeMap.neon;g.fillStyle=th.bg;g.fillRect(0,0,canvas.width,canvas.height);
+  for(let y=0;y<H;y++)for(let x=0;x<W;x++){
+    const t=current.tiles[idx(x,y)],px=x*S,py=y*S;
+    g.fillStyle=t?tileColor[t]:th.bg;g.globalAlpha=t?0.88:1;g.fillRect(px+2,py+2,S-4,S-4);g.globalAlpha=1;
+    if(t===2||t===3||t===5||t===6||t===7||t===8){
+      g.fillStyle=t===5?'#18200d':'#061019';g.font='900 17px Inter, sans-serif';g.textAlign='center';g.textBaseline='middle';
+      g.fillText(tileDefs[t].icon,px+S/2,py+S/2+1);
+    }
+  }
+  g.strokeStyle=th.grid;g.lineWidth=1;
+  for(let x=0;x<=W;x++){g.beginPath();g.moveTo(x*S,0);g.lineTo(x*S,H*S);g.stroke()}
+  for(let y=0;y<=H;y++){g.beginPath();g.moveTo(0,y*S);g.lineTo(W*S,y*S);g.stroke()}
+  updateStats();
+}
+function updateStats(){
+  const count=v=>current.tiles.filter(x=>x===v).length;
+  $('#ngsCountCoins').textContent=count(5);$('#ngsCountEnemies').textContent=count(6)+count(8);$('#ngsCountHazards').textContent=count(4);$('#ngsCountBlocks').textContent=count(1);
+}
+function pointerCell(e){
+  const r=canvas.getBoundingClientRect();return {x:Math.floor((e.clientX-r.left)/r.width*W),y:Math.floor((e.clientY-r.top)/r.height*H)}
+}
+function paintAt(e,erase=false){
+  if(play)return;const p=pointerCell(e);setTile(p.x,p.y,erase?0:selected);drawEditor();
+}
+canvas.addEventListener('pointerdown',e=>{if(play)return;e.preventDefault();painting=true;pushUndo();paintAt(e,e.button===2);canvas.setPointerCapture?.(e.pointerId)});
+canvas.addEventListener('pointermove',e=>{if(painting&&!play)paintAt(e,(e.buttons&2)!==0)});
+canvas.addEventListener('pointerup',()=>painting=false);
+canvas.addEventListener('pointercancel',()=>painting=false);
+canvas.addEventListener('contextmenu',e=>{e.preventDefault();if(!play){pushUndo();paintAt(e,true)}});
+
+function games(){try{return JSON.parse(localStorage.getItem(STORE)||'[]')}catch(e){return[]}}
+function writeGames(a){localStorage.setItem(STORE,JSON.stringify(a.slice(0,24)))}
+function saveCurrent(){
+  readForm();const a=games(),i=a.findIndex(x=>x.id===current.id);if(i>=0)a[i]=clone(current);else a.unshift(clone(current));writeGames(a);renderLibrary();toast('Game saved locally.');
+}
+function renderMini(cv,game){
+  const c=cv.getContext('2d'),cw=cv.width/game.w,ch=cv.height/game.h,th=themeMap[game.theme]||themeMap.neon;c.fillStyle=th.bg;c.fillRect(0,0,cv.width,cv.height);
+  game.tiles.forEach((t,i)=>{if(!t)return;const x=i%game.w,y=Math.floor(i/game.w);c.fillStyle=tileColor[t]||'#fff';c.fillRect(x*cw,y*ch,Math.max(1,cw),Math.max(1,ch))});
+}
+function renderLibrary(){
+  const box=$('#ngsLibrary'),a=games();box.innerHTML='';
+  if(!a.length){box.innerHTML='<div class="ngs-empty">No saved games yet. Build a level and press SAVE.</div>';return}
+  a.forEach(game=>{
+    const card=document.createElement('div');card.className='ngs-libcard';const cv=document.createElement('canvas');cv.width=132;cv.height=84;
+    const meta=document.createElement('div');meta.innerHTML='<b></b><span></span>';meta.querySelector('b').textContent=game.name;meta.querySelector('span').textContent=game.mode.toUpperCase()+' • '+new Date(game.updatedAt||Date.now()).toLocaleDateString();
+    const acts=document.createElement('div');acts.className='ngs-libactions';
+    const load=document.createElement('button');load.textContent='LOAD';load.onclick=()=>loadGame(game);
+    const del=document.createElement('button');del.textContent='DELETE';del.onclick=()=>{if(confirm('Delete "'+game.name+'"?')){writeGames(games().filter(x=>x.id!==game.id));renderLibrary()}};
+    acts.append(load,del);card.append(cv,meta,acts);box.appendChild(card);renderMini(cv,game);
+  });
+}
+function loadGame(game){stopTest();current=normalise(game);syncForm();drawEditor();toast('Loaded '+current.name)}
+function normalise(game){
+  const g2={...newGame(),...clone(game)};g2.format=FORMAT;g2.w=W;g2.h=H;if(!Array.isArray(g2.tiles))g2.tiles=Array(W*H).fill(0);g2.tiles=g2.tiles.slice(0,W*H);while(g2.tiles.length<W*H)g2.tiles.push(0);return g2
+}
+function clearLevel(){if(!confirm('Clear the whole level?'))return;pushUndo();current.tiles=Array(W*H).fill(0);drawEditor()}
+function undoPaint(){if(!undo.length)return;current.tiles=undo.pop();drawEditor()}
+
+function rleEncode(a){let out=[],last=a[0]||0,count=0;for(const v of a){if(v===last)count++;else{out.push(last.toString(36)+'.'+count.toString(36));last=v;count=1}}out.push(last.toString(36)+'.'+count.toString(36));return out.join('_')}
+function rleDecode(s){const out=[];String(s||'').split('_').forEach(p=>{const [v,c]=p.split('.');for(let i=0;i<parseInt(c||'0',36);i++)out.push(parseInt(v||'0',36))});return out}
+function pack(game){return {v:1,id:game.id,n:game.name,d:game.description,m:game.mode,h:game.theme,r:game.rule,ti:game.timer,s:game.speed,t:rleEncode(game.tiles)}}
+function unpack(p){if(!p||p.v!==1)throw new Error('Unsupported Nitro game version');return normalise({format:FORMAT,id:uid(),name:p.n||'Shared Nitro Game',description:p.d||'',mode:p.m||'platformer',theme:p.h||'neon',rule:p.r||'goal',timer:p.ti||60,speed:p.s||1,tiles:rleDecode(p.t),updatedAt:Date.now()})}
+function b64e(s){const b=new TextEncoder().encode(s);let x='';for(const n of b)x+=String.fromCharCode(n);return btoa(x).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')}
+function b64d(s){s=s.replace(/-/g,'+').replace(/_/g,'/');while(s.length%4)s+='=';const x=atob(s),b=Uint8Array.from(x,c=>c.charCodeAt(0));return new TextDecoder().decode(b)}
+function shareCode(){readForm();return 'NAG1-'+b64e(JSON.stringify(pack(current)))}
+function importCode(code){code=String(code||'').trim();if(!code.startsWith('NAG1-'))throw new Error('Not a Nitro Game share code');current=unpack(JSON.parse(b64d(code.slice(5))));stopTest();syncForm();drawEditor();toast('Shared game imported. Save it if you want to keep it.')}
+async function copyText(t){try{await navigator.clipboard.writeText(t);toast('Copied.')}catch(e){$('#ngsShareCode').focus();$('#ngsShareCode').select();toast('Select the text and copy it manually.')}}
+function exportGame(){
+  readForm();const data={format:'NitroArcadeGame',version:1,game:pack(current)},blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);a.download=(current.name||'nitro-game').replace(/[^a-z0-9_-]+/gi,'_')+'.nitrogame';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)
+}
+async function importFile(file){
+  const txt=await file.text(),j=JSON.parse(txt);if(j.format!=='NitroArcadeGame'||!j.game)throw new Error('This is not a NitroArcade .nitrogame file');current=unpack(j.game);stopTest();syncForm();drawEditor();toast('Game imported.')
+}
+
+function startTest(){
+  readForm();const start=current.tiles.findIndex(v=>v===2);if(start<0){toast('Place a START tile first.');return}
+  if(current.mode!=='dodge'&&current.tiles.findIndex(v=>v===3)<0){toast('Place a GOAL tile first.');return}
+  play=true;$('#ngsPlay').style.display='none';$('#ngsStop').style.display='inline-block';$('#ngsStatus').textContent='PLAY TEST';$('#ngsHint').textContent='Testing '+current.name;
+  const sx=start%W,sy=Math.floor(start/W),coins=current.tiles.filter(v=>v===5).length;
+  runtime={px:(sx+.5)*S,py:(sy+.5)*S,vx:0,vy:0,w:22,h:30,onGround:false,lives:3,coins:0,totalCoins:coins,time:current.timer,won:false,dead:false,shots:[],enemyShots:[],
+    enemies:current.tiles.map((v,i)=>v===6?{x:(i%W+.5)*S,y:(Math.floor(i/W)+.5)*S,baseX:(i%W+.5)*S,dir:Math.random()<.5?-1:1,cool:0}:null).filter(Boolean),
+    turrets:current.tiles.map((v,i)=>v===8?{x:(i%W+.5)*S,y:(Math.floor(i/W)+.5)*S,cool:Math.random()*1.2}:null).filter(Boolean),
+    collected:new Set()
+  };
+  last=performance.now();cancelAnimationFrame(raf);raf=requestAnimationFrame(playLoop)
+}
+function stopTest(){play=false;runtime=null;cancelAnimationFrame(raf);$('#ngsPlay').style.display='inline-block';$('#ngsStop').style.display='none';$('#ngsStatus').textContent='EDIT MODE';$('#ngsPlayHud').classList.remove('show');drawEditor()}
+function resetPlayer(){
+  const start=current.tiles.findIndex(v=>v===2),sx=start%W,sy=Math.floor(start/W);runtime.px=(sx+.5)*S;runtime.py=(sy+.5)*S;runtime.vx=runtime.vy=0
+}
+function rectHitsSolid(x,y,w,h){
+  const l=Math.floor((x-w/2)/S),r=Math.floor((x+w/2-1)/S),t=Math.floor((y-h/2)/S),b=Math.floor((y+h/2-1)/S);
+  for(let yy=t;yy<=b;yy++)for(let xx=l;xx<=r;xx++)if(tileAt(xx,yy)===1)return true;return false
+}
+function touchTile(type){
+  const r=runtime,cx=Math.floor(r.px/S),cy=Math.floor(r.py/S);
+  for(let y=cy-1;y<=cy+1;y++)for(let x=cx-1;x<=cx+1;x++){if(tileAt(x,y)!==type)continue;const tx=(x+.5)*S,ty=(y+.5)*S;if(Math.abs(r.px-tx)<S*.48&&Math.abs(r.py-ty)<S*.48)return {x,y,i:idx(x,y)}}
+  return null
+}
+function loseLife(){runtime.lives--;if(runtime.lives<=0){runtime.dead=true;toast('Play test: game over. Press STOP TEST to edit.')}else{resetPlayer();toast('Life lost. '+runtime.lives+' left.')}}
+function testWin(){if(runtime.won)return;runtime.won=true;toast('PLAY TEST COMPLETE! Your game can be beaten.')}
+function updatePlatformer(dt){
+  const r=runtime,sp=250*current.speed,left=keys['a']||keys['arrowleft'],right=keys['d']||keys['arrowright'];
+  r.vx=((right?1:0)-(left?1:0))*sp;
+  const jump=keys['w']||keys['arrowup']||keys[' '];if(jump&&r.onGround&&!r.jumpLock){r.vy=-520;r.onGround=false;r.jumpLock=true}if(!jump)r.jumpLock=false;
+  r.vy+=1350*dt;
+  let nx=r.px+r.vx*dt;if(!rectHitsSolid(nx,r.py,r.w,r.h))r.px=nx;
+  let ny=r.py+r.vy*dt;r.onGround=false;
+  if(!rectHitsSolid(r.px,ny,r.w,r.h))r.py=ny;else{if(r.vy>0)r.onGround=true;r.vy=0}
+  const bounce=touchTile(7);if(bounce){r.vy=-720;r.onGround=false}
+  r.enemies.forEach(e=>{e.x+=e.dir*70*dt;const cx=Math.floor(e.x/S),cy=Math.floor(e.y/S);if(tileAt(cx+(e.dir>0?1:-1),cy)===1||Math.abs(e.x-e.baseX)>S*2)e.dir*=-1;if(Math.hypot(r.px-e.x,r.py-e.y)<28)loseLife()});
+}
+function updateMaze(dt,dodge=false){
+  const r=runtime,sp=(dodge?285:235)*current.speed,dx=(keys['d']||keys['arrowright']?1:0)-(keys['a']||keys['arrowleft']?1:0),dy=(keys['s']||keys['arrowdown']?1:0)-(keys['w']||keys['arrowup']?1:0),m=Math.hypot(dx,dy)||1;
+  let nx=r.px+dx/m*sp*dt,ny=r.py+dy/m*sp*dt;if(!rectHitsSolid(nx,r.py,22,22))r.px=nx;if(!rectHitsSolid(r.px,ny,22,22))r.py=ny;
+  r.enemies.forEach(e=>{const a=Math.atan2(r.py-e.y,r.px-e.x);e.x+=Math.cos(a)*(dodge?100:72)*dt;e.y+=Math.sin(a)*(dodge?100:72)*dt;if(Math.hypot(r.px-e.x,r.py-e.y)<26)loseLife()});
+}
+function updateTurrets(dt){
+  const r=runtime;r.turrets.forEach(t=>{t.cool-=dt;if(t.cool<=0){t.cool=current.mode==='dodge'?1.0:1.7;const a=Math.atan2(r.py-t.y,r.px-t.x);r.enemyShots.push({x:t.x,y:t.y,vx:Math.cos(a)*230,vy:Math.sin(a)*230})}});
+  r.enemyShots.forEach(s=>{s.x+=s.vx*dt;s.y+=s.vy*dt;if(Math.hypot(r.px-s.x,r.py-s.y)<18){s.dead=true;loseLife()}});r.enemyShots=r.enemyShots.filter(s=>!s.dead&&s.x>0&&s.y>0&&s.x<canvas.width&&s.y<canvas.height)
+}
+function playUpdate(dt){
+  const r=runtime;if(!r||r.dead||r.won)return;
+  r.time-=dt;if(current.mode==='platformer')updatePlatformer(dt);else updateMaze(dt,current.mode==='dodge');updateTurrets(dt);
+  if(r.py>canvas.height+40){loseLife();return}
+  if(touchTile(4)){loseLife();return}
+  const coin=touchTile(5);if(coin&&!r.collected.has(coin.i)){r.collected.add(coin.i);r.coins++;toast('Coin '+r.coins+'/'+r.totalCoins)}
+  const goal=touchTile(3);if(goal&&current.mode!=='dodge'){
+    if(current.rule==='coins'&&r.coins<r.totalCoins){}else testWin()
+  }
+  if((current.rule==='survive'||current.mode==='dodge')&&r.time<=0)testWin();
+  if(current.rule!=='survive'&&current.mode!=='dodge'&&r.time<=0){r.dead=true;toast('Time up.')}
+}
+function drawPlay(){
+  drawEditor();const r=runtime;if(!r)return;
+  g.save();
+  r.collected.forEach(i=>{const x=i%W,y=Math.floor(i/W);g.fillStyle=(themeMap[current.theme]||themeMap.neon).bg;g.fillRect(x*S+2,y*S+2,S-4,S-4)});
+  r.enemies.forEach(e=>{g.fillStyle='#b48cff';g.beginPath();g.arc(e.x,e.y,13,0,Math.PI*2);g.fill();g.fillStyle='#101018';g.fillRect(e.x-6,e.y-2,4,4);g.fillRect(e.x+2,e.y-2,4,4)});
+  r.turrets.forEach(t=>{g.fillStyle='#ff77bd';g.fillRect(t.x-12,t.y-12,24,24)});
+  r.enemyShots.forEach(s=>{g.fillStyle='#ff6b79';g.beginPath();g.arc(s.x,s.y,5,0,Math.PI*2);g.fill()});
+  g.fillStyle='#eafaff';g.beginPath();g.arc(r.px,r.py,12,0,Math.PI*2);g.fill();g.strokeStyle='#69e8ff';g.lineWidth=4;g.stroke();
+  g.restore();
+  const hud=$('#ngsPlayHud');hud.classList.add('show');hud.innerHTML='<div class="ngs-playchip">LIVES '+r.lives+'</div><div class="ngs-playchip">COINS '+r.coins+'/'+r.totalCoins+'</div><div class="ngs-playchip">TIME '+Math.max(0,r.time).toFixed(1)+'</div><div class="ngs-playchip">'+(current.mode==='platformer'?'A/D + W/SPACE':'WASD / ARROWS')+'</div>';
+}
+function playLoop(t){if(!play)return;const dt=Math.min(.033,(t-last)/1000||0);last=t;playUpdate(dt);drawPlay();raf=requestAnimationFrame(playLoop)}
+
+function open(){
+  overlay.classList.add('open');overlay.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';syncForm();buildPalette();renderLibrary();drawEditor();
+}
+function close(){stopTest();overlay.classList.remove('open');overlay.setAttribute('aria-hidden','true');document.body.style.overflow='';}
+window.NitroGameStudio={open,close,importCode};
+
+$('#ngsClose').onclick=close;
+$('#ngsNew').onclick=()=>{if(confirm('Start a new game? Unsaved changes will be lost.')){stopTest();current=newGame();undo=[];syncForm();drawEditor()}};
+$('#ngsSave').onclick=saveCurrent;
+$('#ngsPlay').onclick=startTest;
+$('#ngsStop').onclick=stopTest;
+$('#ngsUndo').onclick=undoPaint;
+$('#ngsClear').onclick=clearLevel;
+$('#ngsName').oninput=()=>current.name=$('#ngsName').value;
+$('#ngsMode').onchange=()=>{current.mode=$('#ngsMode').value;if(current.mode==='dodge')$('#ngsRule').value='survive';drawEditor()};
+$('#ngsTheme').onchange=()=>{current.theme=$('#ngsTheme').value;drawEditor()};
+$('#ngsRule').onchange=()=>current.rule=$('#ngsRule').value;
+$('#ngsTimer').onchange=()=>current.timer=Number($('#ngsTimer').value)||60;
+$('#ngsSpeed').onchange=()=>current.speed=Number($('#ngsSpeed').value)||1;
+$('#ngsDescription').oninput=()=>current.description=$('#ngsDescription').value;
+
+const shareBox=$('#ngsShareBox');
+$('#ngsShare').onclick=()=>{$('#ngsShareCode').value=shareCode();shareBox.classList.add('open')};
+$('#ngsShareClose').onclick=()=>shareBox.classList.remove('open');
+$('#ngsCopyCode').onclick=()=>copyText(shareCode());
+$('#ngsCopyLink').onclick=()=>{const u=new URL(location.href);u.hash='nitrogame='+encodeURIComponent(shareCode());copyText(u.toString())};
+$('#ngsExport').onclick=exportGame;
+$('#ngsImportBtn').onclick=()=>$('#ngsImportFile').click();
+$('#ngsImportFile').onchange=async e=>{const file=e.target.files[0];if(!file)return;try{await importFile(file);shareBox.classList.remove('open')}catch(err){alert(err.message)}e.target.value=''};
+$('#ngsPaste').onclick=()=>{const code=prompt('Paste Nitro Game share code:');if(!code)return;try{importCode(code);shareBox.classList.remove('open')}catch(err){alert(err.message)}};
+
+window.addEventListener('keydown',e=>{if(!overlay.classList.contains('open'))return;keys[e.key.toLowerCase()]=true;if(e.key==='Escape'){if(shareBox.classList.contains('open'))shareBox.classList.remove('open');else if(play)stopTest();else close()}});
+window.addEventListener('keyup',e=>keys[e.key.toLowerCase()]=false);
+
+try{
+  if(location.hash.startsWith('#nitrogame=')){
+    const code=decodeURIComponent(location.hash.slice('#nitrogame='.length));
+    importCode(code);open();history.replaceState(null,'',location.pathname+location.search);
+  }
+}catch(err){console.warn('NitroGame share import failed',err)}
+
+buildPalette();renderLibrary();drawEditor();
+})();
+</script>
 </body>
 </html>
