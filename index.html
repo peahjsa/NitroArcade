@@ -1955,6 +1955,160 @@ body.theme-matrix{
 
 </style>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style id="nitroGameStudioStyles">
+#ngsOverlay{position:fixed;inset:0;z-index:100000;background:#05080d;color:#eef6ff;display:none;font-family:Inter,system-ui,Segoe UI,Arial,sans-serif}
+#ngsOverlay.open{display:grid;grid-template-rows:auto 1fr}
+.ngs-topbar{height:64px;display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid #243244;background:#091019;box-shadow:0 8px 30px #0008;overflow-x:auto}
+.ngs-brand{font-weight:1000;letter-spacing:-.5px;white-space:nowrap}.ngs-brand b{color:#69e8ff}
+.ngs-topbar input,.ngs-topbar select,.ngs-field input,.ngs-field select,.ngs-field textarea,.ngs-modal input,.ngs-modal select,.ngs-modal textarea{
+ border:1px solid #2d4057;border-radius:9px;background:#0e1621;color:#eff8ff;padding:9px 10px;outline:none
+}
+.ngs-topbar input:focus,.ngs-topbar select:focus,.ngs-field input:focus,.ngs-field select:focus,.ngs-field textarea:focus,.ngs-modal input:focus,.ngs-modal textarea:focus{border-color:#67dff8}
+#ngsName{min-width:190px;max-width:310px;font-weight:800}
+.ngs-spacer{flex:1}
+.ngs-btn{border:1px solid #33465e;border-radius:9px;background:#152131;color:#eaf5ff;padding:9px 11px;font:900 10px Inter,sans-serif;cursor:pointer;letter-spacing:.2px;white-space:nowrap}
+.ngs-btn:hover{filter:brightness(1.12);transform:translateY(-1px)}
+.ngs-btn.primary{background:linear-gradient(135deg,#69e8ff,#8d83ff);border:0;color:#071019}
+.ngs-btn.good{background:#153527;border-color:#2d7851;color:#a7f7c8}
+.ngs-btn.warn{background:#332518;border-color:#7a542d;color:#ffe0a9}
+.ngs-btn.danger{background:#351820;border-color:#7d3344;color:#ffc3d0}
+.ngs-shell{min-height:0;display:grid;grid-template-columns:260px minmax(0,1fr) 292px}
+.ngs-panel{min-height:0;overflow:auto;background:#091019;border-right:1px solid #243244}
+.ngs-panel.right{border-right:0;border-left:1px solid #243244}
+.ngs-panel-inner{padding:13px}
+.ngs-section-title{font:1000 9px Inter,sans-serif;letter-spacing:1.4px;color:#8292a8;margin:4px 0 9px}
+.ngs-palette{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.ngs-tool{min-height:55px;border:1px solid #2a394d;border-radius:10px;background:#0d1621;color:#dce8f5;padding:8px;text-align:left;cursor:pointer}
+.ngs-tool.active{border-color:#66e8ff;box-shadow:0 0 0 1px #66e8ff33;background:#10202c}
+.ngs-tool strong{display:block;font-size:10px;margin-bottom:3px}.ngs-tool span{font-size:8px;color:#8fa0b5}
+.ngs-swatch{display:inline-grid!important;place-items:center;width:20px;height:20px;border-radius:5px;margin-right:5px;background:#182738;vertical-align:middle;color:#fff!important}
+.ngs-edittools{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
+.ngs-edittool{border:1px solid #2b3d52;border-radius:8px;background:#0d1621;color:#aebed0;padding:7px 3px;font-size:8px;font-weight:900;cursor:pointer}
+.ngs-edittool.active{border-color:#69e8ff;color:#eafaff;background:#102431}
+.ngs-field{display:grid;gap:5px;margin-bottom:9px}.ngs-field label{font-size:8px;color:#93a4ba;font-weight:900;letter-spacing:.5px}.ngs-field textarea{min-height:66px;resize:vertical}
+.ngs-colors{display:grid;grid-template-columns:1fr 1fr;gap:6px}.ngs-color{display:flex;align-items:center;gap:6px;padding:6px;border:1px solid #27384c;border-radius:8px;background:#0c151f}.ngs-color input{width:30px;height:25px;padding:0;border:0;background:none}.ngs-color span{font-size:8px;color:#9caec0}
+.ngs-stagewrap{position:relative;min-width:0;min-height:0;background:radial-gradient(circle at 50% 40%,#101a27,#05080d 70%);overflow:hidden}
+.ngs-stagebar{height:46px;display:flex;align-items:center;gap:6px;padding:7px 9px;border-bottom:1px solid #223146;background:#08111b;overflow-x:auto}
+.ngs-modepill{padding:5px 8px;border-radius:999px;background:#112132;border:1px solid #2c4056;color:#a9bfd4;font-size:8px;font-weight:900;white-space:nowrap}
+.ngs-stagehost{position:absolute;inset:46px 0 0;display:grid;place-items:center;padding:14px}
+#ngsCanvas{width:min(100%,1080px);height:auto;max-height:100%;aspect-ratio:12/7;border:1px solid #2f4359;border-radius:13px;background:#071019;box-shadow:0 28px 75px #000b;touch-action:none;outline:none}
+#ngsCanvas:focus{box-shadow:0 0 0 2px #69e8ff,0 28px 75px #000b}
+.ngs-stagehint{position:absolute;left:50%;bottom:19px;transform:translateX(-50%);padding:7px 10px;border-radius:999px;background:#06101be6;border:1px solid #2d4057;color:#9eb0c3;font-size:8px;pointer-events:none;white-space:nowrap;max-width:88%;overflow:hidden;text-overflow:ellipsis}
+.ngs-library{display:grid;gap:7px}.ngs-libcard{display:grid;grid-template-columns:64px 1fr auto;gap:8px;align-items:center;padding:7px;border:1px solid #27384c;border-radius:10px;background:#0c151f}.ngs-libcard canvas{width:64px;height:42px;border-radius:6px;background:#05090d}.ngs-libcard b{display:block;font-size:9px}.ngs-libcard span{display:block;font-size:8px;color:#8fa0b4;margin-top:3px}.ngs-libactions{display:grid;gap:3px}.ngs-libactions button{border:1px solid #2a3c51;background:#111c29;color:#dce8f4;border-radius:6px;font-size:7px;padding:4px;cursor:pointer}
+.ngs-empty{padding:13px;border:1px dashed #2c3b4f;border-radius:10px;color:#7f91a7;font-size:9px;line-height:1.45}
+.ngs-statgrid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}.ngs-stat{padding:8px;border:1px solid #27394d;border-radius:9px;background:#0c141e}.ngs-stat b{display:block;font-size:12px}.ngs-stat span{font-size:7px;color:#8fa0b4}
+.ngs-check{margin-top:8px;padding:9px;border:1px solid #27394d;border-radius:9px;background:#0b131c;font-size:8px;line-height:1.5;color:#aab9ca}
+.ngs-check.good{border-color:#2d6b50;color:#9cf0c0}.ngs-check.bad{border-color:#7a3b48;color:#ffb7c4}
+.ngs-help{font-size:9px;color:#91a2b8;line-height:1.55}.ngs-help b{color:#e9f4ff}
+.ngs-playhud{position:absolute;z-index:8;left:16px;top:58px;display:none;gap:6px;flex-wrap:wrap;pointer-events:none}.ngs-playhud.show{display:flex}.ngs-playchip{padding:6px 8px;border-radius:8px;background:#06111ddd;border:1px solid #2d4259;color:#dceaf7;font-size:8px}
+.ngs-virtual{position:absolute;z-index:9;left:50%;bottom:52px;transform:translateX(-50%);display:none;gap:5px;align-items:end}.ngs-virtual.show{display:flex}.ngs-vbtn{width:42px;height:38px;border:1px solid #415773;border-radius:9px;background:#0b1725dd;color:#eaf6ff;font-weight:1000;cursor:pointer;touch-action:none}.ngs-vbtn.jump{width:66px;background:#1b3150dd}
+.ngs-modal{position:fixed;inset:0;z-index:100004;display:none;place-items:center;padding:18px;background:#000c}.ngs-modal.open{display:grid}.ngs-modalcard{width:min(920px,100%);max-height:92vh;overflow:auto;background:#0b121c;border:1px solid #34475f;border-radius:17px;padding:18px;box-shadow:0 30px 90px #000d}.ngs-modalcard h3{margin:0 0 5px}.ngs-modalcard p{color:#9cabbf;font-size:10px;line-height:1.5}
+.ngs-modalgrid{display:grid;grid-template-columns:1fr 1fr;gap:15px}.ngs-scriptgrid{display:grid;grid-template-columns:170px 1fr;gap:12px}.ngs-scriptlist{display:grid;gap:6px;align-content:start}.ngs-scriptlist button{border:1px solid #2b3d52;border-radius:8px;background:#101a27;color:#c8d6e5;padding:9px;text-align:left;font-size:9px;cursor:pointer}.ngs-scriptlist button.active{border-color:#69e8ff;background:#102431}
+#ngsScriptEditor{width:100%;min-height:330px;font:11px/1.5 ui-monospace,Consolas,monospace;tab-size:2}
+#ngsJsEditor{width:100%;min-height:360px;font:11px/1.5 ui-monospace,Consolas,monospace;tab-size:2;white-space:pre}
+.ngs-jsdocs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:9px}.ngs-jsdocs div{border:1px solid #27394d;border-radius:9px;background:#08111a;padding:8px;font:9px/1.45 ui-monospace,Consolas,monospace;color:#a9bbcf}.ngs-jsdocs b{color:#70e8ff}
+#ngsJsResult{white-space:pre-wrap;font:9px/1.45 ui-monospace,Consolas,monospace;background:#071019;border:1px solid #27394d;border-radius:9px;padding:9px;min-height:70px;color:#a9d6b9}
+#ngsScriptResult{white-space:pre-wrap;font:9px/1.45 ui-monospace,Consolas,monospace;background:#071019;border:1px solid #27394d;border-radius:9px;padding:9px;min-height:70px;color:#a9d6b9}
+.ngs-spritewrap{display:grid;grid-template-columns:minmax(300px,420px) 1fr;gap:15px}
+#ngsSpriteCanvas{width:100%;max-width:420px;aspect-ratio:1;background:#071019;border:1px solid #32475e;border-radius:12px;image-rendering:pixelated;touch-action:none}
+.ngs-spritecontrols{display:grid;gap:9px;align-content:start}.ngs-spritebuttons{display:flex;flex-wrap:wrap;gap:6px}.ngs-spritepalette{display:flex;flex-wrap:wrap;gap:6px}.ngs-spritepalette button{width:28px;height:28px;border:2px solid #192330;border-radius:7px;cursor:pointer}
+.ngs-sharecard textarea{width:100%;min-height:125px;font:11px/1.45 ui-monospace,Consolas,monospace}
+.ngs-featurelist{columns:2;column-gap:22px;font-size:9px;color:#9cabbf;line-height:1.55}.ngs-featurelist b{color:#eaf5ff}
+@media(max-width:1080px){.ngs-shell{grid-template-columns:225px minmax(0,1fr)}.ngs-panel.right{display:none}}
+@media(max-width:760px){.ngs-shell{grid-template-columns:1fr}.ngs-panel{display:none}.ngs-topbar{overflow-x:auto}.ngs-stagehost{padding:6px}.ngs-modalgrid,.ngs-spritewrap,.ngs-scriptgrid{grid-template-columns:1fr}.ngs-virtual{bottom:44px}.ngs-featurelist{columns:1}}
+</style>
+<style id="nitroVaultSuiteCSS">
+#nitroVaultOverlay{position:fixed;inset:0;z-index:100020;display:none;background:rgba(2,5,10,.96);color:#f4f7fb;font-family:Inter,system-ui,Segoe UI,Arial,sans-serif}
+#nitroVaultOverlay.open{display:grid;grid-template-rows:auto 1fr}
+.nv-top{height:66px;display:flex;align-items:center;gap:10px;padding:10px 14px;background:#070d16;border-bottom:1px solid #26364a;box-shadow:0 8px 30px #0009}
+.nv-brand{font-weight:1000;font-size:18px;letter-spacing:-.5px}.nv-brand b{color:#6ee7ff}
+.nv-tabs{display:flex;gap:6px;flex:1;justify-content:center}
+.nv-tab,.nv-close,.nv-btn{border:1px solid #32465f;border-radius:10px;background:#111c29;color:#eaf4ff;padding:9px 11px;font:900 10px Inter,sans-serif;cursor:pointer}
+.nv-tab.active{border-color:#6ee7ff;background:#102536;box-shadow:0 0 0 1px #6ee7ff2c}
+.nv-close{background:#351820;border-color:#7b3345;color:#ffc2cf}
+.nv-body{min-height:0;overflow:auto;padding:18px;background:
+ radial-gradient(circle at 16% 10%,rgba(105,232,255,.08),transparent 26%),
+ radial-gradient(circle at 84% 20%,rgba(170,140,255,.08),transparent 26%),#05080d}
+.nv-page{display:none;max-width:1180px;margin:0 auto}.nv-page.active{display:block}
+.nv-hero{display:flex;justify-content:space-between;gap:20px;align-items:flex-end;margin-bottom:16px;padding:18px;border:1px solid #25364a;border-radius:16px;background:linear-gradient(145deg,#0c1520,#081019)}
+.nv-kicker{font-size:9px;letter-spacing:1.5px;color:#6ee7ff;font-weight:1000}.nv-hero h2{margin:4px 0;font-size:28px}.nv-hero p{margin:0;color:#9eafc2;font-size:11px;line-height:1.55;max-width:760px}
+.nv-counter{white-space:nowrap;padding:9px 11px;border:1px solid #30435a;border-radius:999px;background:#0c1621;font-size:10px;color:#b8c7d7}
+.nv-grid{display:grid;gap:12px}
+.nv-network{grid-template-columns:repeat(3,minmax(0,1fr))}
+.nv-node{position:relative;min-height:178px;padding:15px;border:1px solid #2a3b50;border-radius:15px;background:#0b121b;overflow:hidden}
+.nv-node::after{content:"";position:absolute;inset:auto -20px -30px auto;width:110px;height:110px;border-radius:50%;background:radial-gradient(circle,#6ee7ff14,transparent 70%)}
+.nv-node.locked{filter:saturate(.25);opacity:.58}.nv-node.unlocked{border-color:#39758c;box-shadow:inset 0 0 30px #62e6ff08}
+.nv-node.complete{border-color:#579c72;background:linear-gradient(145deg,#0b1815,#0a1218)}
+.nv-node .nv-num{font:1000 9px ui-monospace,Consolas,monospace;color:#7589a2;letter-spacing:1.2px}
+.nv-node h3{font-size:16px;margin:8px 0 6px}.nv-node p{font-size:10px;color:#9faec0;line-height:1.5;margin:0 0 11px}
+.nv-condition{display:inline-block;padding:5px 7px;border:1px solid #2c4056;border-radius:7px;background:#0a1018;color:#aebfd1;font-size:8px;line-height:1.3}
+.nv-signal{margin-top:11px;padding:8px;border-radius:8px;background:#061019;border:1px dashed #29465a;font:900 10px ui-monospace,Consolas,monospace;color:#7ce5ff;letter-spacing:.7px}
+.nv-final{margin-top:14px;padding:16px;border:1px solid #4d3f77;border-radius:15px;background:radial-gradient(circle at 80% 20%,#9c77ff17,transparent 30%),linear-gradient(145deg,#141027,#0b1018)}
+.nv-final.ready{border-color:#8e71ff;box-shadow:0 0 32px #8e71ff16}.nv-final h3{margin:0 0 6px}.nv-final p{color:#a9b4c5;font-size:10px;line-height:1.5;margin:0 0 10px}
+
+.nv-room-layout{display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:13px}
+.nv-room-shell{border:1px solid #2b3c51;border-radius:16px;overflow:hidden;background:#080c12}
+.nv-room-toolbar{display:flex;gap:7px;flex-wrap:wrap;align-items:center;padding:9px;border-bottom:1px solid #26364a;background:#0a121c}
+.nv-room-toolbar select{border:1px solid #33475f;border-radius:8px;background:#101a27;color:#eaf5ff;padding:8px;font-size:9px}
+#nvPrizeRoom{position:relative;aspect-ratio:16/9;min-height:420px;overflow:hidden;background:linear-gradient(#101b2b 0 65%,#1c1516 65%);user-select:none}
+#nvPrizeRoom[data-theme="neon"]{background:radial-gradient(circle at 50% 30%,#17294a,#090d16 65%);box-shadow:inset 0 0 80px #6ee7ff0b}
+#nvPrizeRoom[data-theme="retro"]{background:linear-gradient(#4b3654 0 65%,#2c2029 65%)}
+#nvPrizeRoom[data-theme="cozy"]{background:linear-gradient(#46372f 0 65%,#2b211c 65%)}
+#nvPrizeRoom[data-theme="matrix"]{background:linear-gradient(#08150d 0 65%,#07100a 65%)}
+.nv-wall-line{position:absolute;left:0;right:0;top:65%;height:3px;background:#ffffff18}
+.nv-shelf{position:absolute;height:12px;border-radius:5px;background:#5e4635;box-shadow:0 8px 13px #0007}.nv-shelf.one{left:8%;right:54%;top:30%}.nv-shelf.two{left:58%;right:8%;top:43%}
+.nv-desk{position:absolute;left:26%;right:26%;bottom:9%;height:16px;background:#72533e;border-radius:5px}.nv-desk::before,.nv-desk::after{content:"";position:absolute;top:12px;width:12px;height:95px;background:#503a2c}.nv-desk::before{left:8%}.nv-desk::after{right:8%}
+.nv-room-sign{position:absolute;left:50%;top:8%;transform:translateX(-50%);padding:8px 16px;border:1px solid #6ee7ff55;border-radius:9px;background:#07101bdc;color:#dffaff;font-size:11px;font-weight:1000;letter-spacing:1.2px}
+.nv-toy-object{position:absolute;display:grid;place-items:center;width:74px;height:74px;font-size:48px;cursor:grab;transform-origin:center;touch-action:none;filter:drop-shadow(0 10px 9px #0008);transition:filter .15s}
+.nv-toy-object:active{cursor:grabbing}.nv-toy-object.selected{outline:2px solid #6ee7ff;border-radius:12px;background:#6ee7ff0a}
+.nv-toy-object svg{max-width:70px;max-height:70px}.nv-room-side{display:grid;align-content:start;gap:10px}
+.nv-cardbox{border:1px solid #293b50;border-radius:13px;background:#0a121c;padding:11px}.nv-cardbox h3{font-size:12px;margin:0 0 8px}.nv-cardbox p{font-size:9px;line-height:1.5;color:#92a4b9;margin:0}
+.nv-inventory{display:grid;gap:6px;max-height:340px;overflow:auto}.nv-inv-item{display:grid;grid-template-columns:35px 1fr;gap:8px;align-items:center;border:1px solid #27394d;border-radius:9px;background:#0d1621;padding:7px;cursor:pointer}.nv-inv-item.locked{opacity:.35;filter:grayscale(1);cursor:default}.nv-inv-icon{font-size:24px;text-align:center}.nv-inv-item b{display:block;font-size:9px}.nv-inv-item span{display:block;font-size:8px;color:#8799ae;margin-top:2px}
+.nv-selection{display:grid;grid-template-columns:1fr 1fr;gap:6px}.nv-selection .nv-btn{padding:7px;font-size:8px}
+
+.nv-card-controls{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px}.nv-card-controls button{border:1px solid #2d4056;border-radius:9px;background:#0d1621;color:#b9c9da;padding:7px 10px;font-size:9px;font-weight:900;cursor:pointer}.nv-card-controls button.active{border-color:#6ee7ff;color:#e8fbff}
+.nv-cards{grid-template-columns:repeat(4,minmax(0,1fr))}
+.nv-collect-card{position:relative;min-height:290px;border-radius:16px;padding:10px;perspective:900px;cursor:pointer}
+.nv-card-inner{position:absolute;inset:0;transition:transform .45s;transform-style:preserve-3d}.nv-collect-card.flipped .nv-card-inner{transform:rotateY(180deg)}
+.nv-card-face{position:absolute;inset:0;backface-visibility:hidden;border:1px solid #34465c;border-radius:15px;overflow:hidden;background:#0c141f;box-shadow:0 15px 34px #0006}
+.nv-card-back{transform:rotateY(180deg);padding:15px;background:linear-gradient(145deg,#10192a,#0a1019)}
+.nv-card-back h3{font-size:15px;margin:5px 0}.nv-card-back p{font-size:9px;color:#9facbe;line-height:1.55}.nv-card-back .nv-card-stat{margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:6px}.nv-card-stat span{padding:7px;border:1px solid #2c3c50;border-radius:7px;background:#09111a;font-size:8px}
+.nv-card-art{height:178px;position:relative;display:grid;place-items:center;font-size:72px;background:
+ radial-gradient(circle at 50% 45%,hsla(var(--h),90%,60%,.32),transparent 30%),
+ linear-gradient(145deg,hsla(var(--h),65%,24%,.48),#081018)}
+.nv-card-art::after{content:"";position:absolute;inset:0;background-image:linear-gradient(#ffffff05 1px,transparent 1px),linear-gradient(90deg,#ffffff05 1px,transparent 1px);background-size:18px 18px}
+.nv-card-info{padding:11px}.nv-card-rarity{font-size:8px;font-weight:1000;letter-spacing:1px;color:hsl(var(--h) 85% 72%)}.nv-card-info h3{margin:4px 0;font-size:14px}.nv-card-info p{margin:0;color:#8fa1b7;font-size:8px;line-height:1.45}
+.nv-card-lock{position:absolute;inset:0;z-index:4;display:grid;place-items:center;background:#05080dea;color:#74859a;font-size:26px}.nv-collect-card.unlocked .nv-card-lock{display:none}
+.nv-foil .nv-card-face::before{content:"FOIL";position:absolute;right:7px;top:7px;z-index:5;padding:4px 6px;border-radius:999px;background:linear-gradient(90deg,#72eaff,#f58cff,#ffe06a);color:#071018;font-size:7px;font-weight:1000}
+.nv-progress{height:9px;border-radius:99px;background:#17212d;overflow:hidden;margin-top:8px}.nv-progress i{display:block;height:100%;background:linear-gradient(90deg,#6ee7ff,#aa8cff)}
+@media(max-width:900px){.nv-network{grid-template-columns:1fr 1fr}.nv-room-layout{grid-template-columns:1fr}.nv-room-side{grid-template-columns:1fr 1fr}.nv-cards{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:620px){.nv-top{height:auto;align-items:flex-start;flex-wrap:wrap}.nv-tabs{order:3;width:100%;overflow:auto;justify-content:flex-start}.nv-body{padding:9px}.nv-network,.nv-cards{grid-template-columns:1fr}.nv-room-side{grid-template-columns:1fr}#nvPrizeRoom{min-height:300px}.nv-hero{align-items:flex-start;flex-direction:column}}
+</style>
+<style id="nitroSystemsSuiteCSS">
+#nitroSystemsOverlay{position:fixed;inset:0;z-index:100030;display:none;background:#04070cf7;color:#eef7ff;font-family:Inter,system-ui,Segoe UI,Arial,sans-serif}
+#nitroSystemsOverlay.open{display:grid;grid-template-rows:auto 1fr}
+.ns-top{display:flex;align-items:center;gap:8px;padding:9px 12px;border-bottom:1px solid #27374b;background:#08101a;overflow-x:auto}
+.ns-brand{font-weight:1000;font-size:16px;white-space:nowrap}.ns-brand b{color:#6fe8ff}
+.ns-tabs{display:flex;gap:5px;flex:1;justify-content:center;min-width:max-content}.ns-tab,.ns-btn{border:1px solid #30445c;border-radius:9px;background:#111c29;color:#e9f4ff;padding:8px 10px;font:900 9px Inter,sans-serif;cursor:pointer;white-space:nowrap}.ns-tab.active{border-color:#69e8ff;background:#102536}.ns-close{background:#351820;border-color:#773345;color:#ffc1ce}
+.ns-body{min-height:0;overflow:auto;padding:16px;background:radial-gradient(circle at 12% 12%,#68e8ff0b,transparent 25%),radial-gradient(circle at 88% 18%,#9a79ff0d,transparent 27%),#05080d}
+.ns-page{display:none;max-width:1200px;margin:0 auto}.ns-page.active{display:block}
+.ns-hero{display:flex;justify-content:space-between;gap:18px;align-items:flex-end;margin-bottom:14px;padding:16px;border:1px solid #26374a;border-radius:15px;background:linear-gradient(145deg,#0c1520,#081019)}
+.ns-hero h2{margin:3px 0;font-size:26px}.ns-hero p{margin:0;color:#9eafc2;font-size:10px;line-height:1.55;max-width:780px}.ns-kicker{font-size:8px;letter-spacing:1.5px;color:#69e8ff;font-weight:1000}.ns-chip{padding:7px 9px;border:1px solid #30445a;border-radius:999px;background:#0d1722;color:#b9c8d8;font-size:9px;white-space:nowrap}
+.ns-grid{display:grid;gap:10px}.ns-card{border:1px solid #293b50;border-radius:13px;background:#0a121c;padding:12px}.ns-card h3{margin:0 0 6px;font-size:13px}.ns-card p{margin:0;color:#96a7bb;font-size:9px;line-height:1.5}.ns-empty{padding:16px;border:1px dashed #2d3e52;border-radius:12px;color:#8194a9;font-size:10px}
+.ns-form{display:flex;gap:7px;flex-wrap:wrap;align-items:center}.ns-form input,.ns-form select,.ns-form textarea{border:1px solid #31465e;border-radius:8px;background:#0d1621;color:#eef7ff;padding:8px 9px;font-size:9px}.ns-form textarea{min-height:86px;flex:1 1 360px;font-family:ui-monospace,Consolas,monospace}.ns-meter{height:8px;border-radius:99px;background:#17212c;overflow:hidden}.ns-meter i{display:block;height:100%;background:linear-gradient(90deg,#69e8ff,#9f7dff)}
+.ns-trophy-room{perspective:900px;padding:20px;border:1px solid #293b50;border-radius:16px;background:linear-gradient(#101824 0 70%,#1b1414 70%);min-height:470px;overflow:hidden}.ns-shelf-row{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;margin-bottom:34px;padding:12px 12px 22px;border-bottom:11px solid #5d4434;box-shadow:0 12px 12px #0008;transform:rotateX(2deg)}.ns-trophy{text-align:center;min-height:125px;display:grid;align-content:end;justify-items:center;gap:7px}.ns-trophy-object{width:72px;height:82px;display:grid;place-items:center;font-size:50px;filter:drop-shadow(0 10px 10px #0008);animation:nsFloat 3.2s ease-in-out infinite}.ns-trophy.locked .ns-trophy-object{filter:grayscale(1) brightness(.15) drop-shadow(0 10px 10px #0008)}.ns-trophy b{font-size:8px}.ns-trophy span{font-size:7px;color:#8395aa}.ns-trophy.unlocked b{color:#bff5d2}@keyframes nsFloat{50%{transform:translateY(-4px) rotate(-1deg)}}
+.ns-passport{background:#1b1320;border:1px solid #684b72;border-radius:18px;padding:16px}.ns-pass-tabs{display:flex;gap:6px;margin-bottom:10px}.ns-pass-page{display:none;background:#efe6ce;color:#342d2b;border-radius:12px;padding:14px;min-height:430px}.ns-pass-page.active{display:block}.ns-stamps{display:grid;grid-template-columns:repeat(5,1fr);gap:9px}.ns-stamp{min-height:92px;border:2px dashed #8d7d6a;border-radius:50%;display:grid;place-items:center;text-align:center;padding:8px;font-size:7px;transform:rotate(-2deg);opacity:.35}.ns-stamp.earned{opacity:1;border-style:solid;color:#6d2332;background:#bd39500c}.ns-stamp b{font-size:9px}
+.ns-replays{grid-template-columns:320px 1fr}.ns-replay-list{display:grid;gap:7px;align-content:start}.ns-replay-item{border:1px solid #2a3c51;border-radius:9px;padding:9px;background:#0c151f;cursor:pointer}.ns-replay-item b{font-size:9px}.ns-replay-item span{display:block;font-size:8px;color:#8ea0b5;margin-top:3px}#nsReplayCanvas{width:100%;aspect-ratio:16/9;border:1px solid #2d4158;border-radius:13px;background:#071019}.nitro-ghost-overlay{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;z-index:999!important;pointer-events:none!important}
+.ns-terminal{background:#010603;border:1px solid #1e5630;border-radius:14px;overflow:hidden}.ns-term-screen{height:430px;overflow:auto;padding:14px;font:11px/1.55 ui-monospace,Consolas,monospace;color:#72ff99;white-space:pre-wrap}.ns-term-line{display:flex;border-top:1px solid #11311d}.ns-term-line span{padding:10px;color:#52d978;font:900 11px ui-monospace,Consolas,monospace}.ns-term-line input{flex:1;border:0;background:#010603;color:#9dffb8;outline:0;font:11px ui-monospace,Consolas,monospace}
+body.nitro-cabinet-on{overflow:hidden!important;background:#020306!important}body.nitro-cabinet-on .navbar,body.nitro-cabinet-on #macroArcadeLink,body.nitro-cabinet-on #nitroHubButton{display:none!important}body.nitro-cabinet-on #gameView{display:block!important;position:fixed;inset:0;z-index:99980;background:radial-gradient(circle at 50% 15%,#18253b,#05070b 60%);padding:82px 105px 62px}body.nitro-cabinet-on .game-topbar{position:absolute;left:105px;right:105px;top:38px;z-index:4}body.nitro-cabinet-on #playerContainer{height:calc(100vh - 165px);border:8px solid #1d2732;border-radius:18px;box-shadow:0 0 0 8px #05070a,0 35px 90px #000}#nsCabinetDecor{display:none;position:fixed;inset:0;z-index:99981;pointer-events:none}body.nitro-cabinet-on #nsCabinetDecor{display:block}.ns-cab-marquee{position:absolute;left:22%;right:22%;top:7px;height:58px;border:3px solid #ffd159;border-radius:12px;background:linear-gradient(90deg,#311132,#102d4a,#311132);display:grid;place-items:center;font-size:22px;font-weight:1000;letter-spacing:2px;text-shadow:0 0 15px #6de6ff}.ns-cab-side{position:absolute;top:72px;bottom:45px;width:76px;background:linear-gradient(#111b2c,#25112d);border:2px solid #536477}.ns-cab-side.left{left:18px}.ns-cab-side.right{right:18px}.ns-cab-crt{position:absolute;inset:72px 95px 50px;background:repeating-linear-gradient(0deg,#0000 0 3px,#0002 3px 4px);mix-blend-mode:screen;opacity:.25}
+.ns-manuals{grid-template-columns:repeat(3,minmax(0,1fr))}.ns-manual{min-height:220px;cursor:pointer;background:linear-gradient(145deg,#111b2a,#0a111b)}.ns-manual .cover{height:115px;border-radius:9px;margin-bottom:9px;display:grid;place-items:center;font-size:46px;background:radial-gradient(circle,#69e8ff1e,transparent 40%),#07101a}.ns-manual-detail{white-space:pre-wrap;font-size:9px!important}
+.ns-shot-layout{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:12px}#nsShotCanvas{width:100%;aspect-ratio:16/9;border:1px solid #30445d;border-radius:14px;background:#071019}.ns-shot-controls{display:grid;gap:8px;align-content:start}
+.ns-remix-grid{grid-template-columns:repeat(3,1fr)}.ns-remix-card{cursor:pointer}.ns-remix-card.active{border-color:#69e8ff;background:#102231}.nitro-remix-monochrome #playerContainer{filter:grayscale(1)!important}.nitro-remix-invert #playerContainer{filter:invert(1) hue-rotate(180deg)!important}.nitro-remix-crt #playerContainer::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:999;background:repeating-linear-gradient(0deg,#0000 0 3px,#0004 3px 4px)}.nitro-remix-blind #playerContainer::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:999;background:radial-gradient(circle at 50% 50%,transparent 20%,#000 72%)}.nitro-remix-mirrorview #playerContainer{transform:scaleX(-1)}
+.ns-two{display:grid;grid-template-columns:1fr 1fr;gap:11px}.ns-list{display:grid;gap:7px}.ns-list-row{display:flex;justify-content:space-between;gap:9px;align-items:center;border:1px solid #2a3c51;border-radius:9px;background:#0d1621;padding:8px}.ns-list-row b{font-size:9px}.ns-list-row span{font-size:8px;color:#8ea1b6}#nsProfileCanvas{width:min(100%,760px);aspect-ratio:1.6;border:1px solid #30445b;border-radius:14px;background:#071019}
+@media(max-width:900px){.ns-shelf-row{grid-template-columns:repeat(3,1fr)}.ns-stamps{grid-template-columns:repeat(3,1fr)}.ns-replays,.ns-shot-layout,.ns-two{grid-template-columns:1fr}.ns-manuals,.ns-remix-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:620px){.ns-body{padding:8px}.ns-hero{flex-direction:column;align-items:flex-start}.ns-shelf-row,.ns-stamps,.ns-manuals,.ns-remix-grid{grid-template-columns:1fr 1fr}body.nitro-cabinet-on #gameView{padding:76px 20px 50px}.ns-cab-side{display:none}body.nitro-cabinet-on .game-topbar{left:20px;right:20px}}
+</style>
 </head>
 
 <body>
@@ -1995,6 +2149,9 @@ body.theme-matrix{
             <button class="btn" onclick="showArcadePart('small')">Small Games</button>
             <button class="btn" onclick="showArcadePart('big')">Big Games</button>
             <button class="btn" onclick="showArcadePart('challenge')">Challenge</button>
+            <button class="btn" type="button" onclick="NitroGameStudio.open()">Game Studio</button>
+            <button class="btn" type="button" onclick="NitroVault.open('network')" title="Secret Network, Prize Room and Nitro Cards">◈ Vault</button>
+            <button class="btn" type="button" onclick="NitroSystems.open('trophies')" title="Trophies, Passport, Replays, Terminal, Manuals and more">◆ Systems</button>
             <button class="btn" onclick="openAboutPage(event)">About</button>
             <button class="btn btn-primary" id="nitroAccountBtn" onclick="openLogin()">Log In</button>
         </div>
@@ -2144,6 +2301,9 @@ body.theme-matrix{
                     <button class="btn" id="gameFavoriteBtn" onclick="toggleCurrentFavorite()">☆ Favorite</button>
                     <button class="btn" onclick="restartCurrentGame()">↻ Restart</button>
                     <button class="btn" onclick="toggleFullscreen()">⛶ Fullscreen</button>
+                    <button class="btn" onclick="NitroSystems.toggleCabinet()">🕹 Cabinet</button>
+                    <button class="btn" onclick="NitroSystems.open('screenshot')">📸 Shot</button>
+                    <button class="btn" onclick="NitroSystems.open('remix')">🔀 Remix</button>
                     <button class="btn" onclick="returnToDashboard()">← Arcade</button>
                 </div>
             </div>
@@ -6239,7 +6399,7 @@ document.addEventListener("keydown",(e)=>{
 /* NitroArcade Gameplay Integration v2 */
 (()=>{
  const N=window.NitroArcade=window.NitroArcade||{}; if(N.__integrationV2)return; N.__integrationV2=true;
- const id=()=>window.currentGame?.id||"unknown", name=()=>window.currentGame?.name||id();
+ const id=()=>{try{return typeof currentGame!=="undefined"&&currentGame?.id?currentGame.id:(window.currentGame?.id||"unknown")}catch{return window.currentGame?.id||"unknown"}}, name=()=>{try{return typeof currentGame!=="undefined"&&currentGame?.name?currentGame.name:(window.currentGame?.name||id())}catch{return window.currentGame?.name||id()}};
  if(!N.achievements)N.achievements={unlock(i,t=i,d=""){let a=N.save?.get?.("achievements",[])||[];if(a.includes(i))return false;a.push(i);N.save?.set?.("achievements",a);N.notify?.(d||t,"🏆 "+t);return true},all:()=>N.save?.get?.("achievements",[])||[]};
  if(!N.missions){const defs={play3:{goal:3,text:"Play 3 games"},win1:{goal:1,text:"Win a game"}};N.missions={progress(i,n=1){let p=N.save?.get?.("missions",{})||{};p[i]=Math.min(defs[i]?.goal||999,(p[i]||0)+n);N.save?.set?.("missions",p);if(defs[i]&&p[i]===defs[i].goal)N.notify?.(defs[i].text,"✅ MISSION COMPLETE");return p[i]},all:()=>N.save?.get?.("missions",{})||{}}}
  N.game={
@@ -6707,5 +6867,1102 @@ window.listNitroFeatures=()=>window.NitroArcadeFeatures;
 </script>
 
 
+
+<div id="ngsOverlay" aria-hidden="true">
+  <div class="ngs-topbar">
+    <div class="ngs-brand">NITRO <b>GAME STUDIO PRO</b></div>
+    <input id="ngsName" maxlength="42" value="Untitled Nitro Game" aria-label="Game name">
+    <select id="ngsMode" aria-label="Game type">
+      <option value="platformer">Platformer</option>
+      <option value="maze">Maze Quest</option>
+      <option value="dodge">Survival Dodge</option>
+    </select>
+    <div class="ngs-spacer"></div>
+    <button class="ngs-btn" id="ngsNew">NEW</button>
+    <button class="ngs-btn" id="ngsGenerate">GENERATE</button>
+    <button class="ngs-btn good" id="ngsSave">SAVE</button>
+    <button class="ngs-btn primary" id="ngsPlay">▶ PLAY TEST</button>
+    <button class="ngs-btn" id="ngsShare">SHARE</button>
+    <button class="ngs-btn danger" id="ngsClose">CLOSE</button>
+  </div>
+
+  <div class="ngs-shell">
+    <aside class="ngs-panel">
+      <div class="ngs-panel-inner">
+        <div class="ngs-section-title">BUILD PALETTE</div>
+        <div class="ngs-palette" id="ngsPalette"></div>
+
+        <div class="ngs-section-title" style="margin-top:14px">EDITOR TOOLS</div>
+        <div class="ngs-edittools" id="ngsEditTools">
+          <button class="ngs-edittool active" data-edittool="brush">BRUSH</button>
+          <button class="ngs-edittool" data-edittool="rect">RECT</button>
+          <button class="ngs-edittool" data-edittool="fill">FILL</button>
+          <button class="ngs-edittool" data-edittool="pick">PICK</button>
+        </div>
+
+        <div class="ngs-section-title" style="margin-top:14px">GAME SETTINGS</div>
+        <div class="ngs-field"><label>THEME</label><select id="ngsTheme"><option value="neon">Neon Night</option><option value="sunset">Sunset</option><option value="matrix">Matrix</option><option value="ice">Ice Lab</option><option value="candy">Candy Pop</option><option value="custom">Custom Colors</option></select></div>
+        <div class="ngs-field"><label>WIN RULE</label><select id="ngsRule"><option value="goal">Reach Goal</option><option value="coins">Collect All + Goal</option><option value="survive">Survive Timer</option></select></div>
+        <div class="ngs-field"><label>TIMER</label><input id="ngsTimer" type="number" min="10" max="600" value="60"></div>
+        <div class="ngs-field"><label>PLAYER SPEED</label><input id="ngsSpeed" type="range" min="0.6" max="1.8" step="0.05" value="1"></div>
+        <div class="ngs-field"><label>STARTING LIVES</label><input id="ngsLives" type="number" min="1" max="20" value="3"></div>
+        <div class="ngs-field"><label>GRAVITY</label><input id="ngsGravity" type="range" min="500" max="2200" step="50" value="1350"></div>
+        <div class="ngs-field"><label>JUMP POWER</label><input id="ngsJump" type="range" min="250" max="900" step="10" value="520"></div>
+        <div class="ngs-field"><label>DESCRIPTION</label><textarea id="ngsDescription" maxlength="260" placeholder="Describe your game..."></textarea></div>
+
+        <div class="ngs-section-title">CUSTOM COLOR LAB</div>
+        <div class="ngs-colors" id="ngsColorGrid"></div>
+      </div>
+    </aside>
+
+    <section class="ngs-stagewrap">
+      <div class="ngs-stagebar">
+        <span class="ngs-modepill" id="ngsStatus">EDIT MODE</span>
+        <span class="ngs-modepill" id="ngsSaveState">AUTOSAVE READY</span>
+        <button class="ngs-btn" id="ngsUndo">↶ UNDO</button>
+        <button class="ngs-btn" id="ngsRedo">↷ REDO</button>
+        <button class="ngs-btn" id="ngsValidate">✓ CHECK</button>
+        <button class="ngs-btn" id="ngsSpriteBtn">🎨 CHARACTER ART</button>
+        <button class="ngs-btn" id="ngsScriptBtn">⌘ NITROSCRIPT</button>
+        <button class="ngs-btn" id="ngsJsBtn">JS CODE</button>
+        <button class="ngs-btn" id="ngsShot">PNG</button>
+        <button class="ngs-btn" id="ngsClear">CLEAR</button>
+        <button class="ngs-btn" id="ngsStop" style="display:none">■ STOP TEST</button>
+        <span class="ngs-modepill" id="ngsPointerInfo">24 × 14</span>
+      </div>
+      <div class="ngs-stagehost"><canvas id="ngsCanvas" width="960" height="560" tabindex="0" aria-label="Nitro Game Studio level canvas"></canvas></div>
+      <div class="ngs-playhud" id="ngsPlayHud"></div>
+      <div class="ngs-virtual" id="ngsVirtual">
+        <button class="ngs-vbtn" data-vkey="KeyA">◀</button>
+        <button class="ngs-vbtn" data-vkey="KeyW">▲</button>
+        <button class="ngs-vbtn" data-vkey="KeyS">▼</button>
+        <button class="ngs-vbtn" data-vkey="KeyD">▶</button>
+        <button class="ngs-vbtn jump" data-vkey="Space">JUMP</button>
+      </div>
+      <div class="ngs-stagehint" id="ngsHint">Choose a tile, then paint your level.</div>
+    </section>
+
+    <aside class="ngs-panel right">
+      <div class="ngs-panel-inner">
+        <div class="ngs-section-title">MY CREATIONS</div>
+        <div class="ngs-library" id="ngsLibrary"></div>
+
+        <div class="ngs-section-title" style="margin-top:14px">GAME CHECK</div>
+        <div class="ngs-statgrid">
+          <div class="ngs-stat"><b id="ngsCountCoins">0</b><span>COINS</span></div>
+          <div class="ngs-stat"><b id="ngsCountEnemies">0</b><span>CHARACTERS</span></div>
+          <div class="ngs-stat"><b id="ngsCountHazards">0</b><span>HAZARDS</span></div>
+          <div class="ngs-stat"><b id="ngsComplexity">0</b><span>COMPLEXITY</span></div>
+        </div>
+        <div class="ngs-check" id="ngsCheck">Press CHECK for a build report.</div>
+
+        <div class="ngs-section-title" style="margin-top:14px">STUDIO POWER</div>
+        <div class="ngs-statgrid">
+          <div class="ngs-stat"><b id="ngsFeatureCount">0</b><span>FEATURES</span></div>
+          <div class="ngs-stat"><b id="ngsFunctionCount">0</b><span>ENGINE FUNCTIONS</span></div>
+        </div>
+        <div class="ngs-help" style="margin-top:9px">Includes a pixel-art character creator, a safe custom behavior language, path validation, procedural generation, autosave, sharing and real play testing.</div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<div class="ngs-modal" id="ngsSpriteModal">
+  <div class="ngs-modalcard">
+    <h3>Character Art Lab</h3>
+    <p>Draw your own 16×16 sprites. The player and both custom enemy types use these drawings in play test.</p>
+    <div class="ngs-spritewrap">
+      <canvas id="ngsSpriteCanvas" width="320" height="320"></canvas>
+      <div class="ngs-spritecontrols">
+        <div class="ngs-field"><label>CHARACTER</label><select id="ngsSpriteTarget"><option value="player">Player</option><option value="enemyA">Enemy A</option><option value="enemyB">Enemy B</option><option value="turret">Turret</option></select></div>
+        <div class="ngs-field"><label>BRUSH COLOR</label><input id="ngsSpriteColor" type="color" value="#69e8ff"></div>
+        <div class="ngs-spritepalette" id="ngsSpritePalette"></div>
+        <div class="ngs-spritebuttons">
+          <button class="ngs-btn primary" data-spritetool="pencil">PENCIL</button>
+          <button class="ngs-btn" data-spritetool="eraser">ERASER</button>
+          <button class="ngs-btn" data-spritetool="fill">FILL</button>
+          <button class="ngs-btn" id="ngsMirrorX">MIRROR X</button>
+          <button class="ngs-btn" id="ngsMirrorY">MIRROR Y</button>
+          <button class="ngs-btn" id="ngsSpritePreset">PRESET</button>
+          <button class="ngs-btn danger" id="ngsSpriteClear">CLEAR</button>
+        </div>
+        <div class="ngs-help"><b>Draw:</b> click/drag pixels. <b>Fill:</b> recolor a connected area. <b>Mirror:</b> flip your art. Every sprite is saved and shared with the game.</div>
+        <button class="ngs-btn good" id="ngsSpriteDone">DONE</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="ngs-modal" id="ngsScriptModal">
+  <div class="ngs-modalcard">
+    <h3>NitroScript Behavior Lab</h3>
+    <p>Write safe game-behavior scripts without using raw JavaScript. Enemy A, Enemy B and Turrets can all behave differently.</p>
+    <div class="ngs-scriptgrid">
+      <div class="ngs-scriptlist" id="ngsScriptList">
+        <button data-script="enemyA" class="active">Enemy A</button>
+        <button data-script="enemyB">Enemy B</button>
+        <button data-script="turret">Turret</button>
+      </div>
+      <div>
+        <textarea id="ngsScriptEditor" spellcheck="false"></textarea>
+        <div class="ngs-spritebuttons" style="margin:8px 0">
+          <button class="ngs-btn" data-scriptpreset="chaser">CHASER PRESET</button>
+          <button class="ngs-btn" data-scriptpreset="patrol">PATROL PRESET</button>
+          <button class="ngs-btn" data-scriptpreset="sniper">SNIPER PRESET</button>
+          <button class="ngs-btn" data-scriptpreset="chaos">CHAOS PRESET</button>
+          <button class="ngs-btn primary" id="ngsCompileScript">COMPILE</button>
+        </div>
+        <div id="ngsScriptResult"></div>
+        <div class="ngs-help" style="margin-top:9px"><b>Commands:</b> MODE CHASE|PATROL|WANDER|FLEE|SENTRY|ORBIT • SPEED number • RANGE number • SHOOT seconds • PROJECTILE_SPEED number • BURST 1-5 • CONTACT damage • TELEPORT seconds • SPREAD degrees. Lines starting with # are comments.</div>
+      </div>
+    </div>
+    <div class="btnRow" style="justify-content:flex-end;margin-top:12px"><button class="ngs-btn good" id="ngsScriptDone">DONE</button></div>
+  </div>
+</div>
+
+<div class="ngs-modal" id="ngsJsModal">
+  <div class="ngs-modalcard">
+    <h3>JavaScript Code Lab</h3>
+    <p>Write real JavaScript for your game. It runs inside a dedicated Web Worker sandbox, not in the NitroArcade page. The sandbox exposes only the NitroJS game API below and is terminated when play test stops.</p>
+    <textarea id="ngsJsEditor" spellcheck="false"></textarea>
+    <div class="ngs-spritebuttons" style="margin:8px 0">
+      <button class="ngs-btn" id="ngsJsExample">LOAD EXAMPLE</button>
+      <button class="ngs-btn primary" id="ngsJsCheck">CHECK + TEST SANDBOX</button>
+      <button class="ngs-btn good" id="ngsJsDone">SAVE CODE</button>
+    </div>
+    <div id="ngsJsResult">JavaScript has not been checked yet.</div>
+    <div class="ngs-jsdocs">
+      <div><b>EVENTS</b><br>Nitro.onStart(fn)<br>Nitro.onTick(fn)<br>Nitro.onCoin(fn)<br>Nitro.onDamage(fn)<br>Nitro.onWin(fn)</div>
+      <div><b>ACTIONS</b><br>Nitro.say(text)<br>Nitro.player.speed(n)<br>Nitro.player.jump(n)<br>Nitro.world.gravity(n)<br>Nitro.enemyA.speed(n)<br>Nitro.enemyB.speed(n)<br>Nitro.turret.fireEvery(n)<br>Nitro.complete()</div>
+    </div>
+    <p style="margin-top:10px">Shared <b>.nitrogame</b> files and NAG2 codes include this JavaScript. The code cannot directly access the DOM, localStorage, cookies, NitroArcade accounts, or the page window.</p>
+  </div>
+</div>
+
+<div class="ngs-modal" id="ngsShareBox">
+  <div class="ngs-modalcard ngs-sharecard">
+    <h3>Share Nitro Game</h3>
+    <p>Copy a Nitro share code or link, or send a .nitrogame file. Character drawings, colors and NitroScripts travel with the game.</p>
+    <textarea id="ngsShareCode" spellcheck="false"></textarea>
+    <div class="btnRow" style="justify-content:flex-start;margin-top:10px">
+      <button class="ngs-btn primary" id="ngsCopyCode">COPY CODE</button>
+      <button class="ngs-btn" id="ngsCopyLink">COPY LINK</button>
+      <button class="ngs-btn" id="ngsExport">EXPORT .nitrogame</button>
+      <button class="ngs-btn" id="ngsImportBtn">IMPORT FILE</button>
+      <button class="ngs-btn" id="ngsPaste">PASTE CODE</button>
+      <button class="ngs-btn danger" id="ngsShareClose">CLOSE</button>
+    </div>
+    <input id="ngsImportFile" type="file" accept=".nitrogame,application/json" hidden>
+  </div>
+</div>
+
+<div class="ngs-modal" id="ngsFeaturesModal">
+  <div class="ngs-modalcard">
+    <h3>Nitro Game Studio Feature Inventory</h3>
+    <p id="ngsFeatureIntro"></p>
+    <div class="ngs-featurelist" id="ngsFeatureList"></div>
+    <div class="btnRow" style="margin-top:12px"><button class="ngs-btn good" id="ngsFeaturesClose">CLOSE</button></div>
+  </div>
+</div>
+<script id="nitroGameStudioScript">
+(()=>{
+'use strict';
+
+const $=s=>document.querySelector(s);
+const overlay=$('#ngsOverlay'),canvas=$('#ngsCanvas'),g=canvas.getContext('2d');
+const spriteCanvas=$('#ngsSpriteCanvas'),sg=spriteCanvas.getContext('2d');
+const W=24,H=14,S=40,STORE='nitroarcade:user-games:v2',DRAFT='nitroarcade:studio-draft:v2',FORMAT='NITROGAME2';
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v)),pick=a=>a[Math.floor(Math.random()*a.length)];
+
+const FEATURES=[
+'Platformer template','Maze Quest template','Survival Dodge template','24×14 level grid','Brush tool','Rectangle tool','Flood-fill tool','Eyedropper tool',
+'Undo history','Redo history','Right-click erase','Drag painting','Start tile','Goal tile','Solid blocks','Hazard tiles','Coins','Enemy A','Enemy B','Turrets',
+'Bounce pads','Checkpoints','Keys','Locked doors','Portal A','Portal B','Health pickups','Slow zones','Decoration tiles','Custom background color','Custom grid color',
+'Custom block color','Custom accent color','Custom player color','Custom Enemy A color','Custom Enemy B color','Custom hazard color','Custom coin color','Custom goal color',
+'Neon theme','Sunset theme','Matrix theme','Ice theme','Candy theme','Custom-color theme','16×16 player sprite editor','16×16 Enemy A sprite editor',
+'16×16 Enemy B sprite editor','16×16 turret sprite editor','Pixel pencil','Pixel eraser','Pixel flood fill','Sprite mirror X','Sprite mirror Y','Sprite presets',
+'Sprite palette','NitroScript for Enemy A','NitroScript for Enemy B','NitroScript for Turrets','CHASE behavior','PATROL behavior','WANDER behavior','FLEE behavior',
+'SENTRY behavior','ORBIT behavior','Custom enemy speed','Custom detection range','Custom fire interval','Custom projectile speed','Projectile burst count',
+'Custom contact damage','Enemy teleport interval','Projectile spread','Safe script compiler','Script presets','Script validation','Keyboard play controls',
+'Physical-key input handling','Arrow-key input handling','On-screen virtual controls','Canvas focus lock','Play-test HP','Play-test lives','Invulnerability frames',
+'Coin collection','Checkpoint respawn','Key collection','Door unlocking','Portal teleportation','Healing pickups','Slow zones','Bounce physics','Enemy projectiles',
+'Turret projectiles','Custom gravity','Custom jump power','Custom player speed','Custom timer','Three win rules','Live play-test HUD','Game-over state',
+'Win state','Procedural level generator','Build validator','Start-count validation','Goal validation','Portal-pair validation','Reachability estimate',
+'Complexity score','Local creation library','Mini level thumbnails','Duplicate saved game','Delete saved game','Autosave draft','Unsaved-change indicator',
+'Share code','Share URL','Auto-import share URL','.nitrogame export','.nitrogame import','PNG level export','Game description','Saved custom colors',
+'Saved custom sprites','Saved NitroScripts','Sandboxed JavaScript editor','Worker-isolated JavaScript runtime','JavaScript onStart event','JavaScript onTick event','JavaScript onCoin event','JavaScript onDamage event','JavaScript onWin event','JavaScript game API','Shared JavaScript code','Backward import normalization','Maximum 24 saved creations','Feature counter','Engine-function counter'
+];
+
+const tileDefs=[
+{id:0,name:'Erase',icon:'⌫',hint:'Remove tile'},
+{id:1,name:'Block',icon:'■',hint:'Solid terrain'},
+{id:2,name:'Start',icon:'◆',hint:'Player spawn'},
+{id:3,name:'Goal',icon:'⚑',hint:'Finish point'},
+{id:4,name:'Hazard',icon:'▲',hint:'Deals damage'},
+{id:5,name:'Coin',icon:'●',hint:'Collectible'},
+{id:6,name:'Enemy A',icon:'A',hint:'Scripted character'},
+{id:17,name:'Enemy B',icon:'B',hint:'Second character'},
+{id:8,name:'Turret',icon:'✦',hint:'Scripted shooter'},
+{id:7,name:'Bounce',icon:'↥',hint:'Launch pad'},
+{id:9,name:'Checkpoint',icon:'◇',hint:'Respawn point'},
+{id:10,name:'Key',icon:'⚿',hint:'Unlocks door'},
+{id:11,name:'Door',icon:'▥',hint:'Needs a key'},
+{id:12,name:'Portal A',icon:'A↻',hint:'Teleporter entrance'},
+{id:13,name:'Portal B',icon:'B↻',hint:'Teleporter exit'},
+{id:14,name:'Heal',icon:'+',hint:'Restore health'},
+{id:15,name:'Slow',icon:'≈',hint:'Slows player'},
+{id:16,name:'Decor',icon:'✧',hint:'Non-solid detail'}
+];
+
+const themes={
+neon:{bg:'#071019',grid:'#122638',block:'#38546a',accent:'#69e8ff',player:'#eafaff',enemyA:'#b48cff',enemyB:'#ff83b7',hazard:'#ff6178',coin:'#ffd66b',goal:'#7cefa5'},
+sunset:{bg:'#21131b',grid:'#3b2029',block:'#704353',accent:'#ff8c68',player:'#fff1dc',enemyA:'#ffb05f',enemyB:'#ff6f9b',hazard:'#ff5e70',coin:'#ffd36b',goal:'#8cf0b0'},
+matrix:{bg:'#06100a',grid:'#102a19',block:'#1d5032',accent:'#6dff9b',player:'#dffff0',enemyA:'#9cff69',enemyB:'#4cdba4',hazard:'#ff6178',coin:'#d7ff6b',goal:'#6dff9b'},
+ice:{bg:'#0a1620',grid:'#173044',block:'#2f617c',accent:'#9beaff',player:'#effcff',enemyA:'#9bbcff',enemyB:'#c9a9ff',hazard:'#ff7188',coin:'#fff1a6',goal:'#a2ffd2'},
+candy:{bg:'#211423',grid:'#3a203e',block:'#704f79',accent:'#ff86c8',player:'#fff1fb',enemyA:'#a892ff',enemyB:'#ff80ab',hazard:'#ff5e78',coin:'#ffe36f',goal:'#7ff0c1'}
+};
+
+const colorFields=[
+['bg','Background'],['grid','Grid'],['block','Block'],['accent','Accent'],['player','Player'],['enemyA','Enemy A'],['enemyB','Enemy B'],['hazard','Hazard'],['coin','Coin'],['goal','Goal']
+];
+
+const scriptDefaults={
+enemyA:'# Enemy A\nMODE CHASE\nSPEED 85\nRANGE 360\nSHOOT 1.8\nPROJECTILE_SPEED 240\nBURST 1\nCONTACT 22\nTELEPORT 0\nSPREAD 0',
+enemyB:'# Enemy B\nMODE PATROL\nSPEED 105\nRANGE 300\nSHOOT 0\nPROJECTILE_SPEED 230\nBURST 1\nCONTACT 28\nTELEPORT 0\nSPREAD 0',
+turret:'# Turret\nMODE SENTRY\nSPEED 0\nRANGE 500\nSHOOT 1.4\nPROJECTILE_SPEED 260\nBURST 1\nCONTACT 0\nTELEPORT 0\nSPREAD 0'
+};
+
+const jsDefault=`// NitroJS example
+Nitro.onStart(() => {
+  Nitro.say("My custom JavaScript is running!");
+  Nitro.enemyA.speed(120);
+});
+
+Nitro.onCoin(e => {
+  if (e.coins >= 3) Nitro.player.speed(1.35);
+});
+
+Nitro.onDamage(e => {
+  if (e.hp < 40) Nitro.player.jump(640);
+});
+
+Nitro.onTick(e => {
+  // e.time is seconds since the play test started.
+});
+`;
+
+const scriptPresets={
+chaser:'MODE CHASE\nSPEED 110\nRANGE 420\nSHOOT 1.6\nPROJECTILE_SPEED 250\nBURST 1\nCONTACT 25\nTELEPORT 0\nSPREAD 0',
+patrol:'MODE PATROL\nSPEED 90\nRANGE 260\nSHOOT 2.2\nPROJECTILE_SPEED 220\nBURST 1\nCONTACT 20\nTELEPORT 0\nSPREAD 0',
+sniper:'MODE SENTRY\nSPEED 0\nRANGE 650\nSHOOT 1.1\nPROJECTILE_SPEED 360\nBURST 1\nCONTACT 12\nTELEPORT 0\nSPREAD 2',
+chaos:'MODE WANDER\nSPEED 125\nRANGE 520\nSHOOT 1.25\nPROJECTILE_SPEED 290\nBURST 3\nCONTACT 30\nTELEPORT 3.5\nSPREAD 12'
+};
+
+const input={keys:new Set(),virtual:new Set()};
+let current=newGame(),selected=1,editTool='brush',painting=false,rectStart=null,play=false,runtime=null,undo=[],redo=[],raf=0,last=0,dirty=false,autosaveTimer=0;
+let scriptTarget='enemyA',spriteTarget='player',spriteTool='pencil',spritePainting=false;
+let jsWorker=null,jsTickClock=0;
+
+function uid(){return 'ng_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,7)}
+function blankSprite(){return Array(256).fill(null)}
+function presetSprite(kind,color){
+ const a=blankSprite(),set=(x,y,c=color)=>{if(x>=0&&y>=0&&x<16&&y<16)a[y*16+x]=c};
+ if(kind==='player'){
+  for(let y=4;y<13;y++)for(let x=5;x<11;x++)set(x,y,color);
+  for(let y=1;y<5;y++)for(let x=6;x<10;x++)set(x,y,'#e1b091');
+  set(6,2,'#172030');set(9,2,'#172030');for(let x=4;x<7;x++)set(x,13,'#36455f');for(let x=9;x<12;x++)set(x,13,'#36455f');
+ }else if(kind==='turret'){
+  for(let y=7;y<13;y++)for(let x=4;x<12;x++)set(x,y,color);
+  for(let x=7;x<15;x++)set(x,6,color);set(14,5,color);set(14,7,color);
+ }else{
+  for(let y=4;y<13;y++)for(let x=4;x<12;x++)set(x,y,color);
+  for(let x=5;x<11;x++)set(x,3,color);set(6,6,'#071019');set(9,6,'#071019');
+  if(kind==='enemyB'){set(3,4,color);set(12,4,color);set(2,3,color);set(13,3,color)}
+ }
+ return a
+}
+function newGame(){
+ const tiles=Array(W*H).fill(0);for(let x=0;x<W;x++)tiles[(H-1)*W+x]=1;tiles[(H-2)*W+2]=2;tiles[(H-2)*W+(W-3)]=3;
+ const colors={...themes.neon};
+ return {format:FORMAT,id:uid(),name:'Untitled Nitro Game',description:'',mode:'platformer',theme:'neon',rule:'goal',timer:60,speed:1,lives:3,gravity:1350,jump:520,w:W,h:H,tiles,colors,
+  sprites:{player:presetSprite('player',colors.accent),enemyA:presetSprite('enemyA',colors.enemyA),enemyB:presetSprite('enemyB',colors.enemyB),turret:presetSprite('turret','#ff77bd')},
+  scripts:{...scriptDefaults},jsCode:jsDefault,updatedAt:Date.now()};
+}
+function clone(v){return JSON.parse(JSON.stringify(v))}
+function idx(x,y){return y*W+x}
+function xy(i){return {x:i%W,y:Math.floor(i/W)}}
+function tileAt(x,y){if(x<0||y<0||x>=W||y>=H)return 1;return current.tiles[idx(x,y)]||0}
+function markDirty(){
+ dirty=true;current.updatedAt=Date.now();$('#ngsSaveState').textContent='UNSAVED • AUTOSAVING';
+ clearTimeout(autosaveTimer);autosaveTimer=setTimeout(()=>{try{localStorage.setItem(DRAFT,JSON.stringify(current));dirty=false;$('#ngsSaveState').textContent='DRAFT AUTOSAVED'}catch(e){}},700)
+}
+function pushUndo(){undo.push(current.tiles.slice());if(undo.length>50)undo.shift();redo=[]}
+function setTile(x,y,v){
+ if(x<0||y<0||x>=W||y>=H)return;
+ if(v===2)for(let i=0;i<current.tiles.length;i++)if(current.tiles[i]===2)current.tiles[i]=0;
+ if(v===3)for(let i=0;i<current.tiles.length;i++)if(current.tiles[i]===3)current.tiles[i]=0;
+ current.tiles[idx(x,y)]=v;markDirty()
+}
+function activeColors(){return current.theme==='custom'?current.colors:{...themes[current.theme]||themes.neon,...current.colorsOverride}}
+function tileColor(t){
+ const c=activeColors();
+ return ({1:c.block,2:c.accent,3:c.goal,4:c.hazard,5:c.coin,6:c.enemyA,17:c.enemyB,8:'#ff77bd',7:'#ff9c68',9:'#7ed9ff',10:'#ffe28a',11:'#7b5b46',12:'#7b8dff',13:'#b078ff',14:'#72ee9c',15:'#68b9ff',16:c.accent})[t]||c.bg
+}
+function buildPalette(){
+ const box=$('#ngsPalette');box.innerHTML='';
+ tileDefs.forEach(t=>{
+  const b=document.createElement('button');b.className='ngs-tool'+(t.id===selected?' active':'');b.dataset.tile=t.id;
+  b.innerHTML='<strong><span class="ngs-swatch" style="background:'+tileColor(t.id)+'">'+t.icon+'</span>'+t.name+'</strong><span>'+t.hint+'</span>';
+  b.onclick=()=>{selected=t.id;buildPalette()};box.appendChild(b)
+ })
+}
+function buildColors(){
+ const box=$('#ngsColorGrid');box.innerHTML='';
+ colorFields.forEach(([key,label])=>{
+  const row=document.createElement('label');row.className='ngs-color';const inp=document.createElement('input');inp.type='color';inp.value=current.colors[key]||themes.neon[key];
+  const span=document.createElement('span');span.textContent=label;inp.oninput=()=>{current.colors[key]=inp.value;current.theme='custom';$('#ngsTheme').value='custom';markDirty();buildPalette();drawEditor()};
+  row.append(inp,span);box.appendChild(row)
+ })
+}
+function syncForm(){
+ $('#ngsName').value=current.name;$('#ngsMode').value=current.mode;$('#ngsTheme').value=current.theme;$('#ngsRule').value=current.rule;$('#ngsTimer').value=current.timer;
+ $('#ngsSpeed').value=String(current.speed);$('#ngsLives').value=current.lives;$('#ngsGravity').value=current.gravity;$('#ngsJump').value=current.jump;$('#ngsDescription').value=current.description||'';
+ buildColors();buildPalette();updateStats()
+}
+function readForm(){
+ current.name=($('#ngsName').value||'Untitled Nitro Game').trim().slice(0,42);current.mode=$('#ngsMode').value;current.theme=$('#ngsTheme').value;current.rule=$('#ngsRule').value;
+ current.timer=Math.max(10,Math.min(600,Number($('#ngsTimer').value)||60));current.speed=Math.max(.6,Math.min(1.8,Number($('#ngsSpeed').value)||1));
+ current.lives=Math.max(1,Math.min(20,Number($('#ngsLives').value)||3));current.gravity=Math.max(500,Math.min(2200,Number($('#ngsGravity').value)||1350));
+ current.jump=Math.max(250,Math.min(900,Number($('#ngsJump').value)||520));current.description=$('#ngsDescription').value.slice(0,260);current.updatedAt=Date.now()
+}
+function toast(t){if(window.showToast)window.showToast(t);else{$('#ngsHint').textContent=t;clearTimeout($('#ngsHint')._t);$('#ngsHint')._t=setTimeout(()=>$('#ngsHint').textContent=play?'Play test running.':'Choose a tile, then paint your level.',1400)}}
+function drawSprite(ctx,sprite,x,y,size){
+ if(!Array.isArray(sprite))return;const ps=size/16;ctx.save();ctx.imageSmoothingEnabled=false;
+ for(let i=0;i<256;i++){const col=sprite[i];if(!col)continue;ctx.fillStyle=col;ctx.fillRect(x+(i%16)*ps,y+Math.floor(i/16)*ps,Math.ceil(ps),Math.ceil(ps))}
+ ctx.restore()
+}
+function drawTileIcon(t,px,py){
+ const c=activeColors();g.fillStyle=tileColor(t);g.globalAlpha=t===16?.28:.9;g.fillRect(px+2,py+2,S-4,S-4);g.globalAlpha=1;
+ if(t===6){drawSprite(g,current.sprites.enemyA,px+6,py+6,S-12);return}
+ if(t===17){drawSprite(g,current.sprites.enemyB,px+6,py+6,S-12);return}
+ if(t===8){drawSprite(g,current.sprites.turret,px+6,py+6,S-12);return}
+ if([2,3,5,7,9,10,11,12,13,14,15,16].includes(t)){const d=tileDefs.find(x=>x.id===t);g.fillStyle=t===5?'#1a1605':'#061019';g.font='900 15px Inter,sans-serif';g.textAlign='center';g.textBaseline='middle';g.fillText(d?d.icon:'?',px+S/2,py+S/2+1)}
+}
+function drawEditor(){
+ const c=activeColors();g.fillStyle=c.bg;g.fillRect(0,0,canvas.width,canvas.height);
+ for(let y=0;y<H;y++)for(let x=0;x<W;x++){const t=current.tiles[idx(x,y)];if(t)drawTileIcon(t,x*S,y*S)}
+ g.strokeStyle=c.grid;g.lineWidth=1;for(let x=0;x<=W;x++){g.beginPath();g.moveTo(x*S,0);g.lineTo(x*S,H*S);g.stroke()}for(let y=0;y<=H;y++){g.beginPath();g.moveTo(0,y*S);g.lineTo(W*S,y*S);g.stroke()}
+ updateStats()
+}
+function complexity(){
+ const counts={};current.tiles.forEach(t=>counts[t]=(counts[t]||0)+1);const scripted=(current.scripts.enemyA.length+current.scripts.enemyB.length+current.scripts.turret.length)/80;
+ return Math.round(Math.min(999,(counts[1]||0)*.25+(counts[4]||0)*2+(counts[5]||0)+(counts[6]||0)*5+(counts[17]||0)*5+(counts[8]||0)*4+(counts[10]||0)*2+(counts[11]||0)*3+(counts[12]||0)*4+(counts[13]||0)*4+scripted))
+}
+function updateStats(){
+ const count=v=>current.tiles.filter(x=>x===v).length;$('#ngsCountCoins').textContent=count(5);$('#ngsCountEnemies').textContent=count(6)+count(17)+count(8);$('#ngsCountHazards').textContent=count(4);$('#ngsComplexity').textContent=complexity();
+ $('#ngsFeatureCount').textContent=FEATURES.length
+}
+function pointerCell(e){const r=canvas.getBoundingClientRect();return{x:clamp(Math.floor((e.clientX-r.left)/r.width*W),0,W-1),y:clamp(Math.floor((e.clientY-r.top)/r.height*H),0,H-1)}}
+function floodFill(x,y,newValue){
+ const old=tileAt(x,y);if(old===newValue)return;const q=[[x,y]],seen=new Set();
+ while(q.length){const [cx,cy]=q.pop(),k=cx+','+cy;if(seen.has(k)||cx<0||cy<0||cx>=W||cy>=H||tileAt(cx,cy)!==old)continue;seen.add(k);setTile(cx,cy,newValue);q.push([cx+1,cy],[cx-1,cy],[cx,cy+1],[cx,cy-1])}
+}
+function paintCell(e,erase=false){
+ if(play)return;const p=pointerCell(e),v=erase?0:selected;
+ if(editTool==='pick'){selected=tileAt(p.x,p.y);buildPalette();return}
+ if(editTool==='fill'){pushUndo();floodFill(p.x,p.y,v);drawEditor();return}
+ if(editTool==='rect'){if(!rectStart){pushUndo();rectStart=p;toast('Rectangle start set. Click the opposite corner.')}else{const a=rectStart;rectStart=null;for(let y=Math.min(a.y,p.y);y<=Math.max(a.y,p.y);y++)for(let x=Math.min(a.x,p.x);x<=Math.max(a.x,p.x);x++)setTile(x,y,v);drawEditor()}return}
+ setTile(p.x,p.y,v);drawEditor()
+}
+canvas.addEventListener('pointerdown',e=>{if(play){canvas.focus({preventScroll:true});return}e.preventDefault();if(editTool==='brush'){painting=true;pushUndo()}paintCell(e,e.button===2);try{canvas.setPointerCapture(e.pointerId)}catch(_){}});
+canvas.addEventListener('pointermove',e=>{if(painting&&!play&&editTool==='brush')paintCell(e,(e.buttons&2)!==0);const p=pointerCell(e);$('#ngsPointerInfo').textContent='X '+p.x+' • Y '+p.y});
+canvas.addEventListener('pointerup',()=>painting=false);canvas.addEventListener('pointercancel',()=>painting=false);canvas.addEventListener('contextmenu',e=>{e.preventDefault();if(!play){pushUndo();paintCell(e,true)}});
+
+function undoPaint(){if(!undo.length)return;redo.push(current.tiles.slice());current.tiles=undo.pop();markDirty();drawEditor()}
+function redoPaint(){if(!redo.length)return;undo.push(current.tiles.slice());current.tiles=redo.pop();markDirty();drawEditor()}
+function clearLevel(){if(!confirm('Clear the whole level?'))return;pushUndo();current.tiles=Array(W*H).fill(0);markDirty();drawEditor()}
+function generateLevel(){
+ if(!confirm('Generate a new level for the selected game type?'))return;pushUndo();current.tiles=Array(W*H).fill(0);
+ if(current.mode==='platformer'){
+  for(let x=0;x<W;x++)current.tiles[idx(x,H-1)]=1;setTile(1,H-2,2);setTile(W-2,H-2,3);
+  for(let x=4;x<W-3;x+=4){const y=H-3-Math.floor(Math.random()*5);for(let k=0;k<3;k++)setTile(x+k,y,1);if(Math.random()<.7)setTile(x+1,y-1,5);if(Math.random()<.45)setTile(x+2,y-1,Math.random()<.5?6:17)}
+  setTile(Math.floor(W/2),H-2,9);setTile(W-5,H-2,10);setTile(W-3,H-2,11)
+ }else{
+  for(let x=0;x<W;x++){setTile(x,0,1);setTile(x,H-1,1)}for(let y=0;y<H;y++){setTile(0,y,1);setTile(W-1,y,1)}setTile(1,1,2);setTile(W-2,H-2,3);
+  for(let i=0;i<52;i++){const x=2+Math.floor(Math.random()*(W-4)),y=2+Math.floor(Math.random()*(H-4));if(Math.random()<.62)setTile(x,y,1)}
+  for(let i=0;i<10;i++){const x=2+Math.floor(Math.random()*(W-4)),y=2+Math.floor(Math.random()*(H-4));setTile(x,y,pick([5,6,17,4]))}
+  setTile(2,1,12);setTile(W-3,H-2,13)
+ }
+ markDirty();drawEditor();validateGame();toast('Generated a fresh level.')
+}
+function screenshot(){drawEditor();const a=document.createElement('a');a.href=canvas.toDataURL('image/png');a.download=(current.name||'nitro-game').replace(/[^a-z0-9_-]+/gi,'_')+'_level.png';a.click()}
+
+function games(){try{return JSON.parse(localStorage.getItem(STORE)||'[]')}catch(e){return[]}}
+function writeGames(a){localStorage.setItem(STORE,JSON.stringify(a.slice(0,24)))}
+function saveCurrent(){
+ readForm();const a=games(),i=a.findIndex(x=>x.id===current.id);if(i>=0)a[i]=clone(current);else a.unshift(clone(current));writeGames(a);dirty=false;$('#ngsSaveState').textContent='SAVED';renderLibrary();toast('Game saved locally.')
+}
+function normalise(game){
+ const base=newGame(),g2={...base,...clone(game)};g2.format=FORMAT;g2.w=W;g2.h=H;if(!Array.isArray(g2.tiles))g2.tiles=Array(W*H).fill(0);g2.tiles=g2.tiles.slice(0,W*H);while(g2.tiles.length<W*H)g2.tiles.push(0);
+ g2.colors={...base.colors,...(g2.colors||{})};g2.sprites={...base.sprites,...(g2.sprites||{})};g2.scripts={...scriptDefaults,...(g2.scripts||{})};g2.jsCode=typeof g2.jsCode==='string'?g2.jsCode:jsDefault;return g2
+}
+function renderMini(cv,game){
+ const c=cv.getContext('2d'),cw=cv.width/game.w,ch=cv.height/game.h,col=game.theme==='custom'?game.colors:(themes[game.theme]||themes.neon);c.fillStyle=col.bg;c.fillRect(0,0,cv.width,cv.height);
+ game.tiles.forEach((t,i)=>{if(!t)return;const x=i%game.w,y=Math.floor(i/game.w);c.fillStyle=({1:col.block,2:col.accent,3:col.goal,4:col.hazard,5:col.coin,6:col.enemyA,17:col.enemyB,8:'#ff77bd'})[t]||col.accent;c.fillRect(x*cw,y*ch,Math.max(1,cw),Math.max(1,ch))})
+}
+function renderLibrary(){
+ const box=$('#ngsLibrary'),a=games();box.innerHTML='';if(!a.length){box.innerHTML='<div class="ngs-empty">No saved games yet. Build something, play-test it, then press SAVE.</div>';return}
+ a.forEach(game=>{
+  const card=document.createElement('div');card.className='ngs-libcard';const cv=document.createElement('canvas');cv.width=128;cv.height=84;const meta=document.createElement('div');meta.innerHTML='<b></b><span></span>';meta.querySelector('b').textContent=game.name;meta.querySelector('span').textContent=(game.mode||'game').toUpperCase()+' • '+new Date(game.updatedAt||Date.now()).toLocaleDateString();
+  const acts=document.createElement('div');acts.className='ngs-libactions';const load=document.createElement('button');load.textContent='LOAD';load.onclick=()=>loadGame(game);
+  const copy=document.createElement('button');copy.textContent='CLONE';copy.onclick=()=>{const cp=normalise(game);cp.id=uid();cp.name=(cp.name+' Copy').slice(0,42);cp.updatedAt=Date.now();const arr=games();arr.unshift(cp);writeGames(arr);renderLibrary();toast('Game cloned.')};
+  const del=document.createElement('button');del.textContent='DELETE';del.onclick=()=>{if(confirm('Delete "'+game.name+'"?')){writeGames(games().filter(x=>x.id!==game.id));renderLibrary()}};
+  acts.append(load,copy,del);card.append(cv,meta,acts);box.appendChild(card);renderMini(cv,game)
+ })
+}
+function loadGame(game){stopTest();current=normalise(game);undo=[];redo=[];dirty=false;syncForm();drawEditor();toast('Loaded '+current.name)}
+function loadDraft(){try{const d=JSON.parse(localStorage.getItem(DRAFT)||'null');if(d&&d.format)current=normalise(d)}catch(e){}}
+
+function compileScript(text){
+ const cfg={mode:'PATROL',speed:80,range:360,shoot:0,projectileSpeed:240,burst:1,contact:20,teleport:0,spread:0},errors=[],validModes=['CHASE','PATROL','WANDER','FLEE','SENTRY','ORBIT'];
+ String(text||'').split(/\r?\n/).forEach((raw,lineNo)=>{
+  const line=raw.trim();if(!line||line.startsWith('#'))return;const parts=line.split(/\s+/),cmd=parts.shift().toUpperCase(),arg=parts.join(' ');
+  const num=(lo,hi,def)=>{const n=Number(arg);if(!Number.isFinite(n)){errors.push('Line '+(lineNo+1)+': '+cmd+' needs a number');return def}return clamp(n,lo,hi)};
+  if(cmd==='MODE'){const m=arg.toUpperCase();if(validModes.includes(m))cfg.mode=m;else errors.push('Line '+(lineNo+1)+': unknown MODE '+arg)}
+  else if(cmd==='SPEED')cfg.speed=num(0,300,cfg.speed);
+  else if(cmd==='RANGE')cfg.range=num(40,1000,cfg.range);
+  else if(cmd==='SHOOT')cfg.shoot=num(0,20,cfg.shoot);
+  else if(cmd==='PROJECTILE_SPEED')cfg.projectileSpeed=num(50,800,cfg.projectileSpeed);
+  else if(cmd==='BURST')cfg.burst=Math.round(num(1,5,cfg.burst));
+  else if(cmd==='CONTACT')cfg.contact=num(0,100,cfg.contact);
+  else if(cmd==='TELEPORT')cfg.teleport=num(0,30,cfg.teleport);
+  else if(cmd==='SPREAD')cfg.spread=num(0,60,cfg.spread);
+  else errors.push('Line '+(lineNo+1)+': unknown command '+cmd)
+ });
+ return {cfg,errors}
+}
+function openScripts(){scriptTarget='enemyA';$('#ngsScriptEditor').value=current.scripts[scriptTarget];updateScriptButtons();compileCurrentScript();$('#ngsScriptModal').classList.add('open')}
+function updateScriptButtons(){document.querySelectorAll('[data-script]').forEach(b=>b.classList.toggle('active',b.dataset.script===scriptTarget))}
+function saveScriptEditor(){current.scripts[scriptTarget]=$('#ngsScriptEditor').value;markDirty()}
+function switchScript(target){saveScriptEditor();scriptTarget=target;$('#ngsScriptEditor').value=current.scripts[target]||scriptDefaults[target];updateScriptButtons();compileCurrentScript()}
+function compileCurrentScript(){const r=compileScript($('#ngsScriptEditor').value);$('#ngsScriptResult').textContent=r.errors.length?'SCRIPT ERRORS\n'+r.errors.join('\n'):'COMPILED OK\n'+JSON.stringify(r.cfg,null,2);$('#ngsScriptResult').style.color=r.errors.length?'#ff9fb0':'#a9efc2';return r}
+function applyScriptPreset(name){$('#ngsScriptEditor').value=scriptPresets[name]||scriptPresets.patrol;compileCurrentScript()}
+
+function openSpriteLab(){spriteTarget='player';spriteTool='pencil';$('#ngsSpriteTarget').value=spriteTarget;drawSpriteEditor();$('#ngsSpriteModal').classList.add('open')}
+function spriteCell(e){const r=spriteCanvas.getBoundingClientRect();return{x:clamp(Math.floor((e.clientX-r.left)/r.width*16),0,15),y:clamp(Math.floor((e.clientY-r.top)/r.height*16),0,15)}}
+function drawSpriteEditor(){
+ sg.fillStyle='#071019';sg.fillRect(0,0,320,320);drawSprite(sg,current.sprites[spriteTarget],0,0,320);sg.strokeStyle='#1d3041';sg.lineWidth=1;for(let i=0;i<=16;i++){sg.beginPath();sg.moveTo(i*20,0);sg.lineTo(i*20,320);sg.stroke();sg.beginPath();sg.moveTo(0,i*20);sg.lineTo(320,i*20);sg.stroke()}
+}
+function spriteFlood(x,y,newColor){
+ const arr=current.sprites[spriteTarget],old=arr[y*16+x]||null;if(old===newColor)return;const q=[[x,y]],seen=new Set();
+ while(q.length){const [cx,cy]=q.pop(),k=cx+','+cy;if(seen.has(k)||cx<0||cy<0||cx>=16||cy>=16||(arr[cy*16+cx]||null)!==old)continue;seen.add(k);arr[cy*16+cx]=newColor;q.push([cx+1,cy],[cx-1,cy],[cx,cy+1],[cx,cy-1])}
+}
+function spritePaint(e){
+ const p=spriteCell(e),arr=current.sprites[spriteTarget],i=p.y*16+p.x,col=$('#ngsSpriteColor').value;if(spriteTool==='eraser')arr[i]=null;else if(spriteTool==='fill')spriteFlood(p.x,p.y,col);else arr[i]=col;markDirty();drawSpriteEditor();drawEditor()
+}
+function mirrorSprite(axis){const a=current.sprites[spriteTarget],b=blankSprite();for(let y=0;y<16;y++)for(let x=0;x<16;x++){const nx=axis==='x'?15-x:x,ny=axis==='y'?15-y:y;b[ny*16+nx]=a[y*16+x]}current.sprites[spriteTarget]=b;markDirty();drawSpriteEditor();drawEditor()}
+function buildSpritePalette(){const box=$('#ngsSpritePalette'),cols=['#69e8ff','#8d83ff','#ff6f9b','#ff6178','#ffd66b','#7cefa5','#ffffff','#d6aa8d','#263149','#111722'];box.innerHTML='';cols.forEach(c=>{const b=document.createElement('button');b.style.background=c;b.onclick=()=>{$('#ngsSpriteColor').value=c};box.appendChild(b)})}
+
+function solidType(t,i){return t===1||(t===11&&runtime&&!runtime.openDoors.has(i))}
+function rectHitsSolid(x,y,w,h){
+ const l=Math.floor((x-w/2)/S),r=Math.floor((x+w/2-1)/S),t=Math.floor((y-h/2)/S),b=Math.floor((y+h/2-1)/S);
+ for(let yy=t;yy<=b;yy++)for(let xx=l;xx<=r;xx++){if(xx<0||yy<0||xx>=W||yy>=H)return true;const i=idx(xx,yy);if(solidType(current.tiles[i],i))return true}return false
+}
+function touchTile(type){
+ const r=runtime,cx=Math.floor(r.px/S),cy=Math.floor(r.py/S);
+ for(let y=cy-1;y<=cy+1;y++)for(let x=cx-1;x<=cx+1;x++){if(x<0||y<0||x>=W||y>=H)continue;const i=idx(x,y);if(current.tiles[i]!==type)continue;const tx=(x+.5)*S,ty=(y+.5)*S;if(Math.abs(r.px-tx)<S*.48&&Math.abs(r.py-ty)<S*.48)return{x,y,i}}
+ return null
+}
+function held(...names){return names.some(n=>input.keys.has(n)||input.virtual.has(n))}
+function resetPlayer(full=false){
+ const r=runtime,start=current.tiles.findIndex(v=>v===2),spawn=r&&r.respawnIndex>=0?r.respawnIndex:start,pos=xy(spawn);r.px=(pos.x+.5)*S;r.py=(pos.y+.5)*S;r.vx=r.vy=0;r.inv=1.0;if(full)r.hp=100
+}
+function damagePlayer(amount){
+ const r=runtime;if(!r||r.inv>0||r.dead||r.won)return;r.hp-=amount;r.inv=.65;jsEvent('damage',{amount:Number(amount)||0,hp:r.hp,lives:r.lives});if(r.hp<=0){r.lives--;if(r.lives<=0){r.dead=true;toast('GAME OVER — press STOP TEST to edit.')}else{r.hp=100;resetPlayer();toast('Life lost. '+r.lives+' left.')}}
+}
+function openJsLab(){
+ $('#ngsJsEditor').value=current.jsCode||jsDefault;$('#ngsJsResult').textContent='JavaScript has not been checked yet.';$('#ngsJsModal').classList.add('open')
+}
+function saveJsCode(){current.jsCode=$('#ngsJsEditor').value;markDirty()}
+function makeJsWorker(code){
+ const source=`"use strict";
+self.fetch=undefined;self.XMLHttpRequest=undefined;self.WebSocket=undefined;self.EventSource=undefined;self.importScripts=undefined;self.indexedDB=undefined;self.caches=undefined;
+const H={start:[],tick:[],coin:[],damage:[],win:[]};
+const send=(action,value)=>postMessage({type:"action",action,value});
+const add=(name,fn)=>{if(typeof fn==="function")H[name].push(fn)};
+const Nitro=Object.freeze({
+ onStart:fn=>add("start",fn),onTick:fn=>add("tick",fn),onCoin:fn=>add("coin",fn),onDamage:fn=>add("damage",fn),onWin:fn=>add("win",fn),
+ say:text=>send("say",String(text).slice(0,140)),
+ player:Object.freeze({speed:v=>send("player.speed",v),jump:v=>send("player.jump",v)}),
+ world:Object.freeze({gravity:v=>send("world.gravity",v)}),
+ enemyA:Object.freeze({speed:v=>send("enemyA.speed",v)}),
+ enemyB:Object.freeze({speed:v=>send("enemyB.speed",v)}),
+ turret:Object.freeze({fireEvery:v=>send("turret.fireEvery",v)}),
+ complete:()=>send("complete",1)
+});
+onmessage=e=>{const m=e.data||{};if(m.type!=="event"||!H[m.name])return;for(const fn of H[m.name]){try{fn(Object.freeze(m.data||{}))}catch(err){postMessage({type:"error",message:"Runtime "+m.name+": "+err.message})}}};
+try{(0,eval)(${JSON.stringify(code).replace(/</g,'\\u003c')});postMessage({type:"ready"})}catch(err){postMessage({type:"error",message:err.name+": "+err.message})}`;
+ const blob=new Blob([source],{type:'text/javascript'}),url=URL.createObjectURL(blob),w=new Worker(url);setTimeout(()=>URL.revokeObjectURL(url),1000);return w
+}
+function applyJsAction(action,value){
+ if(!runtime)return;const n=Number(value);
+ if(action==='say')return toast(String(value).slice(0,140));
+ if(action==='player.speed'&&Number.isFinite(n))runtime.jsSpeed=clamp(n,.25,3);
+ if(action==='player.jump'&&Number.isFinite(n))runtime.jsJump=clamp(n,100,1200);
+ if(action==='world.gravity'&&Number.isFinite(n))runtime.jsGravity=clamp(n,100,3200);
+ if(action==='enemyA.speed'&&Number.isFinite(n))runtime.enemyCfgA.speed=clamp(n,0,350);
+ if(action==='enemyB.speed'&&Number.isFinite(n))runtime.enemyCfgB.speed=clamp(n,0,350);
+ if(action==='turret.fireEvery'&&Number.isFinite(n))runtime.turretCfg.shoot=clamp(n,.15,20);
+ if(action==='complete')testWin()
+}
+function startJsRuntime(){
+ stopJsRuntime();const code=String(current.jsCode||'').trim();if(!code)return;
+ try{new Function(code)}catch(err){toast('JavaScript syntax error: '+err.message);return}
+ jsWorker=makeJsWorker(code);jsWorker.onmessage=e=>{const m=e.data||{};if(m.type==='action')applyJsAction(m.action,m.value);if(m.type==='error')toast('JS: '+m.message)};jsWorker.onerror=e=>toast('JS worker error: '+e.message);jsTickClock=0
+}
+function jsEvent(name,data={}){if(jsWorker)try{jsWorker.postMessage({type:'event',name,data})}catch(e){}}
+function stopJsRuntime(){if(jsWorker){try{jsWorker.terminate()}catch(e){}jsWorker=null}}
+function testJsSandbox(){
+ saveJsCode();let code=current.jsCode||'';try{new Function(code)}catch(err){$('#ngsJsResult').textContent='SYNTAX ERROR\\n'+err.message;$('#ngsJsResult').style.color='#ff9fb0';return}
+ const w=makeJsWorker(code);let done=false,t=setTimeout(()=>{if(done)return;done=true;w.terminate();$('#ngsJsResult').textContent='Sandbox timed out. Check for an infinite loop.';$('#ngsJsResult').style.color='#ff9fb0'},700);
+ w.onmessage=e=>{if(done)return;const m=e.data||{};if(m.type==='ready'){done=true;clearTimeout(t);w.terminate();$('#ngsJsResult').textContent='COMPILED + SANDBOX STARTED OK\\nThe code is isolated in a Worker and can use the NitroJS API.';$('#ngsJsResult').style.color='#a9efc2'}else if(m.type==='error'){done=true;clearTimeout(t);w.terminate();$('#ngsJsResult').textContent='SANDBOX ERROR\\n'+m.message;$('#ngsJsResult').style.color='#ff9fb0'}}
+ w.onerror=e=>{if(done)return;done=true;clearTimeout(t);w.terminate();$('#ngsJsResult').textContent='WORKER ERROR\\n'+e.message;$('#ngsJsResult').style.color='#ff9fb0'}
+}
+
+function startTest(){
+ readForm();const start=current.tiles.findIndex(v=>v===2);if(start<0){toast('Place a START tile first.');return}if(current.mode!=='dodge'&&current.tiles.findIndex(v=>v===3)<0){toast('Place a GOAL tile first.');return}
+ const scA=compileScript(current.scripts.enemyA),scB=compileScript(current.scripts.enemyB),scT=compileScript(current.scripts.turret);if(scA.errors.length||scB.errors.length||scT.errors.length){toast('Fix NitroScript errors before testing.');openScripts();return}
+ play=true;input.keys.clear();input.virtual.clear();canvas.focus({preventScroll:true});$('#ngsPlay').style.display='none';$('#ngsStop').style.display='inline-block';$('#ngsStatus').textContent='PLAY TEST';$('#ngsHint').textContent='Keyboard fixed: WASD/arrows work. Click canvas if needed.';$('#ngsVirtual').classList.add('show');
+ const pos=xy(start),totalCoins=current.tiles.filter(v=>v===5).length;
+ runtime={px:(pos.x+.5)*S,py:(pos.y+.5)*S,vx:0,vy:0,w:22,h:30,onGround:false,lives:current.lives,hp:100,inv:0,coins:0,totalCoins,time:current.timer,won:false,dead:false,respawnIndex:start,keys:0,
+  collected:new Set(),openDoors:new Set(),portalCd:0,enemyShots:[],enemyCfgA:scA.cfg,enemyCfgB:scB.cfg,turretCfg:scT.cfg,
+  enemies:current.tiles.map((v,i)=>(v===6||v===17)?makeEnemy(v,i):null).filter(Boolean),turrets:current.tiles.map((v,i)=>v===8?makeTurret(i):null).filter(Boolean)};
+ startJsRuntime();jsEvent('start',{mode:current.mode,name:current.name});
+ last=performance.now();cancelAnimationFrame(raf);raf=requestAnimationFrame(playLoop)
+}
+function makeEnemy(type,i){const p=xy(i),cfg=type===6?compileScript(current.scripts.enemyA).cfg:compileScript(current.scripts.enemyB).cfg;return{type,x:(p.x+.5)*S,y:(p.y+.5)*S,baseX:(p.x+.5)*S,baseY:(p.y+.5)*S,dir:Math.random()<.5?-1:1,angle:Math.random()*Math.PI*2,turn:1,shoot:Math.random()*Math.max(.1,cfg.shoot),tele:cfg.teleport||999,inv:0}}
+function makeTurret(i){const p=xy(i),cfg=compileScript(current.scripts.turret).cfg;return{x:(p.x+.5)*S,y:(p.y+.5)*S,shoot:Math.random()*Math.max(.1,cfg.shoot)}}
+function stopTest(){stopJsRuntime();play=false;runtime=null;input.keys.clear();input.virtual.clear();cancelAnimationFrame(raf);$('#ngsPlay').style.display='inline-block';$('#ngsStop').style.display='none';$('#ngsStatus').textContent='EDIT MODE';$('#ngsPlayHud').classList.remove('show');$('#ngsVirtual').classList.remove('show');drawEditor()}
+function fireFrom(x,y,cfg){
+ if(!runtime||cfg.shoot<=0)return;const base=Math.atan2(runtime.py-y,runtime.px-x),burst=Math.max(1,cfg.burst),spread=cfg.spread*Math.PI/180;
+ for(let k=0;k<burst;k++){const off=burst===1?0:(k/(burst-1)-.5)*spread;runtime.enemyShots.push({x,y,vx:Math.cos(base+off)*cfg.projectileSpeed,vy:Math.sin(base+off)*cfg.projectileSpeed,life:5})}
+}
+function updateEnemy(e,cfg,dt){
+ const r=runtime,dx=r.px-e.x,dy=r.py-e.y,dist=Math.hypot(dx,dy),mode=cfg.mode;
+ e.turn-=dt;if(e.turn<=0){e.turn=1+Math.random()*1.6;e.angle=Math.random()*Math.PI*2}
+ let vx=0,vy=0;
+ if(mode==='CHASE'&&dist<cfg.range){vx=dx/dist*cfg.speed;vy=dy/dist*cfg.speed}
+ else if(mode==='FLEE'&&dist<cfg.range){vx=-dx/dist*cfg.speed;vy=-dy/dist*cfg.speed}
+ else if(mode==='WANDER'){vx=Math.cos(e.angle)*cfg.speed;vy=Math.sin(e.angle)*cfg.speed}
+ else if(mode==='ORBIT'){e.angle+=dt*Math.max(.4,cfg.speed/70);const rad=Math.min(120,Math.max(35,cfg.range*.25));e.x=e.baseX+Math.cos(e.angle)*rad;e.y=e.baseY+Math.sin(e.angle)*rad}
+ else if(mode==='PATROL'){vx=e.dir*cfg.speed;if(Math.abs(e.x-e.baseX)>S*2.2)e.dir*=-1}
+ if(mode!=='ORBIT'){
+  if(current.mode==='platformer'){const nx=e.x+vx*dt;if(!rectHitsSolid(nx,e.y,24,24))e.x=nx;else e.dir*=-1}
+  else{const nx=e.x+vx*dt,ny=e.y+vy*dt;if(!rectHitsSolid(nx,e.y,24,24))e.x=nx;if(!rectHitsSolid(e.x,ny,24,24))e.y=ny}
+ }
+ if(cfg.teleport>0){e.tele-=dt;if(e.tele<=0){e.tele=cfg.teleport;e.x=clamp(r.px+(Math.random()<.5?-1:1)*S*3,S,W*S-S);e.y=clamp(r.py+(Math.random()-.5)*S*4,S,H*S-S)}}
+ if(cfg.shoot>0&&dist<cfg.range){e.shoot-=dt;if(e.shoot<=0){e.shoot=cfg.shoot;fireFrom(e.x,e.y,cfg)}}
+ if(dist<25)damagePlayer(cfg.contact)
+}
+function updateTurrets(dt){const cfg=runtime.turretCfg;runtime.turrets.forEach(t=>{const d=Math.hypot(runtime.px-t.x,runtime.py-t.y);if(cfg.shoot>0&&d<cfg.range){t.shoot-=dt;if(t.shoot<=0){t.shoot=cfg.shoot;fireFrom(t.x,t.y,cfg)}}})}
+function updateProjectiles(dt){const r=runtime;r.enemyShots.forEach(s=>{s.x+=s.vx*dt;s.y+=s.vy*dt;s.life-=dt;if(Math.hypot(r.px-s.x,r.py-s.y)<18){s.life=0;damagePlayer(18)}});r.enemyShots=r.enemyShots.filter(s=>s.life>0&&s.x>0&&s.y>0&&s.x<canvas.width&&s.y<canvas.height)}
+function nearbyDoor(){
+ const r=runtime,cx=Math.floor(r.px/S),cy=Math.floor(r.py/S);for(let y=cy-1;y<=cy+1;y++)for(let x=cx-1;x<=cx+1;x++){if(x<0||y<0||x>=W||y>=H)continue;const i=idx(x,y);if(current.tiles[i]===11&&!r.openDoors.has(i)&&Math.hypot(r.px-(x+.5)*S,r.py-(y+.5)*S)<S*1.25)return i}return-1
+}
+function updateSpecialTiles(){
+ const r=runtime;if(r.portalCd>0)return;
+ const hazard=touchTile(4);if(hazard)damagePlayer(35);
+ const coin=touchTile(5);if(coin&&!r.collected.has(coin.i)){r.collected.add(coin.i);r.coins++;toast('Coin '+r.coins+'/'+r.totalCoins);jsEvent('coin',{coins:r.coins,total:r.totalCoins})}
+ const cp=touchTile(9);if(cp&&r.respawnIndex!==cp.i){r.respawnIndex=cp.i;toast('Checkpoint activated.')}
+ const key=touchTile(10);if(key&&!r.collected.has(key.i)){r.collected.add(key.i);r.keys++;toast('Key collected.')}
+ const heal=touchTile(14);if(heal&&!r.collected.has(heal.i)){r.collected.add(heal.i);r.hp=Math.min(100,r.hp+45);toast('Health restored.')}
+ const door=nearbyDoor();if(door>=0&&r.keys>0){r.keys--;r.openDoors.add(door);toast('Door unlocked.')}
+ const pa=touchTile(12),pb=touchTile(13);if(pa||pb){const targetType=pa?13:12,target=current.tiles.findIndex(v=>v===targetType);if(target>=0){const p=xy(target);r.px=(p.x+.5)*S;r.py=(p.y+.5)*S;r.portalCd=.8;toast('Portal jump.')}}
+ const goal=touchTile(3);if(goal&&current.mode!=='dodge'){if(current.rule==='coins'&&r.coins<r.totalCoins){}else testWin()}
+}
+function movementMultiplier(){return touchTile(15)?.55:1}
+function updatePlatformer(dt){
+ const r=runtime,mul=movementMultiplier(),sp=250*(r.jsSpeed??current.speed)*mul,left=held('KeyA','a','ArrowLeft','arrowleft'),right=held('KeyD','d','ArrowRight','arrowright'),jump=held('KeyW','w','ArrowUp','arrowup','Space',' ');
+ r.vx=((right?1:0)-(left?1:0))*sp;if(jump&&r.onGround&&!r.jumpLock){r.vy=-(r.jsJump??current.jump);r.onGround=false;r.jumpLock=true}if(!jump)r.jumpLock=false;r.vy+=(r.jsGravity??current.gravity)*dt;
+ let nx=r.px+r.vx*dt;if(!rectHitsSolid(nx,r.py,r.w,r.h))r.px=nx;let ny=r.py+r.vy*dt;r.onGround=false;
+ if(!rectHitsSolid(r.px,ny,r.w,r.h))r.py=ny;else{if(r.vy>0)r.onGround=true;r.vy=0}
+ if(touchTile(7)){r.vy=-Math.max((r.jsJump??current.jump)*1.3,650);r.onGround=false}
+}
+function updateTopdown(dt){
+ const r=runtime,mul=movementMultiplier(),sp=(current.mode==='dodge'?300:235)*(r.jsSpeed??current.speed)*mul,dx=(held('KeyD','d','ArrowRight','arrowright')?1:0)-(held('KeyA','a','ArrowLeft','arrowleft')?1:0),dy=(held('KeyS','s','ArrowDown','arrowdown')?1:0)-(held('KeyW','w','ArrowUp','arrowup')?1:0),m=Math.hypot(dx,dy)||1;
+ const nx=r.px+dx/m*sp*dt,ny=r.py+dy/m*sp*dt;if(!rectHitsSolid(nx,r.py,22,22))r.px=nx;if(!rectHitsSolid(r.px,ny,22,22))r.py=ny
+}
+function playUpdate(dt){
+ const r=runtime;if(!r||r.dead||r.won)return;r.time-=dt;r.inv=Math.max(0,r.inv-dt);r.portalCd=Math.max(0,r.portalCd-dt);jsTickClock+=dt;if(jsTickClock>=.1){jsTickClock=0;jsEvent('tick',{time:current.timer-r.time,remaining:r.time,hp:r.hp,lives:r.lives,coins:r.coins})}
+ if(current.mode==='platformer')updatePlatformer(dt);else updateTopdown(dt);
+ r.enemies.forEach(e=>updateEnemy(e,e.type===6?r.enemyCfgA:r.enemyCfgB,dt));updateTurrets(dt);updateProjectiles(dt);updateSpecialTiles();
+ if(r.py>canvas.height+60){damagePlayer(999);return}
+ if((current.rule==='survive'||current.mode==='dodge')&&r.time<=0)testWin();else if(current.rule!=='survive'&&current.mode!=='dodge'&&r.time<=0){r.dead=true;toast('Time up.')}
+}
+function testWin(){if(runtime.won)return;runtime.won=true;jsEvent('win',{coins:runtime.coins,time:runtime.time});toast('PLAY TEST COMPLETE — your game can be beaten!')}
+function drawPlay(){
+ drawEditor();const r=runtime;if(!r)return;
+ r.collected.forEach(i=>{const p=xy(i);g.fillStyle=activeColors().bg;g.fillRect(p.x*S+3,p.y*S+3,S-6,S-6)});
+ r.openDoors.forEach(i=>{const p=xy(i);g.fillStyle=activeColors().bg;g.fillRect(p.x*S+3,p.y*S+3,S-6,S-6)});
+ r.enemies.forEach(e=>drawSprite(g,e.type===6?current.sprites.enemyA:current.sprites.enemyB,e.x-16,e.y-16,32));
+ r.turrets.forEach(t=>drawSprite(g,current.sprites.turret,t.x-16,t.y-16,32));
+ r.enemyShots.forEach(s=>{g.fillStyle='#ff6b79';g.beginPath();g.arc(s.x,s.y,5,0,Math.PI*2);g.fill()});
+ drawSprite(g,current.sprites.player,r.px-17,r.py-17,34);if(r.inv>0){g.strokeStyle='#fff';g.globalAlpha=.35;g.beginPath();g.arc(r.px,r.py,20,0,Math.PI*2);g.stroke();g.globalAlpha=1}
+ const hud=$('#ngsPlayHud');hud.classList.add('show');hud.innerHTML='<div class="ngs-playchip">HP '+Math.ceil(r.hp)+'</div><div class="ngs-playchip">LIVES '+r.lives+'</div><div class="ngs-playchip">COINS '+r.coins+'/'+r.totalCoins+'</div><div class="ngs-playchip">KEYS '+r.keys+'</div><div class="ngs-playchip">TIME '+Math.max(0,r.time).toFixed(1)+'</div><div class="ngs-playchip">'+(current.mode==='platformer'?'A/D + W/SPACE':'WASD / ARROWS')+'</div>'
+}
+function playLoop(t){if(!play)return;const dt=Math.min(.033,(t-last)/1000||0);last=t;playUpdate(dt);drawPlay();raf=requestAnimationFrame(playLoop)}
+
+function reachableEstimate(){
+ const start=current.tiles.findIndex(v=>v===2),goal=current.tiles.findIndex(v=>v===3);if(start<0||goal<0)return false;const q=[start],seen=new Set([start]);
+ while(q.length){const i=q.shift();if(i===goal)return true;const p=xy(i);for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1]]){const x=p.x+dx,y=p.y+dy;if(x<0||y<0||x>=W||y>=H)continue;const ni=idx(x,y),t=current.tiles[ni];if(seen.has(ni)||t===1||t===11)continue;seen.add(ni);q.push(ni)}}
+ return false
+}
+function validateGame(){
+ readForm();const issues=[],starts=current.tiles.filter(v=>v===2).length,goals=current.tiles.filter(v=>v===3).length,a=current.tiles.filter(v=>v===12).length,b=current.tiles.filter(v=>v===13).length;
+ if(starts!==1)issues.push('Need exactly 1 Start tile.');
+ if(current.mode!=='dodge'&&goals!==1)issues.push('Need exactly 1 Goal tile.');
+ if((a>0||b>0)&&(a!==1||b!==1))issues.push('Portals require exactly one A and one B.');
+ for(const k of ['enemyA','enemyB','turret']){const r=compileScript(current.scripts[k]);if(r.errors.length)issues.push(k+': '+r.errors[0])}
+ if(current.mode==='maze'&&starts===1&&goals===1&&!reachableEstimate())issues.push('Maze reachability check cannot find a path to the goal.');
+ const el=$('#ngsCheck');if(issues.length){el.className='ngs-check bad';el.textContent='BUILD CHECK: '+issues.join(' • ')}else{el.className='ngs-check good';el.textContent='BUILD CHECK PASSED • Start/goal valid • scripts compile • portals valid'+(current.mode==='maze'?' • route reachable':'')}
+ return issues
+}
+
+function rleEncode(a){let out=[],last=a[0]||0,count=0;for(const v of a){if(v===last)count++;else{out.push(last.toString(36)+'.'+count.toString(36));last=v;count=1}}out.push(last.toString(36)+'.'+count.toString(36));return out.join('_')}
+function rleDecode(s){const out=[];String(s||'').split('_').forEach(p=>{const q=p.split('.'),v=parseInt(q[0]||'0',36),n=parseInt(q[1]||'0',36);for(let i=0;i<n;i++)out.push(v)});return out}
+function pack(game){return{v:2,id:game.id,n:game.name,d:game.description,m:game.mode,h:game.theme,r:game.rule,ti:game.timer,s:game.speed,l:game.lives,g:game.gravity,j:game.jump,t:rleEncode(game.tiles),c:game.colors,sp:game.sprites,sc:game.scripts,js:game.jsCode||''}}
+function unpack(p){if(!p||!p.v)throw new Error('Unsupported Nitro game version');return normalise({format:FORMAT,id:uid(),name:p.n||'Shared Nitro Game',description:p.d||'',mode:p.m||'platformer',theme:p.h||'neon',rule:p.r||'goal',timer:p.ti||60,speed:p.s||1,lives:p.l||3,gravity:p.g||1350,jump:p.j||520,tiles:rleDecode(p.t),colors:p.c,sprites:p.sp,scripts:p.sc,jsCode:p.js||jsDefault,updatedAt:Date.now()})}
+function b64e(s){const b=new TextEncoder().encode(s);let x='';for(const n of b)x+=String.fromCharCode(n);return btoa(x).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')}
+function b64d(s){s=s.replace(/-/g,'+').replace(/_/g,'/');while(s.length%4)s+='=';const x=atob(s),b=Uint8Array.from(x,c=>c.charCodeAt(0));return new TextDecoder().decode(b)}
+function shareCode(){readForm();return 'NAG2-'+b64e(JSON.stringify(pack(current)))}
+function importCode(code){code=String(code||'').trim();if(code.startsWith('NAG1-'))throw new Error('This new Studio uses NAG2 share codes. Import the old game as a .nitrogame file or rebuild it.');if(!code.startsWith('NAG2-'))throw new Error('Not a Nitro Game Studio share code');current=unpack(JSON.parse(b64d(code.slice(5))));stopTest();syncForm();drawEditor();toast('Shared game imported.')}
+async function copyText(t){try{await navigator.clipboard.writeText(t);toast('Copied.')}catch(e){$('#ngsShareCode').focus();$('#ngsShareCode').select();toast('Select the text and copy manually.')}}
+function exportGame(){readForm();const data={format:'NitroArcadeGame',version:2,game:pack(current)},blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=(current.name||'nitro-game').replace(/[^a-z0-9_-]+/gi,'_')+'.nitrogame';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+async function importFile(file){const txt=await file.text(),j=JSON.parse(txt);if(j.format!=='NitroArcadeGame'||!j.game)throw new Error('Not a NitroArcade .nitrogame file');current=unpack(j.game);stopTest();syncForm();drawEditor();toast('Game imported.')}
+
+function showFeatures(){const list=$('#ngsFeatureList');list.innerHTML=FEATURES.map((f,i)=>'<div><b>'+(i+1)+'.</b> '+f+'</div>').join('');$('#ngsFeatureIntro').textContent='This build currently exposes '+FEATURES.length+' counted Studio features. The engine function counter is calculated from the shipped Studio source.';$('#ngsFeaturesModal').classList.add('open')}
+function countEngineFunctions(){
+ const node=document.getElementById('nitroGameStudioScript'),src=node?node.textContent:'';const declared=(src.match(/\bfunction\s+[A-Za-z_$][\w$]*\s*\(/g)||[]).length;$('#ngsFunctionCount').textContent=declared;return declared
+}
+function open(){overlay.classList.add('open');overlay.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';syncForm();renderLibrary();drawEditor();countEngineFunctions();$('#ngsFeatureCount').onclick=showFeatures}
+function close(){stopTest();overlay.classList.remove('open');overlay.setAttribute('aria-hidden','true');document.body.style.overflow=''}
+
+window.NitroGameStudio={open,close,importCode,features:FEATURES.slice()};
+
+document.querySelectorAll('[data-edittool]').forEach(b=>b.onclick=()=>{editTool=b.dataset.edittool;document.querySelectorAll('[data-edittool]').forEach(x=>x.classList.toggle('active',x===b));rectStart=null});
+$('#ngsClose').onclick=close;
+$('#ngsNew').onclick=()=>{if(confirm('Start a new game? Unsaved changes will be lost.')){stopTest();current=newGame();undo=[];redo=[];dirty=false;syncForm();drawEditor()}};
+$('#ngsGenerate').onclick=generateLevel;$('#ngsSave').onclick=saveCurrent;$('#ngsPlay').onclick=startTest;$('#ngsStop').onclick=stopTest;$('#ngsUndo').onclick=undoPaint;$('#ngsRedo').onclick=redoPaint;$('#ngsClear').onclick=clearLevel;$('#ngsValidate').onclick=validateGame;$('#ngsShot').onclick=screenshot;
+$('#ngsSpriteBtn').onclick=openSpriteLab;$('#ngsScriptBtn').onclick=openScripts;$('#ngsJsBtn').onclick=openJsLab;$('#ngsJsExample').onclick=()=>{$('#ngsJsEditor').value=jsDefault};$('#ngsJsCheck').onclick=testJsSandbox;$('#ngsJsDone').onclick=()=>{saveJsCode();$('#ngsJsModal').classList.remove('open');toast('JavaScript saved in this game.')};
+$('#ngsName').oninput=()=>{current.name=$('#ngsName').value;markDirty()};$('#ngsMode').onchange=()=>{current.mode=$('#ngsMode').value;if(current.mode==='dodge'){$('#ngsRule').value='survive';current.rule='survive'}markDirty();drawEditor()};
+$('#ngsTheme').onchange=()=>{current.theme=$('#ngsTheme').value;if(current.theme!=='custom')current.colors={...themes[current.theme]};buildColors();buildPalette();markDirty();drawEditor()};
+$('#ngsRule').onchange=()=>{current.rule=$('#ngsRule').value;markDirty()};$('#ngsTimer').onchange=()=>{current.timer=Number($('#ngsTimer').value)||60;markDirty()};$('#ngsSpeed').oninput=()=>{current.speed=Number($('#ngsSpeed').value)||1;markDirty()};$('#ngsLives').onchange=()=>{current.lives=Number($('#ngsLives').value)||3;markDirty()};$('#ngsGravity').oninput=()=>{current.gravity=Number($('#ngsGravity').value)||1350;markDirty()};$('#ngsJump').oninput=()=>{current.jump=Number($('#ngsJump').value)||520;markDirty()};$('#ngsDescription').oninput=()=>{current.description=$('#ngsDescription').value;markDirty()};$('#ngsJsEditor').oninput=()=>{current.jsCode=$('#ngsJsEditor').value;markDirty()};
+
+document.querySelectorAll('[data-script]').forEach(b=>b.onclick=()=>switchScript(b.dataset.script));
+document.querySelectorAll('[data-scriptpreset]').forEach(b=>b.onclick=()=>applyScriptPreset(b.dataset.scriptpreset));
+$('#ngsCompileScript').onclick=()=>{saveScriptEditor();compileCurrentScript()};$('#ngsScriptDone').onclick=()=>{saveScriptEditor();compileCurrentScript();$('#ngsScriptModal').classList.remove('open')};
+
+buildSpritePalette();$('#ngsSpriteTarget').onchange=()=>{spriteTarget=$('#ngsSpriteTarget').value;drawSpriteEditor()};
+document.querySelectorAll('[data-spritetool]').forEach(b=>b.onclick=()=>{spriteTool=b.dataset.spritetool});
+spriteCanvas.addEventListener('pointerdown',e=>{spritePainting=true;spritePaint(e);try{spriteCanvas.setPointerCapture(e.pointerId)}catch(_){}});spriteCanvas.addEventListener('pointermove',e=>{if(spritePainting&&spriteTool!=='fill')spritePaint(e)});spriteCanvas.addEventListener('pointerup',()=>spritePainting=false);spriteCanvas.addEventListener('pointercancel',()=>spritePainting=false);
+$('#ngsMirrorX').onclick=()=>mirrorSprite('x');$('#ngsMirrorY').onclick=()=>mirrorSprite('y');$('#ngsSpriteClear').onclick=()=>{current.sprites[spriteTarget]=blankSprite();markDirty();drawSpriteEditor();drawEditor()};
+$('#ngsSpritePreset').onclick=()=>{const col=$('#ngsSpriteColor').value;current.sprites[spriteTarget]=presetSprite(spriteTarget,col);markDirty();drawSpriteEditor();drawEditor()};$('#ngsSpriteDone').onclick=()=>$('#ngsSpriteModal').classList.remove('open');
+
+const shareBox=$('#ngsShareBox');$('#ngsShare').onclick=()=>{$('#ngsShareCode').value=shareCode();shareBox.classList.add('open')};$('#ngsShareClose').onclick=()=>shareBox.classList.remove('open');$('#ngsCopyCode').onclick=()=>copyText(shareCode());$('#ngsCopyLink').onclick=()=>{const u=new URL(location.href);u.hash='nitrogame='+encodeURIComponent(shareCode());copyText(u.toString())};$('#ngsExport').onclick=exportGame;$('#ngsImportBtn').onclick=()=>$('#ngsImportFile').click();$('#ngsImportFile').onchange=async e=>{const file=e.target.files[0];if(!file)return;try{await importFile(file);shareBox.classList.remove('open')}catch(err){alert(err.message)}e.target.value=''};$('#ngsPaste').onclick=()=>{const code=prompt('Paste Nitro Game share code:');if(!code)return;try{importCode(code);shareBox.classList.remove('open')}catch(err){alert(err.message)}};
+$('#ngsFeaturesClose').onclick=()=>$('#ngsFeaturesModal').classList.remove('open');$('#ngsFeatureCount').style.cursor='pointer';
+
+const blockedCodes=new Set(['KeyW','KeyA','KeyS','KeyD','ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Space']);
+window.addEventListener('keydown',e=>{
+ if(!overlay.classList.contains('open'))return;
+ if(play&&blockedCodes.has(e.code)){e.preventDefault();input.keys.add(e.code);input.keys.add(String(e.key).toLowerCase());canvas.focus({preventScroll:true})}
+ if(e.key==='Escape'){if($('#ngsFeaturesModal').classList.contains('open'))$('#ngsFeaturesModal').classList.remove('open');else if($('#ngsSpriteModal').classList.contains('open'))$('#ngsSpriteModal').classList.remove('open');else if($('#ngsScriptModal').classList.contains('open'))$('#ngsScriptModal').classList.remove('open');else if($('#ngsJsModal').classList.contains('open'))$('#ngsJsModal').classList.remove('open');else if(shareBox.classList.contains('open'))shareBox.classList.remove('open');else if(play)stopTest();else close()}
+});
+window.addEventListener('keyup',e=>{input.keys.delete(e.code);input.keys.delete(String(e.key).toLowerCase())});
+window.addEventListener('blur',()=>input.keys.clear());
+
+document.querySelectorAll('[data-vkey]').forEach(b=>{
+ const k=b.dataset.vkey;const down=e=>{e.preventDefault();input.virtual.add(k);canvas.focus({preventScroll:true})};const up=e=>{e.preventDefault();input.virtual.delete(k)};
+ b.addEventListener('pointerdown',down);b.addEventListener('pointerup',up);b.addEventListener('pointercancel',up);b.addEventListener('pointerleave',up)
+});
+
+try{if(location.hash.startsWith('#nitrogame=')){const code=decodeURIComponent(location.hash.slice('#nitrogame='.length));importCode(code);open();history.replaceState(null,'',location.pathname+location.search)}}catch(err){console.warn('NitroGame share import failed',err)}
+
+loadDraft();buildPalette();buildColors();renderLibrary();drawEditor();countEngineFunctions();
+})();
+</script>
+<div id="nitroVaultOverlay" aria-hidden="true">
+  <div class="nv-top">
+    <div class="nv-brand">NITRO <b>VAULT</b></div>
+    <div class="nv-tabs">
+      <button class="nv-tab active" data-nvtab="network">SECRET NETWORK</button>
+      <button class="nv-tab" data-nvtab="room">PRIZE ROOM</button>
+      <button class="nv-tab" data-nvtab="cards">NITRO CARDS</button>
+    </div>
+    <button class="nv-close" id="nvClose">CLOSE</button>
+  </div>
+
+  <div class="nv-body">
+    <section class="nv-page active" id="nvPageNetwork">
+      <div class="nv-hero">
+        <div><div class="nv-kicker">NITROARCADE // SIGNAL MAP</div><h2>Secret Network</h2><p>A hidden progression system connected to things you already do around NitroArcade. Nodes reveal themselves when the arcade detects the right evidence. No random guessing and no fake “hacking” — the clues come from your actual arcade history.</p></div>
+        <div class="nv-counter"><b id="nvNetworkCount">0 / 7</b> SIGNALS</div>
+      </div>
+      <div class="nv-grid nv-network" id="nvNetworkGrid"></div>
+      <div class="nv-final" id="nvNetworkFinal">
+        <h3>ROOT SIGNAL // ???</h3>
+        <p id="nvFinalText">Recover every network signal to reveal the root transmission.</p>
+        <button class="nv-btn" id="nvClaimFinal" disabled>LOCKED</button>
+      </div>
+    </section>
+
+    <section class="nv-page" id="nvPageRoom">
+      <div class="nv-hero">
+        <div><div class="nv-kicker">YOUR PRIZES // YOUR SPACE</div><h2>Prize Room</h2><p>Your Prize Shop toys finally have somewhere to live. Drag owned toys into the room, arrange them on shelves or the desk, rotate them, resize them, switch room themes and save the whole layout locally.</p></div>
+        <div class="nv-counter"><b id="nvOwnedToyCount">0 / 8</b> TOYS OWNED</div>
+      </div>
+      <div class="nv-room-layout">
+        <div class="nv-room-shell">
+          <div class="nv-room-toolbar">
+            <select id="nvRoomTheme"><option value="neon">Neon Room</option><option value="retro">Retro Purple</option><option value="cozy">Cozy Shelf</option><option value="matrix">Matrix Room</option></select>
+            <button class="nv-btn" id="nvRoomSave">SAVE LAYOUT</button>
+            <button class="nv-btn" id="nvRoomAuto">AUTO ARRANGE</button>
+            <button class="nv-btn" id="nvRoomReset">RESET</button>
+          </div>
+          <div id="nvPrizeRoom" data-theme="neon">
+            <div class="nv-room-sign">NITRO PRIZE ROOM</div>
+            <div class="nv-shelf one"></div><div class="nv-shelf two"></div><div class="nv-desk"></div><div class="nv-wall-line"></div>
+          </div>
+        </div>
+        <aside class="nv-room-side">
+          <div class="nv-cardbox"><h3>Toy Inventory</h3><div class="nv-inventory" id="nvRoomInventory"></div></div>
+          <div class="nv-cardbox"><h3>Selected Toy</h3><p id="nvSelectedToyText">Select a placed toy to edit it.</p><div class="nv-selection" style="margin-top:8px">
+            <button class="nv-btn" data-nvaction="left">↺ ROTATE</button><button class="nv-btn" data-nvaction="right">↻ ROTATE</button>
+            <button class="nv-btn" data-nvaction="smaller">− SIZE</button><button class="nv-btn" data-nvaction="bigger">+ SIZE</button>
+            <button class="nv-btn" data-nvaction="front">BRING FRONT</button><button class="nv-btn" data-nvaction="remove">REMOVE</button>
+          </div></div>
+          <div class="nv-cardbox"><h3>How it saves</h3><p>The room is local to this browser and is included automatically in NitroArcade save backups because it uses a <code>nitroarcade:</code> storage key.</p></div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="nv-page" id="nvPageCards">
+      <div class="nv-hero">
+        <div><div class="nv-kicker">COLLECTION // NO RANDOM PACKS</div><h2>Nitro Cards</h2><p>Collect cards by actually playing games, unlocking secrets and owning Prize Shop toys. Rarity is cosmetic; there are no paid or random packs. Mastery can turn certain unlocked cards into FOIL versions.</p><div class="nv-progress"><i id="nvCardProgress" style="width:0%"></i></div></div>
+        <div class="nv-counter"><b id="nvCardCount">0 / 18</b> COLLECTED</div>
+      </div>
+      <div class="nv-card-controls" id="nvCardFilters">
+        <button class="active" data-nvfilter="all">ALL</button><button data-nvfilter="game">GAMES</button><button data-nvfilter="toy">TOYS</button><button data-nvfilter="secret">SECRETS</button><button data-nvfilter="unlocked">UNLOCKED</button>
+      </div>
+      <div class="nv-grid nv-cards" id="nvCardGrid"></div>
+    </section>
+  </div>
+</div>
+<script id="nitroVaultSuiteJS">
+(()=>{
+'use strict';
+const $=s=>document.querySelector(s);
+const overlay=$('#nitroVaultOverlay');
+const NETWORK_KEY='nitroarcade:secret-network-v1',ROOM_KEY='nitroarcade:prize-room-v1',CARD_KEY='nitroarcade:nitro-cards-v1';
+
+const fallbackToys=[
+{id:'rubber_duck',name:'Pixel Duck',icon:'🐤'},{id:'robot',name:'Pocket Bot',icon:'🤖'},{id:'ufo',name:'Mini UFO',icon:'🛸'},{id:'bear',name:'Arcade Bear',icon:'🐻'},
+{id:'rocket',name:'Desk Rocket',icon:'🚀'},{id:'dino',name:'Neon Dino',icon:'🦖'},{id:'crystal',name:'Mystery Crystal',icon:'💎'},{id:'crown',name:'Arcade Crown',icon:'👑'}
+];
+const toyList=()=>typeof TOYS!=='undefined'?TOYS:fallbackToys;
+const owned=()=>{try{return JSON.parse(localStorage.getItem(typeof TOY_KEY!=='undefined'?TOY_KEY:'crazyarcade-owned-toys')||'[]')}catch(e){return[]}};
+const plays=()=>{try{return JSON.parse(localStorage.getItem('crazyarcade-play-counts')||'{}')}catch(e){return{}}};
+const totalPlays=()=>Object.values(plays()).reduce((a,b)=>a+(Number(b)||0),0);
+const hasPlayed=id=>(plays()[id]||0)>0;
+const bigPlayTotal=()=>['ultra_voxel_frontier','ultra_stadium_strike','ultra_sky_pilot','ultra_brick_maze_90s','ultra_night_watch','enemies_and_you'].reduce((n,id)=>n+(plays()[id]||0),0);
+const secretWindosill=()=>localStorage.getItem('crazyarcade-secret-windosill')==='unlocked';
+const currentTheme=()=>localStorage.getItem('ultraarcade-theme')||localStorage.getItem('crazyarcade-theme')||'dark';
+const safeRead=(k,f)=>{try{return JSON.parse(localStorage.getItem(k)||'null')??f}catch(e){return f}};
+const safeWrite=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
+const hue=s=>{let h=0;for(const ch of String(s))h=(h*31+ch.charCodeAt(0))>>>0;return h%360};
+const toast=t=>typeof showToast==='function'?showToast(t):(window.NitroArcade?.notify?window.NitroArcade.notify(t,'NITRO VAULT'):console.log(t));
+function rewardPrizes(n,reason){
+ if(typeof awardPrizes==='function')return awardPrizes(n,reason);
+ const k='crazyarcade-prizes',v=Math.max(0,parseInt(localStorage.getItem(k)||'0',10)||0)+n;localStorage.setItem(k,String(v));if(typeof updatePrizeCounter==='function')updatePrizeCounter();toast('🏆 +'+n+' prizes • '+reason)
+}
+
+/* SECRET NETWORK */
+const networkNodes=[
+{id:'boot',title:'BOOT ECHO',condition:'Open the Secret Network.',signal:'NV://BOOT-READY',check:()=>true},
+{id:'plays',title:'ARCADE TRACE',condition:'Reach 10 total game launches.',signal:'TRACE://10-PLAY-HANDSHAKE',check:()=>totalPlays()>=10},
+{id:'hacker',title:'CHALLENGE PULSE',condition:'Launch Hacker Challenge at least once.',signal:'CHALLENGE://GREEN-PULSE',check:()=>hasPlayed('hackerchallenge')},
+{id:'big',title:'LARGE SIGNAL',condition:'Launch Big Games at least 3 times total.',signal:'BIG://THREE-DOORS-OPEN',check:()=>bigPlayTotal()>=3},
+{id:'theme',title:'MATRIX ECHO',condition:'Switch NitroArcade to the Matrix theme.',signal:'THEME://00FF66',check:()=>currentTheme()==='matrix'},
+{id:'crystal',title:'CRYSTAL HANDSHAKE',condition:'Own the Mystery Crystal from the Prize Shop.',signal:'PRIZE://CRYSTAL-15',check:()=>owned().includes('crystal')},
+{id:'windosill',title:'GREEN DOOR',condition:'Unlock the secret Windosill reward.',signal:'SECRET://WINDOW-IS-OPEN',check:()=>secretWindosill()}
+];
+function networkState(){const s=safeRead(NETWORK_KEY,{seen:[],final:false});if(!Array.isArray(s.seen))s.seen=[];return s}
+function refreshNetwork(){
+ const s=networkState();let newly=0;
+ networkNodes.forEach(n=>{if(n.check()&&!s.seen.includes(n.id)){s.seen.push(n.id);newly++}});
+ safeWrite(NETWORK_KEY,s);
+ const grid=$('#nvNetworkGrid');grid.innerHTML='';
+ networkNodes.forEach((n,i)=>{
+  const unlocked=s.seen.includes(n.id),el=document.createElement('article');el.className='nv-node '+(unlocked?'complete':'locked');
+  el.innerHTML='<div class="nv-num">NODE '+String(i+1).padStart(2,'0')+'</div><h3>'+n.title+'</h3><p>'+n.condition+'</p><span class="nv-condition">'+(unlocked?'SIGNAL RECOVERED':'SIGNAL LOCKED')+'</span>'+(unlocked?'<div class="nv-signal">'+n.signal+'</div>':'');
+  grid.appendChild(el)
+ });
+ $('#nvNetworkCount').textContent=s.seen.length+' / '+networkNodes.length;
+ const ready=s.seen.length===networkNodes.length,final=$('#nvNetworkFinal'),btn=$('#nvClaimFinal');
+ final.classList.toggle('ready',ready);btn.disabled=!ready||s.final;btn.textContent=s.final?'ROOT SIGNAL CLAIMED':ready?'DECODE ROOT SIGNAL':'LOCKED';
+ $('#nvFinalText').textContent=s.final?'ROOT://NITRO-VAULT-13 • Your Windosill Nitro Card was upgraded to FOIL.':ready?'All seven nodes agree. Decode the root transmission for a one-time reward.':'Recover every network signal to reveal the root transmission.';
+ if(newly)toast(newly+' new Secret Network signal'+(newly===1?'':'s')+' recovered.');
+}
+function claimNetworkFinal(){
+ const s=networkState();if(s.seen.length!==networkNodes.length||s.final)return;s.final=true;safeWrite(NETWORK_KEY,s);rewardPrizes(5,'Secret Network completed');const cs=cardState();cs.root=true;safeWrite(CARD_KEY,cs);refreshNetwork();renderCards();toast('ROOT SIGNAL DECODED: NITRO-VAULT-13')
+}
+
+/* PRIZE ROOM */
+let selectedToy=null,drag=null,zCounter=20;
+function defaultRoom(){return{theme:'neon',items:{}}}
+function roomState(){const s=safeRead(ROOM_KEY,defaultRoom());s.items=s.items||{};s.theme=s.theme||'neon';return s}
+function roomSave(s){safeWrite(ROOM_KEY,s)}
+function renderRoom(){
+ const s=roomState(),room=$('#nvPrizeRoom');room.dataset.theme=s.theme;$('#nvRoomTheme').value=s.theme;
+ const ids=owned();$('#nvOwnedToyCount').textContent=ids.length+' / '+toyList().length;
+ room.querySelectorAll('.nv-toy-object').forEach(x=>x.remove());
+ ids.forEach((id,i)=>{
+  const toy=toyList().find(t=>t.id===id);if(!toy)return;
+  if(!s.items[id])s.items[id]={x:10+(i%4)*21,y:30+Math.floor(i/4)*34,r:0,scale:1,z:i+1};
+  const p=s.items[id],el=document.createElement('div');el.className='nv-toy-object'+(selectedToy===id?' selected':'');el.dataset.toy=id;
+  el.style.left=p.x+'%';el.style.top=p.y+'%';el.style.transform='translate(-50%,-50%) rotate('+p.r+'deg) scale('+p.scale+')';el.style.zIndex=p.z||1;
+  el.innerHTML=toy.art||toy.icon;el.title=toy.name;el.addEventListener('pointerdown',startDrag);room.appendChild(el)
+ });
+ roomSave(s);renderRoomInventory();updateSelectedToy()
+}
+function renderRoomInventory(){
+ const box=$('#nvRoomInventory'),ids=owned();box.innerHTML='';
+ toyList().forEach(t=>{
+  const has=ids.includes(t.id),el=document.createElement('div');el.className='nv-inv-item'+(has?'':' locked');
+  el.innerHTML='<div class="nv-inv-icon">'+(t.icon||'◆')+'</div><div><b>'+t.name+'</b><span>'+(has?'OWNED • click to select':'LOCKED • buy in Prize Shop')+'</span></div>';
+  if(has)el.onclick=()=>{selectedToy=t.id;renderRoom()};box.appendChild(el)
+ })
+}
+function startDrag(e){
+ e.preventDefault();selectedToy=e.currentTarget.dataset.toy;const room=$('#nvPrizeRoom'),r=room.getBoundingClientRect();drag={room,r,id:selectedToy};e.currentTarget.setPointerCapture?.(e.pointerId);document.addEventListener('pointermove',moveDrag);document.addEventListener('pointerup',endDrag,{once:true});
+ room.querySelectorAll('.nv-toy-object').forEach(el=>el.classList.toggle('selected',el.dataset.toy===selectedToy));updateSelectedToy()
+}
+function moveDrag(e){
+ if(!drag)return;const s=roomState(),p=s.items[drag.id]||{};p.x=Math.max(4,Math.min(96,(e.clientX-drag.r.left)/drag.r.width*100));p.y=Math.max(8,Math.min(93,(e.clientY-drag.r.top)/drag.r.height*100));p.z=++zCounter;s.items[drag.id]=p;roomSave(s);
+ const el=drag.room.querySelector('[data-toy="'+drag.id+'"]');if(el){el.style.left=p.x+'%';el.style.top=p.y+'%';el.style.zIndex=p.z}
+}
+function endDrag(){document.removeEventListener('pointermove',moveDrag);drag=null;updateSelectedToy()}
+function updateSelectedToy(){const toy=toyList().find(t=>t.id===selectedToy);$('#nvSelectedToyText').textContent=toy?'Editing '+toy.name+'. Drag it in the room or use the controls below.':'Select a placed toy to edit it.'}
+function editToy(action){
+ if(!selectedToy)return toast('Select a toy first.');const s=roomState(),p=s.items[selectedToy];if(!p)return;
+ if(action==='left')p.r=(p.r||0)-15;if(action==='right')p.r=(p.r||0)+15;if(action==='smaller')p.scale=Math.max(.45,(p.scale||1)-.1);if(action==='bigger')p.scale=Math.min(1.8,(p.scale||1)+.1);if(action==='front')p.z=++zCounter;if(action==='remove'){delete s.items[selectedToy];selectedToy=null}
+ roomSave(s);renderRoom()
+}
+function autoArrange(){
+ const s=roomState(),ids=owned(),spots=[[18,28],[34,28],[66,41],[82,41],[38,70],[50,70],[62,70],[50,87]];
+ ids.forEach((id,i)=>s.items[id]={x:spots[i%spots.length][0],y:spots[i%spots.length][1],r:0,scale:1,z:i+1});roomSave(s);renderRoom();toast('Prize Room auto-arranged.')
+}
+function resetRoom(){if(!confirm('Reset your Prize Room layout?'))return;safeWrite(ROOM_KEY,defaultRoom());selectedToy=null;renderRoom();toast('Prize Room reset.')}
+
+/* NITRO CARDS */
+const cardDefs=[
+{id:'g_hacker',type:'game',name:'Hacker Challenge',icon:'⌨️',rarity:'RARE',desc:'The challenge that hides a second game behind three completed trials.',unlock:'Play Hacker Challenge.',check:()=>hasPlayed('hackerchallenge'),foil:()=>plays().hackerchallenge>=5,atk:74,skill:92},
+{id:'g_voxel',type:'game',name:'Voxel Frontier',icon:'⛏️',rarity:'EPIC',desc:'A blocky expedition of landmarks, relics, trails, caves and discoveries.',unlock:'Play Voxel Frontier.',check:()=>hasPlayed('ultra_voxel_frontier'),foil:()=>plays().ultra_voxel_frontier>=5,atk:82,skill:88},
+{id:'g_sky',type:'game',name:'Sky Pilot',icon:'✈️',rarity:'RARE',desc:'Airport flight missions, rings, drones and a landing challenge.',unlock:'Play Sky Pilot.',check:()=>hasPlayed('ultra_sky_pilot'),foil:()=>plays().ultra_sky_pilot>=5,atk:79,skill:90},
+{id:'g_maze',type:'game',name:'Brick Maze 95',icon:'🧱',rarity:'RARE',desc:'A procedural 90s brick labyrinth with souvenirs, enemies and an exit race.',unlock:'Play Brick Maze 95.',check:()=>hasPlayed('ultra_brick_maze_90s'),foil:()=>plays().ultra_brick_maze_90s>=5,atk:70,skill:94},
+{id:'g_night',type:'game',name:'Night Watch',icon:'📹',rarity:'EPIC',desc:'Camera management, roaming mascots, doors, lights and limited power.',unlock:'Play Night Watch.',check:()=>hasPlayed('ultra_night_watch'),foil:()=>plays().ultra_night_watch>=5,atk:88,skill:86},
+{id:'g_eay',type:'game',name:'Enemies and You',icon:'⚡',rarity:'EPIC',desc:'Twenty enemy powers, bosses and upgrades in one of NitroArcade’s largest combat games.',unlock:'Play Enemies and You.',check:()=>hasPlayed('enemies_and_you'),foil:()=>plays().enemies_and_you>=5,atk:96,skill:84},
+{id:'g_tech',type:'game',name:'Tech Quiz',icon:'🧠',rarity:'UNCOMMON',desc:'Computers, AI, web, hardware and cybersecurity knowledge in a quick quiz.',unlock:'Play Tech Quiz.',check:()=>hasPlayed('nitro_tech_quiz'),foil:()=>plays().nitro_tech_quiz>=5,atk:58,skill:99},
+{id:'g_snake',type:'game',name:'Crazy Snake',icon:'🐍',rarity:'COMMON',desc:'Classic growing-snake pressure inside NitroArcade’s Small Games library.',unlock:'Play Crazy Snake.',check:()=>hasPlayed('crazysnake'),foil:()=>plays().crazysnake>=5,atk:61,skill:76},
+{id:'g_brick',type:'game',name:'Brick Breaker',icon:'🟦',rarity:'COMMON',desc:'Paddle angles, rebounds and a wall of bricks.',unlock:'Play Brick Breaker.',check:()=>hasPlayed('brickbreaker'),foil:()=>plays().brickbreaker>=5,atk:65,skill:72},
+
+{id:'t_duck',type:'toy',name:'Pixel Duck',icon:'🐤',rarity:'COMMON',desc:'The smallest prize-room resident and an arcade desk classic.',unlock:'Own Pixel Duck.',check:()=>owned().includes('rubber_duck'),foil:()=>owned().includes('rubber_duck')&&totalPlays()>=20,atk:42,skill:81},
+{id:'t_bot',type:'toy',name:'Pocket Bot',icon:'🤖',rarity:'UNCOMMON',desc:'Compact robot prize with suspiciously serious arcade energy.',unlock:'Own Pocket Bot.',check:()=>owned().includes('robot'),foil:()=>owned().includes('robot')&&totalPlays()>=25,atk:71,skill:83},
+{id:'t_ufo',type:'toy',name:'Mini UFO',icon:'🛸',rarity:'RARE',desc:'A tiny spacecraft from somewhere that the Prize Shop refuses to explain.',unlock:'Own Mini UFO.',check:()=>owned().includes('ufo'),foil:()=>owned().includes('ufo')&&totalPlays()>=30,atk:77,skill:88},
+{id:'t_bear',type:'toy',name:'Arcade Bear',icon:'🐻',rarity:'RARE',desc:'Soft collectible. Extremely serious expression.',unlock:'Own Arcade Bear.',check:()=>owned().includes('bear'),foil:()=>owned().includes('bear')&&totalPlays()>=35,atk:68,skill:74},
+{id:'t_rocket',type:'toy',name:'Desk Rocket',icon:'🚀',rarity:'RARE',desc:'Built for imaginary launches from the Prize Room desk.',unlock:'Own Desk Rocket.',check:()=>owned().includes('rocket'),foil:()=>owned().includes('rocket')&&totalPlays()>=40,atk:89,skill:79},
+{id:'t_dino',type:'toy',name:'Neon Dino',icon:'🦖',rarity:'EPIC',desc:'A prehistoric prize-counter legend with maximum shelf presence.',unlock:'Own Neon Dino.',check:()=>owned().includes('dino'),foil:()=>owned().includes('dino')&&totalPlays()>=45,atk:91,skill:72},
+{id:'t_crystal',type:'toy',name:'Mystery Crystal',icon:'💎',rarity:'EPIC',desc:'The crystal that also activates a Secret Network handshake.',unlock:'Own Mystery Crystal.',check:()=>owned().includes('crystal'),foil:()=>owned().includes('crystal')&&networkState().seen.includes('crystal'),atk:84,skill:96},
+{id:'t_crown',type:'toy',name:'Arcade Crown',icon:'👑',rarity:'LEGENDARY',desc:'The final Prize Shop shelf flex.',unlock:'Own Arcade Crown.',check:()=>owned().includes('crown'),foil:()=>owned().includes('crown')&&owned().length===toyList().length,atk:98,skill:93},
+{id:'s_wind',type:'secret',name:'Windosill',icon:'🪟',rarity:'LEGENDARY',desc:'The hidden reward behind Hacker Challenge.',unlock:'Unlock Windosill.',check:()=>secretWindosill(),foil:()=>networkState().final,atk:100,skill:100}
+];
+function cardState(){const s=safeRead(CARD_KEY,{seen:[],root:false,allReward:false});if(!Array.isArray(s.seen))s.seen=[];return s}
+let cardFilter='all';
+function renderCards(){
+ const s=cardState();let changed=false;
+ cardDefs.forEach(card=>{if(card.check()&&!s.seen.includes(card.id)){s.seen.push(card.id);changed=true}});
+ if(changed)safeWrite(CARD_KEY,s);
+ const unlockedCount=cardDefs.filter(x=>s.seen.includes(x.id)).length;$('#nvCardCount').textContent=unlockedCount+' / '+cardDefs.length;$('#nvCardProgress').style.width=(unlockedCount/cardDefs.length*100)+'%';
+ if(unlockedCount===cardDefs.length&&!s.allReward){s.allReward=true;safeWrite(CARD_KEY,s);rewardPrizes(3,'Nitro Cards collection complete');toast('FULL NITRO CARD COLLECTION COMPLETE!')}
+ const grid=$('#nvCardGrid');grid.innerHTML='';
+ cardDefs.filter(card=>cardFilter==='all'||cardFilter===card.type||(cardFilter==='unlocked'&&s.seen.includes(card.id))).forEach(card=>{
+  const unlocked=s.seen.includes(card.id),foil=unlocked&&card.foil(),h=hue(card.id),el=document.createElement('article');el.className='nv-collect-card '+(unlocked?'unlocked ':'')+(foil?'nv-foil':'');el.style.setProperty('--h',h);
+  el.innerHTML='<div class="nv-card-inner"><div class="nv-card-face"><div class="nv-card-art">'+(unlocked?card.icon:'◆')+'</div><div class="nv-card-info"><div class="nv-card-rarity">'+card.rarity+' // '+card.type.toUpperCase()+'</div><h3>'+(unlocked?card.name:'LOCKED CARD')+'</h3><p>'+(unlocked?card.desc:card.unlock)+'</p></div><div class="nv-card-lock">🔒</div></div><div class="nv-card-face nv-card-back"><div class="nv-card-rarity">'+card.rarity+'</div><h3>'+card.name+'</h3><p>'+card.desc+'</p><p><b>UNLOCK:</b> '+card.unlock+'</p><div class="nv-card-stat"><span>POWER <b>'+card.atk+'</b></span><span>SKILL <b>'+card.skill+'</b></span><span>FOIL <b>'+(foil?'YES':'NO')+'</b></span><span>TYPE <b>'+card.type.toUpperCase()+'</b></span></div></div></div>';
+  if(unlocked)el.onclick=()=>el.classList.toggle('flipped');grid.appendChild(el)
+ });
+}
+
+/* UI */
+function showPage(name){
+ document.querySelectorAll('.nv-tab').forEach(b=>b.classList.toggle('active',b.dataset.nvtab===name));document.querySelectorAll('.nv-page').forEach(p=>p.classList.remove('active'));$('#nvPage'+name[0].toUpperCase()+name.slice(1)).classList.add('active');
+ if(name==='network')refreshNetwork();if(name==='room')renderRoom();if(name==='cards')renderCards()
+}
+function open(page='network'){overlay.classList.add('open');overlay.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';showPage(page)}
+function close(){overlay.classList.remove('open');overlay.setAttribute('aria-hidden','true');document.body.style.overflow=''}
+window.NitroVault={open,close,refresh:()=>{refreshNetwork();renderRoom();renderCards()}};
+
+document.querySelectorAll('.nv-tab').forEach(b=>b.onclick=()=>showPage(b.dataset.nvtab));$('#nvClose').onclick=close;$('#nvClaimFinal').onclick=claimNetworkFinal;
+$('#nvRoomTheme').onchange=()=>{const s=roomState();s.theme=$('#nvRoomTheme').value;roomSave(s);renderRoom()};
+$('#nvRoomSave').onclick=()=>{roomSave(roomState());toast('Prize Room layout saved.')};$('#nvRoomAuto').onclick=autoArrange;$('#nvRoomReset').onclick=resetRoom;
+document.querySelectorAll('[data-nvaction]').forEach(b=>b.onclick=()=>editToy(b.dataset.nvaction));
+document.querySelectorAll('[data-nvfilter]').forEach(b=>b.onclick=()=>{cardFilter=b.dataset.nvfilter;document.querySelectorAll('[data-nvfilter]').forEach(x=>x.classList.toggle('active',x===b));renderCards()});
+window.addEventListener('keydown',e=>{if(overlay.classList.contains('open')&&e.key==='Escape')close()});
+
+document.addEventListener('click',e=>{
+ if(e.target?.id==='prizeShopBtn'||e.target?.closest?.('#prizeShopBtn'))setTimeout(()=>{renderRoom();renderCards();refreshNetwork()},50)
+});
+setInterval(()=>{if(overlay.classList.contains('open')){refreshNetwork();renderCards()}},2500);
+})();
+</script>
+<div id="nitroSystemsOverlay" aria-hidden="true">
+<div class="ns-top"><div class="ns-brand">NITRO <b>SYSTEMS</b></div><div class="ns-tabs">
+<button class="ns-tab active" data-nstab="trophies">TROPHIES</button><button class="ns-tab" data-nstab="passport">PASSPORT</button><button class="ns-tab" data-nstab="replays">REPLAYS</button><button class="ns-tab" data-nstab="terminal">TERMINAL</button><button class="ns-tab" data-nstab="manuals">MANUALS</button><button class="ns-tab" data-nstab="screenshot">SCREENSHOT</button><button class="ns-tab" data-nstab="remix">REMIX</button><button class="ns-tab" data-nstab="challenges">CHALLENGES</button><button class="ns-tab" data-nstab="collections">COLLECTIONS</button><button class="ns-tab" data-nstab="profile">PROFILE CARD</button>
+</div><button class="ns-btn ns-close" id="nsClose">CLOSE</button></div>
+<div class="ns-body">
+<section class="ns-page active" id="nsPageTrophies"><div class="ns-hero"><div><div class="ns-kicker">ACHIEVEMENTS // PHYSICALIZED</div><h2>Trophy Room</h2><p>Achievements become animated objects on shelves. Secret trophies stay blacked out until unlocked.</p></div><div class="ns-chip" id="nsTrophyCount">0 / 10</div></div><div class="ns-trophy-room" id="nsTrophyRoom"></div></section>
+<section class="ns-page" id="nsPagePassport"><div class="ns-hero"><div><div class="ns-kicker">PLAY HISTORY // STAMPS</div><h2>Arcade Passport</h2><p>A game earns its stamp when you win it or launch it at least three times. Small Games, Big Games and Challenge each get a page.</p></div><div class="ns-chip" id="nsPassportCount">0 STAMPS</div></div><div class="ns-passport"><div class="ns-pass-tabs"><button class="ns-btn" data-pass="small">SMALL</button><button class="ns-btn" data-pass="big">BIG</button><button class="ns-btn" data-pass="challenge">CHALLENGE</button></div><div class="ns-pass-page active" id="nsPassSmall"><div class="ns-stamps" data-passgrid="small"></div></div><div class="ns-pass-page" id="nsPassBig"><div class="ns-stamps" data-passgrid="big"></div></div><div class="ns-pass-page" id="nsPassChallenge"><div class="ns-stamps" data-passgrid="challenge"></div></div></div></section>
+<section class="ns-page" id="nsPageReplays"><div class="ns-hero"><div><div class="ns-kicker">LOCAL GHOSTS // THEATER</div><h2>Ghost Replay System + Replay Theater</h2><p>Compatible keyboard games record a lightweight local control-path ghost. Saved runs can appear over your next run and can be watched here.</p></div><div class="ns-chip" id="nsReplayCount">0 SAVED</div></div><div class="ns-grid ns-replays"><div class="ns-replay-list" id="nsReplayList"></div><div class="ns-card"><canvas id="nsReplayCanvas" width="960" height="540"></canvas><div class="ns-form" style="margin-top:8px"><button class="ns-btn" id="nsReplayPlay">▶ PLAY SELECTED</button><button class="ns-btn" id="nsReplayDelete">DELETE</button><span class="ns-chip" id="nsReplayStatus">Select a replay</span></div></div></div></section>
+<section class="ns-page" id="nsPageTerminal"><div class="ns-hero"><div><div class="ns-kicker">IN-UNIVERSE CONSOLE</div><h2>Nitro Terminal</h2><p>A fictional NitroArcade console for your own arcade data, navigation and hidden commands.</p></div><div class="ns-chip">LOCAL ONLY</div></div><div class="ns-terminal"><div class="ns-term-screen" id="nsTermScreen"></div><div class="ns-term-line"><span>NITRO&gt;</span><input id="nsTermInput" autocomplete="off" spellcheck="false" placeholder="type help"></div></div></section>
+<section class="ns-page" id="nsPageManuals"><div class="ns-hero"><div><div class="ns-kicker">CURRENT GAMES // DOCUMENTATION</div><h2>Game Manuals</h2><p>Controls, mechanics, map notes and spoiler-light hints for larger NitroArcade originals.</p></div><div class="ns-chip">BIG GAMES</div></div><div class="ns-grid ns-manuals" id="nsManualGrid"></div><div class="ns-card" id="nsManualDetail" style="margin-top:12px"><h3>Select a manual</h3><p class="ns-manual-detail">Manual details appear here.</p></div></section>
+<section class="ns-page" id="nsPageScreenshot"><div class="ns-hero"><div><div class="ns-kicker">CAPTURE // POSTER LAB</div><h2>Screenshot Studio</h2><p>Capture an active game canvas when possible and turn it into a box cover, arcade flyer, trading card or achievement graphic.</p></div><div class="ns-chip" id="nsShotGame">NO ACTIVE GAME</div></div><div class="ns-shot-layout"><canvas id="nsShotCanvas" width="1280" height="720"></canvas><div class="ns-card ns-shot-controls"><h3>Frame Style</h3><select id="nsShotFrame"><option value="clean">Clean Capture</option><option value="box">Game Box</option><option value="flyer">Arcade Flyer</option><option value="card">Trading Card</option><option value="achievement">Achievement Card</option></select><button class="ns-btn" id="nsShotCapture">CAPTURE</button><button class="ns-btn" id="nsShotDownload">DOWNLOAD PNG</button><p>If no readable canvas is available, NitroArcade makes a title-card fallback.</p></div></div></section>
+<section class="ns-page" id="nsPageRemix"><div class="ns-hero"><div><div class="ns-kicker">RULE MUTATORS</div><h2>Arcade Remix</h2><p>Stack strange visual/control modifiers over games. Low Gravity and Turbo are exposed through the NitroRemix compatibility API.</p></div><button class="ns-btn" id="nsRemixClear">CLEAR ALL</button></div><div class="ns-grid ns-remix-grid" id="nsRemixGrid"></div></section>
+<section class="ns-page" id="nsPageChallenges"><div class="ns-hero"><div><div class="ns-kicker">SHAREABLE RULE SETS</div><h2>Community Challenge Codes</h2><p>Create an NCC1 challenge code, send it to a friend, import it, and NitroArcade checks game-win events against its rules.</p></div><div class="ns-chip" id="nsChallengeState">NO ACTIVE CHALLENGE</div></div><div class="ns-two"><div class="ns-card"><h3>Create Challenge</h3><div class="ns-form"><select id="nsChallengeGame"></select><select id="nsChallengeGoal"><option value="win">Win the game</option><option value="score">Score at least</option></select><input id="nsChallengeScore" type="number" min="0" value="500"><input id="nsChallengeTime" type="number" min="0" value="0" placeholder="time sec"><select id="nsChallengeMod"><option value="">No forced remix</option><option value="mirror">Mirrored Controls</option><option value="monochrome">Monochrome</option><option value="blind">Blind Corners</option><option value="oneLife">One Life</option><option value="lowGravity">Low Gravity*</option><option value="turbo">Turbo*</option></select><button class="ns-btn" id="nsChallengeMake">MAKE CODE</button></div><textarea id="nsChallengeCode" style="width:100%;margin-top:8px" placeholder="Challenge code"></textarea></div><div class="ns-card"><h3>Import / Active</h3><div class="ns-form"><textarea id="nsChallengeImport" placeholder="Paste NCC1 code"></textarea><button class="ns-btn" id="nsChallengeActivate">ACTIVATE</button><button class="ns-btn" id="nsChallengeCancel">CANCEL ACTIVE</button></div><div class="ns-card" id="nsChallengeDetails" style="margin-top:8px">No challenge active.</div></div></div></section>
+<section class="ns-page" id="nsPageCollections"><div class="ns-hero"><div><div class="ns-kicker">PLAYLISTS // SHAREABLE</div><h2>Game Collections</h2><p>Make folders/playlists, add games, launch from the collection and export/import NGC1 codes.</p></div><div class="ns-chip" id="nsCollectionCount">0 COLLECTIONS</div></div><div class="ns-two"><div class="ns-card"><h3>Collection Builder</h3><div class="ns-form"><input id="nsCollectionName" maxlength="36" placeholder="Collection name"><button class="ns-btn" id="nsCollectionCreate">CREATE</button></div><div class="ns-form" style="margin-top:8px"><select id="nsCollectionSelect"></select><select id="nsCollectionGame"></select><button class="ns-btn" id="nsCollectionAdd">ADD GAME</button><button class="ns-btn" id="nsCollectionShare">SHARE CODE</button></div><textarea id="nsCollectionCode" style="width:100%;margin-top:8px" placeholder="NGC1 share code"></textarea><div class="ns-form" style="margin-top:8px"><button class="ns-btn" id="nsCollectionImport">IMPORT CODE</button><button class="ns-btn" id="nsCollectionDelete">DELETE COLLECTION</button></div></div><div class="ns-card"><h3>My Collections</h3><div class="ns-list" id="nsCollectionList"></div></div></div></section>
+<section class="ns-page" id="nsPageProfile"><div class="ns-hero"><div><div class="ns-kicker">GENERATED PLAYER ID</div><h2>Nitro Profile Card</h2><p>Level, XP, wins, trophies, favorite game, prize rarity, passport completion and secrets discovered rendered into a local image.</p></div><div class="ns-chip">PNG GENERATOR</div></div><div class="ns-two"><div class="ns-card"><canvas id="nsProfileCanvas" width="1200" height="750"></canvas></div><div class="ns-card"><h3>Customize</h3><div class="ns-form"><input id="nsProfileName" maxlength="24" value="NITRO PLAYER"><select id="nsProfileFrame"><option value="cyan">Cyan Circuit</option><option value="purple">Purple Void</option><option value="gold">Arcade Gold</option><option value="matrix">Matrix</option></select><select id="nsProfileAvatar"><option value="⚡">⚡ Bolt</option><option value="👾">👾 Invader</option><option value="🕹️">🕹️ Joystick</option><option value="💎">💎 Crystal</option><option value="👑">👑 Crown</option></select><button class="ns-btn" id="nsProfileGenerate">GENERATE</button><button class="ns-btn" id="nsProfileDownload">DOWNLOAD PNG</button></div></div></div></section>
+</div></div>
+<div id="nsCabinetDecor"><div class="ns-cab-marquee" id="nsCabMarquee">NITROARCADE</div><div class="ns-cab-side left"></div><div class="ns-cab-side right"></div><div class="ns-cab-crt"></div></div>
+<script id="nitroSystemsSuiteJS">
+(()=>{
+'use strict';
+const $=s=>document.querySelector(s),N=()=>window.NitroArcade||{},overlay=$('#nitroSystemsOverlay');
+const P='nitroarcade:',REPLAY_KEY=P+'replays-v1',COLLECTION_KEY=P+'collections-v1',CHALLENGE_KEY=P+'active-challenge-v1',REMIX_KEY=P+'remix-v1',PROFILE_KEY=P+'profile-card-v1';
+const safeRead=(k,f)=>{try{return JSON.parse(localStorage.getItem(k)||'null')??f}catch(e){return f}},safeWrite=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
+const plays=()=>{try{return JSON.parse(localStorage.getItem('crazyarcade-play-counts')||'{}')}catch(e){return{}}},stats=()=>N().stats?.all?.()||{};
+const gameList=()=>Array.isArray(window.gamesDatabase)?window.gamesDatabase.filter(g=>g&&g.id):[],gameById=id=>gameList().find(g=>g.id===id);
+const activeGame=()=>{try{return typeof currentGame!=='undefined'?currentGame:null}catch(e){return null}};
+const uniqueCards=()=>{const m=new Map();document.querySelectorAll('.game-card[data-game-id]').forEach(el=>{const id=el.dataset.gameId;if(!m.has(id))m.set(id,{id:id,name:el.querySelector('h3')?.textContent?.trim()||gameById(id)?.name||id,part:el.dataset.arcadePart||'small'})});return[...m.values()]};
+const owned=()=>{try{return JSON.parse(localStorage.getItem('crazyarcade-owned-toys')||'[]')}catch(e){return[]}};
+const achievements=()=>N().achievements?.all?.()||safeRead(P+'achievements',[]);
+const notify=t=>window.showToast?.(t)||N().notify?.(t,'NITRO SYSTEMS');
+const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+function encode(prefix,obj){const u=new TextEncoder().encode(JSON.stringify(obj));let s='';for(const b of u)s+=String.fromCharCode(b);return prefix+btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')}
+function decode(prefix,code){code=String(code||'').trim();if(!code.startsWith(prefix))throw new Error('Wrong code type');let s=code.slice(prefix.length).replace(/-/g,'+').replace(/_/g,'/');while(s.length%4)s+='=';const b=Uint8Array.from(atob(s),c=>c.charCodeAt(0));return JSON.parse(new TextDecoder().decode(b))}
+
+/* TROPHY ROOM */
+const trophyDefs=[
+{id:'first-win',name:'First Victory',icon:'🏆',desc:'Win a NitroArcade game.',check:()=>achievements().includes('first-win')||((stats().wins||0)>=1)},
+{id:'explorer-5',name:'Arcade Explorer',icon:'🧭',desc:'Play five different games.',check:()=>achievements().includes('explorer-5')||(safeRead(P+'uniqueGames',[]).length>=5)},
+{id:'hacker-master',name:'Access Granted',icon:'🔐',desc:'Clear Hacker Challenge.',check:()=>achievements().includes('hacker-master')||localStorage.getItem('crazyarcade-secret-windosill')==='unlocked'},
+{id:'play-25',name:'Quarter Century',icon:'🕹️',desc:'Launch 25 games.',check:()=>((stats().gamesPlayed||0)>=25)},
+{id:'win-5',name:'Winning Streak',icon:'⭐',desc:'Record five victories.',check:()=>((stats().wins||0)>=5)},
+{id:'play-100',name:'Arcade Resident',icon:'⚡',desc:'Launch 100 games.',check:()=>((stats().gamesPlayed||0)>=100)},
+{id:'toy-master',name:'Prize Curator',icon:'🧸',desc:'Own all eight Prize Shop toys.',check:()=>owned().length>=8},
+{id:'passport-10',name:'Stamped',icon:'🎟️',desc:'Earn ten passport stamps.',check:()=>passportEarned().length>=10},
+{id:'card-10',name:'Card Binder',icon:'🃏',desc:'Unlock ten Nitro Cards.',check:()=>safeRead('nitroarcade:nitro-cards-v1',{seen:[]}).seen?.length>=10},
+{id:'network-root',name:'Root Signal',icon:'📡',desc:'Decode the Secret Network.',check:()=>!!safeRead('nitroarcade:secret-network-v1',{final:false}).final}
+];
+function refreshTrophies(){const room=$('#nsTrophyRoom');room.innerHTML='';let n=0;[trophyDefs.slice(0,5),trophyDefs.slice(5)].forEach(row=>{const shelf=document.createElement('div');shelf.className='ns-shelf-row';row.forEach(t=>{const ok=!!t.check();if(ok)n++;const el=document.createElement('div');el.className='ns-trophy '+(ok?'unlocked':'locked');el.innerHTML='<div class="ns-trophy-object">'+t.icon+'</div><b>'+esc(ok?t.name:'???')+'</b><span>'+esc(ok?t.desc:'Locked achievement')+'</span>';shelf.appendChild(el)});room.appendChild(shelf)});$('#nsTrophyCount').textContent=n+' / '+trophyDefs.length}
+
+/* PASSPORT */
+function passportEarned(){const p=plays(),s=stats();return uniqueCards().filter(g=>(p[g.id]||0)>=3||(s['wins:'+g.id]||0)>0).map(g=>g.id)}
+function renderPassport(){const earned=new Set(passportEarned()),all=uniqueCards();$('#nsPassportCount').textContent=earned.size+' STAMPS';['small','big','challenge'].forEach(part=>{const grid=document.querySelector('[data-passgrid="'+part+'"]');grid.innerHTML='';all.filter(g=>g.part===part).forEach(game=>{const el=document.createElement('div');el.className='ns-stamp '+(earned.has(game.id)?'earned':'');el.innerHTML='<div><b>'+esc(game.name)+'</b><br>'+(earned.has(game.id)?'✓ STAMPED':'PLAY 3× OR WIN')+'</div>';grid.appendChild(el)})})}
+function showPassport(part){document.querySelectorAll('.ns-pass-page').forEach(p=>p.classList.remove('active'));$('#nsPass'+part[0].toUpperCase()+part.slice(1)).classList.add('active')}
+
+/* GHOST REPLAY + THEATER */
+const compatibleEngines=new Set(['runner','racer','lane','lane2','maze','path','avoid','laserdodge','snake2','jumper','gravity','metrodash']);
+let rec=null,recTimer=0,recKeys=new Set(),ghostRAF=0,selectedReplay=null,theaterRAF=0;
+const replays=()=>safeRead(REPLAY_KEY,[]);
+function saveReplay(r){let a=replays().filter(x=>!(x.gameId===r.gameId&&x.complete===r.complete));a.unshift(r);safeWrite(REPLAY_KEY,a.slice(0,30));renderReplayList()}
+function startReplayRecord(d){finishReplay(false);const game=gameById(d.id);if(!game||!compatibleEngines.has(game.engine))return;rec={id:'r_'+Date.now().toString(36),gameId:game.id,name:game.name,engine:game.engine,start:performance.now(),samples:[],x:.5,y:.72,vy:0,complete:false,duration:0};recKeys.clear();recTimer=setInterval(sampleReplay,50);showBestGhost(game.id)}
+function sampleReplay(){if(!rec)return;const dt=.05,sp=.34,plat=['runner','jumper','gravity','metrodash'].includes(rec.engine),left=recKeys.has('ArrowLeft')||recKeys.has('KeyA'),right=recKeys.has('ArrowRight')||recKeys.has('KeyD'),up=recKeys.has('ArrowUp')||recKeys.has('KeyW'),down=recKeys.has('ArrowDown')||recKeys.has('KeyS');rec.x=Math.max(.03,Math.min(.97,rec.x+((right?1:0)-(left?1:0))*sp*dt));if(plat){if((up||recKeys.has('Space'))&&Math.abs(rec.y-.72)<.04)rec.vy=-.65;rec.vy+=1.5*dt;rec.y+=rec.vy*dt;if(rec.y>.72){rec.y=.72;rec.vy=0}else rec.y=Math.max(.08,rec.y)}else rec.y=Math.max(.05,Math.min(.95,rec.y+((down?1:0)-(up?1:0))*sp*dt));rec.samples.push([Math.round(performance.now()-rec.start),+rec.x.toFixed(4),+rec.y.toFixed(4)]);if(rec.samples.length>3600)finishReplay(false)}
+function finishReplay(complete){if(!rec)return;clearInterval(recTimer);rec.duration=Math.round(performance.now()-rec.start);rec.complete=!!complete;if(rec.samples.length>3)saveReplay(rec);rec=null}
+function showBestGhost(gameId){cancelAnimationFrame(ghostRAF);document.querySelector('.nitro-ghost-overlay')?.remove();const r=replays().find(x=>x.gameId===gameId&&x.samples?.length);if(!r)return;const host=document.getElementById('playerContainer');if(!host)return;const cv=document.createElement('canvas');cv.className='nitro-ghost-overlay';cv.width=960;cv.height=540;host.appendChild(cv);const ctx=cv.getContext('2d'),t0=performance.now();function loop(){if(!document.body.contains(cv))return;const t=performance.now()-t0,s=r.samples.find(x=>x[0]>=t)||r.samples[r.samples.length-1];ctx.clearRect(0,0,960,540);ctx.globalAlpha=.38;ctx.fillStyle='#72edff';ctx.beginPath();ctx.arc(s[1]*960,s[2]*540,15,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#c7fbff';ctx.lineWidth=2;ctx.stroke();ctx.globalAlpha=1;if(t<r.duration)ghostRAF=requestAnimationFrame(loop)}loop()}
+function renderReplayList(){const a=replays(),box=$('#nsReplayList');$('#nsReplayCount').textContent=a.length+' SAVED';box.innerHTML='';if(!a.length){box.innerHTML='<div class="ns-empty">No compatible-game replays saved yet.</div>';return}a.forEach(r=>{const el=document.createElement('div');el.className='ns-replay-item';el.innerHTML='<b>'+esc(r.name)+'</b><span>'+((r.duration||0)/1000).toFixed(2)+'s • '+(r.complete?'COMPLETED':'PRACTICE')+' • '+(r.samples?.length||0)+' samples</span>';el.onclick=()=>{selectedReplay=r;$('#nsReplayStatus').textContent=r.name+' selected'};box.appendChild(el)})}
+function playTheater(){if(!selectedReplay)return notify('Select a replay first.');cancelAnimationFrame(theaterRAF);const cv=$('#nsReplayCanvas'),ctx=cv.getContext('2d'),r=selectedReplay,t0=performance.now();function loop(){const t=performance.now()-t0;ctx.fillStyle='#061019';ctx.fillRect(0,0,cv.width,cv.height);ctx.strokeStyle='#19344b';for(let x=0;x<cv.width;x+=60){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,cv.height);ctx.stroke()}for(let y=0;y<cv.height;y+=60){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(cv.width,y);ctx.stroke()}const past=r.samples.filter(s=>s[0]<=t);ctx.strokeStyle='#5fe6ff';ctx.globalAlpha=.35;ctx.beginPath();past.forEach((s,i)=>i?ctx.lineTo(s[1]*cv.width,s[2]*cv.height):ctx.moveTo(s[1]*cv.width,s[2]*cv.height));ctx.stroke();ctx.globalAlpha=1;const s=r.samples.find(x=>x[0]>=t)||r.samples[r.samples.length-1];ctx.fillStyle='#a8f5ff';ctx.beginPath();ctx.arc(s[1]*cv.width,s[2]*cv.height,12,0,Math.PI*2);ctx.fill();ctx.fillStyle='#dff8ff';ctx.font='700 18px Inter';ctx.fillText(r.name,18,28);ctx.font='12px Inter';ctx.fillStyle='#8fa7bc';ctx.fillText((t/1000).toFixed(2)+' / '+(r.duration/1000).toFixed(2)+' sec',18,48);if(t<r.duration)theaterRAF=requestAnimationFrame(loop)}loop()}
+
+/* TERMINAL */
+let termHistory=[],termIndex=0;
+function termPrint(text){const s=$('#nsTermScreen');s.textContent+=(s.textContent?'\n':'')+text;s.scrollTop=s.scrollHeight}
+function runTerminal(raw){const line=String(raw||'').trim(),parts=line.split(/\s+/),cmd=(parts.shift()||'').toLowerCase(),args=parts;termPrint('NITRO> '+line);if(!line)return;termHistory.push(line);termIndex=termHistory.length;const st=stats();if(cmd==='clear'){$('#nsTermScreen').textContent='';return}if(cmd==='root'&&args.join(' ').toLowerCase()==='13'){termPrint('ROOT://NITRO-VAULT-13 ACKNOWLEDGED');return}if(cmd==='duck'){termPrint('🐤 PIXEL DUCK SAYS: QUACK.EXE');return}if(cmd==='macro'&&args[0]?.toLowerCase()==='open'){location.href='./macroarcade.html';return}let out='';if(cmd==='help')out='COMMANDS: help, games, status, player, prizes, secrets, macro, debug, passport, cards, trophies, clear\\nUndocumented commands exist.';else if(cmd==='games')out=gameList().slice(0,45).map(g=>g.id+' :: '+g.name).join('\n')+(gameList().length>45?'\n... '+(gameList().length-45)+' more':'');else if(cmd==='status')out='BUILD ONLINE\\nGAMES '+gameList().length+'\\nPLAYS '+(st.gamesPlayed||0)+'\\nWINS '+(st.wins||0)+'\\nTHEME '+(localStorage.getItem('ultraarcade-theme')||'dark');else if(cmd==='player')out='LEVEL '+(N().xp?.level?.()||1)+'\\nXP '+(N().xp?.get?.()||0)+'\\nCOINS '+(N().coins?.get?.()||0)+'\\nACHIEVEMENTS '+achievements().length;else if(cmd==='prizes')out='PRIZE BALANCE '+(localStorage.getItem('crazyarcade-prizes')||0)+'\\nOWNED '+(owned().join(', ')||'none');else if(cmd==='secrets')out='WINDOSILL '+(localStorage.getItem('crazyarcade-secret-windosill')==='unlocked'?'UNLOCKED':'LOCKED')+'\\nNETWORK '+(safeRead('nitroarcade:secret-network-v1',{seen:[]}).seen?.length||0)+'/7';else if(cmd==='macro')out='MACROARCADE LINK: https://peahjsa.github.io/NitroArcade/macroarcade.html';else if(cmd==='debug')out=JSON.stringify({stats:st,recent:N().recent?.all?.()||[],remix:remixState()},null,2);else if(cmd==='passport')out='PASSPORT STAMPS '+passportEarned().length+'/'+uniqueCards().length;else if(cmd==='cards')out='NITRO CARDS '+(safeRead('nitroarcade:nitro-cards-v1',{seen:[]}).seen?.length||0)+'/18';else if(cmd==='trophies')out='TROPHIES '+trophyDefs.filter(t=>t.check()).length+'/'+trophyDefs.length;else out='UNKNOWN COMMAND. TYPE help.';termPrint(out)}
+
+/* CABINET MODE */
+let cabinet=false;
+function toggleCabinet(force){cabinet=typeof force==='boolean'?force:!cabinet;document.body.classList.toggle('nitro-cabinet-on',cabinet);$('#nsCabMarquee').textContent=(activeGame()?.name||'NITROARCADE').toUpperCase();if(cabinet)overlay.classList.remove('open');return cabinet}
+
+/* MANUALS */
+const manuals=[
+{id:'ultra_voxel_frontier',icon:'⛏️',name:'Voxel Frontier 3D',controls:'WASD move • Mouse look • Shift sprint • Space jump • 1–5 block • LMB mine • RMB place • F interact • R respawn • [ ] sensitivity',mechanics:'Explore a voxel world, mine/place blocks, visit landmarks, caves and ruins.',hint:'Use landmarks before entering caves so you can recover your route.',map:'Open terrain → cabin/campfire → Crystal Ruins → cave routes.'},
+{id:'ultra_stadium_strike',icon:'⚽',name:'Stadium Strike 3D',controls:'Movement and shooting controls are shown in-game.',mechanics:'Dribble, avoid defenders and create a shot on goal.',hint:'Approach the goal under control instead of holding movement constantly.',map:'Midfield → attacking third → penalty area → goal.'},
+{id:'ultra_sky_pilot',icon:'✈️',name:'Sky Pilot 3D',controls:'Flight controls shown in-game • SPACE pulse where available.',mechanics:'Take off, fly ring objectives, engage drones and handle landing space.',hint:'Line up early for rings instead of correcting at the last second.',map:'Runway/airport → ring course → mountain/building airspace → landing approach.'},
+{id:'ultra_brick_maze_90s',icon:'🧱',name:'Brick Maze 95',controls:'WASD / Arrows move • Q/E strafe • Shift run • M map',mechanics:'Random maze, six souvenirs, roaming enemies, exit and timer.',hint:'Use the map deliberately; sprinting everywhere can hurt route memory.',map:'Randomized each run; souvenir and exit routing must be rediscovered.'},
+{id:'ultra_night_watch',icon:'📹',name:'Night Watch',controls:'Use the game UI for cameras, doors and lights.',mechanics:'Survive 12–6 while watching nine cameras, three mascots and limited power.',hint:'Information is useful, but defensive actions cost power.',map:'Office hub + nine camera zones connected by mascot routes.'},
+{id:'enemies_and_you',icon:'⚡',name:'Enemies and You',controls:'WASD move • Mouse/Arrows aim where shown • Shift • E special',mechanics:'Enemy pairs, boss encounters and upgrades.',hint:'Learn the current enemy pair before choosing an upgrade.',map:'Arena combat rather than an exploration map.'},
+{id:'school_nightmare',icon:'🏫',name:'School Nightmare',controls:'Controls change by chapter and are shown in-game.',mechanics:'Parking race, runner sequence and football finale.',hint:'Treat each chapter as a different game.',map:'Parking sequence → runner route → football finale.'}
+];
+function renderManuals(){const grid=$('#nsManualGrid');grid.innerHTML='';manuals.forEach(m=>{const el=document.createElement('article');el.className='ns-card ns-manual';el.innerHTML='<div class="cover">'+m.icon+'</div><h3>'+m.name+'</h3><p>'+m.mechanics+'</p>';el.onclick=()=>{$('#nsManualDetail').innerHTML='<h3>'+m.icon+' '+m.name+'</h3><p class="ns-manual-detail"><b>CONTROLS</b>\\n'+esc(m.controls)+'\\n\\n<b>MECHANICS</b>\\n'+esc(m.mechanics)+'\\n\\n<b>MAP NOTES</b>\\n'+esc(m.map)+'\\n\\n<b>HINT</b>\\n'+esc(m.hint)+'</p>'};grid.appendChild(el)})}
+
+/* SCREENSHOT STUDIO */
+function wrapText(ctx,text,x,y,max,w){let line='';for(const word of text.split(' ')){const test=line+word+' ';if(ctx.measureText(test).width>max){ctx.fillText(line,x,y);line=word+' ';y+=w}else line=test}ctx.fillText(line,x,y)}
+function drawShot(){const cv=$('#nsShotCanvas'),ctx=cv.getContext('2d'),game=activeGame(),name=game?.name||'NitroArcade',frame=$('#nsShotFrame').value;$('#nsShotGame').textContent=name.toUpperCase();ctx.clearRect(0,0,cv.width,cv.height);let source=document.querySelector('#playerContainer canvas'),ok=false;if(source)try{ctx.drawImage(source,0,0,cv.width,cv.height);ok=true}catch(e){}if(!ok){const gr=ctx.createLinearGradient(0,0,cv.width,cv.height);gr.addColorStop(0,'#0b2234');gr.addColorStop(1,'#261137');ctx.fillStyle=gr;ctx.fillRect(0,0,cv.width,cv.height);ctx.fillStyle='#dff8ff';ctx.font='1000 76px Inter';ctx.textAlign='center';ctx.fillText(name.toUpperCase(),cv.width/2,cv.height/2)}ctx.textAlign='left';if(frame==='box'){ctx.fillStyle='#02060cdd';ctx.fillRect(0,0,250,cv.height);ctx.fillStyle='#69e8ff';ctx.font='1000 28px Inter';ctx.fillText('NITROARCADE',26,52);ctx.fillStyle='#fff';ctx.font='1000 38px Inter';wrapText(ctx,name.toUpperCase(),26,115,200,44)}if(frame==='flyer'){ctx.strokeStyle='#ffd45c';ctx.lineWidth=18;ctx.strokeRect(15,15,cv.width-30,cv.height-30);ctx.fillStyle='#07101ddd';ctx.fillRect(60,520,cv.width-120,130);ctx.fillStyle='#fff';ctx.font='1000 48px Inter';ctx.textAlign='center';ctx.fillText(name.toUpperCase(),cv.width/2,590)}if(frame==='card'){ctx.fillStyle='#07101ddd';ctx.fillRect(55,45,360,630);ctx.strokeStyle='#6ee7ff';ctx.lineWidth=7;ctx.strokeRect(55,45,360,630);ctx.fillStyle='#fff';ctx.font='1000 31px Inter';ctx.textAlign='center';ctx.fillText(name.toUpperCase(),235,620);ctx.font='800 16px Inter';ctx.fillStyle='#75eaff';ctx.fillText('NITRO CARD CAPTURE',235,653)}if(frame==='achievement'){ctx.fillStyle='#07101dee';ctx.fillRect(120,540,1040,120);ctx.fillStyle='#ffd45c';ctx.font='1000 20px Inter';ctx.fillText('ACHIEVEMENT CAPTURE',155,580);ctx.fillStyle='#fff';ctx.font='1000 38px Inter';ctx.fillText(name.toUpperCase(),155,625)}ctx.textAlign='left'}
+function downloadCanvas(cv,name){try{const a=document.createElement('a');a.href=cv.toDataURL('image/png');a.download=name+'.png';a.click()}catch(e){alert('This game canvas cannot be exported directly. Try the Screenshot Studio title-card fallback instead.')}}
+
+/* ARCADE REMIX */
+const remixDefs=[{id:'mirror',name:'Mirrored Controls',desc:'Swaps left/right keyboard controls globally.',global:true},{id:'mirrorview',name:'Mirror Screen',desc:'Flips the active game view horizontally.',global:true},{id:'monochrome',name:'Monochrome',desc:'Removes color from the game view.',global:true},{id:'invert',name:'Negative World',desc:'Inverts the game view with hue correction.',global:true},{id:'crt',name:'CRT Scanlines',desc:'Adds heavy scanline interference.',global:true},{id:'blind',name:'Blind Corners',desc:'Darkens the edge of the play area.',global:true},{id:'oneLife',name:'One-Life Contract',desc:'Challenge tracker fails on the first game-lost event.',global:true},{id:'lowGravity',name:'Low Gravity',desc:'Compatible games read NitroRemix.gravity = 0.55.',global:false},{id:'turbo',name:'Turbo Speed',desc:'Compatible games read NitroRemix.speed = 1.6.',global:false}];
+const remixState=()=>safeRead(REMIX_KEY,[]);
+function saveRemix(a){safeWrite(REMIX_KEY,a);applyRemix();renderRemix()}function toggleRemix(id){let a=remixState();a=a.includes(id)?a.filter(x=>x!==id):a.concat(id);saveRemix(a)}
+function applyRemix(){const a=remixState();['mirrorview','monochrome','invert','crt','blind'].forEach(id=>document.body.classList.toggle('nitro-remix-'+id,a.includes(id)));window.NitroRemix={active:id=>a.includes(id),gravity:a.includes('lowGravity')?.55:1,speed:a.includes('turbo')?1.6:1,list:()=>a.slice()}}
+function renderRemix(){const a=remixState(),grid=$('#nsRemixGrid');grid.innerHTML='';remixDefs.forEach(r=>{const el=document.createElement('article');el.className='ns-card ns-remix-card '+(a.includes(r.id)?'active':'');el.innerHTML='<h3>'+(a.includes(r.id)?'✓ ':'')+r.name+'</h3><p>'+r.desc+(r.global?'':'<br><b>COMPATIBILITY API</b>')+'</p>';el.onclick=()=>toggleRemix(r.id);grid.appendChild(el)})}
+const mirrorMap={ArrowLeft:['ArrowRight','ArrowRight'],ArrowRight:['ArrowLeft','ArrowLeft'],KeyA:['KeyD','d'],KeyD:['KeyA','a']};function remixKey(e){if(!e.isTrusted||!remixState().includes('mirror')||!mirrorMap[e.code])return;const p=mirrorMap[e.code];e.preventDefault();e.stopImmediatePropagation();window.dispatchEvent(new KeyboardEvent(e.type,{key:p[1],code:p[0],bubbles:true,cancelable:true,repeat:e.repeat}))}window.addEventListener('keydown',remixKey,true);window.addEventListener('keyup',remixKey,true);
+
+/* CHALLENGE CODES */
+let challengeStarted=0;
+function fillGameSelects(){['nsChallengeGame','nsCollectionGame'].forEach(id=>{const el=$('#'+id);el.innerHTML='';uniqueCards().forEach(g=>{const o=document.createElement('option');o.value=g.id;o.textContent=g.name;el.appendChild(o)})})}
+const activeChallenge=()=>safeRead(CHALLENGE_KEY,null);
+function renderChallenge(){const ch=activeChallenge(),box=$('#nsChallengeDetails');if(!ch){$('#nsChallengeState').textContent='NO ACTIVE CHALLENGE';box.textContent='No challenge active.';return}const g=uniqueCards().find(x=>x.id===ch.gameId);$('#nsChallengeState').textContent=(ch.done?'COMPLETED':'ACTIVE')+' • '+(g?.name||ch.gameId);box.innerHTML='<h3>'+esc(g?.name||ch.gameId)+'</h3><p>Goal: '+(ch.goal==='score'?'score ≥ '+ch.score:'win the game')+(ch.time?' • within '+ch.time+' sec':'')+(ch.mod?' • remix '+ch.mod:'')+'</p><p>Status: <b>'+(ch.done?'COMPLETE':'WAITING FOR A VALID RUN')+'</b></p>'}
+function makeChallenge(){const obj={v:1,gameId:$('#nsChallengeGame').value,goal:$('#nsChallengeGoal').value,score:Number($('#nsChallengeScore').value)||0,time:Number($('#nsChallengeTime').value)||0,mod:$('#nsChallengeMod').value};$('#nsChallengeCode').value=encode('NCC1-',obj)}
+function activateChallenge(){try{const obj=decode('NCC1-',$('#nsChallengeImport').value||$('#nsChallengeCode').value);obj.done=false;safeWrite(CHALLENGE_KEY,obj);challengeStarted=0;if(obj.mod&&!remixState().includes(obj.mod))saveRemix(Array.from(new Set(remixState().concat(obj.mod))));renderChallenge();notify('Challenge activated.')}catch(e){alert('Could not import challenge: '+e.message)}}
+
+/* GAME COLLECTIONS */
+const collections=()=>safeRead(COLLECTION_KEY,[]);function saveCollections(v){safeWrite(COLLECTION_KEY,v);renderCollections()}
+function renderCollections(){const a=collections(),sel=$('#nsCollectionSelect'),list=$('#nsCollectionList');$('#nsCollectionCount').textContent=a.length+' COLLECTIONS';sel.innerHTML='';list.innerHTML='';a.forEach(col=>{const o=document.createElement('option');o.value=col.id;o.textContent=col.name;sel.appendChild(o);const card=document.createElement('div');card.className='ns-card';card.innerHTML='<h3>'+esc(col.name)+'</h3><p>'+col.games.length+' games</p><div class="ns-list"></div>';const sub=card.querySelector('.ns-list');col.games.forEach(id=>{const gm=uniqueCards().find(x=>x.id===id)||{name:id};const row=document.createElement('div');row.className='ns-list-row';row.innerHTML='<div><b>'+esc(gm.name)+'</b></div>';const b=document.createElement('button');b.className='ns-btn';b.textContent='PLAY';b.onclick=()=>{const g=gameById(id);if(g){close();window.launchGame(g)}else notify('This game is not launchable from gamesDatabase.')};row.appendChild(b);sub.appendChild(row)});list.appendChild(card)});if(!a.length)list.innerHTML='<div class="ns-empty">No collections yet.</div>'}
+function createCollection(){const name=($('#nsCollectionName').value||'New Collection').trim().slice(0,36),a=collections();a.push({id:'c_'+Date.now().toString(36),name:name,games:[]});saveCollections(a);$('#nsCollectionName').value=''}
+function addCollectionGame(){const a=collections(),col=a.find(x=>x.id===$('#nsCollectionSelect').value),id=$('#nsCollectionGame').value;if(!col)return;if(!col.games.includes(id))col.games.push(id);saveCollections(a)}
+function shareCollection(){const col=collections().find(x=>x.id===$('#nsCollectionSelect').value);if(col)$('#nsCollectionCode').value=encode('NGC1-',{v:1,name:col.name,games:col.games})}
+function importCollection(){try{const d=decode('NGC1-',$('#nsCollectionCode').value),a=collections();a.push({id:'c_'+Date.now().toString(36),name:String(d.name||'Imported Collection').slice(0,36),games:Array.isArray(d.games)?d.games.slice(0,100):[]});saveCollections(a);notify('Collection imported.')}catch(e){alert('Could not import collection: '+e.message)}}
+
+/* PROFILE CARD */
+function drawProfile(){const cv=$('#nsProfileCanvas'),ctx=cv.getContext('2d'),name=($('#nsProfileName').value||'NITRO PLAYER').trim().slice(0,24),frame=$('#nsProfileFrame').value,av=$('#nsProfileAvatar').value,s=stats(),xp=N().xp?.get?.()||0,lv=N().xp?.level?.()||1,stamps=passportEarned().length,total=uniqueCards().length||1,troph=trophyDefs.filter(t=>t.check()).length,secrets=(localStorage.getItem('crazyarcade-secret-windosill')==='unlocked'?1:0)+(safeRead('nitroarcade:secret-network-v1',{seen:[]}).seen?.length||0),fav=(N().favorites?.all?.()||[])[0],favName=uniqueCards().find(x=>x.id===fav)?.name||'None',pal={cyan:['#07141f','#58e8ff'],purple:['#150b24','#ae76ff'],gold:['#211604','#ffd45f'],matrix:['#031108','#68ff8f']}[frame]||['#07141f','#58e8ff'];const gr=ctx.createLinearGradient(0,0,1200,750);gr.addColorStop(0,pal[0]);gr.addColorStop(1,'#05080d');ctx.fillStyle=gr;ctx.fillRect(0,0,1200,750);ctx.strokeStyle=pal[1];ctx.lineWidth=10;ctx.strokeRect(22,22,1156,706);ctx.fillStyle=pal[1];ctx.font='1000 26px Inter';ctx.fillText('NITROARCADE // PLAYER CARD',64,82);ctx.fillStyle='#fff';ctx.font='1000 58px Inter';ctx.fillText(name.toUpperCase(),64,155);ctx.font='1000 115px Inter';ctx.fillText(av,900,175);const rows=[['LEVEL',lv],['XP',xp],['WINS',s.wins||0],['TROPHIES',troph+'/'+trophyDefs.length],['PASSPORT',stamps+'/'+total],['SECRETS',secrets],['FAVORITE',favName]];ctx.font='800 18px Inter';rows.forEach((r,i)=>{const y=250+i*58;ctx.fillStyle='#8fa6ba';ctx.fillText(r[0],70,y);ctx.fillStyle=i===6?'#fff':pal[1];ctx.font=i===6?'900 21px Inter':'1000 27px Inter';ctx.fillText(String(r[1]),280,y);ctx.font='800 18px Inter'});ctx.fillStyle='#8fa6ba';ctx.font='700 15px Inter';ctx.fillText('Generated locally • '+new Date().toLocaleDateString(),70,690);safeWrite(PROFILE_KEY,{name:name,frame:frame,av:av})}
+
+/* UI */
+function showPage(name){document.querySelectorAll('.ns-tab').forEach(b=>b.classList.toggle('active',b.dataset.nstab===name));document.querySelectorAll('.ns-page').forEach(p=>p.classList.remove('active'));$('#nsPage'+name[0].toUpperCase()+name.slice(1)).classList.add('active');if(name==='trophies')refreshTrophies();if(name==='passport')renderPassport();if(name==='replays')renderReplayList();if(name==='manuals')renderManuals();if(name==='screenshot')drawShot();if(name==='remix')renderRemix();if(name==='challenges')renderChallenge();if(name==='collections')renderCollections();if(name==='profile')drawProfile()}
+function open(page='trophies'){overlay.classList.add('open');overlay.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';showPage(page)}
+function close(){overlay.classList.remove('open');overlay.setAttribute('aria-hidden','true');document.body.style.overflow=''}
+window.NitroSystems={open:open,close:close,toggleCabinet:toggleCabinet,refresh:()=>{refreshTrophies();renderPassport();renderReplayList();renderChallenge();renderCollections();drawProfile()}};
+window.NitroReplay={sample:(x,y)=>{if(rec&&Number.isFinite(x)&&Number.isFinite(y)){rec.x=Math.max(0,Math.min(1,x));rec.y=Math.max(0,Math.min(1,y))}},finish:()=>finishReplay(false),compatible:id=>{const g=gameById(id);return!!g&&compatibleEngines.has(g.engine)}};
+
+document.querySelectorAll('.ns-tab').forEach(b=>b.onclick=()=>showPage(b.dataset.nstab));$('#nsClose').onclick=close;document.querySelectorAll('[data-pass]').forEach(b=>b.onclick=()=>showPassport(b.dataset.pass));
+$('#nsReplayPlay').onclick=playTheater;$('#nsReplayDelete').onclick=()=>{if(!selectedReplay)return;safeWrite(REPLAY_KEY,replays().filter(r=>r.id!==selectedReplay.id));selectedReplay=null;renderReplayList();$('#nsReplayStatus').textContent='Replay deleted'};
+$('#nsTermInput').addEventListener('keydown',e=>{if(e.key==='Enter'){const v=e.target.value;e.target.value='';runTerminal(v)}if(e.key==='ArrowUp'){e.preventDefault();termIndex=Math.max(0,termIndex-1);e.target.value=termHistory[termIndex]||''}if(e.key==='ArrowDown'){e.preventDefault();termIndex=Math.min(termHistory.length,termIndex+1);e.target.value=termHistory[termIndex]||''}});
+$('#nsShotCapture').onclick=drawShot;$('#nsShotFrame').onchange=drawShot;$('#nsShotDownload').onclick=()=>downloadCanvas($('#nsShotCanvas'),'NitroArcade-'+(activeGame()?.id||'capture'));$('#nsRemixClear').onclick=()=>saveRemix([]);
+$('#nsChallengeMake').onclick=makeChallenge;$('#nsChallengeActivate').onclick=activateChallenge;$('#nsChallengeCancel').onclick=()=>{localStorage.removeItem(CHALLENGE_KEY);renderChallenge()};
+$('#nsCollectionCreate').onclick=createCollection;$('#nsCollectionAdd').onclick=addCollectionGame;$('#nsCollectionShare').onclick=shareCollection;$('#nsCollectionImport').onclick=importCollection;$('#nsCollectionDelete').onclick=()=>{const id=$('#nsCollectionSelect').value;if(id&&confirm('Delete this collection?'))saveCollections(collections().filter(c=>c.id!==id))};
+$('#nsProfileGenerate').onclick=drawProfile;$('#nsProfileDownload').onclick=()=>downloadCanvas($('#nsProfileCanvas'),'NitroArcade-Profile-Card');$('#nsProfileName').oninput=drawProfile;$('#nsProfileFrame').onchange=drawProfile;$('#nsProfileAvatar').onchange=drawProfile;
+window.addEventListener('keydown',e=>{if(overlay.classList.contains('open')&&e.key==='Escape')close();if(rec&&['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','KeyW','KeyA','KeyS','KeyD','Space'].includes(e.code))recKeys.add(e.code)});window.addEventListener('keyup',e=>recKeys.delete(e.code));
+
+function eventHook(){const nn=N();if(!nn.on)return;nn.on('gameopen',d=>{challengeStarted=performance.now();startReplayRecord(d);const ch=activeChallenge();if(ch&&ch.gameId===d.id&&ch.mod&&!remixState().includes(ch.mod))saveRemix(Array.from(new Set(remixState().concat(ch.mod))))});nn.on('gamewin',d=>{finishReplay(true);const ch=activeChallenge();if(ch&&!ch.done&&ch.gameId===d.id){const elapsed=challengeStarted?(performance.now()-challengeStarted)/1000:0,score=Number(d.score)||0,timeOk=!ch.time||elapsed<=ch.time,goalOk=ch.goal==='win'||(ch.goal==='score'&&score>=ch.score);if(timeOk&&goalOk){ch.done=true;safeWrite(CHALLENGE_KEY,ch);N().coins?.add?.(3);notify('Community Challenge complete! +3 coins');renderChallenge()}}refreshTrophies();renderPassport()});nn.on('gamelose',()=>{if(remixState().includes('oneLife')){const ch=activeChallenge();if(ch&&!ch.done)notify('One-Life Remix: run failed.')}})}
+const oldReturn=window.returnToDashboard;if(typeof oldReturn==='function'&&!oldReturn.__nsWrap){const wrapped=function(){finishReplay(false);toggleCabinet(false);return oldReturn.apply(this,arguments)};wrapped.__nsWrap=true;window.returnToDashboard=wrapped}
+
+applyRemix();fillGameSelects();renderManuals();renderReplayList();renderCollections();renderChallenge();renderRemix();renderPassport();refreshTrophies();drawProfile();termPrint('NITRO TERMINAL v1\\nTYPE help FOR COMMANDS');const savedProfile=safeRead(PROFILE_KEY,null);if(savedProfile){$('#nsProfileName').value=savedProfile.name||'NITRO PLAYER';$('#nsProfileFrame').value=savedProfile.frame||'cyan';$('#nsProfileAvatar').value=savedProfile.av||'⚡';drawProfile()}setTimeout(eventHook,1200);
+})();
+</script>
 </body>
 </html>
