@@ -1943,16 +1943,6 @@ body.theme-matrix{
 .v3-controls-panel>small{display:block;margin-top:11px;color:#8db0bd;font:800 9px monospace}
 @media(max-width:650px){.v3-control-grid{grid-template-columns:1fr}.v3-controls-panel{max-height:70%;overflow:auto}}
 
-
-#macroArcadeLink{
-  position:fixed;right:18px;bottom:18px;z-index:99999;
-  padding:12px 17px;border:1px solid #fff3a8;border-radius:12px;
-  background:linear-gradient(100deg,#ffe600,#ff7a00);color:#160b22;
-  font:900 12px system-ui,Arial,sans-serif;letter-spacing:.4px;
-  box-shadow:0 8px 28px #0008,0 0 20px #ffb30055;cursor:pointer;
-}
-#macroArcadeLink:hover{filter:brightness(1.12);transform:translateY(-2px)}
-
 </style>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -2485,12 +2475,55 @@ window.addEventListener('load',()=>{top();setTimeout(top,50)},{once:true});
 .nxFillActions button small{display:block;color:#c79df8;font-size:8px;margin-top:6px}
 @media(max-width:1350px){.nxFillPanel{flex-direction:column;align-items:stretch}.nxFillHeading{min-width:0}}
 @media(max-width:600px){.nxFillActions{grid-template-columns:1fr 1fr 1fr}.nxFillActions button{padding:9px 4px}}
-</style></head>
+</style><style id="nitroMacroStyles">
+/* New integrated worlds use NitroArcade colors; MacroArcade landing-page CSS is isolated inside the engine iframe. */
+.nmWorlds{width:100%;max-width:1600px;margin:0 auto;padding:30px 22px 65px;color:#f6eeff;font-family:inherit}
+.nmWorldHeader{display:flex;justify-content:space-between;align-items:center;gap:22px;flex-wrap:wrap;padding:30px;border:1px solid #9b50d8;border-radius:24px;background:radial-gradient(circle at 85% 15%,#a33ff333,transparent 40%),linear-gradient(125deg,#241139,#0d0b22);box-shadow:0 15px 55px #05020c99}
+.nmEyebrow{color:#e2a5ff;font-size:11px;letter-spacing:2px;font-weight:900}.nmWorldHeader h1{font-size:clamp(30px,4vw,55px);line-height:1.1;margin:14px 0}.nmWorldHeader h1 span{color:#d177ff}.nmWorldHeader p{max-width:650px;line-height:1.65;color:#c9b7e3}.nmByline{font-size:11px;color:#e9b7ff;letter-spacing:1px;font-weight:800}
+.nmBack,.nmPlayerBar button{padding:13px 17px;border:1px solid #b66aff;border-radius:12px;background:linear-gradient(135deg,#6728a3,#ac43d3);color:white;font:inherit;font-weight:900;cursor:pointer}
+.nmWorldGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;margin-top:20px}
+.nmWorldCard{text-align:left;display:flex;flex-direction:column;align-items:flex-start;min-height:240px;padding:21px;gap:12px;background:linear-gradient(155deg,#27143c,#0e0c22 70%);border:1px solid #613c89;border-radius:19px;color:#f8f1ff;font:inherit;cursor:pointer;transition:transform .2s,border-color .2s,box-shadow .2s}
+.nmWorldCard:hover,.nmWorldCard:focus-visible{transform:translateY(-4px);border-color:#d87bff;box-shadow:0 10px 35px #ab3fff3b;outline:none}
+.nmWorldIcon{font-size:39px}.nmWorldTag{font-size:10px;color:#c885ff;letter-spacing:1.4px;font-weight:900}.nmWorldCard strong{font-size:19px}.nmWorldCard small{font-size:13px;line-height:1.55;color:#c4b5d6;flex:1}.nmWorldPlay{font-size:11px;font-weight:900;color:#edbaff;letter-spacing:1px}
+.nmPlayerShell{margin-top:22px;overflow:hidden;border:1px solid #9853d5;border-radius:20px;background:#0b0920;box-shadow:0 18px 50px #0008}.nmPlayerBar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 18px;background:#201133;color:#f4ddff}.nmPlayerBar strong{font-size:14px}.nmPlayerBar button{padding:9px 14px}
+#nmGameFrame{display:block;width:100%;height:min(78vw,780px);min-height:490px;border:0;background:#080715}
+.nmTeamNote{border:1px solid #9d5ed6;background:linear-gradient(100deg,#32184c,#17102c);border-radius:12px;padding:14px 18px;margin:14px 0 22px;line-height:1.6;color:#e8d3ff}.nmTeamNote strong{color:#f3baff}
+@media(max-width:700px){.nmWorlds{padding:16px 9px 50px}.nmWorldHeader{padding:20px}.nmWorldGrid{grid-template-columns:1fr 1fr;gap:9px}.nmWorldCard{padding:13px;min-height:225px}.nmWorldCard strong{font-size:15px}#nmGameFrame{height:620px}}
+@media(max-width:440px){.nmWorldGrid{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.nmWorldCard{transition:none}}
+</style>
+
+<style id="nitroFamilyStyles">
+#nfGate{position:fixed;inset:0;z-index:2147483600;background:radial-gradient(circle at 75% 15%,#482068,#080616 58%);color:#f8edff;font:500 16px/1.5 system-ui,sans-serif;overflow:auto;display:none}
+#nfGate.nf-on{display:block}
+#nfGate *{box-sizing:border-box}
+.nf-wrap{max-width:1100px;margin:auto;padding:32px 20px 70px}
+.nf-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.nf-logo{font-weight:900;letter-spacing:2px;color:#e5b9ff}
+.nf-panel{background:linear-gradient(145deg,#211338,#110d24);border:1px solid #8652bd;border-radius:22px;padding:24px;box-shadow:0 14px 45px #0006}
+.nf-panel h1{font-size:clamp(27px,5vw,46px);margin:6px 0}
+.nf-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));gap:15px;margin-top:20px}
+.nf-card{background:#17112c;border:1px solid #63448c;border-radius:16px;padding:19px}
+#nfGate button,.nf-settings button,#nfOpenSettings{border:1px solid #c78dff;border-radius:12px;background:linear-gradient(130deg,#702ac3,#a12bce);color:white;font:700 14px system-ui;cursor:pointer;padding:11px 15px}
+#nfGate button:hover,.nf-settings button:hover{filter:brightness(1.15)}
+#nfGate button:focus-visible,.nf-settings button:focus-visible{outline:3px solid #f5d8ff;outline-offset:3px}
+#nfGate input,#nfGate select,.nf-settings input,.nf-settings select{background:#100c20;color:white;border:1px solid #a477d2;border-radius:9px;padding:10px;max-width:100%;font:inherit}
+#nfGate label,.nf-settings label{display:grid;gap:5px;margin:10px 0;font-size:13px}
+.nf-muted{color:#c7b3db}.nf-hidden{display:none!important}
+.nf-book{max-width:760px;margin:15px auto;background:#f8edd6;color:#352444;border-radius:18px;padding:clamp(20px,4vw,45px);font:19px/1.8 Georgia,serif;min-height:340px}
+.nf-book h2{font:700 30px Georgia,serif}
+.nf-book p{margin:1em 0}
+.nf-settings{position:fixed;inset:0;z-index:2147483640;background:#080513ee;color:#f8efff;overflow:auto;display:none;font:15px system-ui}
+.nf-settings.nf-on{display:block}
+.nf-settings .nf-wrap{max-width:680px}
+.nf-error{color:#ffbbcc;min-height:24px}
+.nf-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+
+</style>
+</head>
 
 <body class="crt">
 <div id="nitroBootScreen" role="status" aria-label="Loading NitroArcade"><div class="nitroBootIcon">◈</div><div>NITROARCADE</div><div class="nitroBootTrack"></div><small>LOADING YOUR CREATOR UNIVERSE</small></div>
-
-<button id="macroArcadeLink" type="button" onclick="window.location.href='https://peahjsa.github.io/NitroArcade/macroarcade.html'">↗ VISIT MACRO ARCADE</button>
 
     <header class="navbar">
         <div class="brand">
@@ -2544,6 +2577,7 @@ window.addEventListener('load',()=>{top();setTimeout(top,50)},{once:true});
 <div class="nxSideLabel">DISCOVER</div>
 <button class="nxSideActive" onclick="NitroNeo.home()">⌂ <span>Dashboard</span></button>
 <button onclick="NitroNeo.games()">▣ <span>Playground</span></button>
+
 <button onclick="showArcadePart('challenge')">✦ <span>Challenges</span></button>
 <button onclick="NitroSystems.open('trophies')">🏆 <span>Achievements</span></button>
 <div class="nxSideLabel">YOUR SPACE</div>
@@ -2566,6 +2600,8 @@ window.addEventListener('load',()=>{top();setTimeout(top,50)},{once:true});
 <button onclick="NitroPlus.open('quests')">⚑ <span>Daily Quests</span></button>
 <button onclick="NitroPlus.open('notes')">▤ <span>Arcade Notebook</span></button>
 <button onclick="NitroPlus.open('settings')">◈ <span>Personalize</span></button>
+<div class="nxSideLabel">FAMILY & WELLBEING</div>
+<button id="nfSidebarButton" type="button" onclick="NitroFamily.openSettings()">🌙 <span>Bedtime / Screen Limits</span></button>
 <div class="nxSideLabel">EXTRAS</div>
 <button onclick="NitroForum.openISG()">▤ <span>ISG Forum</span></button>
 <button onclick="NitroStyle.open()">⚙ <span>Style Studio</span></button>
@@ -2601,6 +2637,7 @@ window.addEventListener('load',()=>{top();setTimeout(top,50)},{once:true});
                 <button onclick="NitroForum.open()"><span class="ntQuickIcon">💬</span><strong>COMMUNITY</strong><small>Discussions, tags and files</small><span class="ntArrow">↗</span></button>
                 <button onclick="NitroGameStudio.open()"><span class="ntQuickIcon">🛠️</span><strong>GAME STUDIO</strong><small>Build and experiment</small><span class="ntArrow">↗</span></button>
                 <button onclick="NitroTen.openHistory()"><span class="ntQuickIcon">◷</span><strong>OUR HISTORY</strong><small>CyberArcade to NitroArcade</small><span class="ntArrow">↗</span></button>
+<button onclick="NitroMacro.open()"><span class="ntQuickIcon">🌌</span><strong>MACRO WORLDS</strong><small>8 original games from our team</small><span class="ntArrow">↗</span></button>
               </div>
               <div class="nxFeatureBanner"><div><small>✦ NEW / NITRO CREATOR SUITE</small><h3>MAKE THE ARCADE <em>YOURS.</em></h3><p>Design themes, create wallpapers, paint pixel art, experiment with sound, and prepare your school showcase.</p></div><button onclick="NitroX.open('themes')">OPEN CREATOR SUITE ↗</button></div><div class="ntPlusActions">
 <button onclick="NitroPlus.open('command')">⌘ COMMAND CENTER</button>
@@ -2665,6 +2702,7 @@ window.addEventListener('load',()=>{top();setTimeout(top,50)},{once:true});
                     <button class="filter-chip active" id="partSmall" onclick="showArcadePart('small')">⚡ Small Games</button>
                     <button class="filter-chip" id="partBig" onclick="showArcadePart('big')">🎮 Big Games</button>
                     <button class="filter-chip" id="partChallenge" onclick="showArcadePart('challenge')">🔒 Challenge</button>
+                    <button class="filter-chip" id="partMacro" onclick="showArcadePart('macro')" title="Show eight MacroArcade games below">🌌 MacroArcade Games</button>
                 </div>
                 <div class="library-tools" id="normalLibraryTools">
                     <button class="filter-chip active" id="filterAll" onclick="setLibraryFilter('all')">All Games</button>
@@ -2737,6 +2775,152 @@ window.addEventListener('load',()=>{top();setTimeout(top,50)},{once:true});
             </section>
         </section>
 
+
+<section id="nitroMacroWorlds" class="nmWorlds" style="display:none" aria-label="MacroArcade original worlds">
+  <div class="nmWorldHeader"><div><div class="nmEyebrow">✦ NITROARCADE × MACROARCADE / TEAM PROJECT</div><h1>MACRO <span>WORLDS.</span></h1><p>Eight original games by the MacroArcade team, playable inside NitroArcade. Your NitroArcade theme stays in control.</p><div class="nmByline">MACROARCADE TEAM · ALIN · ARIHANT · VIYAN</div></div><button class="nmBack" onclick="NitroMacro.close()">← BACK TO NITROARCADE</button></div>
+  <div class="nmWorldGrid" id="nmWorldGrid"><button class="nmWorldCard" onclick="NitroMacro.play(0)" aria-label="Play Neon Rail Grinder"><span class="nmWorldIcon">🚈</span><span class="nmWorldTag">SPEED / TRICK</span><strong>Neon Rail Grinder</strong><small>Switch magnetic rails, jump broken sections, and collect overcharge shards.</small><span class="nmWorldPlay">PLAY WORLD ↗</span></button>
+<button class="nmWorldCard" onclick="NitroMacro.play(1)" aria-label="Play Voxel Vault Heist"><span class="nmWorldIcon">🧱</span><span class="nmWorldTag">STEALTH / MAZE</span><strong>Voxel Vault Heist</strong><small>Explore a first-person vault and collect three gold cores.</small><span class="nmWorldPlay">PLAY WORLD ↗</span></button>
+<button class="nmWorldCard" onclick="NitroMacro.play(2)" aria-label="Play Orbital Forge"><span class="nmWorldIcon">🛰️</span><span class="nmWorldTag">BUILD / DEFEND</span><strong>Orbital Forge</strong><small>Build an orbital station and protect it from meteors.</small><span class="nmWorldPlay">PLAY WORLD ↗</span></button>
+<button class="nmWorldCard" onclick="NitroMacro.play(3)" aria-label="Play Prism Wing"><span class="nmWorldIcon">🪽</span><span class="nmWorldTag">FLIGHT / EXPLORATION</span><strong>Prism Wing</strong><small>Glide through floating islands and luminous rings.</small><span class="nmWorldPlay">PLAY WORLD ↗</span></button>
+<button class="nmWorldCard" onclick="NitroMacro.play(4)" aria-label="Play Labyrinth Shift"><span class="nmWorldIcon">🌀</span><span class="nmWorldTag">PUZZLE / FIRST PERSON</span><strong>Labyrinth Shift</strong><small>Find switches in a maze that keeps changing.</small><span class="nmWorldPlay">PLAY WORLD ↗</span></button>
+<button class="nmWorldCard" onclick="NitroMacro.play(5)" aria-label="Play Titan Steps"><span class="nmWorldIcon">🗿</span><span class="nmWorldTag">CLIMB / PLATFORM</span><strong>Titan Steps</strong><small>Scale a moving stone giant across shifting platforms.</small><span class="nmWorldPlay">PLAY WORLD ↗</span></button>
+<button class="nmWorldCard" onclick="NitroMacro.play(6)" aria-label="Play Zero-G Cargo"><span class="nmWorldIcon">📦</span><span class="nmWorldTag">PHYSICS / DOCKING</span><strong>Zero-G Cargo</strong><small>Move floating crates into the docking bay.</small><span class="nmWorldPlay">PLAY WORLD ↗</span></button>
+<button class="nmWorldCard" onclick="NitroMacro.play(7)" aria-label="Play Holo Pinball Reactor"><span class="nmWorldIcon">🔮</span><span class="nmWorldTag">ARCADE / PHYSICS</span><strong>Holo Pinball Reactor</strong><small>Keep the plasma ball alive and charge the reactor rings.</small><span class="nmWorldPlay">PLAY WORLD ↗</span></button></div>
+  <div class="nmPlayerShell" id="nmPlayerShell" style="display:none"><div class="nmPlayerBar"><strong id="nmNowPlaying">MACRO WORLD</strong><button onclick="NitroMacro.exitGame()">✕ CLOSE GAME</button></div><iframe id="nmGameFrame" title="MacroArcade games" loading="eager" sandbox="allow-scripts allow-same-origin" srcdoc="&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1&quot;&gt;
+&lt;title&gt;MacroArcade // Original 3D Worlds&lt;/title&gt;
+&lt;style&gt;
+:root{
+  --bg:#050713;--panel:#0b1024;--panel2:#111a36;--line:#2fe8ff;--purple:#9a5cff;--pink:#ff47cc;--yellow:#ffe66a;--text:#eef7ff;--muted:#aebbd8;
+}
+*{box-sizing:border-box}
+html{background:#050713}
+body{margin:0;color:var(--text);font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Arial,sans-serif;background:
+radial-gradient(circle at 15% 5%,#17377c55,transparent 24%),
+radial-gradient(circle at 80% 8%,#6e1b8e44,transparent 26%),
+linear-gradient(#070a18,#03040b 55%,#050713);min-height:100vh}
+body::after{content:&quot;&quot;;position:fixed;inset:0;pointer-events:none;background-image:linear-gradient(#ffffff08 1px,transparent 1px),linear-gradient(90deg,#ffffff08 1px,transparent 1px);background-size:32px 32px;mask-image:linear-gradient(to bottom,#0008,transparent 70%)}
+.wrap{max-width:1450px;margin:auto;padding:24px}
+.hero{position:relative;overflow:hidden;padding:28px;border:1px solid #315aa7;border-radius:24px;background:linear-gradient(135deg,#0d1736dd,#11102ddd 58%,#281037cc);box-shadow:0 30px 80px #0008,inset 0 0 60px #45dfff0b}
+.hero:before{content:&quot;MACROARCADE&quot;;position:absolute;right:-10px;top:-24px;font-size:clamp(60px,11vw,170px);font-weight:1000;letter-spacing:-8px;color:#ffffff05;white-space:nowrap}
+.kicker{font-size:12px;font-weight:900;letter-spacing:4px;color:var(--yellow)}
+h1{margin:10px 0 5px;font-size:clamp(34px,6vw,78px);line-height:.95;letter-spacing:-2px;text-shadow:0 0 28px #2fe8ff55}
+.hero p{max-width:850px;color:#c9d7f7;font-size:clamp(14px,2vw,18px)}
+.badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}.badge{padding:8px 11px;border:1px solid #ffffff20;border-radius:999px;background:#ffffff08;color:#d8ebff;font-size:12px;font-weight:800}
+.sectionTitle{display:flex;align-items:end;justify-content:space-between;gap:10px;margin:28px 2px 14px}.sectionTitle h2{margin:0;font-size:26px}.sectionTitle span{font-size:12px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));gap:14px}
+.card{position:relative;overflow:hidden;border:1px solid #263a69;border-radius:18px;background:linear-gradient(160deg,#121935,#090d1f);min-height:255px;transition:.18s ease;box-shadow:0 12px 34px #0006}
+.card:hover{transform:translateY(-4px);border-color:#55e9ff;box-shadow:0 20px 48px #0009,0 0 30px #29e8ff1f}
+.art{height:118px;position:relative;display:flex;align-items:center;justify-content:center;font-size:62px;background:radial-gradient(circle at 50% 38%,#ffffff1c,transparent 30%),linear-gradient(135deg,#11244c,#3d1b60 57%,#0c6274)}
+.art:after{content:&quot;&quot;;position:absolute;inset:0;background:linear-gradient(115deg,transparent 30%,#ffffff1c 47%,transparent 60%);transform:translateX(-100%);animation:shine 5s infinite}
+@keyframes shine{0%,75%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.cardbody{padding:14px}.type{font-size:10px;font-weight:900;letter-spacing:2px;color:#54f1ff}.card h3{margin:6px 0 7px;font-size:18px}.card p{margin:0;color:#aebbd8;font-size:13px;line-height:1.45;min-height:56px}
+.play{width:100%;margin-top:12px;padding:11px 13px;border:0;border-radius:11px;color:#031018;background:linear-gradient(90deg,#39e7ff,#b273ff);font-weight:1000;cursor:pointer}.play:hover{filter:brightness(1.1)}
+#gameView{display:none;margin-top:22px;border:1px solid #2c6a8e;border-radius:22px;background:linear-gradient(180deg,#0b1025ee,#060812ee);overflow:hidden;box-shadow:0 24px 80px #000a,0 0 50px #27dfff18}
+.gameTop{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:14px 16px;border-bottom:1px solid #26385f;background:#0b1020}.gameTop b{font-size:16px}.gameTop small{color:#9fb8da}.exit{border:1px solid #ffffff22;background:#161d35;color:white;border-radius:10px;padding:9px 12px;font-weight:900;cursor:pointer}
+.gameBody{padding:14px}.hud{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:8px 4px;color:#c8fbff;font-size:13px;font-weight:800}.help{color:#b9c8e4;font-size:12px;margin:3px 4px 10px}
+.canvasWrap{position:relative;border:1px solid #31527b;border-radius:18px;overflow:hidden;background:#02040b;box-shadow:inset 0 0 80px #000b,0 0 24px #00eaff12}
+canvas{display:block;width:100%;aspect-ratio:16/9;background:#02040b;outline:none}.scan{position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(180deg,#ffffff05 0 1px,transparent 1px 4px);mix-blend-mode:screen;opacity:.25}.corner{position:absolute;width:35px;height:35px;border-color:#50ecff;opacity:.7}.tl{left:10px;top:10px;border-left:2px solid;border-top:2px solid}.tr{right:10px;top:10px;border-right:2px solid;border-top:2px solid}.bl{left:10px;bottom:10px;border-left:2px solid;border-bottom:2px solid}.br{right:10px;bottom:10px;border-right:2px solid;border-bottom:2px solid}
+.mobileControls{display:none;grid-template-columns:repeat(5,1fr);gap:7px;margin-top:10px}.mobileControls button{min-height:44px;border:1px solid #30456d;background:#101a32;color:#fff;border-radius:10px;font-weight:900}
+@media(max-width:700px){.wrap{padding:12px}.hero{padding:20px}.grid{grid-template-columns:1fr}.mobileControls{display:grid}.sectionTitle{align-items:start;flex-direction:column}}
+@media(prefers-reduced-motion:reduce){.art:after{animation:none}.card{transition:none}}
+
+/* Embedded game engine only: NitroArcade supplies the entire surrounding interface. */
+html,body{margin:0;overflow:hidden;background:#080715!important}
+.wrap{max-width:none;padding:0}
+.hero,.sectionTitle,#grid{display:none!important}
+#gameView{margin:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;background:#0b0920!important}
+.gameTop{background:#16102c!important;border-color:#5c338a!important}
+.gameBody{padding:10px}
+.canvasWrap{border-color:#8b4dd6!important}
+.exit{background:#382059!important;border-color:#a365ed!important}
+@media(max-width:700px){.mobileControls{display:grid}}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;wrap&quot;&gt;
+  &lt;section class=&quot;hero&quot;&gt;
+    &lt;div class=&quot;kicker&quot;&gt;ALIN 916 // ORIGINAL BUILD&lt;/div&gt;
+    &lt;h1&gt;MACROARCADE&lt;br&gt;3D WORLDS&lt;/h1&gt;
+    &lt;p&gt;Eight original games. Eight different mechanics. No reskinned shooter copies. Everything below is self-contained and runs offline in one HTML file.&lt;/p&gt;
+    &lt;div class=&quot;badges&quot;&gt;&lt;span class=&quot;badge&quot;&gt;◈ SOFTWARE 3D ENGINE&lt;/span&gt;&lt;span class=&quot;badge&quot;&gt;◉ OFFLINE&lt;/span&gt;&lt;span class=&quot;badge&quot;&gt;⌨ KEYBOARD + TOUCH&lt;/span&gt;&lt;span class=&quot;badge&quot;&gt;✦ ORIGINAL WORLDS&lt;/span&gt;&lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;div class=&quot;sectionTitle&quot;&gt;&lt;h2&gt;Choose a world&lt;/h2&gt;&lt;span&gt;Each game has its own rules and controls.&lt;/span&gt;&lt;/div&gt;
+  &lt;section class=&quot;grid&quot; id=&quot;grid&quot;&gt;&lt;/section&gt;
+
+  &lt;section id=&quot;gameView&quot;&gt;
+    &lt;div class=&quot;gameTop&quot;&gt;&lt;div&gt;&lt;b id=&quot;gameName&quot;&gt;GAME&lt;/b&gt;&lt;br&gt;&lt;small id=&quot;gameTag&quot;&gt;ORIGINAL 3D WORLD&lt;/small&gt;&lt;/div&gt;&lt;button class=&quot;exit&quot; id=&quot;exitBtn&quot;&gt;✕ EXIT TO ARCADE&lt;/button&gt;&lt;/div&gt;
+    &lt;div class=&quot;gameBody&quot;&gt;
+      &lt;div class=&quot;hud&quot;&gt;&lt;span id=&quot;hudLeft&quot;&gt;READY&lt;/span&gt;&lt;span id=&quot;hudRight&quot;&gt;SCORE 0&lt;/span&gt;&lt;/div&gt;
+      &lt;div class=&quot;help&quot; id=&quot;help&quot;&gt;Controls&lt;/div&gt;
+      &lt;div class=&quot;canvasWrap&quot;&gt;
+        &lt;canvas id=&quot;c&quot; width=&quot;960&quot; height=&quot;540&quot; tabindex=&quot;0&quot;&gt;&lt;/canvas&gt;&lt;div class=&quot;scan&quot;&gt;&lt;/div&gt;&lt;i class=&quot;corner tl&quot;&gt;&lt;/i&gt;&lt;i class=&quot;corner tr&quot;&gt;&lt;/i&gt;&lt;i class=&quot;corner bl&quot;&gt;&lt;/i&gt;&lt;i class=&quot;corner br&quot;&gt;&lt;/i&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;mobileControls&quot; id=&quot;touchControls&quot;&gt;
+        &lt;button data-k=&quot;a&quot;&gt;◀&lt;/button&gt;&lt;button data-k=&quot;w&quot;&gt;▲&lt;/button&gt;&lt;button data-k=&quot;s&quot;&gt;▼&lt;/button&gt;&lt;button data-k=&quot;d&quot;&gt;▶&lt;/button&gt;&lt;button data-k=&quot; &quot;&gt;JUMP&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+&lt;/div&gt;
+&lt;script&gt;
+(()=&gt;{
+&#x27;use strict&#x27;;
+const games=[
+ {name:&#x27;Neon Rail Grinder&#x27;,icon:&#x27;🚈&#x27;,tag:&#x27;SPEED / TRICK&#x27;,desc:&#x27;Grind three magnetic rails above a megacity. Switch rails, jump broken sections, collect overcharge shards.&#x27;,help:&#x27;A/D or ←/→ switch rails • SPACE jump • survive the broken track&#x27;,start:railGame},
+ {name:&#x27;Voxel Vault Heist&#x27;,icon:&#x27;🧱&#x27;,tag:&#x27;STEALTH / MAZE&#x27;,desc:&#x27;Explore a first-person block vault. Grab three gold cores while scanner walls sweep the corridors.&#x27;,help:&#x27;WASD move • ←/→ turn • collect 3 cores • avoid red scanners&#x27;,start:vaultGame},
+ {name:&#x27;Orbital Forge&#x27;,icon:&#x27;🛰️&#x27;,tag:&#x27;BUILD / DEFEND&#x27;,desc:&#x27;Build a rotating station in orbit. Modules earn credits, but meteor strikes can destroy weak sections.&#x27;,help:&#x27;CLICK around the planet to build • Q/E rotate orbit • keep the station alive&#x27;,start:orbitGame},
+ {name:&#x27;Prism Wing&#x27;,icon:&#x27;🪽&#x27;,tag:&#x27;FLIGHT / EXPLORATION&#x27;,desc:&#x27;Pilot a crystal glider through floating islands, glowing rings, and thermal columns in an endless sky.&#x27;,help:&#x27;W/S pitch • A/D steer • SPACE climb • SHIFT dive • fly through rings&#x27;,start:wingGame},
+ {name:&#x27;Labyrinth Shift&#x27;,icon:&#x27;🌀&#x27;,tag:&#x27;PUZZLE / FIRST PERSON&#x27;,desc:&#x27;The maze reconfigures whenever you touch a switch. Remember routes while the walls rotate around you.&#x27;,help:&#x27;WASD move • ←/→ turn • find all 3 shift switches&#x27;,start:mazeGame},
+ {name:&#x27;Titan Steps&#x27;,icon:&#x27;🗿&#x27;,tag:&#x27;CLIMB / PLATFORM&#x27;,desc:&#x27;Scale a walking stone giant. Its shoulders, arms, and armor move while you jump between body platforms.&#x27;,help:&#x27;A/D move • SPACE jump • keep climbing as the titan moves&#x27;,start:titanGame},
+ {name:&#x27;Zero-G Cargo&#x27;,icon:&#x27;📦&#x27;,tag:&#x27;PHYSICS / DOCKING&#x27;,desc:&#x27;Push floating cargo crates through a zero-gravity bay and dock them without smashing the fragile containers.&#x27;,help:&#x27;WASD thrust • arrows rotate • SPACE push cargo • dock 4 crates&#x27;,start:cargoGame},
+ {name:&#x27;Holo Pinball Reactor&#x27;,icon:&#x27;🔮&#x27;,tag:&#x27;ARCADE / PHYSICS&#x27;,desc:&#x27;A tilted neon pinball table rendered in perspective. Keep the plasma orb alive and charge all three reactor rings.&#x27;,help:&#x27;A/D flippers • SPACE launch • hit reactor rings for multipliers&#x27;,start:pinballGame}
+];
+const grid=document.getElementById(&#x27;grid&#x27;),view=document.getElementById(&#x27;gameView&#x27;),canvas=document.getElementById(&#x27;c&#x27;),ctx=canvas.getContext(&#x27;2d&#x27;);
+const hudL=document.getElementById(&#x27;hudLeft&#x27;),hudR=document.getElementById(&#x27;hudRight&#x27;),helpEl=document.getElementById(&#x27;help&#x27;),nameEl=document.getElementById(&#x27;gameName&#x27;);
+let raf=0,cleanup=()=&gt;{},keys={};
+function renderCards(){grid.innerHTML=games.map((g,i)=&gt;`&lt;article class=&quot;card&quot;&gt;&lt;div class=&quot;art&quot;&gt;${g.icon}&lt;/div&gt;&lt;div class=&quot;cardbody&quot;&gt;&lt;div class=&quot;type&quot;&gt;${g.tag}&lt;/div&gt;&lt;h3&gt;${g.name}&lt;/h3&gt;&lt;p&gt;${g.desc}&lt;/p&gt;&lt;button class=&quot;play&quot; data-i=&quot;${i}&quot;&gt;PLAY WORLD ▶&lt;/button&gt;&lt;/div&gt;&lt;/article&gt;`).join(&#x27;&#x27;);grid.querySelectorAll(&#x27;.play&#x27;).forEach(b=&gt;b.addEventListener(&#x27;click&#x27;,()=&gt;openGame(+b.dataset.i)));}
+function openGame(i){stop();const g=games[i];view.style.display=&#x27;block&#x27;;nameEl.textContent=g.icon+&#x27; &#x27;+g.name;helpEl.textContent=g.help;hudL.textContent=g.tag;hudR.textContent=&#x27;READY&#x27;;canvas.focus();cleanup=g.start()||(()=&gt;{});}
+function stop(){cancelAnimationFrame(raf);raf=0;cleanup();cleanup=()=&gt;{};keys={};canvas.onclick=null;}
+document.getElementById(&#x27;exitBtn&#x27;).addEventListener(&#x27;click&#x27;,()=&gt;{stop();view.style.display=&#x27;none&#x27;;window.scrollTo(0,0)});
+addEventListener(&#x27;keydown&#x27;,e=&gt;{if(view.style.display===&#x27;block&#x27;){keys[e.key.toLowerCase()]=true;if([&#x27; &#x27;,&#x27;arrowup&#x27;,&#x27;arrowdown&#x27;,&#x27;arrowleft&#x27;,&#x27;arrowright&#x27;].includes(e.key.toLowerCase()))e.preventDefault();}});
+addEventListener(&#x27;keyup&#x27;,e=&gt;{keys[e.key.toLowerCase()]=false});
+document.querySelectorAll(&#x27;#touchControls button&#x27;).forEach(b=&gt;{const k=b.dataset.k;[&#x27;pointerdown&#x27;,&#x27;pointerenter&#x27;].forEach(ev=&gt;b.addEventListener(ev,e=&gt;{if(e.buttons||ev===&#x27;pointerdown&#x27;)keys[k]=true}));[&#x27;pointerup&#x27;,&#x27;pointerleave&#x27;,&#x27;pointercancel&#x27;].forEach(ev=&gt;b.addEventListener(ev,()=&gt;keys[k]=false));});
+function loop(fn){let last=performance.now();function f(t){const dt=Math.min(2,(t-last)/16.6667);last=t;fn(dt,t);raf=requestAnimationFrame(f)}raf=requestAnimationFrame(f)}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
+function rnd(seed){const x=Math.sin(seed*12.9898)*43758.5453;return x-Math.floor(x)}
+function bg(a=&#x27;#071022&#x27;,b=&#x27;#180c34&#x27;){const g=ctx.createLinearGradient(0,0,0,540);g.addColorStop(0,a);g.addColorStop(1,b);ctx.fillStyle=g;ctx.fillRect(0,0,960,540)}
+function stars(t=0,n=100){ctx.fillStyle=&#x27;#fff&#x27;;for(let i=0;i&lt;n;i++){let x=(rnd(i)*960-t*(.2+rnd(i+8))%960+960)%960,y=rnd(i+2)*540,s=1+rnd(i+4)*1.5;ctx.globalAlpha=.25+rnd(i+7)*.75;ctx.fillRect(x,y,s,s)}ctx.globalAlpha=1}
+function project(p,cam){let dx=p.x-cam.x,dy=p.y-cam.y,dz=p.z-cam.z;let cy=Math.cos(-cam.yaw),sy=Math.sin(-cam.yaw);let rx=dx*cy-dz*sy,rz=dx*sy+dz*cy;let cp=Math.cos(cam.pitch||0),sp=Math.sin(cam.pitch||0);let ry=dy*cp-rz*sp;rz=dy*sp+rz*cp;if(rz&lt;=.12)return null;let s=(cam.f||470)/rz;return{x:480+rx*s,y:270-ry*s,s,z:rz}}
+function line3(a,b,cam,color=&#x27;#5defff&#x27;,w=2){let A=project(a,cam),B=project(b,cam);if(!A||!B)return;ctx.strokeStyle=color;ctx.lineWidth=w;ctx.beginPath();ctx.moveTo(A.x,A.y);ctx.lineTo(B.x,B.y);ctx.stroke()}
+function cube(x,y,z,s,cam,color=&#x27;#25ddff&#x27;){let P=[];for(let dx of[-1,1])for(let dy of[-1,1])for(let dz of[-1,1]){let p=project({x:x+dx*s,y:y+dy*s,z:z+dz*s},cam);if(p)P.push(p)}if(P.length&lt;4)return;let minx=Math.min(...P.map(p=&gt;p.x)),maxx=Math.max(...P.map(p=&gt;p.x)),miny=Math.min(...P.map(p=&gt;p.y)),maxy=Math.max(...P.map(p=&gt;p.y));if(maxx&lt;0||minx&gt;960||maxy&lt;0||miny&gt;540)return;ctx.fillStyle=color;ctx.globalAlpha=.72;ctx.fillRect(minx,miny,maxx-minx,maxy-miny);ctx.globalAlpha=1;ctx.strokeStyle=&#x27;#ffffff55&#x27;;ctx.lineWidth=1;ctx.strokeRect(minx,miny,maxx-minx,maxy-miny)}
+function grid3(cam,color=&#x27;#1e4965&#x27;){ctx.strokeStyle=color;ctx.lineWidth=1;for(let z=Math.floor(cam.z/2)*2+2;z&lt;cam.z+34;z+=2)line3({x:-18,y:0,z},{x:18,y:0,z},cam,color,1);for(let x=-18;x&lt;=18;x+=2)line3({x,y:0,z:cam.z+1},{x,y:0,z:cam.z+34},cam,color,1)}
+function ring3(x,y,z,r,cam,color){let c=project({x,y,z},cam);if(!c)return;ctx.strokeStyle=color;ctx.lineWidth=clamp(90/c.z,2,12);ctx.beginPath();ctx.arc(c.x,c.y,clamp(r*c.s,5,130),0,Math.PI*2);ctx.stroke()}
+function railGame(){let s={lane:0,target:0,y:1.25,vy:0,z:0,speed:.18,score:0,combo:0,hp:3};loop((dt)=&gt;{if(keys.a||keys.arrowleft){s.target=-1;keys.a=keys.arrowleft=false}if(keys.d||keys.arrowright){s.target=1;keys.d=keys.arrowright=false}if(keys.w||keys.arrowup){s.target=0;keys.w=keys.arrowup=false}s.lane+=(s.target-s.lane)*.13*dt;if(keys[&#x27; &#x27;]&amp;&amp;s.y&lt;=1.251){s.vy=.22;keys[&#x27; &#x27;]=false}s.y+=s.vy*dt;s.vy-=.012*dt;if(s.y&lt;1.25){s.y=1.25;s.vy=0}s.z+=s.speed*dt;s.speed=Math.min(.48,s.speed+.000018*dt);s.score+=Math.round(s.speed*7*dt);bg(&#x27;#030611&#x27;,&#x27;#180829&#x27;);let cam={x:s.lane*3,y:2.2,z:s.z,yaw:0,f:520};grid3(cam,&#x27;#153f66&#x27;);for(let i=1;i&lt;42;i++){let zz=Math.floor(s.z/3)*3+i*3;for(let ln=-1;ln&lt;=1;ln++){let gap=((i+ln*4)%13===0);if(!gap){line3({x:ln*3-.65,y:.1,z:zz-1.5},{x:ln*3-.65,y:.1,z:zz+1.5},cam,ln===s.target?&#x27;#52f4ff&#x27;:&#x27;#334a79&#x27;,3);line3({x:ln*3+.65,y:.1,z:zz-1.5},{x:ln*3+.65,y:.1,z:zz+1.5},cam,ln===s.target?&#x27;#52f4ff&#x27;:&#x27;#334a79&#x27;,3)}if((i*7+ln*3)%17===5)cube(ln*3,1,zz,.28,cam,&#x27;#ffd84f&#x27;)}}let p=project({x:s.lane*3,y:s.y,z:s.z+4},cam);if(p){ctx.fillStyle=&#x27;#fff279&#x27;;ctx.shadowBlur=18;ctx.shadowColor=&#x27;#ffe45e&#x27;;ctx.beginPath();ctx.arc(p.x,p.y,14,0,7);ctx.fill();ctx.shadowBlur=0}hudL.textContent=`RAIL ${Math.round(s.z)}m • LIVES ${s.hp}`;hudR.textContent=`SCORE ${s.score} • SPEED ${Math.round(s.speed*900)}`})}
+function vaultGame(){let s={x:0,z:2,yaw:0,cores:0,hp:100,t:0};let cores=[[-4,8],[4,14],[0,21]],scanners=[7,12,18];loop((dt,t)=&gt;{let turn=((keys.arrowright?1:0)-(keys.arrowleft?1:0))*0.035*dt;s.yaw+=turn;let f=((keys.w?1:0)-(keys.s?1:0))*.07*dt,st=((keys.d?1:0)-(keys.a?1:0))*.07*dt;s.x+=Math.sin(s.yaw)*f+Math.cos(s.yaw)*st;s.z+=Math.cos(s.yaw)*f-Math.sin(s.yaw)*st;s.x=clamp(s.x,-5.4,5.4);s.z=clamp(s.z,1,25);s.t+=dt;for(const c of cores)if(c[1]&lt;99&amp;&amp;Math.hypot(s.x-c[0],s.z-c[1])&lt;.65){c[1]=999;s.cores++}for(const z of scanners){let sx=Math.sin(t/650+z)*4.5;if(Math.abs(s.z-z)&lt;.35&amp;&amp;Math.abs(s.x-sx)&lt;.7)s.hp=Math.max(0,s.hp-.18*dt)}bg(&#x27;#040913&#x27;,&#x27;#10091c&#x27;);let cam={x:s.x,y:1.8,z:s.z,yaw:s.yaw,f:520};grid3(cam,&#x27;#193a51&#x27;);for(let z=4;z&lt;25;z+=2){if(z%4!==0){cube(-5.7,1.3,z,.65,cam,&#x27;#1b3659&#x27;);cube(5.7,1.3,z,.65,cam,&#x27;#1b3659&#x27;)}if(z%6===0)cube(0,1.3,z,.7,cam,&#x27;#203b5c&#x27;)}for(const c of cores)if(c[1]&lt;90)cube(c[0],1,c[1],.32,cam,&#x27;#ffd63c&#x27;);for(const z of scanners){let sx=Math.sin(t/650+z)*4.5;line3({x:sx,y:.2,z},{x:sx,y:3.2,z},cam,&#x27;#ff315d&#x27;,5)}let vig=ctx.createRadialGradient(480,270,80,480,270,500);vig.addColorStop(0,&#x27;#0000&#x27;);vig.addColorStop(1,&#x27;#000d&#x27;);ctx.fillStyle=vig;ctx.fillRect(0,0,960,540);hudL.textContent=`CORES ${s.cores}/3 • INTEGRITY ${Math.round(s.hp)}%`;hudR.textContent=s.cores===3?&#x27;VAULT OPEN — ESCAPE!&#x27;:`X ${s.x.toFixed(1)} Z ${s.z.toFixed(1)}`})}
+function orbitGame(){let s={angle:0,credits:350,mods:[],meteors:[],score:0,t:0};canvas.onclick=e=&gt;{let r=canvas.getBoundingClientRect(),mx=(e.clientX-r.left)*960/r.width,my=(e.clientY-r.top)*540/r.height;if(s.credits&lt;100)return;let a=Math.atan2((my-270)/.55,mx-480);s.mods.push({a,hp:3,rad:145+(s.mods.length%3)*35});s.credits-=100};loop((dt,t)=&gt;{s.t+=dt;s.angle+=((keys.e?1:0)-(keys.q?1:0))*.02*dt+.002*dt;if(Math.floor(s.t)%180===0&amp;&amp;s.meteors.length&lt;6)s.meteors.push({a:rnd(s.t)*Math.PI*2,rad:500,hp:1});if(Math.floor(s.t)%120===0){s.credits+=s.mods.length;s.score+=s.mods.length}s.meteors.forEach(m=&gt;{m.rad-=.7*dt;if(m.rad&lt;170){let hit=s.mods.find(mm=&gt;Math.abs(Math.atan2(Math.sin(mm.a+s.angle-m.a),Math.cos(mm.a+s.angle-m.a)))&lt;.18&amp;&amp;mm.hp&gt;0);if(hit){hit.hp--;m.rad=520}else if(m.rad&lt;90)m.rad=520}});bg(&#x27;#02040d&#x27;,&#x27;#0b1330&#x27;);stars(t/35,130);ctx.fillStyle=&#x27;#0f3970&#x27;;ctx.beginPath();ctx.arc(480,270,72,0,7);ctx.fill();ctx.strokeStyle=&#x27;#41eaff&#x27;;ctx.lineWidth=3;ctx.stroke();s.mods.forEach((m,i)=&gt;{if(m.hp&lt;=0)return;let a=m.a+s.angle,x=480+Math.cos(a)*m.rad,y=270+Math.sin(a)*m.rad*.55;ctx.strokeStyle=&#x27;#ffffff22&#x27;;ctx.beginPath();ctx.moveTo(480,270);ctx.lineTo(x,y);ctx.stroke();ctx.fillStyle=i%2?&#x27;#39e7ff&#x27;:&#x27;#ad72ff&#x27;;ctx.fillRect(x-18,y-11,36,22);ctx.fillStyle=&#x27;#fff&#x27;;ctx.fillRect(x-8,y-4,16,8)});s.meteors.forEach(m=&gt;{let x=480+Math.cos(m.a)*m.rad,y=270+Math.sin(m.a)*m.rad*.55;ctx.fillStyle=&#x27;#ff7c4f&#x27;;ctx.beginPath();ctx.arc(x,y,9,0,7);ctx.fill()});hudL.textContent=`CREDITS ${Math.floor(s.credits)} • MODULES ${s.mods.filter(m=&gt;m.hp&gt;0).length}`;hudR.textContent=`STATION SCORE ${s.score}`}) ;return()=&gt;canvas.onclick=null}
+function wingGame(){let s={x:0,y:3,z:0,yaw:0,pitch:0,score:0,speed:.16};let rings=Array.from({length:42},(_,i)=&gt;({x:Math.sin(i*1.31)*5,y:2.8+Math.sin(i*.73)*2.3,z:8+i*7,hit:false}));loop((dt,t)=&gt;{s.yaw+=((keys.d?1:0)-(keys.a?1:0))*.025*dt;s.pitch+=((keys.w?1:0)-(keys.s?1:0))*.018*dt;s.pitch=clamp(s.pitch,-.55,.55);if(keys[&#x27; &#x27;])s.y+=.06*dt;if(keys.shift)s.y-=.07*dt;s.x+=Math.sin(s.yaw)*s.speed*dt;s.z+=Math.cos(s.yaw)*s.speed*dt;s.y+=Math.sin(s.pitch)*s.speed*dt;s.y=clamp(s.y,.7,8);bg(&#x27;#14335d&#x27;,&#x27;#3c1f60&#x27;);for(let i=0;i&lt;12;i++){let ix=(rnd(i)*14-7),iz=10+i*12,iy=1+rnd(i+10)*2;cube(ix,iy,iz,1.4,{x:s.x,y:s.y,z:s.z,yaw:s.yaw,pitch:s.pitch*.35,f:500},i%2?&#x27;#2b7f79&#x27;:&#x27;#725899&#x27;)}let cam={x:s.x,y:s.y,z:s.z,yaw:s.yaw,pitch:s.pitch*.35,f:500};for(const r of rings){if(!r.hit&amp;&amp;Math.hypot(r.x-s.x,r.y-s.y,r.z-s.z)&lt;1.4){r.hit=true;s.score++}if(!r.hit)ring3(r.x,r.y,r.z,1.05,cam,r.z%2?&#x27;#ff63db&#x27;:&#x27;#4defff&#x27;)}ctx.fillStyle=&#x27;#ffe965&#x27;;ctx.beginPath();ctx.moveTo(480,245);ctx.lineTo(450,295);ctx.lineTo(480,282);ctx.lineTo(510,295);ctx.closePath();ctx.fill();hudL.textContent=`RINGS ${s.score} • ALT ${s.y.toFixed(1)}`;hudR.textContent=`DIST ${Math.round(s.z)}m • HEADING ${Math.round(s.yaw*57.3)%360}°`})}
+function mazeGame(){let s={x:0,z:2,yaw:0,phase:0,found:0};let sw=[[-4,7],[3,14],[-2,22]];loop((dt,t)=&gt;{s.yaw+=((keys.arrowright?1:0)-(keys.arrowleft?1:0))*.035*dt;let f=((keys.w?1:0)-(keys.s?1:0))*.065*dt,st=((keys.d?1:0)-(keys.a?1:0))*.065*dt;s.x+=Math.sin(s.yaw)*f+Math.cos(s.yaw)*st;s.z+=Math.cos(s.yaw)*f-Math.sin(s.yaw)*st;s.x=clamp(s.x,-5.2,5.2);s.z=clamp(s.z,1,27);for(let i=s.found;i&lt;sw.length;i++){if(Math.hypot(s.x-sw[i][0],s.z-sw[i][1])&lt;.65){s.found++;s.phase++;break}}bg(&#x27;#070414&#x27;,&#x27;#1a0830&#x27;);let cam={x:s.x,y:1.8,z:s.z,yaw:s.yaw,f:520};grid3(cam,&#x27;#3c285f&#x27;);for(let i=0;i&lt;40;i++){let z=4+i*.7,x=(((i*5+s.phase*3)%11)-5);if((i+s.phase)%4!==0)cube(x,1.2,z,.62,cam,i%2?&#x27;#40376e&#x27;:&#x27;#1e5b66&#x27;)}for(let i=s.found;i&lt;sw.length;i++)cube(sw[i][0],.9,sw[i][1],.3,cam,&#x27;#ffe45e&#x27;);hudL.textContent=`SHIFT SWITCHES ${s.found}/3 • PHASE ${s.phase}`;hudR.textContent=s.found===3?&#x27;EXIT ALIGNED!&#x27;:`X ${s.x.toFixed(1)} Z ${s.z.toFixed(1)}`})}
+function titanGame(){let s={x:0,y:1.1,vy:0,z:0,on:true,score:0};loop((dt,t)=&gt;{if(keys.a)s.x-=.055*dt;if(keys.d)s.x+=.055*dt;s.x=clamp(s.x,-4,4);if(keys[&#x27; &#x27;]&amp;&amp;s.on){s.vy=.21;s.on=false;keys[&#x27; &#x27;]=false}s.y+=s.vy*dt;s.vy-=.011*dt;let floor=1.05+Math.sin(t/550+s.z*.8)*.18;if(s.y&lt;=floor){s.y=floor;s.vy=0;s.on=true}s.z+=.045*dt;s.score=Math.max(s.score,s.z);bg(&#x27;#0c162a&#x27;,&#x27;#39233a&#x27;);let cam={x:s.x,y:s.y+1.5,z:s.z,yaw:0,f:500};for(let i=0;i&lt;46;i++){let zz=3+i*1.55,xx=Math.sin(i*.83)*3.2,yy=1.2+Math.sin(t/500+i)*.45;cube(xx,yy,zz,.62,cam,i%7===0?&#x27;#b99765&#x27;:&#x27;#625d55&#x27;)}ctx.fillStyle=&#x27;#39e7ff&#x27;;ctx.fillRect(470,270,20,40);hudL.textContent=`CLIMB ${Math.round(s.score)}m • HEIGHT ${s.y.toFixed(1)}`;hudR.textContent=`TITAN STRIDE ${Math.round(50+Math.sin(t/400)*25)}%`})}
+function cargoGame(){let s={x:0,y:1.5,z:2,yaw:0,docked:0};let boxes=[{x:-3,y:1,z:8,vx:0,vz:0},{x:2,y:1,z:11,vx:0,vz:0},{x:-1,y:1,z:15,vx:0,vz:0},{x:3,y:1,z:19,vx:0,vz:0}];loop((dt,t)=&gt;{s.yaw+=((keys.arrowright?1:0)-(keys.arrowleft?1:0))*.035*dt;let f=((keys.w?1:0)-(keys.s?1:0))*.055*dt,st=((keys.d?1:0)-(keys.a?1:0))*.055*dt;s.x+=Math.sin(s.yaw)*f+Math.cos(s.yaw)*st;s.z+=Math.cos(s.yaw)*f-Math.sin(s.yaw)*st;if(keys[&#x27; &#x27;]){for(const b of boxes){let d=Math.hypot(b.x-s.x,b.z-s.z);if(d&lt;2&amp;&amp;!b.done){b.vx+=(b.x-s.x)/Math.max(.1,d)*.025*dt;b.vz+=(b.z-s.z)/Math.max(.1,d)*.025*dt}}}for(const b of boxes){if(b.done)continue;b.x+=b.vx*dt;b.z+=b.vz*dt;b.vx*=.995;b.vz*=.995;if(Math.hypot(b.x,b.z-24)&lt;1.25){b.done=true;s.docked++}}bg(&#x27;#020610&#x27;,&#x27;#111833&#x27;);stars(t/70,90);let cam={x:s.x,y:1.8,z:s.z,yaw:s.yaw,f:520};grid3(cam,&#x27;#173a58&#x27;);cube(0,1,24,1.1,cam,&#x27;#28d97f&#x27;);for(const b of boxes)if(!b.done)cube(b.x,1,b.z,.5,cam,&#x27;#f6b64a&#x27;);hudL.textContent=`DOCKED ${s.docked}/4`;hudR.textContent=s.docked===4?&#x27;ALL CARGO SECURE!&#x27;:&#x27;PUSH CRATES TO GREEN DOCK&#x27;})}
+function pinballGame(){let s={x:0,y:8,vx:0,vy:0,score:0,mult:1,launched:false};let targets=[[-2,5],[0,6],[2,5]];loop((dt,t)=&gt;{if(keys[&#x27; &#x27;]&amp;&amp;!s.launched){s.x=3.5;s.y=8;s.vx=-.04;s.vy=-.2;s.launched=true;keys[&#x27; &#x27;]=false}if(s.launched){s.vy+=.0045*dt;s.x+=s.vx*dt;s.y+=s.vy*dt;if(Math.abs(s.x)&gt;4.3){s.x=clamp(s.x,-4.3,4.3);s.vx*=-.92}for(const q of targets){let d=Math.hypot(s.x-q[0],s.y-q[1]);if(d&lt;.55){s.vy=-Math.abs(s.vy)-.08;s.vx+=(s.x-q[0])*.04;s.score+=100*s.mult;s.mult=Math.min(5,s.mult+1)}}if(s.y&gt;9.2){s.launched=false;s.mult=1}}bg(&#x27;#0a0618&#x27;,&#x27;#1c0b35&#x27;);let cam={x:0,y:11,z:-5,yaw:0,pitch:-.55,f:470};for(let y=0;y&lt;=9;y+=1)line3({x:-4.5,y:0,z:y},{x:4.5,y:0,z:y},cam,&#x27;#2a2755&#x27;,1);line3({x:-4.5,y:0,z:0},{x:-4.5,y:0,z:9},cam,&#x27;#55e7ff&#x27;,3);line3({x:4.5,y:0,z:0},{x:4.5,y:0,z:9},cam,&#x27;#55e7ff&#x27;,3);for(const q of targets)ring3(q[0],.2,q[1],.55,cam,&#x27;#ff57d4&#x27;);if(keys.a)line3({x:-3.2,y:.2,z:8.2},{x:-.7,y:.2,z:7.7},cam,&#x27;#ffe66a&#x27;,9);else line3({x:-3.2,y:.2,z:8.2},{x:-1.2,y:.2,z:8.5},cam,&#x27;#ffe66a&#x27;,9);if(keys.d)line3({x:3.2,y:.2,z:8.2},{x:.7,y:.2,z:7.7},cam,&#x27;#ffe66a&#x27;,9);else line3({x:3.2,y:.2,z:8.2},{x:1.2,y:.2,z:8.5},cam,&#x27;#ffe66a&#x27;,9);let p=project({x:s.x,y:.25,z:s.y},cam);if(p){ctx.fillStyle=&#x27;#7fffff&#x27;;ctx.beginPath();ctx.arc(p.x,p.y,12,0,7);ctx.fill()}hudL.textContent=`MULTIPLIER x${s.mult}`;hudR.textContent=`SCORE ${s.score}${s.launched?&#x27;&#x27;:&#x27; • SPACE TO LAUNCH&#x27;}`})}
+renderCards();
+window.addEventListener(&#x27;message&#x27;,event=&gt;{
+  if(!event.data||event.data.macroNitro!==true)return;
+  if(event.data.action===&#x27;play&#x27;&amp;&amp;Number.isInteger(event.data.index)&amp;&amp;event.data.index&gt;=0&amp;&amp;event.data.index&lt;games.length)openGame(event.data.index);
+  if(event.data.action===&#x27;stop&#x27;){stop();view.style.display=&#x27;none&#x27;;}
+});
+document.getElementById(&#x27;exitBtn&#x27;).addEventListener(&#x27;click&#x27;,()=&gt;parent.postMessage({macroNitro:true,action:&#x27;exit&#x27;},&#x27;*&#x27;));
+parent.postMessage({macroNitro:true,action:&#x27;ready&#x27;},&#x27;*&#x27;);
+})();
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+"></iframe></div>
+</section>
         <section id="gameView">
             <div class="game-topbar">
                 <div class="game-title-wrap">
@@ -3119,20 +3303,24 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
         let currentArcadePart='small';
         function showArcadePart(part){
             if(document.getElementById('aboutPage')?.classList.contains('active'))closeAboutPage();
-            if(!['small','big','challenge'].includes(part))part='small';
+            if(!['small','big','challenge','macro'].includes(part))part='small';
             currentArcadePart=part;
             const info={
               small:['Small Games','Detailed quick-play originals with clear goals, controls, game-specific previews and richer arcade presentation.'],
               big:['Big Games','Larger NitroArcade experiences with worlds, missions and longer sessions.'],
-              challenge:['Challenge','Beat the Hacker Challenge to discover the secret game.']
+              challenge:['Challenge','Beat the Hacker Challenge to discover the secret game.'],
+              macro:['MacroArcade Games','Eight original MacroArcade games, right here in the NitroArcade library.']
             };
             const title=document.getElementById('libraryPartTitle'),sub=document.getElementById('libraryPartSubtitle');
             if(title)title.textContent=info[part][0];if(sub)sub.textContent=info[part][1];
-            ['small','big','challenge'].forEach(p=>{
+            ['small','big','challenge','macro'].forEach(p=>{
               const b=document.getElementById('part'+p.charAt(0).toUpperCase()+p.slice(1));
               if(b)b.classList.toggle('active',p===part);
             });
-            const tools=document.getElementById('normalLibraryTools');if(tools)tools.style.display=part==='challenge'?'none':'flex';
+            const tools=document.getElementById('normalLibraryTools');if(tools)tools.style.display=(part==='challenge'||part==='macro')?'none':'flex';
+            const macroPanel=document.getElementById('nitroMacroWorlds');if(macroPanel)macroPanel.style.display=part==='macro'?'block':'none';
+            const gameGrid=document.getElementById('gameGrid');if(gameGrid)gameGrid.style.display=part==='macro'?'none':'';
+            const noResults=document.getElementById('noResults');if(noResults&&part==='macro')noResults.style.display='none';
             document.querySelectorAll('#gameGrid .game-card').forEach(card=>{
               const cp=card.dataset.arcadePart||(card.dataset.gameId==='hackerchallenge'?'challenge':'small');
               card.style.display=cp===part?'':'none';
@@ -6604,8 +6792,9 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
         <section class="about-page" id="aboutPage">
             <button class="btn about-back" id="aboutBack" onclick="closeAboutPage()">← BACK TO ARCADE</button>
             <div class="about-kicker">NITROARCADE // ABOUT</div>
+<div class="nmTeamNote"><strong>ONE TEAM, TWO ARCADES.</strong> NitroArcade brings our games, creative tools and community together. Alin, Arihant and Viyan are members of the same nine-person team and focus on MacroArcade, our companion project. Eight MacroArcade worlds are integrated into the NitroArcade game library — without changing NitroArcade’s design.</div>
             <h1 class="about-title">ONE ARCADE.<br><span>ENDLESS IDEAS.</span></h1>
-            <p class="about-lead">NitroArcade is a browser-based arcade platform created as a school AI project. Our goal is to bring different styles of games, challenges and experiments into one place — then keep making the arcade bigger, stranger and more fun.</p>
+            <p class="about-lead">NitroArcade is a browser-based arcade platform created as a school AI project for the ISG Forum at Indian School Al Ghubra. Thanks to the school and our teachers for the opportunity to turn our ideas into a playable project. Our goal is to bring different styles of games, challenges, creative tools and experiments into one place — and keep improving it together.</p>
 
             <div class="about-rule"></div>
 
@@ -6626,18 +6815,27 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
             </div>
 
             <div class="about-rule"></div>
+            <div class="about-grid">
+                <div class="about-section"><div class="about-kicker">02 // OUR STORY</div><h2>From one game to two arcades.</h2><p>CyberArcade began with one hacker-themed game. CrazyArcade and UltraArcade followed as experiments. NitroArcade grew into a larger collection of games, challenges and creator tools. Our teammate-led companion project, MacroArcade, adds eight original worlds to the same playable library.</p></div>
+                <div class="about-feature-list">
+                    <div class="about-feature"><b>MACROARCADE WORLDS</b><span>Eight games integrated directly into the NitroArcade game categories.</span></div>
+                    <div class="about-feature"><b>FAMILY MODE</b><span>Optional parent-activated bedtime and screen-time limits, with a reading library and homework corner.</span></div>
+                    <div class="about-feature"><b>ISG FORUM</b><span>Our school showcase and an opportunity to share what the team has created.</span></div>
+                </div>
+            </div>
+            <div class="about-rule"></div>
 
             <div class="team-heading">
-                <div><div class="about-kicker">02 // THE TEAM</div><h2>Meet the cast.</h2></div>
+                <div><div class="about-kicker">03 // THE TEAM</div><h2>Meet the cast.</h2></div>
                 <p>9 MEMBERS // 1 NITROARCADE</p>
             </div>
             <div class="team-grid">
                 <article class="team-card"><div class="team-number">PLAYER 01</div><div class="team-avatar">P</div><h3>Prabhav</h3><p>NITROARCADE TEAM</p></article>
                 <article class="team-card"><div class="team-number">PLAYER 02</div><div class="team-avatar">Z</div><h3>Zayaan</h3><p>NITROARCADE TEAM</p></article>
                 <article class="team-card"><div class="team-number">PLAYER 03</div><div class="team-avatar">S</div><h3>Shaun</h3><p>NITROARCADE TEAM</p></article>
-                <article class="team-card"><div class="team-number">PLAYER 04</div><div class="team-avatar">A</div><h3>Alin</h3><p>NITROARCADE TEAM</p></article>
-                <article class="team-card"><div class="team-number">PLAYER 05</div><div class="team-avatar">A</div><h3>Arihant</h3><p>NITROARCADE TEAM</p></article>
-                <article class="team-card"><div class="team-number">PLAYER 06</div><div class="team-avatar">V</div><h3>Viyan</h3><p>NITROARCADE TEAM</p></article>
+                <article class="team-card"><div class="team-number">PLAYER 04</div><div class="team-avatar">A</div><h3>Alin</h3><p>NITROARCADE TEAM · MACROARCADE</p></article>
+                <article class="team-card"><div class="team-number">PLAYER 05</div><div class="team-avatar">A</div><h3>Arihant</h3><p>NITROARCADE TEAM · MACROARCADE</p></article>
+                <article class="team-card"><div class="team-number">PLAYER 06</div><div class="team-avatar">V</div><h3>Viyan</h3><p>NITROARCADE TEAM · MACROARCADE</p></article>
                 <article class="team-card"><div class="team-number">PLAYER 07</div><div class="team-avatar">F</div><h3>Faizan</h3><p>NITROARCADE TEAM</p></article>
                 <article class="team-card"><div class="team-number">PLAYER 08</div><div class="team-avatar">H</div><h3>Haran</h3><p>NITROARCADE TEAM</p></article>
                 <article class="team-card"><div class="team-number">PLAYER 09</div><div class="team-avatar">V</div><h3>Vihaan</h3><p>NITROARCADE TEAM</p></article>
@@ -30533,6 +30731,150 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.con
 @media(max-width:760px){.nxDiscoveryButtons{grid-template-columns:repeat(3,minmax(0,1fr))}.nxDiscoveryButtons button{flex-direction:column;align-items:flex-start;min-height:112px}}
 @media(max-width:520px){.nxDiscoveryButtons{grid-template-columns:1fr}.nxDiscoveryButtons button{flex-direction:row;min-height:65px}}
 @media(prefers-reduced-motion:reduce){.nxDiscoveryButtons button{transition:none}}
+#featuredSection .nmWorlds{padding:16px 0 26px;max-width:none}
+#featuredSection .nmWorldHeader{display:none}
+#featuredSection .nmWorldGrid{margin-top:10px}
 </style>
+<script id="nitroMacroController">
+(()=>{const panel=document.getElementById('nitroMacroWorlds');const grid=document.getElementById('gameGrid');if(panel&&grid)grid.parentNode.insertBefore(panel,grid);})();
+window.NitroMacro=(()=>{
+ const names=['Neon Rail Grinder','Voxel Vault Heist','Orbital Forge','Prism Wing','Labyrinth Shift','Titan Steps','Zero-G Cargo','Holo Pinball Reactor'];
+ let ready=false,pending=-1;
+ const get=id=>document.getElementById(id);
+ function open(){
+   if(typeof showArcadePart==='function')showArcadePart('macro');
+ }
+ function play(index){if(!Number.isInteger(index)||index<0||index>=names.length)return;open();get('nmPlayerShell').style.display='block';get('nmNowPlaying').textContent='NOW PLAYING / '+names[index];
+  const frame=get('nmGameFrame');if(ready)frame.contentWindow.postMessage({macroNitro:true,action:'play',index},'*');else pending=index;
+  get('nmPlayerShell').scrollIntoView({behavior:'smooth',block:'start'});
+ }
+ function exitGame(){get('nmGameFrame').contentWindow.postMessage({macroNitro:true,action:'stop'},'*');get('nmPlayerShell').style.display='none';}
+ function close(){exitGame();if(typeof showArcadePart==='function')showArcadePart('small')}
+ window.addEventListener('message',event=>{if(event.source!==get('nmGameFrame')?.contentWindow||!event.data?.macroNitro)return;
+  if(event.data.action==='ready'){ready=true;if(pending>=0){const n=pending;pending=-1;get('nmGameFrame').contentWindow.postMessage({macroNitro:true,action:'play',index:n},'*')}}
+  if(event.data.action==='exit')exitGame();
+ });
+ return{open,play,close,exitGame};
+})();
+</script>
+
+<div id="nfGate" aria-label="NitroArcade reading and homework mode">
+ <div class="nf-wrap">
+  <div class="nf-top"><div class="nf-logo">🌙 NITROARCADE · FAMILY MODE</div><button id="nfParentGate">🔐 Parent settings</button></div>
+  <section class="nf-panel" style="margin-top:22px"><div class="nf-muted">TIME TO RECHARGE</div><h1>Games are resting. Your imagination isn't! ✨</h1>
+   <p id="nfReason">Your family's play schedule is active.</p><div class="nf-grid">
+    <div class="nf-card"><h2>📖 Digital Library</h2><p>Read original illustrated-in-your-imagination stories.</p><button id="nfShowBooks">OPEN BOOKS →</button></div>
+    <div class="nf-card"><h2>📚 Homework Corner</h2><p>Plan assignments, check them off, and write notes.</p><button id="nfShowHomework">OPEN HOMEWORK →</button></div>
+    <div class="nf-card"><h2>🌟 Quiet Time</h2><p>Take a break, stretch, draw on paper, or get ready for bed.</p><button id="nfShowQuiet">QUIET TIME →</button></div>
+   </div>
+  </section>
+  <section id="nfBooks" class="nf-panel nf-hidden" style="margin-top:18px">
+   <div class="nf-row"><button data-nf-back>← BACK</button><select id="nfBookChoice" aria-label="Choose a book"></select></div>
+   <div id="nfBookPage" class="nf-book"></div>
+   <div class="nf-row" style="justify-content:space-between"><button id="nfPrevPage">← PREVIOUS</button><span id="nfPageCount"></span><button id="nfNextPage">NEXT →</button></div>
+  </section>
+  <section id="nfHomework" class="nf-panel nf-hidden" style="margin-top:18px">
+   <button data-nf-back>← BACK</button><h2>📚 Homework Corner</h2>
+   <div class="nf-row"><input id="nfTaskInput" placeholder="Add a homework task" maxlength="160"><button id="nfAddTask">ADD TASK</button></div>
+   <div id="nfTaskList"></div><label>My study notes<textarea id="nfStudyNotes" style="background:#100c20;color:white;border:1px solid #a477d2;border-radius:9px;padding:12px;min-height:130px" placeholder="What did you learn today?"></textarea></label>
+  </section>
+  <section id="nfQuiet" class="nf-panel nf-hidden" style="margin-top:18px"><button data-nf-back>← BACK</button><h2>🌙 Quiet Time</h2><p>Put your screen down whenever you're ready. Rest is part of leveling up!</p><p>Try a paper sketch, a conversation with family, or a chapter of a physical book.</p></section>
+ </div>
+</div>
+
+<div id="nfSettings" class="nf-settings" role="dialog" aria-modal="true" aria-label="Parent controls">
+ <div class="nf-wrap"><div class="nf-panel">
+  <div class="nf-row" style="justify-content:space-between"><h2>🔐 Parent Control Center</h2><button id="nfCloseSettings">✕ CLOSE</button></div>
+  <div id="nfSetup"><p>Create a parent PIN (4–8 digits). A grown-up should set this up.</p>
+   <label>New PIN<input id="nfNewPin" type="password" inputmode="numeric" minlength="4" maxlength="8" autocomplete="new-password"></label>
+   <label>Confirm PIN<input id="nfConfirmPin" type="password" inputmode="numeric" minlength="4" maxlength="8" autocomplete="new-password"></label><button id="nfSavePin">CREATE PARENT PIN</button></div>
+  <div id="nfUnlock" class="nf-hidden"><p>Enter the parent PIN to edit family settings.</p><label>Parent PIN<input id="nfPinEntry" type="password" inputmode="numeric" maxlength="8" autocomplete="off"></label><button id="nfCheckPin">CONTINUE</button><p id="nfWaitInfo" class="nf-muted"></p></div>
+  <div id="nfPuzzle" class="nf-hidden"><p id="nfPuzzleQuestion"></p><label>Decoded answer<input id="nfPuzzleAnswer" autocomplete="off"></label><button id="nfCheckPuzzle">UNLOCK SETTINGS</button><p class="nf-muted">A second step for curious explorers. It is not a substitute for secure parental controls.</p></div>
+  <div id="nfControls" class="nf-hidden"><h3>⏰ Family play schedule</h3>
+   <p id="nfModeState" class="nf-muted">Family mode is OFF. Set your schedule, save it, then press TURN ON.</p>
+   <div class="nf-row"><button id="nfTurnOn" type="button">🌙 TURN ON FAMILY MODE</button><button id="nfTurnOff" type="button">☀ TURN OFF FAMILY MODE</button></div>
+   <div class="nf-row"><label>Games allowed from<input id="nfStart" type="time"></label><label>Games allowed until<input id="nfEnd" type="time"></label></div>
+   <label>Daily game time limit (minutes; 0 = no daily limit)<input id="nfMinutes" type="number" min="0" max="1440" step="5"></label>
+   <label><input id="nfForceRest" type="checkbox"> Lock games now (bedtime / homework)</label>
+   <p class="nf-muted">The schedule uses this computer's local clock. Games lock outside the allowed hours or after the daily limit.</p>
+   <button id="nfSaveControls">SAVE SETTINGS</button> <button id="nfLockNow">LOCK GAMES NOW</button>
+   <p class="nf-muted">To reset a forgotten PIN, a parent will need to clear this site's local browser data. Settings do not sync across devices.</p>
+  </div><p id="nfStatus" class="nf-error" aria-live="polite"></p>
+ </div></div>
+</div>
+<script id="nitroFamilyLogic">
+(()=>{
+'use strict';
+const $=id=>document.getElementById(id), key='nitroFamilyV1', usageKey='nitroFamilyUsageV1';
+const defaults={enabled:false,start:'07:00',end:'20:30',minutes:90,forceRest:false,pinHash:''};
+let config={...defaults},unlocked=false,bookIndex=0,pageIndex=0,puzzleAnswer='',failures=0,lockedUntil=0;
+const safeJSON=(key,fallback)=>{try{return JSON.parse(localStorage.getItem(key))||fallback}catch{return fallback}};
+config={...defaults,...safeJSON(key,{})};
+const save=()=>localStorage.setItem(key,JSON.stringify(config));
+const hash=async text=>{if(crypto?.subtle){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(text));return [...new Uint8Array(b)].map(v=>v.toString(16).padStart(2,'0')).join('')}return 'local:'+text.split('').map(x=>x.charCodeAt(0).toString(16)).join('')};
+const today=()=>new Date().toLocaleDateString('en-CA');
+let usage=safeJSON(usageKey,{day:today(),seconds:0});if(usage.day!==today())usage={day:today(),seconds:0};
+const minuteOf=t=>{let [h,m]=t.split(':').map(Number);return h*60+m};
+const withinWindow=()=>{let d=new Date(),now=d.getHours()*60+d.getMinutes(),a=minuteOf(config.start),b=minuteOf(config.end);return a===b?false:a<b?(now>=a&&now<b):(now>=a||now<b)};
+function reason(){if(!config.enabled)return '';if(config.forceRest)return 'Family rest mode is on. Reading and homework are still available.';if(!withinWindow())return `Games are available from ${config.start} until ${config.end}.`;if(config.minutes>0&&usage.seconds>=config.minutes*60)return 'Your daily game time is finished. Come back tomorrow!';return ''}
+function refresh(){const why=reason();$('nfGate').classList.toggle('nf-on',!!why);$('nfReason').textContent=why||'Games are available right now.';const side=$('nfSidebarButton');if(side)side.title=config.enabled?'Family Mode ON':'Family Mode OFF';if(why){document.querySelectorAll('canvas').forEach(c=>{try{c.blur()}catch{}})}}
+function showPanel(id){['nfBooks','nfHomework','nfQuiet'].forEach(x=>$(x).classList.toggle('nf-hidden',x!==id));$('nfGate').scrollTop=0}
+$('nfShowBooks').onclick=()=>showPanel('nfBooks');$('nfShowHomework').onclick=()=>showPanel('nfHomework');$('nfShowQuiet').onclick=()=>showPanel('nfQuiet');
+document.querySelectorAll('[data-nf-back]').forEach(b=>b.onclick=()=>showPanel(''));
+const books=[
+{title:'Barnaby Goes to the Moon!',pages:[
+['Barnaby Goes to the Moon!','Barnaby was a small, round bear with a very large telescope. Each night he waved to the Moon from his bedroom window. “I wonder if the Moon ever feels lonely,” he whispered.'],
+['A Most Unusual Invitation','One evening, a silver envelope floated down onto his pillow. It read: DEAR BARNABY, THE MOON LIBRARY NEEDS A NEW BOOK. PLEASE BRING A STORY. — THE MOONKEEPER. Barnaby packed a notebook, two biscuits, and his favorite red scarf.'],
+['The Paper Rocket','Barnaby folded a rocket from the biggest sheet of paper he could find. He drew stars on its wings and wrote one word on the nose: IMAGINE. The rocket trembled, shimmered, and lifted gently into the night.'],
+['A Very Quiet Landing','The Moon was quieter than a snow day. Barnaby hopped over tiny craters until he found a door shaped like a crescent. Behind it stood shelves filled with stories that twinkled like constellations.'],
+['The Moonkeeper','A rabbit in spectacles greeted him. “Our books have all been read,” said the Moonkeeper. “We need a brand-new adventure.” Barnaby opened his notebook, but every page was blank. He had been too busy traveling to write!'],
+['A Story Worth Telling','Then Barnaby smiled. He wrote about a bear who was brave enough to ask a question, a paper rocket powered by imagination, and a rabbit who loved stories. The Moonkeeper laughed with delight.'],
+['Home Before Sunrise','As the first sunlight reached the Moon, Barnaby climbed into his rocket. “Come back soon!” called the Moonkeeper. Back in bed, Barnaby looked up at the sky. The Moon seemed to shine a little brighter. THE END.']
+]},
+{title:'The Clockwork Garden',pages:[
+['The Clockwork Garden','Mira discovered a garden where every flower had tiny golden gears. The daisies ticked softly, and the sunflowers turned like clock hands.'],
+['The Missing Minute','One morning, the garden stopped. A little mechanical ladybird explained that someone had misplaced the garden’s most important minute.'],
+['The Gentle Fix','Mira searched beneath leaves and beside the fountain. She found a minute trapped in a dewdrop and carefully returned it to the clock tower.'],
+['Time for Kindness','The garden began to tick again. The ladybird thanked Mira. “The best minutes,” it said, “are the ones we share.” THE END.']
+]},
+{title:'The Lighthouse in the Clouds',pages:[
+['The Lighthouse in the Clouds','Noah lived in a village above the clouds, where floating boats sailed on winds instead of water.'],
+['A Lost Star','One night, a small star lost its way. Noah lit the cloud lighthouse and guided the star between silver mountains.'],
+['A Bright Return','The star found its constellation and blinked three times in thanks. Noah waved from the lighthouse balcony. THE END.']
+]}];
+$('nfBookChoice').innerHTML=books.map((b,i)=>`<option value="${i}">${b.title}</option>`).join('');
+function renderBook(){const b=books[bookIndex],p=b.pages[pageIndex];$('nfBookPage').replaceChildren();const h=document.createElement('h2'),txt=document.createElement('p');h.textContent=p[0];txt.textContent=p[1];$('nfBookPage').append(h,txt);$('nfPageCount').textContent=`Page ${pageIndex+1} of ${b.pages.length}`;$('nfPrevPage').disabled=pageIndex===0;$('nfNextPage').disabled=pageIndex===b.pages.length-1}
+$('nfBookChoice').onchange=e=>{bookIndex=+e.target.value;pageIndex=0;renderBook()};$('nfPrevPage').onclick=()=>{pageIndex=Math.max(0,pageIndex-1);renderBook()};$('nfNextPage').onclick=()=>{pageIndex=Math.min(books[bookIndex].pages.length-1,pageIndex+1);renderBook()};renderBook();
+let tasks=safeJSON('nitroFamilyTasksV1',[]);if(!Array.isArray(tasks))tasks=[];
+function renderTasks(){const list=$('nfTaskList');list.replaceChildren();tasks.forEach((task,i)=>{const line=document.createElement('div');line.className='nf-row';line.style.margin='12px 0';const check=document.createElement('input');check.type='checkbox';check.checked=!!task.done;check.onchange=()=>{task.done=check.checked;storeTasks()};const name=document.createElement('span');name.textContent=task.text;name.style.textDecoration=task.done?'line-through':'none';const del=document.createElement('button');del.textContent='REMOVE';del.onclick=()=>{tasks.splice(i,1);storeTasks()};line.append(check,name,del);list.append(line)})}
+function storeTasks(){localStorage.setItem('nitroFamilyTasksV1',JSON.stringify(tasks));renderTasks()}
+$('nfAddTask').onclick=()=>{const t=$('nfTaskInput').value.trim();if(t&&tasks.length<100){tasks.push({text:t,done:false});$('nfTaskInput').value='';storeTasks()}};renderTasks();
+$('nfStudyNotes').value=localStorage.getItem('nitroFamilyStudyNotesV1')||'';$('nfStudyNotes').oninput=e=>localStorage.setItem('nitroFamilyStudyNotesV1',e.target.value.slice(0,10000));
+function section(id){['nfSetup','nfUnlock','nfPuzzle','nfControls'].forEach(x=>$(x).classList.toggle('nf-hidden',x!==id))}
+function openSettings(){unlocked=false;$('nfSettings').classList.add('nf-on');$('nfStatus').textContent='';section(config.pinHash?'nfUnlock':'nfSetup')}
+$('nfParentGate').onclick=openSettings;
+$('nfCloseSettings').onclick=()=>{$('nfSettings').classList.remove('nf-on');unlocked=false};
+$('nfSavePin').onclick=async()=>{const a=$('nfNewPin').value,b=$('nfConfirmPin').value;if(!/^\d{4,8}$/.test(a)||a!==b){$('nfStatus').textContent='Choose 4–8 digits and confirm the same PIN.';return}config.pinHash=await hash(a);save();$('nfNewPin').value='';$('nfConfirmPin').value='';section('nfControls');unlocked=true;$('nfStatus').textContent='Parent PIN created. Configure the schedule below.';loadControls()};
+const puzzles=[
+()=>{const word='MOON';return {q:`Decode this Base64 word: ${btoa(word)}`,a:word}},
+()=>({q:'Decode this hexadecimal ASCII: 53 54 41 52',a:'STAR'}),
+()=>({q:'Decode the emoji initials: 🐻 Bear + 🌙 Moon + 🚀 Rocket. Type the three first letters together.',a:'BMR'}),
+()=>{let a=7,b=6;return{q:`Magical math: (${a} × ${b}) + 8 − 5 = ?`,a:String(a*b+8-5)}},
+()=>({q:'Repair the corrupted sentence: "Th_ m__n gl_ws". Type the missing word between "The" and "glows".',a:'MOON'})
+];
+$('nfCheckPin').onclick=async()=>{if(Date.now()<lockedUntil){$('nfStatus').textContent='Please wait before trying again.';return}const input=$('nfPinEntry').value;$('nfPinEntry').value='';if(await hash(input)!==config.pinHash){failures++;if(failures>=5){lockedUntil=Date.now()+60000;failures=0}$('nfStatus').textContent='Incorrect PIN.';return}failures=0;const p=puzzles[Math.floor(Math.random()*puzzles.length)]();puzzleAnswer=p.a;$('nfPuzzleQuestion').textContent=p.q;$('nfPuzzleAnswer').value='';section('nfPuzzle');$('nfStatus').textContent=''};
+$('nfCheckPuzzle').onclick=()=>{if($('nfPuzzleAnswer').value.trim().toUpperCase()!==puzzleAnswer){$('nfStatus').textContent='Not quite. Try decoding it again.';return}unlocked=true;loadControls();section('nfControls');$('nfStatus').textContent='Parent controls unlocked.'};
+function loadControls(){$('nfModeState').textContent=config.enabled?'Family Mode is ON — games follow your schedule.':'Family Mode is OFF — games remain available until a parent turns it on.';$('nfStart').value=config.start;$('nfEnd').value=config.end;$('nfMinutes').value=config.minutes;$('nfForceRest').checked=config.forceRest}
+function applyControls(){if(!unlocked)return;config.start=$('nfStart').value||'07:00';config.end=$('nfEnd').value||'20:30';config.minutes=Math.max(0,Math.min(1440,Number($('nfMinutes').value)||0));config.forceRest=$('nfForceRest').checked;save();refresh();$('nfStatus').textContent='Family settings saved.'}
+$('nfSaveControls').onclick=applyControls;
+$('nfTurnOn').onclick=()=>{if(!unlocked)return;applyControls();config.enabled=true;save();loadControls();refresh();$('nfStatus').textContent='Family Mode is ON.'};
+$('nfTurnOff').onclick=()=>{if(!unlocked)return;config.enabled=false;config.forceRest=false;save();loadControls();refresh();$('nfStatus').textContent='Family Mode is OFF.'};
+$('nfLockNow').onclick=()=>{if(!unlocked)return;$('nfForceRest').checked=true;applyControls();config.enabled=true;save();refresh();$('nfSettings').classList.remove('nf-on');unlocked=false};
+let last=Date.now();setInterval(()=>{const now=Date.now(),delta=Math.max(0,Math.min(5,(now-last)/1000));last=now;if(usage.day!==today())usage={day:today(),seconds:0};if(config.enabled&&!reason()&&document.visibilityState==='visible'){usage.seconds+=delta;localStorage.setItem(usageKey,JSON.stringify(usage))}refresh()},1000);
+refresh();
+window.NitroFamily={refresh,openSettings};
+})();
+</script>
+
 </body>
 </html>
