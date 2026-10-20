@@ -8,7 +8,52 @@
     <link rel="shortcut icon" href="./favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@ruffle-rs/ruffle">
-        </script>
+        
+
+</script>
+<script>
+function startNitroDino(host) {
+    const wrap=document.createElement('div');
+    wrap.style.cssText='width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:#f7f7f7;color:#333;font:16px monospace;padding:16px';
+    const info=document.createElement('div');
+    info.textContent='CHROME DINO · SPACE / ↑ TO JUMP · R TO RESTART';
+    const canvas=document.createElement('canvas');
+    canvas.width=900;canvas.height=300;
+    canvas.style.cssText='width:min(100%,900px);aspect-ratio:3/1;border:1px solid #bbb;background:#fff;touch-action:manipulation';
+    const score=document.createElement('div');score.textContent='SCORE 00000';
+    wrap.append(info,canvas,score);host.appendChild(wrap);
+    const ctx=canvas.getContext('2d');
+    let y=0,vy=0,obs=[],ticks=0,points=0,over=false,raf=0,last=0;
+    const ground=252;
+    function jump(){if(over){reset();return;}if(y===0)vy=-13.5;}
+    function key(e){if(!wrap.isConnected)return;if(['Space','ArrowUp'].includes(e.code)){e.preventDefault();jump();}if(e.code==='KeyR')reset();}
+    function reset(){y=0;vy=0;obs=[];ticks=0;points=0;over=false;last=0;cancelAnimationFrame(raf);raf=requestAnimationFrame(frame);}
+    document.addEventListener('keydown',key);
+    canvas.addEventListener('pointerdown',jump);
+    function frame(time){
+      if(!wrap.isConnected){document.removeEventListener('keydown',key);return;}
+      if(!last)last=time;
+      const dt=Math.min((time-last)/16.67,2);last=time;
+      if(!over){
+        ticks+=dt;points+=dt*.16;
+        vy+=.65*dt;y=Math.min(0,y+vy*dt);if(y===0)vy=0;
+        if(!obs.length || obs[obs.length-1].x<580){if(Math.random()<.015*dt)obs.push({x:920,w:18+Math.random()*18,h:32+Math.random()*28});}
+        for(const o of obs)o.x-=(6+Math.min(points/80,6))*dt;
+        obs=obs.filter(o=>o.x>-60);
+        for(const o of obs)if(92<o.x+o.w && 128>o.x && ground+y-43<ground && ground+y>ground-o.h+5)over=true;
+      }
+      ctx.clearRect(0,0,900,300);ctx.strokeStyle='#777';ctx.beginPath();ctx.moveTo(0,ground+1);ctx.lineTo(900,ground+1);ctx.stroke();
+      ctx.fillStyle='#555';ctx.fillRect(95,ground+y-43,30,43);ctx.fillRect(116,ground+y-38,19,13);ctx.fillRect(100,ground+y-52,26,15);ctx.fillStyle='white';ctx.fillRect(118,ground+y-48,4,4);
+      ctx.fillStyle='#666';for(const o of obs){ctx.fillRect(o.x,ground-o.h,o.w,o.h);ctx.fillRect(o.x-8,ground-o.h+15,8,6);ctx.fillRect(o.x+o.w,ground-o.h+9,8,6);}
+      score.textContent='SCORE '+String(Math.floor(points)).padStart(5,'0');
+      if(over){ctx.fillStyle='#333';ctx.font='bold 25px monospace';ctx.textAlign='center';ctx.fillText('GAME OVER — SPACE TO RESTART',450,100);ctx.textAlign='left';}
+      else raf=requestAnimationFrame(frame);
+    }
+    reset();
+}
+
+</script>
+
 
     <style>
         :root {
@@ -2585,6 +2630,7 @@ window.addEventListener('load',()=>{top();setTimeout(top,50)},{once:true});
 <button onclick="openToyShop()">◉ <span>Prize Shop</span></button>
 <button onclick="NitroTen.openHistory()">◷ <span>History</span></button>
 <button onclick="openAboutPage(event)">ⓘ <span>About / Team</span></button>
+<button onclick="NitroDevPortal.open()">🛠 <span>Developer Portal · Add Games</span></button>
 <div class="nxSideLabel">CREATOR SUITE</div>
 <button onclick="NitroX.open('themes')">✧ <span>Theme Universe</span></button>
 <button onclick="NitroX.open('wallpapers')">▧ <span>Wallpaper Studio</span></button>
@@ -2670,7 +2716,7 @@ window.addEventListener('load',()=>{top();setTimeout(top,50)},{once:true});
             </div><aside class="nxRightColumn">
                 <div class="nxPanel"><div class="nxPanelTitle"><span>MY ARCADE</span><button onclick="NitroNeo.games()">VIEW ALL ↗</button></div>
                 <div class="nxCollection">
-                <button onclick="showArcadePart('challenge')"><span class="nxTile nxTile1">⌘</span><span><strong>HACKER CHALLENGE</strong><small>CyberArcade legacy</small><i>THREE STAGES</i></span><b>↗</b></button>
+                <button onclick="showArcadePart('challenge')"><span class="nxTile nxTile1">⌘</span><span><strong>HACKER CHALLENGE</strong><small>CyberArcade legacy</small><i>FIVE TRIALS</i></span><b>↗</b></button>
                 <button onclick="showArcadePart('small')"><span class="nxTile nxTile2">▦</span><span><strong>SMALL GAMES</strong><small>Quick arcade sessions</small><i>PLAY NOW</i></span><b>↗</b></button>
                 <button onclick="showArcadePart('big')"><span class="nxTile nxTile3">◈</span><span><strong>BIG GAMES</strong><small>More to explore</small><i>PLAY NOW</i></span><b>↗</b></button>
                 <button onclick="NitroGameStudio.open()"><span class="nxTile nxTile4">✦</span><span><strong>GAME STUDIO</strong><small>Build something new</small><i>CREATE</i></span><b>↗</b></button>
@@ -2701,6 +2747,7 @@ window.addEventListener('load',()=>{top();setTimeout(top,50)},{once:true});
                     <button class="filter-chip" id="partBig" onclick="showArcadePart('big')">🎮 Big Games</button>
                     <button class="filter-chip" id="partChallenge" onclick="showArcadePart('challenge')">🔒 Challenge</button>
                     <button class="filter-chip" id="partMacro" onclick="showArcadePart('macro')" title="Show eight MacroArcade games below">🌌 MacroArcade Games</button>
+                    <button class="filter-chip" id="partCool" onclick="showArcadePart('cool')">✨ REALLY COOL GAMES</button>
                 </div>
                 <div class="library-tools" id="normalLibraryTools">
                     <button class="filter-chip active" id="filterAll" onclick="setLibraryFilter('all')">All Games</button>
@@ -2709,7 +2756,66 @@ window.addEventListener('load',()=>{top();setTimeout(top,50)},{once:true});
                 </div>
 
                 <div class="no-results" id="noResults">No games match this search.</div>
+<section id="reallyCoolGames" style="display:none;width:100%;margin-top:16px">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px;flex-wrap:wrap">
+    <strong style="font-size:16px;color:#c5a6ff">✨ REALLY COOL GAMES — FULL ARCADE</strong>
+    <button class="filter-chip" onclick="document.getElementById('reallyCoolFrame').src='https://hexanaut.gitlab.io/'">↻ Reload arcade</button>
+  </div>
+  <iframe id="reallyCoolFrame" title="Really Cool Games — Hexanaut arcade" loading="lazy" allow="fullscreen; autoplay; gamepad" allowfullscreen referrerpolicy="strict-origin-when-cross-origin" style="display:block;width:100%;height:calc(100vh - 190px);min-height:580px;border:1px solid #6935a4;border-radius:12px;background:#090b16"></iframe>
+</section>
 <div class="game-grid" id="gameGrid">
+<article class="game-card" data-game-id="yohoho_io" data-arcade-part="big" onclick="launchGame(gamesDatabase.find(g => g.id === 'yohoho_io'))"><button class="favorite-btn" data-fav-id="yohoho_io" onclick="toggleFavorite(event, 'yohoho_io')" title="Favorite">☆</button><div class="thumb" style="display:grid;place-items:center;background:radial-gradient(circle at center,rgba(140,90,255,.25),#030512)"><span style="font-size:82px">🏴‍☠️</span><div class="thumb-label">IFRAME TEST</div><div class="play-pill">▶</div></div><div class="game-meta"><div><h3>YoHoHo.io</h3><p>Pirate multiplayer survival</p></div><div class="tag">PLAY HERE</div></div></article>
+<article class="game-card" data-game-id="defly_io" data-arcade-part="big" onclick="launchGame(gamesDatabase.find(g => g.id === 'defly_io'))"><button class="favorite-btn" data-fav-id="defly_io" onclick="toggleFavorite(event, 'defly_io')" title="Favorite">☆</button><div class="thumb" style="display:grid;place-items:center;background:radial-gradient(circle at center,rgba(140,90,255,.25),#030512)"><span style="font-size:82px">🚁</span><div class="thumb-label">IFRAME TEST</div><div class="play-pill">▶</div></div><div class="game-meta"><div><h3>Defly.io</h3><p>Helicopter territory control</p></div><div class="tag">PLAY HERE</div></div></article>
+<article class="game-card" data-game-id="astrorace_io" data-arcade-part="big" onclick="launchGame(gamesDatabase.find(g => g.id === 'astrorace_io'))"><button class="favorite-btn" data-fav-id="astrorace_io" onclick="toggleFavorite(event, 'astrorace_io')" title="Favorite">☆</button><div class="thumb" style="display:grid;place-items:center;background:radial-gradient(circle at center,rgba(140,90,255,.25),#030512)"><span style="font-size:82px">🚀</span><div class="thumb-label">IFRAME TEST</div><div class="play-pill">▶</div></div><div class="game-meta"><div><h3>Astrorace.io</h3><p>Multiplayer space racing</p></div><div class="tag">PLAY HERE</div></div></article>
+<article class="game-card" data-game-id="nitroclash_io" data-arcade-part="big" onclick="launchGame(gamesDatabase.find(g => g.id === 'nitroclash_io'))"><button class="favorite-btn" data-fav-id="nitroclash_io" onclick="toggleFavorite(event, 'nitroclash_io')" title="Favorite">☆</button><div class="thumb" style="display:grid;place-items:center;background:radial-gradient(circle at center,rgba(140,90,255,.25),#030512)"><span style="font-size:82px">⚽</span><div class="thumb-label">IFRAME TEST</div><div class="play-pill">▶</div></div><div class="game-meta"><div><h3>Nitroclash.io</h3><p>Multiplayer boost soccer</p></div><div class="tag">PLAY HERE</div></div></article>
+<article class="game-card" data-game-id="smash_karts" data-arcade-part="big" onclick="launchGame(gamesDatabase.find(g => g.id === 'smash_karts'))">
+<button class="favorite-btn" data-fav-id="smash_karts" onclick="toggleFavorite(event, 'smash_karts')" title="Favorite">☆</button>
+<div class="thumb" style="display:grid;place-items:center;background:radial-gradient(circle at center,rgba(143,199,203,.2),#020304)"><span style="font-size:86px">🏎️</span><div class="thumb-label">EMBED PROVIDED</div><div class="play-pill">▶</div></div>
+<div class="game-meta"><div><h3>Smash Karts</h3><p>Multiplayer kart arena</p></div><div class="tag">PLAY HERE</div></div></article>
+<article class="game-card" data-game-id="lolbeans" data-arcade-part="big" onclick="launchGame(gamesDatabase.find(g => g.id === 'lolbeans'))">
+<button class="favorite-btn" data-fav-id="lolbeans" onclick="toggleFavorite(event, 'lolbeans')" title="Favorite">☆</button>
+<div class="thumb" style="display:grid;place-items:center;background:radial-gradient(circle at center,rgba(143,199,203,.2),#020304)"><span style="font-size:86px">🫘</span><div class="thumb-label">EMBED PROVIDED</div><div class="play-pill">▶</div></div>
+<div class="game-meta"><div><h3>LOLBeans</h3><p>Multiplayer obstacle race</p></div><div class="tag">PLAY HERE</div></div></article>
+<article class="game-card" data-game-id="skribbl_io" data-arcade-part="big" onclick="launchGame(gamesDatabase.find(g => g.id === 'skribbl_io'))">
+<button class="favorite-btn" data-fav-id="skribbl_io" onclick="toggleFavorite(event, 'skribbl_io')" title="Favorite">☆</button>
+<div class="thumb" style="display:grid;place-items:center;background:radial-gradient(circle at center,rgba(143,199,203,.2),#020304)"><span style="font-size:86px">🎨</span><div class="thumb-label">EMBED TEST</div><div class="play-pill">▶</div></div>
+<div class="game-meta"><div><h3>Skribbl.io</h3><p>Multiplayer drawing and guessing</p></div><div class="tag">PLAY HERE</div></div></article>
+<article class="game-card" data-game-id="slither_io" data-arcade-part="big" onclick="launchGame(gamesDatabase.find(g => g.id === 'slither_io'))">
+<button class="favorite-btn" data-fav-id="slither_io" onclick="toggleFavorite(event, 'slither_io')" title="Favorite">☆</button>
+<div class="thumb" style="display:grid;place-items:center;background:radial-gradient(circle at center,rgba(143,199,203,.2),#020304)"><span style="font-size:86px">🐍</span><div class="thumb-label">OFFICIAL WEBSITE</div><div class="play-pill">▶</div></div>
+<div class="game-meta"><div><h3>Slither.io</h3><p>Multiplayer snake arena</p></div><div class="tag">EMBED TEST</div></div></article>
+<article class="game-card" data-game-id="deadshot_io" data-arcade-part="big" onclick="launchGame(gamesDatabase.find(g => g.id === 'deadshot_io'))">
+<button class="favorite-btn" data-fav-id="deadshot_io" onclick="toggleFavorite(event, 'deadshot_io')" title="Favorite">☆</button>
+<div class="thumb" style="display:grid;place-items:center;background:radial-gradient(circle at center,rgba(143,199,203,.2),#020304)"><span style="font-size:86px">🎯</span><div class="thumb-label">OPEN GAME WEBSITE</div><div class="play-pill">▶</div></div>
+<div class="game-meta"><div><h3>Deadshot.io</h3><p>3D multiplayer shooter</p></div><div class="tag">EMBED TEST</div></div></article>
+<article class="game-card" data-game-id="2048_web" data-arcade-part="big" onclick="launchGame(gamesDatabase.find(g => g.id === '2048_web'))">
+<button class="favorite-btn" data-fav-id="2048_web" onclick="toggleFavorite(event, '2048_web')" title="Favorite">☆</button>
+<div class="thumb" style="display:grid;place-items:center;background:radial-gradient(circle at center,rgba(143,199,203,.2),#020304)"><span style="font-size:86px">🔢</span><div class="thumb-label">PLAYABLE HERE</div><div class="play-pill">▶</div></div>
+<div class="game-meta"><div><h3>2048</h3><p>Number puzzle</p></div><div class="tag">PLAY NOW</div></div></article>
+<article class="game-card" data-game-id="chrome_dino_web" data-arcade-part="big" onclick="launchGame(gamesDatabase.find(g => g.id === 'chrome_dino_web'))">
+<button class="favorite-btn" data-fav-id="chrome_dino_web" onclick="toggleFavorite(event, 'chrome_dino_web')" title="Favorite">☆</button>
+<div class="thumb" style="display:grid;place-items:center;background:radial-gradient(circle at center,rgba(143,199,203,.2),#020304)"><span style="font-size:86px">🦖</span><div class="thumb-label">PLAYABLE HERE</div><div class="play-pill">▶</div></div>
+<div class="game-meta"><div><h3>Chrome Dino</h3><p>Endless dinosaur runner</p></div><div class="tag">PLAY NOW</div></div></article>
+<article class="game-card" data-game-id="pacman_embed" data-arcade-part="big" onclick="launchGame(gamesDatabase.find(g => g.id === 'pacman_embed'))">
+  <button class="favorite-btn" data-fav-id="pacman_embed" onclick="toggleFavorite(event, 'pacman_embed')" title="Favorite">☆</button>
+  <div class="thumb" style="display:grid;place-items:center;background:radial-gradient(circle at center,rgba(143,199,203,.2),#020304)">
+    <span style="font-size:92px">👻</span>
+    <div class="thumb-label">ONLINE GAME</div>
+    <div class="play-pill">▶</div>
+  </div>
+  <div class="game-meta"><div><h3>Pac-Man</h3><p>Classic maze arcade • Online</p></div><div class="tag">PLAY NOW</div></div>
+</article>
+
+<article class="game-card" data-game-id="mario_embed" data-arcade-part="big" onclick="launchGame(gamesDatabase.find(g => g.id === 'mario_embed'))">
+  <button class="favorite-btn" data-fav-id="mario_embed" onclick="toggleFavorite(event, 'mario_embed')" title="Favorite">☆</button>
+  <div class="thumb" style="display:grid;place-items:center;background:radial-gradient(circle at center,rgba(143,199,203,.2),#020304)">
+    <span style="font-size:92px">🍄</span>
+    <div class="thumb-label">ONLINE GAME</div>
+    <div class="play-pill">▶</div>
+  </div>
+  <div class="game-meta"><div><h3>Mario</h3><p>Platform adventure • Online</p></div><div class="tag">PLAY NOW</div></div>
+</article>
+
 
                     
 <article class="game-card" data-game-id="crazysnake" data-arcade-part="small" onclick="launchGame(gamesDatabase.find(g => g.id === 'crazysnake'))">
@@ -3000,6 +3106,10 @@ parent.postMessage({macroNitro:true,action:&#x27;ready&#x27;},&#x27;*&#x27;);
         let libraryFilter = 'all';
 
         const gamesDatabase = [
+            {id:'yohoho_io',name:'YoHoHo.io',category:'arcade',type:'iframe',source:'https://yohoho.io/',desc:'Pirate multiplayer survival'},
+            {id:'defly_io',name:'Defly.io',category:'arcade',type:'iframe',source:'https://defly.io/',desc:'Helicopter territory control'},
+            {id:'astrorace_io',name:'Astrorace.io',category:'arcade',type:'iframe',source:'https://astrorace.io/',desc:'Multiplayer space racing'},
+            {id:'nitroclash_io',name:'Nitroclash.io',category:'arcade',type:'iframe',source:'https://nitroclash.io/',desc:'Multiplayer boost soccer'},
             
             {
                 id: 'crazysnake',
@@ -3060,6 +3170,18 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
 
 
 
+
+        gamesDatabase.push(
+            {id:'smash_karts',name:'Smash Karts',category:'arcade',type:'iframe',source:'https://www.minijuegos.com/embed/smash-karts',desc:'Multiplayer kart arena • Online embed'},
+            {id:'lolbeans',name:'LOLBeans',category:'arcade',type:'iframe',source:'https://www.bubbleshooter.net/embed.php?id=1654',desc:'Multiplayer obstacle race • Online embed'},
+            {id:'skribbl_io',name:'Skribbl.io',category:'arcade',type:'iframe',source:'https://skribbl.io/',desc:'Multiplayer drawing and guessing • Online embed'},
+            {id:'pacman_embed',name:'Pac-Man',category:'arcade',type:'iframe',source:'https://pacman.live/play.html',desc:'Classic maze arcade • Online embed'},
+            {id:'mario_embed',name:'Mario',category:'arcade',type:'iframe',source:'https://fulscreenmario.github.io/',desc:'Platform adventure • Online embed'},
+            {id:'slither_io',name:'Slither.io',category:'arcade',type:'iframe',source:'https://slither.io/',desc:'Multiplayer snake arena • Online'},
+            {id:'deadshot_io',name:'Deadshot.io',category:'arcade',type:'iframe',source:'https://deadshot.io/',desc:'3D multiplayer shooter • Online'},
+            {id:'2048_web',name:'2048',category:'arcade',type:'local2048',source:'local',desc:'Number puzzle • Online'},
+            {id:'chrome_dino_web',name:'Chrome Dino',category:'arcade',type:'iframe',source:'https://chromedino.com/embed/',desc:'Endless dinosaur runner • Online'},
+        );
 
         const favorites = new Set(JSON.parse(localStorage.getItem('crazyarcade-favorites') || '[]'));
         const playCounts = JSON.parse(localStorage.getItem('crazyarcade-play-counts') || '{}');
@@ -3295,24 +3417,27 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
         let currentArcadePart='small';
         function showArcadePart(part){
             if(document.getElementById('aboutPage')?.classList.contains('active'))closeAboutPage();
-            if(!['small','big','challenge','macro'].includes(part))part='small';
+            if(!['small','big','challenge','macro','cool'].includes(part))part='small';
             currentArcadePart=part;
             const info={
               small:['Small Games','Detailed quick-play originals with clear goals, controls, game-specific previews and richer arcade presentation.'],
               big:['Big Games','Larger NitroArcade experiences with worlds, missions and longer sessions.'],
               challenge:['Challenge','Beat the Hacker Challenge to discover the secret game.'],
-              macro:['MacroArcade Games','Eight original MacroArcade games, right here in the NitroArcade library.']
+              macro:['MacroArcade Games','Eight original MacroArcade games, right here in the NitroArcade library.'],
+              cool:['Really Cool Games','Explore the Hexanaut arcade right here inside NitroArcade.']
             };
             const title=document.getElementById('libraryPartTitle'),sub=document.getElementById('libraryPartSubtitle');
             if(title)title.textContent=info[part][0];if(sub)sub.textContent=info[part][1];
-            ['small','big','challenge','macro'].forEach(p=>{
+            ['small','big','challenge','macro','cool'].forEach(p=>{
               const b=document.getElementById('part'+p.charAt(0).toUpperCase()+p.slice(1));
               if(b)b.classList.toggle('active',p===part);
             });
-            const tools=document.getElementById('normalLibraryTools');if(tools)tools.style.display=(part==='challenge'||part==='macro')?'none':'flex';
+            const tools=document.getElementById('normalLibraryTools');if(tools)tools.style.display=(part==='challenge'||part==='macro'||part==='cool')?'none':'flex';
             const macroPanel=document.getElementById('nitroMacroWorlds');if(macroPanel)macroPanel.style.display=part==='macro'?'block':'none';
-            const gameGrid=document.getElementById('gameGrid');if(gameGrid)gameGrid.style.display=part==='macro'?'none':'';
-            const noResults=document.getElementById('noResults');if(noResults&&part==='macro')noResults.style.display='none';
+            const coolPanel=document.getElementById('reallyCoolGames');if(coolPanel)coolPanel.style.display=part==='cool'?'block':'none';
+            const coolFrame=document.getElementById('reallyCoolFrame');if(coolFrame){if(part==='cool'&&!coolFrame.getAttribute('src'))coolFrame.src='https://hexanaut.gitlab.io/';}
+            const gameGrid=document.getElementById('gameGrid');if(gameGrid)gameGrid.style.display=(part==='macro'||part==='cool')?'none':'';
+            const noResults=document.getElementById('noResults');if(noResults&&(part==='macro'||part==='cool'))noResults.style.display='none';
             document.querySelectorAll('#gameGrid .game-card').forEach(card=>{
               const cp=card.dataset.arcadePart||(card.dataset.gameId==='hackerchallenge'?'challenge':'small');
               card.style.display=cp===part?'':'none';
@@ -3798,7 +3923,38 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
             playerContainer.innerHTML = '';
         }
 
+
+        function startNitro2048(host) {
+            const shell = document.createElement('div');
+            shell.style.cssText = 'width:100%;height:100%;overflow:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:15px;background:#12101d;color:#fff;padding:18px;font-family:Arial,sans-serif';
+            shell.innerHTML = '<h2 style="font-size:34px;margin:0">2048</h2><p style="color:#aaa;margin:0">Use arrow keys or WASD. Join equal numbers!</p><div style="display:flex;align-items:center;gap:16px"><b id="nitro2048score">Score: 0</b><button id="nitro2048reset" style="padding:9px 15px;border:0;border-radius:8px;background:#b486ff;color:#130d20;cursor:pointer;font-weight:bold">New game</button></div><div id="nitro2048board" style="display:grid;grid-template-columns:repeat(4,minmax(55px,80px));gap:9px;padding:10px;background:#3a304c;border-radius:12px"></div><p id="nitro2048msg" style="min-height:20px;color:#b7f5c5"></p>';
+            host.append(shell);
+            const board = shell.querySelector('#nitro2048board');
+            const scoreEl = shell.querySelector('#nitro2048score');
+            const msg = shell.querySelector('#nitro2048msg');
+            let cells, score;
+            function spawn(){const empty=[];cells.forEach((n,i)=>{if(!n)empty.push(i)});if(empty.length)cells[empty[Math.floor(Math.random()*empty.length)]]=Math.random()<.9?2:4;}
+            function draw(){board.innerHTML='';cells.forEach(n=>{const t=document.createElement('div');t.textContent=n||'';t.style.cssText='height:70px;display:grid;place-items:center;border-radius:7px;font-size:25px;font-weight:900;background:'+(n?({2:'#eee4da',4:'#ede0c8',8:'#f2b179',16:'#f59563',32:'#f67c5f',64:'#f65e3b',128:'#edcf72',256:'#edcc61',512:'#edc850',1024:'#edc53f',2048:'#edc22e'}[n]||'#9a6de0'):'#554b67')+';color:'+(n<=4?'#574d42':'#fff');board.append(t)});scoreEl.textContent='Score: '+score;if(cells.includes(2048))msg.textContent='🎉 You reached 2048!';else if(!cells.includes(0)&&!canMove())msg.textContent='Game over — try again!';else msg.textContent='';}
+            function canMove(){for(let i=0;i<16;i++)if(i%4<3&&cells[i]===cells[i+1]||i<12&&cells[i]===cells[i+4])return true;return false;}
+            function slide(line){const a=line.filter(Boolean);for(let i=0;i<a.length-1;i++){if(a[i]===a[i+1]){a[i]*=2;score+=a[i];a.splice(i+1,1)}}while(a.length<4)a.push(0);return a;}
+            function move(dir){if(!shell.isConnected)return;const old=cells.join(',');for(let k=0;k<4;k++){const ids=[];for(let j=0;j<4;j++){let r,c;if(dir==='left'){r=k;c=j}else if(dir==='right'){r=k;c=3-j}else if(dir==='up'){r=j;c=k}else{r=3-j;c=k}ids.push(r*4+c)}const a=slide(ids.map(i=>cells[i]));ids.forEach((id,j)=>cells[id]=a[j]);}if(cells.join(',')!==old){spawn();draw()}}
+            function key(e){const dirs={ArrowLeft:'left',ArrowRight:'right',ArrowUp:'up',ArrowDown:'down',a:'left',d:'right',w:'up',s:'down'};if(dirs[e.key]&&shell.isConnected){e.preventDefault();move(dirs[e.key])}}
+            function reset(){cells=Array(16).fill(0);score=0;spawn();spawn();draw()}
+            shell.querySelector('#nitro2048reset').onclick=reset;
+            window.addEventListener('keydown',key);
+            const oldCleanup=window.nitro2048Cleanup;if(oldCleanup)oldCleanup();
+            window.nitro2048Cleanup=()=>window.removeEventListener('keydown',key);
+            reset();
+        }
+
         function launchGame(game) {
+            if (!game) return;
+            if (game.type === 'external') {
+                incrementPlayCount(game.id);
+                addRecent(game);
+                window.open(game.source, '_blank', 'noopener,noreferrer');
+                return;
+            }
             if(game && ULTRA_3D_TRACKS[game.engine]) ultraStart3DMusic(game.engine);
             else ultraStop3DMusic(false);
 
@@ -3815,7 +3971,43 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
             updateGameDetailStrip(game);
             updateFavoriteUI();
 
-            if (game.type === 'swf') {
+            if (game.type === 'external') {
+                const panel = document.createElement('div');
+                panel.style.cssText = 'padding:35px;max-width:620px;text-align:center;color:white;line-height:1.7';
+                const heading = document.createElement('h2');
+                heading.textContent = game.name;
+                const note = document.createElement('p');
+                note.textContent = 'This game does not have a verified NitroArcade embed. Use the official game website below to play. NitroArcade cannot override another website’s iframe restrictions.';
+                const link = document.createElement('a');
+                link.href = game.source;
+                link.target = '_blank';
+                link.rel = 'noopener noreferrer';
+                link.textContent = '▶ Open ' + game.name + ' in new tab';
+                link.style.cssText = 'display:inline-block;margin-top:18px;padding:13px 22px;border-radius:10px;background:#8fc7cb;color:#071012;font-weight:800;text-decoration:none';
+                panel.append(heading,note,link);
+                playerContainer.appendChild(panel);
+            } else if (game.type === 'local2048') {
+                startNitro2048(playerContainer);
+            } else if (game.type === 'localdino') {
+                startNitroDino(playerContainer);
+            } else if (game.type === 'iframe') {
+                const frame = document.createElement('iframe');
+                frame.src = game.source;
+                frame.title = game.name;
+                frame.allowFullscreen = true;
+                frame.allow = 'fullscreen; autoplay; gamepad';
+                frame.referrerPolicy = 'strict-origin-when-cross-origin';
+                frame.style.cssText = 'width:100%;height:100%;border:0;background:#000;display:block;';
+                playerContainer.appendChild(frame);
+                const fallback = document.createElement('a');
+                fallback.href = game.source;
+                fallback.target = '_blank';
+                fallback.rel = 'noopener noreferrer';
+                fallback.textContent = 'Game not loading? Open website ↗';
+                fallback.style.cssText = 'position:absolute;bottom:10px;right:14px;z-index:5;padding:7px 10px;border-radius:7px;background:#101318;color:#fff;font-size:11px;text-decoration:none;border:1px solid #444';
+                playerContainer.style.position = 'relative';
+                playerContainer.appendChild(fallback);
+            } else if (game.type === 'swf') {
                 const ruffle = window.RufflePlayer.newest();
                 activeRufflePlayer = ruffle.createPlayer();
 
@@ -5862,7 +6054,7 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
                     <div class="challenge-panel">
                         <div class="challenge-kicker">NITROARCADE CHALLENGE</div>
                         <div class="challenge-title">ARE YOU A HACKER?</div>
-                        <div class="challenge-sub">Beat all three trials to clear the challenge.</div>
+                        <div class="challenge-sub">Beat ten trials to unlock the Ruffle library.</div>
 
                         <div class="challenge-progress">
                             <div class="challenge-step active" id="hackStep1">1 • 50 Clicks</div>
@@ -6693,6 +6885,7 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
             <h1 class="about-title">ONE ARCADE.<br><span>ENDLESS IDEAS.</span></h1>
             <p class="about-lead">NitroArcade is a browser-based arcade platform created as a school AI project for the ISG Forum at Indian School Al Ghubra. Thanks to the school and our teachers for the opportunity to turn our ideas into a playable project. Our goal is to bring different styles of games, challenges, creative tools and experiments into one place — and keep improving it together.</p>
 
+            <div class="about-grid" style="margin:18px 0"><div class="about-section"><div class="about-kicker">LIVE ARCADE COUNT</div><h2 id="nitroTotalGames">Counting games…</h2><p id="nitroGameBreakdown">Counts playable entries and MacroArcade worlds; the full Really Cool Games portal is listed separately.</p></div><div class="about-feature-list"><div class="about-feature"><b>ADD YOUR GAME</b><span>Use Developer Portal in the left sidebar to submit an iframe game locally.</span></div></div></div>
             <div class="about-rule"></div>
 
             <div class="about-grid">
@@ -6962,7 +7155,7 @@ document.addEventListener("keydown",(e)=>{
    lose(){N.stats?.inc?.("losses");N.shake?.(document.body,5,180);N.sfx?.(150,.12);N.emit?.("gamelose",{id:id()})}
  };
  function wireLaunch(){let f=window.launchGame;if(typeof f!=="function"||f.__nitroV2)return;let w=function(g){let r=f.apply(this,arguments);if(g?.id){N.emit?.("gameopen",{id:g.id,name:g.name,engine:g.engine});let u=N.save?.get?.("uniqueGames",[])||[];if(!u.includes(g.id)){u.push(g.id);N.save?.set?.("uniqueGames",u)}N.missions.progress("play3");if(u.length>=5)N.achievements.unlock("explorer-5","ARCADE EXPLORER","Play 5 different games");}return r};w.__nitroV2=true;window.launchGame=w}
- function wireSecret(){let f=window.unlockWindosill;if(typeof f!=="function"||f.__nitroV2)return;let w=function(){let r=f.apply(this,arguments);if(!N.save?.get?.("rewarded:windosill",false)){N.save?.set?.("rewarded:windosill",true);N.xp?.add?.(150,"Hacker Challenge");N.coins?.add?.(10);N.achievements.unlock("hacker-master","ACCESS GRANTED","Clear all three Hacker Challenge trials");N.confetti?.(120);N.notify?.("Windosill unlocked • +150 XP • +10 coins","🔐 SECRET FOUND")}return r};w.__nitroV2=true;window.unlockWindosill=w}
+ function wireSecret(){let f=window.unlockWindosill;if(typeof f!=="function"||f.__nitroV2)return;let w=function(){let r=f.apply(this,arguments);if(!N.save?.get?.("rewarded:windosill",false)){N.save?.set?.("rewarded:windosill",true);N.xp?.add?.(150,"Hacker Challenge");N.coins?.add?.(10);N.achievements.unlock("hacker-master","ACCESS GRANTED","Clear all five Hacker Challenge trials");N.confetti?.(120);N.notify?.("Windosill unlocked • +150 XP • +10 coins","🔐 SECRET FOUND")}return r};w.__nitroV2=true;window.unlockWindosill=w}
  function hubButton(){if(document.getElementById("nitroHubButton"))return;let b=document.createElement("button");b.id="nitroHubButton";b.textContent="⚡ PLAYER HUB";Object.assign(b.style,{position:"fixed",right:"18px",bottom:"72px",zIndex:99990,padding:"11px 14px",border:"1px solid #ffffff55",borderRadius:"12px",background:"linear-gradient(110deg,#18d5ff,#7457ff)",color:"#fff",font:"900 11px system-ui",cursor:"pointer",boxShadow:"0 8px 28px #0008"});b.onclick=()=>N.dashboard?.();document.body.appendChild(b)}
  wireLaunch();wireSecret();setTimeout(()=>{wireLaunch();wireSecret()},800);
  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",hubButton);else hubButton();
@@ -9021,7 +9214,7 @@ body.theme-light .ntInfoStrip b{color:#102c45}
 <div class="ntHistoryInner">
 <div class="ntHistoryTop"><div><span style="font-size:11px;letter-spacing:2px;color:#72e7ff">THE ARCADE ARCHIVES</span><h2>FIVE ERAS.<br>ONE CREATIVE JOURNEY.</h2><p>From a single school game to a growing student-made arcade platform.</p></div><button id="ntHistoryClose">✕ Close</button></div>
 <div class="ntTimeline">
-<div class="ntEra"><span>01 / THE BEGINNING</span><h3>CyberArcade</h3><p>The oldest school version. Just one game: <b>Are You A Hacker?</b> Its legacy lives on in NitroArcade's three-stage challenge.</p></div>
+<div class="ntEra"><span>01 / THE BEGINNING</span><h3>CyberArcade</h3><p>The oldest school version. Just one game: <b>Are You A Hacker?</b> Its legacy lives on in NitroArcade's five-test challenge.</p></div>
 <div class="ntEra"><span>02 / THE EXPERIMENT</span><h3>CrazyArcade</h3><p>An early, smaller arcade project that helped the ideas grow.</p></div>
 <div class="ntEra"><span>03 / THE FIRST PRESENTATION</span><h3>UltraArcade</h3><p>An older version presented at school, before NitroArcade expanded its library and features.</p></div>
 <div class="ntEra"><span>04 / THE CURRENT PLATFORM</span><h3>NitroArcade</h3><p>Games, challenges, achievements, design tools, a music studio, NitroLab, and community discussions — all under one arcade.</p></div>
@@ -9480,7 +9673,7 @@ if(document.getElementById('npOverlay')?.classList.contains('open'))setTimeout((
 }
 const QUESTS=[
 {id:'explore',icon:'🎮',title:'Explore the arcade',detail:'Open a game category from the dashboard'},
-{id:'legacy',icon:'⌘',title:'Visit the CyberArcade legacy',detail:'Check out the three-stage Hacker Challenge'},
+{id:'legacy',icon:'⌘',title:'Visit the CyberArcade legacy',detail:'Check out the five-test Hacker Challenge'},
 {id:'create',icon:'🛠',title:'Create something',detail:'Open NitroLab or Game Studio'},
 {id:'community',icon:'💬',title:'Join the discussion',detail:'Visit the community forum'},
 {id:'history',icon:'◷',title:'Explore our history',detail:'Read the five-era arcade timeline'},
@@ -9599,7 +9792,7 @@ const tips=[
 ['🎨 COLOR','Change an individual game card’s accent color'],
 ['⚡ Performance','Reduce animation on slower computers'],
 ['💬 Community','Posts are saved locally; export a backup before moving computers'],
-['🏆 Hacker Challenge','Finish all three stages once to unlock Windosill on this browser'],
+['🏆 Hacker Challenge','Finish all five tests once to unlock Windosill on this browser'],
 ['▤ Notebook','Save ideas automatically, then export them as a text file'],
 ['🏫 ISG Forum','Open the student-created thank-you and project history page'],
 ['★ Favorites','Mark games you want to find again'],
@@ -9608,7 +9801,7 @@ const tips=[
 ];
 tips.forEach(([shortcut,desc])=>{const row=el('div',{class:'npQuest'});row.append(el('span',{class:'npKbd'},shortcut),el('div',{},desc));content.append(row)});
 
-const guide=[{"topic": "Keyboard", "tip": "Use Ctrl+K to open Command Center even when you are deep in the arcade."}, {"topic": "Navigation", "tip": "The sidebar remains visible while you explore the main dashboard."}, {"topic": "Search", "tip": "Use the large top search field to narrow the game library."}, {"topic": "Game cards", "tip": "Each game can have its own color without changing other cards."}, {"topic": "Color palettes", "tip": "Select a preset or choose a custom HEX color using the picker."}, {"topic": "Screen tint", "tip": "A visual hue filter changes appearance, not the game\u2019s mechanics."}, {"topic": "Local storage", "tip": "Browser saves persist after refresh but not across different computers."}, {"topic": "Backups", "tip": "Export your forum data before switching school computers."}, {"topic": "Attachments", "tip": "Audio and video previews depend on the browser supporting the file format."}, {"topic": "Image uploads", "tip": "Smaller images load and export faster than huge images."}, {"topic": "Code uploads", "tip": "Text code attachments can be previewed without executing them."}, {"topic": "Forum tags", "tip": "Use short consistent tags such as games, music and feedback."}, {"topic": "Forum search", "tip": "Search titles, authors, messages and tags."}, {"topic": "Hacker challenge", "tip": "The original CyberArcade concept now has three easy stages."}, {"topic": "Windosill", "tip": "Complete the challenge once to save the secret-game unlock locally."}, {"topic": "Achievements", "tip": "Check the player hub to review unlocked awards."}, {"topic": "NitroLab", "tip": "Visual effects tools are useful for experimenting with graphics."}, {"topic": "Music studio", "tip": "Try different rhythms and effects, and keep copies of your work."}, {"topic": "Performance", "tip": "Turn down animations before presenting on slower hardware."}, {"topic": "Presentation", "tip": "Practice launching your favorite game before your audience arrives."}, {"topic": "School credits", "tip": "The ISG page thanks the school without implying official endorsement."}, {"topic": "Team credits", "tip": "Check the About page to verify the whole team is included."}, {"topic": "History", "tip": "The archive documents CyberArcade, CrazyArcade and UltraArcade."}, {"topic": "MacroArcade", "tip": "The successor is a separate upcoming team project."}, {"topic": "Fullscreen", "tip": "Use the game\u2019s fullscreen button for a more immersive view."}, {"topic": "Game controls", "tip": "Read the quick brief if a game uses unfamiliar controls."}, {"topic": "Favorites", "tip": "Mark games you want to revisit during the showcase."}, {"topic": "Quick launch", "tip": "Dashboard cards provide shortcuts to frequently used tools."}, {"topic": "Arcade notebook", "tip": "Store your next feature ideas without needing a login."}, {"topic": "Notebook export", "tip": "Export notes to TXT for use outside the browser."}, {"topic": "Daily quests", "tip": "Quest checkboxes are optional and reset by date."}, {"topic": "Statistics", "tip": "Player statistics describe the current browser\u2019s local data."}, {"topic": "Compact mode", "tip": "Compact cards show more games per row on a large screen."}, {"topic": "Contrast mode", "tip": "High-contrast panels can improve readability."}, {"topic": "Accent colors", "tip": "Personalize the sidebar accent from the settings tab."}, {"topic": "Touchscreens", "tip": "Some keyboard-driven games are better played with a keyboard."}, {"topic": "Game files", "tip": "SWF games may depend on neighboring files and Ruffle."}, {"topic": "External assets", "tip": "Some resources require a network connection."}, {"topic": "File paths", "tip": "Relative file paths depend on where you save the HTML file."}, {"topic": "USB presentation", "tip": "Test the exact USB folder on the intended computer."}, {"topic": "School Wi-Fi", "tip": "Do not assume every external link will load on school Wi-Fi."}, {"topic": "Sound levels", "tip": "Test the speakers at a comfortable volume before presenting."}, {"topic": "Browser support", "tip": "Chrome and Edge may handle local storage differently."}, {"topic": "Private mode", "tip": "Incognito browsing may discard saved settings when closed."}, {"topic": "Storage limits", "tip": "Large forum attachments may hit browser storage quotas."}, {"topic": "Accessibility", "tip": "Reduced motion is useful for anyone who prefers calmer visuals."}, {"topic": "Game design", "tip": "Give each game a clear objective and instructions."}, {"topic": "Bug reports", "tip": "Write down steps to reproduce issues in the notebook."}, {"topic": "Team collaboration", "tip": "Keep a shared list of changes before merging edits."}, {"topic": "Version control", "tip": "Save dated copies before large edits."}, {"topic": "Presentation backup", "tip": "Keep a stable version alongside the newest version."}, {"topic": "Visual polish", "tip": "Consistency matters more than adding random animations."}, {"topic": "Loading speed", "tip": "Avoid huge assets when a smaller file works."}, {"topic": "Font fallback", "tip": "A fallback system font keeps text readable offline."}, {"topic": "Responsive layout", "tip": "Try a smaller browser window to spot clipping."}, {"topic": "Sidebar", "tip": "On narrow screens the sidebar collapses to icons."}, {"topic": "About layout", "tip": "The About page must reserve space for the fixed sidebar."}, {"topic": "Player layout", "tip": "The game player should fill available space without horizontal clipping."}, {"topic": "Dashboard columns", "tip": "The right column should stack below the main content on narrow screens."}, {"topic": "Color persistence", "tip": "Individual game colors are saved using game IDs."}, {"topic": "Exporting", "tip": "Always keep a copy of your original file before making changes."}];
+const guide=[{"topic": "Keyboard", "tip": "Use Ctrl+K to open Command Center even when you are deep in the arcade."}, {"topic": "Navigation", "tip": "The sidebar remains visible while you explore the main dashboard."}, {"topic": "Search", "tip": "Use the large top search field to narrow the game library."}, {"topic": "Game cards", "tip": "Each game can have its own color without changing other cards."}, {"topic": "Color palettes", "tip": "Select a preset or choose a custom HEX color using the picker."}, {"topic": "Screen tint", "tip": "A visual hue filter changes appearance, not the game\u2019s mechanics."}, {"topic": "Local storage", "tip": "Browser saves persist after refresh but not across different computers."}, {"topic": "Backups", "tip": "Export your forum data before switching school computers."}, {"topic": "Attachments", "tip": "Audio and video previews depend on the browser supporting the file format."}, {"topic": "Image uploads", "tip": "Smaller images load and export faster than huge images."}, {"topic": "Code uploads", "tip": "Text code attachments can be previewed without executing them."}, {"topic": "Forum tags", "tip": "Use short consistent tags such as games, music and feedback."}, {"topic": "Forum search", "tip": "Search titles, authors, messages and tags."}, {"topic": "Hacker challenge", "tip": "The CyberArcade challenge now has five arcade puzzle tests."}, {"topic": "Windosill", "tip": "Complete the challenge once to save the secret-game unlock locally."}, {"topic": "Achievements", "tip": "Check the player hub to review unlocked awards."}, {"topic": "NitroLab", "tip": "Visual effects tools are useful for experimenting with graphics."}, {"topic": "Music studio", "tip": "Try different rhythms and effects, and keep copies of your work."}, {"topic": "Performance", "tip": "Turn down animations before presenting on slower hardware."}, {"topic": "Presentation", "tip": "Practice launching your favorite game before your audience arrives."}, {"topic": "School credits", "tip": "The ISG page thanks the school without implying official endorsement."}, {"topic": "Team credits", "tip": "Check the About page to verify the whole team is included."}, {"topic": "History", "tip": "The archive documents CyberArcade, CrazyArcade and UltraArcade."}, {"topic": "MacroArcade", "tip": "The successor is a separate upcoming team project."}, {"topic": "Fullscreen", "tip": "Use the game\u2019s fullscreen button for a more immersive view."}, {"topic": "Game controls", "tip": "Read the quick brief if a game uses unfamiliar controls."}, {"topic": "Favorites", "tip": "Mark games you want to revisit during the showcase."}, {"topic": "Quick launch", "tip": "Dashboard cards provide shortcuts to frequently used tools."}, {"topic": "Arcade notebook", "tip": "Store your next feature ideas without needing a login."}, {"topic": "Notebook export", "tip": "Export notes to TXT for use outside the browser."}, {"topic": "Daily quests", "tip": "Quest checkboxes are optional and reset by date."}, {"topic": "Statistics", "tip": "Player statistics describe the current browser\u2019s local data."}, {"topic": "Compact mode", "tip": "Compact cards show more games per row on a large screen."}, {"topic": "Contrast mode", "tip": "High-contrast panels can improve readability."}, {"topic": "Accent colors", "tip": "Personalize the sidebar accent from the settings tab."}, {"topic": "Touchscreens", "tip": "Some keyboard-driven games are better played with a keyboard."}, {"topic": "Game files", "tip": "SWF games may depend on neighboring files and Ruffle."}, {"topic": "External assets", "tip": "Some resources require a network connection."}, {"topic": "File paths", "tip": "Relative file paths depend on where you save the HTML file."}, {"topic": "USB presentation", "tip": "Test the exact USB folder on the intended computer."}, {"topic": "School Wi-Fi", "tip": "Do not assume every external link will load on school Wi-Fi."}, {"topic": "Sound levels", "tip": "Test the speakers at a comfortable volume before presenting."}, {"topic": "Browser support", "tip": "Chrome and Edge may handle local storage differently."}, {"topic": "Private mode", "tip": "Incognito browsing may discard saved settings when closed."}, {"topic": "Storage limits", "tip": "Large forum attachments may hit browser storage quotas."}, {"topic": "Accessibility", "tip": "Reduced motion is useful for anyone who prefers calmer visuals."}, {"topic": "Game design", "tip": "Give each game a clear objective and instructions."}, {"topic": "Bug reports", "tip": "Write down steps to reproduce issues in the notebook."}, {"topic": "Team collaboration", "tip": "Keep a shared list of changes before merging edits."}, {"topic": "Version control", "tip": "Save dated copies before large edits."}, {"topic": "Presentation backup", "tip": "Keep a stable version alongside the newest version."}, {"topic": "Visual polish", "tip": "Consistency matters more than adding random animations."}, {"topic": "Loading speed", "tip": "Avoid huge assets when a smaller file works."}, {"topic": "Font fallback", "tip": "A fallback system font keeps text readable offline."}, {"topic": "Responsive layout", "tip": "Try a smaller browser window to spot clipping."}, {"topic": "Sidebar", "tip": "On narrow screens the sidebar collapses to icons."}, {"topic": "About layout", "tip": "The About page must reserve space for the fixed sidebar."}, {"topic": "Player layout", "tip": "The game player should fill available space without horizontal clipping."}, {"topic": "Dashboard columns", "tip": "The right column should stack below the main content on narrow screens."}, {"topic": "Color persistence", "tip": "Individual game colors are saved using game IDs."}, {"topic": "Exporting", "tip": "Always keep a copy of your original file before making changes."}];
 const guideHeading=el('h3',{style:'margin-top:30px'},'NITROARCADE FIELD GUIDE');
 content.append(guideHeading);
 content.append(el('p',{class:'npIntro'},'Practical tips for creators, players and school presentations.'));
@@ -29590,7 +29783,7 @@ const grid=el('div','nxXGrid');body.append(grid);
 const destinations=[['🎮','PLAY GAMES','small'],['⌘','HACKER CHALLENGE','challenge'],['💬','COMMUNITY','forum'],['🏫','ISG TRIBUTE','isg'],['◷','ARCADE HISTORY','history'],['✦','NITROLAB','lab'],['⬡','GAME STUDIO','studio'],['ⓘ','MEET THE TEAM','about']];
 destinations.forEach(([icon,title,action])=>{const x=card(icon+' '+title,'LAUNCH FEATURE');x.append(btn('OPEN ↗',()=>{close();if(typeof NitroPlus!=='undefined')NitroPlus.navigate(action)}));grid.append(x)});
 const box=el('div','nxXPanel');box.append(el('h4','','PRESENTATION CHECKLIST'));
-const tasks=['Open NitroArcade on the school computer','Confirm all local game files are present','Test the Hacker Challenge and Windosill unlock','Check forum posts and attachment previews','Check About page and all nine team members','Test sound at a comfortable volume','Test full-screen games and keyboard controls','Export backups of forum, workspace and notes','Keep a stable copy of the website on USB','Show NitroLab and the ISG tribute'];
+const tasks=['Open NitroArcade on the school computer','Confirm all local game files are present','Test all five Hacker Challenge trials and Windosill unlock','Check forum posts and attachment previews','Check About page and all nine team members','Test sound at a comfortable volume','Test full-screen games and keyboard controls','Export backups of forum, workspace and notes','Keep a stable copy of the website on USB','Show NitroLab and the ISG tribute'];
 let done=get('nitro_x_showcase_checklist',{});tasks.forEach((task,i)=>{const line=el('label','nxXToolbar');const check=input('checkbox',!!done[i]);check.addEventListener('change',()=>{done[i]=check.checked;put('nitro_x_showcase_checklist',done)});line.append(check,el('span','',task));box.append(line)});
 box.append(btn('⬇ EXPORT CHECKLIST',()=>downloadBlob(new Blob([tasks.map((t,i)=>(done[i]?'[x] ':'[ ] ')+t).join('\n')],{type:'text/plain'}),'NitroArcade-Showcase-Checklist.txt')));body.append(box);
 const actions=toolbar();actions.append(btn('⬇ EXPORT ALL PERSONALIZATION',()=>{const payload={version:1,settings:config(),workspace:get(WORKSPACE_STORAGE,[]),pixel:get(PIXEL_STORAGE,{size:24,pixels:{}}),gameColors:get('nitroarcade-game-colors-v1',{})};downloadBlob(new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}),'NitroArcade-Personalization-Backup.json')}));
@@ -29840,5 +30033,71 @@ window.NitroFamily={refresh,openSettings};
 })();
 </script>
 
+
+<style>
+.nh-progress{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin:15px 0}.nh-progress span{padding:8px 4px;text-align:center;font-size:11px;border:1px solid var(--line);border-radius:7px;color:var(--muted)}.nh-progress span.done{background:#174e35;color:#a6ffcc}.nh-progress span.now{border-color:var(--accent);color:var(--text)}
+.nh-stage{background:#03080c;border:1px solid var(--line);border-radius:12px;padding:26px;text-align:center;min-height:260px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px}
+.nh-stage input{background:var(--panel-2);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:12px;max-width:300px;width:100%}.nh-stage button{padding:12px 20px;border:0;border-radius:9px;background:var(--accent);color:#051014;font-weight:800;cursor:pointer}.nh-stage p{color:var(--muted);line-height:1.6}
+</style>
+<script>
+(function(){
+'use strict';
+window.startHackerChallenge=function(host){
+if(typeof window.stopNativeGame==='function')window.stopNativeGame();
+host.innerHTML='<div class="challenge-shell"><div class="challenge-panel"><div class="challenge-kicker">CYBERARCADE // FIVE TRIALS</div><div class="challenge-title">ARE YOU A HACKER?</div><div class="challenge-sub">FIVE HARD ARCADE PUZZLES • UNLOCK WINDOSILL</div><div class="nh-progress" id="nhProgress"></div><div class="nh-stage" id="nhStage"></div></div></div>';
+const progress=host.querySelector('#nhProgress'),stage=host.querySelector('#nhStage');
+let n=0,timer=null,stopped=false;
+function clear(){if(timer!==null){clearTimeout(timer);timer=null}}
+window.activeNativeCleanup=()=>{stopped=true;clear()};
+const names=['Cipher','Binary','Memory','Logic','Final Lock'];
+function paint(){progress.innerHTML=names.map((name,i)=>`<span class="${i<n?'done':i===n?'now':''}">${i+1} ${name}</span>`).join('')}
+function view(title,desc){clear();paint();stage.replaceChildren();const h=document.createElement('h3');h.textContent='TEST '+(n+1)+' / 5 — '+title;const p=document.createElement('p');p.textContent=desc;stage.append(h,p)}
+function answer(correct){const input=document.createElement('input');input.placeholder='Enter your answer';input.autocomplete='off';const msg=document.createElement('p');const btn=document.createElement('button');btn.textContent='SUBMIT';function submit(){if(input.value.trim().toUpperCase().replace(/\s+/g,'')===String(correct).toUpperCase().replace(/\s+/g,'')){next()}else{msg.textContent='Incorrect. Try again.';input.value='';input.focus()}}btn.onclick=submit;input.onkeydown=e=>{if(e.key==='Enter')submit()};stage.append(input,btn,msg);input.focus()}
+function next(){clear();n++;if(n>=5){paint();if(typeof window.unlockWindosill==='function')window.unlockWindosill();stage.innerHTML='<h2>🔓 ACCESS GRANTED!</h2><p>ALL FIVE TESTS COMPLETE. WINDOSILL UNLOCKED!</p><button id="nhReplay">PLAY AGAIN</button>';stage.querySelector('button').onclick=()=>window.startHackerChallenge(host);return}run()}
+function run(){if(stopped)return;switch(n){
+case 0:view('Caesar Cipher','Decode: QLWURDUFDGH. Each letter was shifted 3 positions forward.');answer('NITROARCADE');break;
+case 1:view('Binary Decoder','Decode ASCII binary: 01010010 01010101 01000110 01000110 01001100 01000101');answer('RUFFLE');break;
+case 2:{view('Memory Sequence','Memorize the six digits. They disappear after 4 seconds.');const code=Array.from({length:6},()=>Math.floor(Math.random()*10)).join('');const display=document.createElement('h2');display.textContent=code;stage.append(display);timer=setTimeout(()=>{display.textContent='••••••';answer(code)},4000);break}
+case 3:view('Logic Gate','A=1 and B=0. Calculate (A XOR B) AND (NOT B). Answer 0 or 1.');answer('1');break;
+case 4:view('Final Lock','Combine: decimal value of hex 0F, followed immediately by the number of letters in RUFFLE.');answer('156');break;
+}}
+run();
+};
+})();
+</script>
+
+<style>
+#nitroDevOverlay{position:fixed;inset:0;background:#02040bdc;z-index:999999;display:none;align-items:center;justify-content:center;padding:20px;overflow:auto}
+#nitroDevOverlay .devbox{width:min(560px,100%);background:#101329;border:1px solid #9455f9;border-radius:18px;padding:25px;color:#f3eaff;box-shadow:0 0 60px #8c43f933;font:14px system-ui}
+#nitroDevOverlay label{display:block;margin:12px 0 4px;font-weight:700}
+#nitroDevOverlay input,#nitroDevOverlay textarea{display:block;width:100%;padding:11px;background:#080d1b;color:#fff;border:1px solid #64548e;border-radius:8px;font:inherit}
+#nitroDevOverlay .devactions{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}
+#nitroDevOverlay button{background:#7538c9;border:1px solid #ad7df5;border-radius:9px;color:#fff;padding:10px 13px;cursor:pointer}
+#nitroDevOverlay small{color:#c5b8da;display:block;margin-top:8px;line-height:1.5}
+</style>
+<div id="nitroDevOverlay" role="dialog" aria-modal="true" aria-label="NitroArcade Developer Portal"><div class="devbox">
+<h2>🛠 NitroArcade Developer Portal</h2><p>Add an iframe-compatible browser game to Big Games on this computer.</p>
+<form id="nitroDevForm"><label for="nitroDevName">Game title</label><input id="nitroDevName" maxlength="70" required placeholder="My Amazing Game"><label for="nitroDevUrl">Game website URL</label><input id="nitroDevUrl" type="url" required placeholder="https://example.com/game"><label for="nitroDevDesc">Description</label><textarea id="nitroDevDesc" rows="2" maxlength="180" placeholder="What makes it fun?"></textarea><div class="devactions"><button type="submit">➕ Add to Big Games</button><button type="button" onclick="NitroDevPortal.exportGames()">⬇ Export My Games</button><button type="button" onclick="NitroDevPortal.close()">✕ Close</button></div></form>
+<small>Games are saved in this browser, not automatically published to other visitors. Some sites block iframes. Only add games you trust and have permission to share.</small><p id="nitroDevMessage" role="status"></p></div></div>
+<script>
+const NitroDevPortal=(()=>{
+const key='nitroarcade-dev-games-v1';
+const saved=()=>{try{return JSON.parse(localStorage.getItem(key)||'[]')}catch(e){return []}};
+function safeURL(v){try{const u=new URL(v);return ['https:','http:'].includes(u.protocol)?u.href:null}catch(e){return null}}
+function add(entry,persist){if(!entry||!safeURL(entry.url)||!entry.name)return false;
+const id='dev_'+String(entry.id||Date.now());if(gamesDatabase.some(g=>g.id===id))return false;
+const g={id,name:String(entry.name).slice(0,70),category:'arcade',type:'iframe',source:safeURL(entry.url),desc:String(entry.desc||'Community browser game').slice(0,180)};
+gamesDatabase.push(g);const card=document.createElement('article');card.className='game-card';card.dataset.gameId=id;card.dataset.arcadePart='big';card.style.display='none';card.onclick=()=>launchGame(g);
+const thumb=document.createElement('div');thumb.className='thumb';thumb.style.cssText='display:grid;place-items:center;background:radial-gradient(circle,#392063,#060816);min-height:190px';const symbol=document.createElement('span');symbol.textContent='🕹️';symbol.style.fontSize='80px';thumb.appendChild(symbol);
+const meta=document.createElement('div');meta.className='game-meta';const inner=document.createElement('div');const h=document.createElement('h3');h.textContent=g.name;const d=document.createElement('p');d.textContent=g.desc;inner.append(h,d);const tag=document.createElement('div');tag.className='tag';tag.textContent='YOUR GAME';meta.append(inner,tag);card.append(thumb,meta);document.getElementById('gameGrid').appendChild(card);
+if(persist){const list=saved();list.push({id:id.slice(4),name:g.name,url:g.source,desc:g.desc});localStorage.setItem(key,JSON.stringify(list))}updateCount();return true}
+function updateCount(){const cards=document.querySelectorAll('#gameGrid .game-card');const unique=new Set([...cards].map(c=>c.dataset.gameId).filter(Boolean));const macro=document.querySelectorAll('#nmWorldGrid .nmWorldCard').length;const total=unique.size+macro;const count=document.getElementById('nitroTotalGames');if(count)count.textContent=total+' playable game entries';const sub=document.getElementById('nitroGameBreakdown');if(sub)sub.textContent=unique.size+' Small / Big / Challenge entries + '+macro+' MacroArcade games. Really Cool Games is a separate full-screen arcade portal, not counted as one individual game.';}
+function open(){document.getElementById('nitroDevOverlay').style.display='flex';document.getElementById('nitroDevName').focus()}
+function close(){document.getElementById('nitroDevOverlay').style.display='none'}
+function exportGames(){const blob=new Blob([JSON.stringify(saved(),null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='nitroarcade-my-games.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+document.getElementById('nitroDevForm').addEventListener('submit',e=>{e.preventDefault();const name=document.getElementById('nitroDevName').value.trim(),url=document.getElementById('nitroDevUrl').value.trim(),desc=document.getElementById('nitroDevDesc').value.trim();const ok=add({name,url,desc},true);document.getElementById('nitroDevMessage').textContent=ok?'Added! Open Playground → Big Games to play it.':'Could not add that URL.';if(ok)e.target.reset()});
+document.getElementById('nitroDevOverlay').addEventListener('click',e=>{if(e.target.id==='nitroDevOverlay')close()});
+saved().forEach(x=>add(x,false));updateCount();return {open,close,exportGames,updateCount};})();
+</script>
 </body>
 </html>
