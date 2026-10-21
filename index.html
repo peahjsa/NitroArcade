@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NitroArcade</title>
-    <link rel="icon" type="image/x-icon" href="./favicon.ico">
-    <link rel="shortcut icon" href="./favicon.ico">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Ctext y=%2750%27 font-size=%2750%27%3E%F0%9F%8E%AE%3C/text%3E%3C/svg%3E">
+    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@ruffle-rs/ruffle">
         
@@ -2747,6 +2747,7 @@ window.addEventListener('load',()=>{top();setTimeout(top,50)},{once:true});
                     <button class="filter-chip" id="partBig" onclick="showArcadePart('big')">🎮 Big Games</button>
                     <button class="filter-chip" id="partChallenge" onclick="showArcadePart('challenge')">🔒 Challenge</button>
                     <button class="filter-chip" id="partMacro" onclick="showArcadePart('macro')" title="Show eight MacroArcade games below">🌌 MacroArcade Games</button>
+                    <button class="filter-chip" id="partFnaf" onclick="showArcadePart('fnaf')">🐻 FNAF Games</button>
                     <button class="filter-chip" id="partCool" onclick="showArcadePart('cool')">✨ REALLY COOL GAMES</button>
                 </div>
                 <div class="library-tools" id="normalLibraryTools">
@@ -2764,6 +2765,13 @@ window.addEventListener('load',()=>{top();setTimeout(top,50)},{once:true});
   <iframe id="reallyCoolFrame" title="Really Cool Games — Hexanaut arcade" loading="lazy" allow="fullscreen; autoplay; gamepad" allowfullscreen referrerpolicy="strict-origin-when-cross-origin" style="display:block;width:100%;height:calc(100vh - 190px);min-height:580px;border:1px solid #6935a4;border-radius:12px;background:#090b16"></iframe>
 </section>
 <div class="game-grid" id="gameGrid">
+<article class="game-card" data-game-id="coaster_foundry_direct" data-arcade-part="big" onclick="launchGame(gamesDatabase.find(g => g.id === 'coaster_foundry_direct'))"><button class="favorite-btn" data-fav-id="coaster_foundry_direct" onclick="toggleFavorite(event, 'coaster_foundry_direct')" title="Favorite">☆</button><div class="thumb" style="display:grid;place-items:center;background:radial-gradient(circle,#48226e,#101326);font-size:54px">🎢</div><div class="game-meta"><div><h3>Coaster Foundry</h3><p>3D roller coaster builder • direct itch HTML5 game</p></div><div class="tag">PLAY HERE</div></div></article>
+
+<article class="game-card" data-game-id="among_us_itch_direct" data-arcade-part="big" onclick="launchGame(gamesDatabase.find(g => g.id === 'among_us_itch_direct'))"><button class="favorite-btn" data-fav-id="among_us_itch_direct" onclick="toggleFavorite(event, 'among_us_itch_direct')" title="Favorite">☆</button><div class="thumb" style="display:grid;place-items:center;background:radial-gradient(circle,#48226e,#101326);font-size:54px">🚀</div><div class="game-meta"><div><h3>Among Us Online</h3><p>Browser remake • direct itch HTML5 game</p></div><div class="tag">PLAY HERE</div></div></article>
+
+<article class="game-card" data-game-id="baldi_web_direct" data-arcade-part="big" onclick="launchGame(gamesDatabase.find(g => g.id === 'baldi_web_direct'))"><button class="favorite-btn" data-fav-id="baldi_web_direct" onclick="toggleFavorite(event, 'baldi_web_direct')" title="Favorite">☆</button><div class="thumb" style="display:grid;place-items:center;background:radial-gradient(circle,#6d9c47,#152c1b);font-size:54px">📓</div><div class="game-meta"><div><h3>Baldi's Basics (Web)</h3><p>Direct itch.io HTML5 game • embed test</p></div><div class="tag">PLAY HERE</div></div></article>
+
+<article class="game-card" data-game-id="demolition_tycoon_3d" data-arcade-part="big" onclick="launchGame(gamesDatabase.find(g => g.id === 'demolition_tycoon_3d'))"><button class="favorite-btn" data-fav-id="demolition_tycoon_3d" onclick="toggleFavorite(event, 'demolition_tycoon_3d')" title="Favorite">☆</button><div class="thumb" style="display:grid;place-items:center;background:radial-gradient(circle at center,rgba(140,90,255,.25),#030512)"><span style="font-size:82px">🏗️</span><div class="thumb-label">IFRAME TEST</div><div class="play-pill">▶</div></div><div class="game-meta"><div><h3>Demolition Tycoon 3D</h3><p>3D building demolition tycoon</p></div><div class="tag">PLAY HERE</div></div></article>
 <article class="game-card" data-game-id="yohoho_io" data-arcade-part="big" onclick="launchGame(gamesDatabase.find(g => g.id === 'yohoho_io'))"><button class="favorite-btn" data-fav-id="yohoho_io" onclick="toggleFavorite(event, 'yohoho_io')" title="Favorite">☆</button><div class="thumb" style="display:grid;place-items:center;background:radial-gradient(circle at center,rgba(140,90,255,.25),#030512)"><span style="font-size:82px">🏴‍☠️</span><div class="thumb-label">IFRAME TEST</div><div class="play-pill">▶</div></div><div class="game-meta"><div><h3>YoHoHo.io</h3><p>Pirate multiplayer survival</p></div><div class="tag">PLAY HERE</div></div></article>
 <article class="game-card" data-game-id="defly_io" data-arcade-part="big" onclick="launchGame(gamesDatabase.find(g => g.id === 'defly_io'))"><button class="favorite-btn" data-fav-id="defly_io" onclick="toggleFavorite(event, 'defly_io')" title="Favorite">☆</button><div class="thumb" style="display:grid;place-items:center;background:radial-gradient(circle at center,rgba(140,90,255,.25),#030512)"><span style="font-size:82px">🚁</span><div class="thumb-label">IFRAME TEST</div><div class="play-pill">▶</div></div><div class="game-meta"><div><h3>Defly.io</h3><p>Helicopter territory control</p></div><div class="tag">PLAY HERE</div></div></article>
 <article class="game-card" data-game-id="astrorace_io" data-arcade-part="big" onclick="launchGame(gamesDatabase.find(g => g.id === 'astrorace_io'))"><button class="favorite-btn" data-fav-id="astrorace_io" onclick="toggleFavorite(event, 'astrorace_io')" title="Favorite">☆</button><div class="thumb" style="display:grid;place-items:center;background:radial-gradient(circle at center,rgba(140,90,255,.25),#030512)"><span style="font-size:82px">🚀</span><div class="thumb-label">IFRAME TEST</div><div class="play-pill">▶</div></div><div class="game-meta"><div><h3>Astrorace.io</h3><p>Multiplayer space racing</p></div><div class="tag">PLAY HERE</div></div></article>
@@ -2879,6 +2887,28 @@ window.addEventListener('load',()=>{top();setTimeout(top,50)},{once:true});
             </section>
         </section>
 
+
+<style>
+#nitroFnafGames{padding:22px 10px 36px;max-width:1160px;margin:auto;color:#f3e8ff}
+#nitroFnafGames .nf-heading{font-size:clamp(24px,4vw,42px);font-weight:900;margin:0 0 10px;color:#f1d7ff}
+#nitroFnafGames .nf-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(195px,1fr));gap:15px;margin-top:24px}
+#nitroFnafGames .nf-card{background:linear-gradient(145deg,#251632,#0e101e);border:1px solid #8050a3;border-radius:16px;color:#fff;padding:22px 14px;min-height:178px;cursor:pointer;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;transition:transform .18s,border-color .18s;font:inherit}
+#nitroFnafGames .nf-card:hover{transform:translateY(-3px);border-color:#df9fff}
+#nitroFnafGames .nf-icon{font-size:42px}#nitroFnafGames .nf-card strong{font-size:16px}#nitroFnafGames .nf-card small{font-size:12px;color:#cdb8dc}
+</style>
+<section id="nitroFnafGames" style="display:none" aria-label="FNAF browser games">
+<div style="font-size:12px;letter-spacing:2px;color:#d8a5ff">NITROARCADE / GAME COLLECTION</div>
+<h2 class="nf-heading">🐻 FNAF GAMES</h2>
+<p>All eight browser editions from irv77's HD FNAF collection. These are unofficial web versions and require internet. Embedding depends on the host's iframe permissions.</p><p style="font-size:13px;line-height:1.6;color:#e7d4f4;background:#201329;border:1px solid #6b427e;border-radius:10px;padding:10px 14px;margin:12px 0">All eight titles load from <strong>irv77.github.io</strong> and need internet. If a game stays blank, use <strong>Reload game</strong> in the player or test its original website. Chrome cannot use JavaScript to bypass school filtering or iframe restrictions.</p>
+<div class="nf-grid"><button class="nf-card" onclick="launchGame(gamesDatabase.find(g=>g.id==='fnaf_hd_1'))"><span class="nf-icon">🐻</span><strong>FNAF 1</strong><small>Play inside NitroArcade ↗</small></button>
+<button class="nf-card" onclick="launchGame(gamesDatabase.find(g=>g.id==='fnaf_hd_2'))"><span class="nf-icon">🎭</span><strong>FNAF 2</strong><small>Play inside NitroArcade ↗</small></button>
+<button class="nf-card" onclick="launchGame(gamesDatabase.find(g=>g.id==='fnaf_hd_3'))"><span class="nf-icon">👁️</span><strong>FNAF 3</strong><small>Play inside NitroArcade ↗</small></button>
+<button class="nf-card" onclick="launchGame(gamesDatabase.find(g=>g.id==='fnaf_hd_4'))"><span class="nf-icon">🌙</span><strong>FNAF 4</strong><small>Play inside NitroArcade ↗</small></button>
+<button class="nf-card" onclick="launchGame(gamesDatabase.find(g=>g.id==='fnaf_hd_w'))"><span class="nf-icon">🌎</span><strong>FNAF World</strong><small>Play inside NitroArcade ↗</small></button>
+<button class="nf-card" onclick="launchGame(gamesDatabase.find(g=>g.id==='fnaf_hd_sl'))"><span class="nf-icon">🎪</span><strong>Sister Location</strong><small>Play inside NitroArcade ↗</small></button>
+<button class="nf-card" onclick="launchGame(gamesDatabase.find(g=>g.id==='fnaf_hd_ps'))"><span class="nf-icon">🍕</span><strong>Pizzeria Simulator</strong><small>Play inside NitroArcade ↗</small></button>
+<button class="nf-card" onclick="launchGame(gamesDatabase.find(g=>g.id==='ucn_browser_test'))"><span class="nf-icon">⭐</span><strong>Ultimate Custom Night</strong><small>Play inside NitroArcade ↗</small></button></div>
+</section>
 
 <section id="nitroMacroWorlds" class="nmWorlds" style="display:none" aria-label="MacroArcade original worlds">
   <div class="nmWorldHeader"><div><div class="nmEyebrow">✦ NITROARCADE × MACROARCADE / TEAM PROJECT</div><h1>MACRO <span>WORLDS.</span></h1><p>Eight original games by the MacroArcade team, playable inside NitroArcade. Your NitroArcade theme stays in control.</p><div class="nmByline">MACROARCADE TEAM · ALIN · ARIHANT · VIYAN</div></div><button class="nmBack" onclick="NitroMacro.close()">← BACK TO NITROARCADE</button></div>
@@ -3106,6 +3136,18 @@ parent.postMessage({macroNitro:true,action:&#x27;ready&#x27;},&#x27;*&#x27;);
         let libraryFilter = 'all';
 
         const gamesDatabase = [
+            {id:'fnaf_hd_1',name:'Five Nights at Freddy’s',category:'arcade',type:'iframe',source:'https://irv77.github.io/hd_fnaf/1/',desc:'Unofficial browser edition • iframe test'},
+            {id:'fnaf_hd_2',name:'Five Nights at Freddy’s 2',category:'arcade',type:'iframe',source:'https://irv77.github.io/hd_fnaf/2/',desc:'Unofficial browser edition • iframe test'},
+            {id:'fnaf_hd_3',name:'Five Nights at Freddy’s 3',category:'arcade',type:'iframe',source:'https://irv77.github.io/hd_fnaf/3/',desc:'Unofficial browser edition • iframe test'},
+            {id:'fnaf_hd_4',name:'Five Nights at Freddy’s 4',category:'arcade',type:'iframe',source:'https://irv77.github.io/hd_fnaf/4/',desc:'Unofficial browser edition • iframe test'},
+            {id:'fnaf_hd_w',name:'FNAF World',category:'arcade',type:'iframe',source:'https://irv77.github.io/hd_fnaf/w/',desc:'Unofficial browser edition • iframe test'},
+            {id:'fnaf_hd_sl',name:'Sister Location',category:'arcade',type:'iframe',source:'https://irv77.github.io/hd_fnaf/sl/',desc:'Unofficial browser edition • iframe test'},
+            {id:'fnaf_hd_ps',name:'Freddy Fazbear’s Pizzeria Simulator',category:'arcade',type:'iframe',source:'https://irv77.github.io/hd_fnaf/ps/',desc:'Unofficial browser edition • iframe test'},
+            {id:'baldi_web_direct',name:"Baldi's Basics (Web)",category:'arcade',type:'iframe',source:'https://html-classic.itch.zone/html/16773469/index.html',desc:'Baldi browser port • iframe test'},
+            {id:'among_us_itch_direct',name:'Among Us Online',category:'arcade',type:'iframe',source:'https://html-classic.itch.zone/html/13242932/index.html?v=1782318305',desc:'Browser remake • direct itch HTML5 game'},
+            {id:'coaster_foundry_direct',name:'Coaster Foundry',category:'arcade',type:'iframe',source:'https://html-classic.itch.zone/html/19239060/index.html?v=1789404315',desc:'3D roller coaster builder • direct itch HTML5 game'},
+            {id:'ucn_browser_test',name:'Ultimate Custom Night (HTML5)',category:'arcade',type:'iframe',source:'https://irv77.github.io/hd_fnaf/ucn/',desc:'Unofficial HD FNAF browser edition • iframe test'},
+            {id:'demolition_tycoon_3d',name:'Demolition Tycoon 3D',category:'arcade',type:'iframe',source:'https://html5.gamemonetize.co/op87t2kkk7487kg66q8o2dg8mc05d8in/',desc:'3D building demolition tycoon'},
             {id:'yohoho_io',name:'YoHoHo.io',category:'arcade',type:'iframe',source:'https://yohoho.io/',desc:'Pirate multiplayer survival'},
             {id:'defly_io',name:'Defly.io',category:'arcade',type:'iframe',source:'https://defly.io/',desc:'Helicopter territory control'},
             {id:'astrorace_io',name:'Astrorace.io',category:'arcade',type:'iframe',source:'https://astrorace.io/',desc:'Multiplayer space racing'},
@@ -3417,27 +3459,29 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
         let currentArcadePart='small';
         function showArcadePart(part){
             if(document.getElementById('aboutPage')?.classList.contains('active'))closeAboutPage();
-            if(!['small','big','challenge','macro','cool'].includes(part))part='small';
+            if(!['small','big','challenge','macro','fnaf','cool'].includes(part))part='small';
             currentArcadePart=part;
             const info={
               small:['Small Games','Detailed quick-play originals with clear goals, controls, game-specific previews and richer arcade presentation.'],
               big:['Big Games','Larger NitroArcade experiences with worlds, missions and longer sessions.'],
               challenge:['Challenge','Beat the Hacker Challenge to discover the secret game.'],
               macro:['MacroArcade Games','Eight original MacroArcade games, right here in the NitroArcade library.'],
+              fnaf:['FNAF Games','Eight unofficial browser ports from the HD FNAF collection. Internet required; embedding is not guaranteed.'],
               cool:['Really Cool Games','Explore the Hexanaut arcade right here inside NitroArcade.']
             };
             const title=document.getElementById('libraryPartTitle'),sub=document.getElementById('libraryPartSubtitle');
             if(title)title.textContent=info[part][0];if(sub)sub.textContent=info[part][1];
-            ['small','big','challenge','macro','cool'].forEach(p=>{
+            ['small','big','challenge','macro','fnaf','cool'].forEach(p=>{
               const b=document.getElementById('part'+p.charAt(0).toUpperCase()+p.slice(1));
               if(b)b.classList.toggle('active',p===part);
             });
-            const tools=document.getElementById('normalLibraryTools');if(tools)tools.style.display=(part==='challenge'||part==='macro'||part==='cool')?'none':'flex';
+            const tools=document.getElementById('normalLibraryTools');if(tools)tools.style.display=(part==='challenge'||part==='macro'||part==='fnaf'||part==='cool')?'none':'flex';
             const macroPanel=document.getElementById('nitroMacroWorlds');if(macroPanel)macroPanel.style.display=part==='macro'?'block':'none';
+            const fnafPanel=document.getElementById('nitroFnafGames');if(fnafPanel)fnafPanel.style.display=part==='fnaf'?'block':'none';
             const coolPanel=document.getElementById('reallyCoolGames');if(coolPanel)coolPanel.style.display=part==='cool'?'block':'none';
             const coolFrame=document.getElementById('reallyCoolFrame');if(coolFrame){if(part==='cool'&&!coolFrame.getAttribute('src'))coolFrame.src='https://hexanaut.gitlab.io/';}
-            const gameGrid=document.getElementById('gameGrid');if(gameGrid)gameGrid.style.display=(part==='macro'||part==='cool')?'none':'';
-            const noResults=document.getElementById('noResults');if(noResults&&(part==='macro'||part==='cool'))noResults.style.display='none';
+            const gameGrid=document.getElementById('gameGrid');if(gameGrid)gameGrid.style.display=(part==='macro'||part==='fnaf'||part==='cool')?'none':'';
+            const noResults=document.getElementById('noResults');if(noResults&&(part==='macro'||part==='fnaf'||part==='cool'))noResults.style.display='none';
             document.querySelectorAll('#gameGrid .game-card').forEach(card=>{
               const cp=card.dataset.arcadePart||(card.dataset.gameId==='hackerchallenge'?'challenge':'small');
               card.style.display=cp===part?'':'none';
@@ -3999,6 +4043,13 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
                 frame.referrerPolicy = 'strict-origin-when-cross-origin';
                 frame.style.cssText = 'width:100%;height:100%;border:0;background:#000;display:block;';
                 playerContainer.appendChild(frame);
+                const reloadFrame = document.createElement('button');
+                reloadFrame.type = 'button';
+                reloadFrame.textContent = '↻ Reload game';
+                reloadFrame.title = 'Reload the game if it is stuck. This cannot unblock a restricted website.';
+                reloadFrame.style.cssText = 'position:absolute;bottom:10px;left:14px;z-index:5;padding:7px 10px;border-radius:7px;background:#101318;color:#fff;font-size:11px;cursor:pointer;border:1px solid #555';
+                reloadFrame.onclick = () => { frame.src = game.source; };
+                playerContainer.appendChild(reloadFrame);
                 const fallback = document.createElement('a');
                 fallback.href = game.source;
                 fallback.target = '_blank';
@@ -30098,6 +30149,36 @@ function exportGames(){const blob=new Blob([JSON.stringify(saved(),null,2)],{typ
 document.getElementById('nitroDevForm').addEventListener('submit',e=>{e.preventDefault();const name=document.getElementById('nitroDevName').value.trim(),url=document.getElementById('nitroDevUrl').value.trim(),desc=document.getElementById('nitroDevDesc').value.trim();const ok=add({name,url,desc},true);document.getElementById('nitroDevMessage').textContent=ok?'Added! Open Playground → Big Games to play it.':'Could not add that URL.';if(ok)e.target.reset()});
 document.getElementById('nitroDevOverlay').addEventListener('click',e=>{if(e.target.id==='nitroDevOverlay')close()});
 saved().forEach(x=>add(x,false));updateCount();return {open,close,exportGames,updateCount};})();
+</script>
+<script>
+(function(){
+ const features=[
+  ['game','Is your character from a video game?'],['human','Is your character human?'],['animal','Is your character an animal or animal-like?'],['robot','Is your character a robot or animatronic?'],['horror','Is your character from a scary game or story?'],['hero','Is your character usually a hero?'],['red','Does your character usually wear red?'],['blue','Is blue a main color of your character?'],['green','Is green a main color of your character?'],['hat','Does your character wear a hat?'],['fast','Is your character known for moving very fast?'],['school','Is your character associated with a school?'],['space','Is your character associated with space?'],['yellow','Is yellow a main color of your character?'],['villain','Is your character usually an enemy?'],['plumber','Is your character a plumber?'],['cartoon','Is your character from an animated TV show?'],['bear','Is your character a bear?'],['block','Does your character have a blocky appearance?'],['electric','Does your character use electricity?']
+ ];
+ const chars=[
+ ['Mario','game human hero red hat plumber'],['Luigi','game human hero green hat plumber'],['Sonic','game animal hero blue fast'],['Tails','game animal hero yellow fast'],['Knuckles','game animal hero red fast'],['Baldi','game human villain school horror green'],['Freddy Fazbear','game animal robot horror villain bear'],['Bonnie','game animal robot horror villain blue'],['Chica','game animal robot horror villain yellow'],['Foxy','game animal robot horror villain red fast'],['Pikachu','game animal hero yellow electric'],['Steve (Minecraft)','game human hero blue block'],['Creeper','game villain green block'],['Enderman','game villain block'],['Pac-Man','game hero yellow'],['Ghost (Pac-Man)','game villain'],['Among Us Crewmate','game space'],['Among Us Impostor','game space villain'],['Kirby','game hero'],['Link (Zelda)','game human hero green hat'],['Princess Peach','game human hero'],['Bowser','game animal villain'],['Sans (Undertale)','game hero blue'],['Cuphead','game hero'],['Bendy','game horror villain'],['SpongeBob','cartoon yellow hero'],['Patrick Star','cartoon hero'],['Squidward','cartoon blue'],['Tom (Tom and Jerry)','cartoon animal'],['Jerry (Tom and Jerry)','cartoon animal hero'],['Bugs Bunny','cartoon animal hero'],['Mickey Mouse','cartoon animal hero'],['Darth Vader','human villain space'],['R2-D2','robot hero space'],['Buzz Lightyear','hero space cartoon'],['Lightning McQueen','cartoon red fast'],['Shrek','green hero'],['Spider-Man','human hero red blue'],['Batman','human hero'],['Iron Man','human hero red robot'],['Homer Simpson','cartoon human yellow'],['Bart Simpson','cartoon human yellow'],['Gumball','cartoon animal blue'],['Darwin','cartoon animal'],['Doraemon','cartoon robot blue hero'],['Roblox Noob','game human yellow block']
+ ].map(([name,flags])=>({name,flags:new Set(flags.split(' ')),score:0}));
+ let answers=[],asked=[],done=false;
+ const q=()=>document.getElementById('nitroGenieQuestion');
+ const prog=()=>document.getElementById('nitroGenieProgress');
+ const buttons=()=>document.getElementById('nitroGenieAnswers');
+ const start=()=>document.getElementById('nitroGenieStart');
+ function button(label,fn){const b=document.createElement('button');b.className='filter-chip';b.textContent=label;b.style.padding='10px 16px';b.onclick=fn;buttons().appendChild(b)}
+ function ranked(){return chars.map(c=>({...c,score:answers.reduce((s,a)=>s+(a.value===0?0:((c.flags.has(a.key)?1:-1)*a.value)),0)})).sort((a,b)=>b.score-a.score)}
+ function next(){
+  const rankedChars=ranked();
+  if(asked.length>=16 || (asked.length>=7 && rankedChars[0].score-rankedChars[1].score>=5))return guess();
+  const unasked=features.filter(([key])=>!asked.includes(key));
+  if(!unasked.length)return guess();
+  const top=rankedChars.slice(0,Math.min(12,rankedChars.length));
+  let best=unasked[0],bestScore=-1;
+  for(const f of unasked){const n=top.filter(c=>c.flags.has(f[0])).length;const split=Math.min(n,top.length-n);if(split>bestScore){best=f;bestScore=split}}
+  asked.push(best[0]);q().textContent=best[1];prog().textContent='Question '+asked.length+' of up to 16';buttons().replaceChildren();
+  for(const [label,value] of [['Yes',1],['Probably',0.5],["Don't know",0],['Probably not',-0.5],['No',-1]])button(label,()=>{answers.push({key:best[0],value});next()});
+ }
+ function guess(){done=true;const names=ranked().slice(0,3).map(x=>x.name);q().textContent='Are you thinking of '+names[0]+'?';prog().textContent='My best guess after '+asked.length+' questions';buttons().replaceChildren();button('🎉 Yes!',()=>{q().textContent='YES! Nitro Genie got it! 🎉';buttons().replaceChildren()});button('No, try another',()=>{q().textContent='Maybe '+names[1]+' or '+names[2]+'?';buttons().replaceChildren();button('Play again',window.nitroGenieStart)});start().textContent='↻ Play again';}
+ window.nitroGenieStart=function(){answers=[];asked=[];done=false;start().textContent='↻ Restart';next()};
+})();
 </script>
 </body>
 </html>
