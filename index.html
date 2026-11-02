@@ -101,7 +101,6 @@
 <div class="nxSideLabel">DISCOVER</div>
 <button class="nxSideActive" onclick="NitroNeo.home()">⌂ <span>Dashboard</span></button>
 <button onclick="NitroNeo.games()">▣ <span>Playground</span></button>
-
 <button onclick="showArcadePart('challenge')">✦ <span>Challenges</span></button>
 <button onclick="NitroSystems.open('trophies')">🏆 <span>Achievements</span></button>
 <div class="nxSideLabel">YOUR SPACE</div>
@@ -190,7 +189,6 @@
             <section class="nxFillPanel" aria-label="Quick arcade actions">
               <div class="nxFillHeading"><span>✦ QUICK START</span><strong>JUMP BACK INTO THE ACTION</strong><small>No need to scroll through the whole library.</small></div>
               <div class="nxFillActions">
-<a class="nxZipDashboard" href="https://github.com/peahjsa/NitroArcade/archive/refs/heads/main.zip" target="_blank" rel="noopener">📦 DOWNLOAD FULL WEBSITE ZIP ↗</a>
                 <button type="button" onclick="showArcadePart('small')"><span>🎮</span><strong>Small Games</strong><small>PLAY ↗</small></button>
                 <button type="button" onclick="showArcadePart('big')"><span>🚀</span><strong>Big Games</strong><small>EXPLORE ↗</small></button>
                 <button type="button" onclick="showArcadePart('challenge')"><span>🏆</span><strong>Challenge</strong><small>START ↗</small></button>
@@ -232,7 +230,7 @@
                     <button class="filter-chip" id="partMacro" onclick="showArcadePart('macro')" title="Show eight MacroArcade games below">🌌 MacroArcade Games</button>
                     <button class="filter-chip" id="partFnaf" onclick="showArcadePart('fnaf')">🐻 FNAF Games</button>
                     <button class="filter-chip" id="partCool" onclick="showArcadePart('cool')">⬡ HEXIARCADE GAMES</button>
-                </div>
+                    </div>
                 <div class="library-tools" id="normalLibraryTools">
                     <button class="filter-chip active" id="filterAll" onclick="setLibraryFilter('all')">All Games</button>
                     <button class="filter-chip" id="filterFav" onclick="setLibraryFilter('favorites')">★ Favorites</button>
@@ -248,6 +246,21 @@
   <iframe src="HexiArcade/index.html" id="reallyCoolFrame" title="HexiArcade Games — merged local game collections" loading="eager" allow="fullscreen; autoplay; gamepad" allowfullscreen referrerpolicy="strict-origin-when-cross-origin" style="display:block;width:100%;height:calc(100vh - 190px);min-height:580px;border:1px solid #6935a4;border-radius:12px;background:#090b16"></iframe>
 </section>
 <div class="game-grid" id="gameGrid">
+<article class="game-card" data-game-id="solar_smash_online" data-arcade-part="big" onclick="launchGame(gamesDatabase.find(g => g.id === 'solar_smash_online'))" style="cursor:pointer">
+<button class="favorite-btn" data-fav-id="solar_smash_online" onclick="event.stopPropagation();toggleFavorite(event,'solar_smash_online')" title="Favorite">☆</button>
+<div class="thumb" style="background:linear-gradient(145deg,#203b68,#25113a);display:flex;align-items:center;justify-content:center;min-height:175px"><span style="font-size:72px">🌍</span><div class="play-pill">▶</div></div>
+<div class="game-meta"><div><h3>Solar Smash</h3><p>Browser game · Internet required</p></div><div class="meta-right"><span class="tag">PLAY</span></div></div></article>
+
+<article class="game-card" data-game-id="angry_birds_chrome" data-arcade-part="big" onclick="launchGame(gamesDatabase.find(g => g.id === 'angry_birds_chrome'))" style="cursor:pointer">
+<button class="favorite-btn" data-fav-id="angry_birds_chrome" onclick="event.stopPropagation();toggleFavorite(event,'angry_birds_chrome')" title="Favorite">☆</button>
+<div class="thumb" style="background:linear-gradient(145deg,#263a78,#26122e);display:flex;align-items:center;justify-content:center;min-height:175px"><span style="font-size:72px">🐦</span><div class="play-pill">▶</div></div>
+<div class="game-meta"><div><h3>Angry Birds Chrome</h3><p>Angry Birds browser game · online iframe game</p></div><div class="meta-right"><span class="tag">PLAY</span></div></div></article>
+<article class="game-card" data-game-id="real_football_challenge" data-arcade-part="big" onclick="launchGame(gamesDatabase.find(g => g.id === 'real_football_challenge'))" style="cursor:pointer">
+<button class="favorite-btn" data-fav-id="real_football_challenge" onclick="event.stopPropagation();toggleFavorite(event,'real_football_challenge')" title="Favorite">☆</button>
+<div class="thumb" style="background:linear-gradient(145deg,#263a78,#26122e);display:flex;align-items:center;justify-content:center;min-height:175px"><span style="font-size:72px">⚽</span><div class="play-pill">▶</div></div>
+<div class="game-meta"><div><h3>Real Football Challenge</h3><p>Football challenge · online iframe game</p></div><div class="meta-right"><span class="tag">PLAY</span></div></div></article>
+
+<article class="game-card" data-game-id="geometry_dash_webport" data-arcade-part="big" onclick="launchGame(gamesDatabase.find(g => g.id === 'geometry_dash_webport'))" style="cursor:pointer"><button class="favorite-btn" data-fav-id="geometry_dash_webport" onclick="toggleFavorite(event, 'geometry_dash_webport')" title="Favorite">☆</button><div class="thumb" style="background:linear-gradient(135deg,#b89924,#14162a);display:grid;place-items:center;min-height:135px"><span style="font-size:60px">🔺</span><div class="thumb-label">ONLINE · IFRAME</div><div class="play-pill">▶</div></div><div class="game-meta"><div><h3>Geometry Dash</h3><p>Browser game · Internet required</p></div><div class="tag">PLAY</div></div></article>
 <article class="game-card" data-game-id="minecraft_versions" data-arcade-part="big" onclick="launchGame(gamesDatabase.find(g => g.id === 'minecraft_versions'))" style="cursor:pointer"><button class="favorite-btn" data-fav-id="minecraft_versions" onclick="toggleFavorite(event, 'minecraft_versions')" title="Favorite">☆</button><div class="thumb" style="background:linear-gradient(135deg,#29563b,#142339);display:grid;place-items:center;min-height:135px"><span style="font-size:60px">⛏️</span><div class="thumb-label">ONLINE · IFRAME</div><div class="play-pill">▶</div></div><div class="game-meta"><div><h3>Minecraft Versions</h3><p>Browser versions · Internet required</p></div><div class="tag">PLAY</div></div></article>
 
 <article class="game-card" data-game-id="zombs_royale" data-arcade-part="big" onclick="launchGame(gamesDatabase.find(g=>g.id==='zombs_royale'))"><button class="favorite-btn" data-fav-id="zombs_royale" onclick="toggleFavorite(event,'zombs_royale')" title="Favorite">☆</button><div class="thumb" style="background:linear-gradient(135deg,#2a664d,#102437);display:grid;place-items:center;font-size:62px">🧟<div class="thumb-label">ONLINE</div><div class="play-pill">▶</div></div><div class="game-meta"><div><h3>ZombsRoyale</h3><p>Online battle royale · Play inside NitroArcade</p></div><div class="tag">PLAY</div></div></article>
@@ -1314,5 +1327,37 @@ parent.postMessage({macroNitro:true,action:&#x27;ready&#x27;},&#x27;*&#x27;);
   });
 })();
 </script>
+
+
+<!-- NitroArcade SFX mini-window -->
+<style id="nitro-sfx-styles">
+#nitroSfxToggle{position:fixed;right:14px;top:52%;z-index:2147482000;transform:translateY(-50%);border:1px solid #9ceaff;border-radius:14px;background:linear-gradient(130deg,#5227a4,#087fb7);color:white;font:800 13px system-ui,sans-serif;padding:11px 12px;box-shadow:0 0 15px #9d59ff88;cursor:pointer}
+#nitroSfxWindow{position:fixed;right:18px;top:14%;width:min(410px,calc(100vw - 36px));height:min(590px,75vh);z-index:2147482001;background:#100b23;border:1px solid #a974ef;border-radius:16px;box-shadow:0 12px 45px #000b;overflow:hidden;display:none;flex-direction:column}
+#nitroSfxWindow.is-open{display:flex}
+#nitroSfxHeader{display:flex;align-items:center;gap:8px;justify-content:space-between;padding:10px 12px;background:linear-gradient(110deg,#35165e,#102d55);color:#fff;font:700 13px system-ui,sans-serif}
+#nitroSfxHeader button,#nitroSfxHeader a{border:1px solid #7b70ad;border-radius:7px;background:#21183b;color:#fff;padding:6px 9px;text-decoration:none;font:700 12px system-ui,sans-serif;cursor:pointer}
+#nitroSfxFrame{flex:1;width:100%;border:0;background:white}
+#nitroSfxFallback{padding:6px 12px;color:#c6b8e3;font:11px system-ui,sans-serif}
+</style>
+<button id="nitroSfxToggle" type="button" aria-controls="nitroSfxWindow" aria-expanded="false">🔊 SFX</button>
+<section id="nitroSfxWindow" aria-label="Myinstants sound effects">
+  <div id="nitroSfxHeader"><span>🔊 SFX — Myinstants</span><div><a href="https://www.myinstants.com/" target="_blank" rel="noopener noreferrer">↗ Open</a> <button id="nitroSfxClose" type="button">✕</button></div></div>
+  <iframe id="nitroSfxFrame" title="Myinstants sound effects" loading="lazy" allow="autoplay" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+  <div id="nitroSfxFallback">If Myinstants blocks embedding, use ↗ Open.</div>
+</section>
+<script id="nitro-sfx-script">
+(function(){
+  const toggle=document.getElementById('nitroSfxToggle'),panel=document.getElementById('nitroSfxWindow'),close=document.getElementById('nitroSfxClose'),frame=document.getElementById('nitroSfxFrame');
+  function setOpen(open){
+    panel.classList.toggle('is-open',open);
+    toggle.setAttribute('aria-expanded',String(open));
+    if(open&&!frame.src)frame.src='https://www.myinstants.com/';
+  }
+  toggle.addEventListener('click',()=>setOpen(!panel.classList.contains('is-open')));
+  close.addEventListener('click',()=>setOpen(false));
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&panel.classList.contains('is-open'))setOpen(false)});
+})();
+</script>
+
 </body>
 </html>
