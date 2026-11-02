@@ -1,0 +1,6 @@
+
+
+.voxel-deluxe .three3d-stage canvas{
+  filter:saturate(1.06) contrast(1.055) brightness(.96)!important;
+}
+.voxel-deluxe .three3d-stage{background:#31576b!important}

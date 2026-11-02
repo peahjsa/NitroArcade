@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Domino — Game Portal</title>
+<meta name="description" content="Play Domino Effect free online — Place dominoes and tip the first one. Watch the chain reaction! A Easy Physics &amp; Simulation game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/domino/"/>
+<meta property="og:title" content="🁣 Domino Effect — Free Browser Game"/>
+<meta property="og:description" content="Play Domino Effect free in your browser. Place dominoes and tip the first one. Watch the chain reaction!"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/domino/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Domino Effect",
+  "description": "Place dominoes and tip the first one. Watch the chain reaction!",
+  "url": "https://arcade.sotshau.fun/games/domino/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Physics & Simulation",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px;color:#111827}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px}.score-bar{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:12px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:92px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.toolbar{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:12px}.btn{padding:9px 18px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer}.btn.secondary{background:#fff;border:1px solid #c7d2fe;color:#6c63ff}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:18px;box-shadow:0 8px 20px rgba(0,0,0,.08);width:min(820px,96vw)}.board-wrap{display:grid;grid-template-columns:118px 1fr 118px;gap:12px;align-items:center}.target{border:1px solid #cbd5e1;border-radius:16px;background:#f8fafc;padding:12px;min-height:122px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;cursor:pointer;transition:border-color .12s,box-shadow .12s,transform .12s}.target:hover{transform:translateY(-1px)}.target.active{border-color:#6c63ff;box-shadow:0 0 0 3px rgba(108,99,255,.18)}.target span{font-size:12px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.train{border:1px solid #dbe4ff;background:linear-gradient(180deg,#eef2ff,#f8fafc);border-radius:18px;padding:14px;min-height:122px;display:flex;align-items:center;gap:10px;overflow:auto}.hand-title{display:flex;justify-content:space-between;align-items:center;margin:16px 4px 10px;font-size:13px;color:#6b7280}.hand{display:flex;gap:10px;overflow:auto;padding-bottom:2px}.domino{width:68px;min-width:68px;height:118px;border:none;border-radius:16px;background:#fff;box-shadow:0 6px 16px rgba(15,23,42,.08);overflow:hidden;display:flex;flex-direction:column;cursor:pointer;transition:transform .12s,box-shadow .12s,border-color .12s;border:2px solid transparent}.domino.small{width:50px;min-width:50px;height:86px;border-radius:12px;box-shadow:0 3px 10px rgba(15,23,42,.08)}.domino:hover{transform:translateY(-2px)}.domino.selected{border-color:#6c63ff;box-shadow:0 0 0 3px rgba(108,99,255,.18)}.domino.playable{border-color:#93c5fd}.half{flex:1;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);padding:9px;gap:4px}.domino.small .half{padding:6px;gap:2px}.half+.half{border-top:2px solid #e5e7eb}.pip{width:9px;height:9px;border-radius:999px;background:#111827;opacity:0;justify-self:center;align-self:center}.domino.small .pip{width:6px;height:6px}.pip.on{opacity:1}.middle-note{display:flex;align-items:center;justify-content:center;min-width:34px;height:34px;border-radius:999px;background:#fff;color:#6b7280;font-size:12px;font-weight:700;border:1px dashed #cbd5e1}.status{min-height:24px;text-align:center;font-weight:700;color:#374151;margin-top:14px}.overlay{position:absolute;inset:18px;background:rgba(245,245,247,.94);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p{color:#6b7280;line-height:1.5;max-width:420px}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center;padding:0 18px}@media (max-width:760px){.board-wrap{grid-template-columns:1fr;}.target{min-height:auto;padding:10px 12px}.train{order:-1}.domino{width:60px;min-width:60px;height:104px}}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🁫 Domino</h1>
+<p class="sub">Build onto either end of the train, outplay the computer, and keep your best win streak alive.</p>
+<div class="score-bar">
+  <div class="score-box"><div class="score-label">Your Hand</div><div class="score-val" id="player-count">0</div></div>
+  <div class="score-box"><div class="score-label">AI Hand</div><div class="score-val" id="ai-count">0</div></div>
+  <div class="score-box"><div class="score-label">Yard</div><div class="score-val" id="yard-count">0</div></div>
+  <div class="score-box"><div class="score-label">Best Streak</div><div class="score-val" id="best">0</div></div>
+</div>
+<div class="toolbar">
+  <button class="btn" id="draw-btn">Draw / Pass</button>
+  <button class="btn secondary" id="new-btn">New Round</button>
+</div>
+<div class="game">
+  <div class="board-wrap">
+    <button class="target active" id="left-target" type="button"><span>Left End</span><strong id="left-open">—</strong></button>
+    <div class="train" id="train"></div>
+    <button class="target" id="right-target" type="button"><span>Right End</span><strong id="right-open">—</strong></button>
+  </div>
+  <div class="hand-title"><span>Your hand</span><span id="turn-indicator">Waiting to start</span></div>
+  <div class="hand" id="hand"></div>
+  <div class="status" id="status">Pick a domino and place it on a matching end.</div>
+  <div class="overlay" id="overlay">
+    <h2 id="overlay-title">🁫 Domino</h2>
+    <p id="overlay-text">Use Left and Right to choose a domino, Up or Down to switch ends, and Enter to place it. Tap a tile, then tap an end on touch screens.</p>
+    <button class="btn" id="overlay-btn">Start Round</button>
+  </div>
+</div>
+<p class="hint">Keyboard: ←/→ choose tile · ↑/↓ choose end · Enter place · D draw/pass · Touch: tap tiles and end pads</p>
+<script>
+const BEST_KEY='gamePortal.dominoBestStreak';
+const PIP_MAP={0:[],1:[4],2:[0,8],3:[0,4,8],4:[0,2,6,8],5:[0,2,4,6,8],6:[0,2,3,5,6,8]};
+const handEl=document.getElementById('hand');
+const trainEl=document.getElementById('train');
+const leftTarget=document.getElementById('left-target');
+const rightTarget=document.getElementById('right-target');
+const leftOpenEl=document.getElementById('left-open');
+const rightOpenEl=document.getElementById('right-open');
+const statusEl=document.getElementById('status');
+const overlayEl=document.getElementById('overlay');
+const overlayTitleEl=document.getElementById('overlay-title');
+const overlayTextEl=document.getElementById('overlay-text');
+const overlayBtn=document.getElementById('overlay-btn');
+const playerCountEl=document.getElementById('player-count');
+const aiCountEl=document.getElementById('ai-count');
+const yardCountEl=document.getElementById('yard-count');
+const bestEl=document.getElementById('best');
+const turnIndicatorEl=document.getElementById('turn-indicator');
+let deck=[];
+let layout=[];
+let playerHand=[];
+let aiHand=[];
+let selectedIndex=0;
+let targetSide='left';
+let playerTurn=false;
+let started=false;
+let streak=0;
+let best=+(localStorage.getItem(BEST_KEY)||0);
+let statusMsg='Pick a domino and place it on a matching end.';
+const rand=n=>Math.floor(Math.random()*n);
+function shuffle(list){
+  const arr=list.slice();
+  for(let i=arr.length-1;i>0;i--){
+    const j=rand(i+1);
+    [arr[i],arr[j]]=[arr[j],arr[i]];
+  }
+  return arr;
+}
+function showOverlay(title,text,label='Start Round'){
+  overlayTitleEl.textContent=title;
+  overlayTextEl.innerHTML=text;
+  overlayBtn.textContent=label;
+  overlayEl.style.display='flex';
+}
+function hideOverlay(){
+  overlayEl.style.display='none';
+}
+function makeDeck(){
+  const tiles=[];
+  for(let a=0;a<=6;a++){
+    for(let b=a;b<=6;b++)tiles.push([a,b]);
+  }
+  return shuffle(tiles);
+}
+function drawTiles(hand,count=1){
+  while(count--&&deck.length)hand.push(deck.pop());
+}
+function openEnds(){
+  return layout.length?[layout[0][0],layout[layout.length-1][1]]:[null,null];
+}
+function legalSides(tile){
+  if(!layout.length)return['right'];
+  const[leftOpen,rightOpen]=openEnds();
+  const sides=[];
+  if(tile[0]===leftOpen||tile[1]===leftOpen)sides.push('left');
+  if(tile[0]===rightOpen||tile[1]===rightOpen)sides.push('right');
+  return sides;
+}
+function hasLegalMove(hand){
+  return hand.some(tile=>legalSides(tile).length);
+}
+function orientTile(tile,side){
+  const[leftOpen,rightOpen]=openEnds();
+  const[a,b]=tile;
+  if(side==='left')return b===leftOpen?[a,b]:[b,a];
+  return a===rightOpen?[a,b]:[b,a];
+}
+function pipHalf(value){
+  const half=document.createElement('div');
+  half.className='half';
+  for(let i=0;i<9;i++){
+    const pip=document.createElement('div');
+    pip.className=`pip${PIP_MAP[value].includes(i)?' on':''}`;
+    half.appendChild(pip);
+  }
+  return half;
+}
+function createDominoElement(tile,options={}){
+  const button=document.createElement(options.button===false?'div':'button');
+  button.className=`domino${options.small?' small':''}${options.selected?' selected':''}${options.playable?' playable':''}`;
+  if(button.tagName==='BUTTON')button.type='button';
+  button.appendChild(pipHalf(tile[0]));
+  button.appendChild(pipHalf(tile[1]));
+  return button;
+}
+function renderTrain(){
+  trainEl.innerHTML='';
+  const displayTiles=layout.length<=7?layout:layout.slice(0,3).concat([null],layout.slice(-3));
+  displayTiles.forEach(tile=>{
+    if(tile===null){
+      const spacer=document.createElement('div');
+      spacer.className='middle-note';
+      spacer.textContent='…';
+      trainEl.appendChild(spacer);
+      return;
+    }
+    trainEl.appendChild(createDominoElement(tile,{small:true,button:false}));
+  });
+}
+function updateStats(){
+  playerCountEl.textContent=String(playerHand.length);
+  aiCountEl.textContent=String(aiHand.length);
+  yardCountEl.textContent=String(deck.length);
+  bestEl.textContent=String(best);
+  const[leftOpen,rightOpen]=openEnds();
+  leftOpenEl.textContent=leftOpen===null?'—':String(leftOpen);
+  rightOpenEl.textContent=rightOpen===null?'—':String(rightOpen);
+  leftTarget.classList.toggle('active',targetSide==='left');
+  rightTarget.classList.toggle('active',targetSide==='right');
+  turnIndicatorEl.textContent=playerTurn?'Your turn':'AI turn';
+  statusEl.textContent=statusMsg;
+}
+function renderHand(){
+  handEl.innerHTML='';
+  playerHand.forEach((tile,index)=>{
+    const playable=playerTurn&&legalSides(tile).length>0;
+    const domino=createDominoElement(tile,{selected:index===selectedIndex,playable});
+    domino.addEventListener('click',()=>{
+      if(!playerTurn)return;
+      selectedIndex=index;
+      renderHand();
+      updateStats();
+    });
+    handEl.appendChild(domino);
+  });
+}
+function render(){
+  renderTrain();
+  renderHand();
+  updateStats();
+}
+function playerPips(){
+  return playerHand.reduce((sum,[a,b])=>sum+a+b,0);
+}
+function aiPips(){
+  return aiHand.reduce((sum,[a,b])=>sum+a+b,0);
+}
+function endRound(outcome,message){
+  playerTurn=false;
+  if(outcome==='win'){
+    streak++;
+    best=Math.max(best,streak);
+    localStorage.setItem(BEST_KEY,String(best));
+  }else if(outcome==='loss'){
+    streak=0;
+  }
+  statusMsg=message;
+  render();
+  const title=outcome==='win'?'🎉 You Win!':outcome==='loss'?'🤖 AI Wins':'🤝 Round Drawn';
+  showOverlay(title,`${message}<br><strong>Streak:</strong> ${streak} · <strong>Best:</strong> ${best}`,'Play Again');
+}
+function evaluateBlocked(){
+  if(deck.length||hasLegalMove(playerHand)||hasLegalMove(aiHand))return false;
+  const playerScore=playerPips();
+  const aiScore=aiPips();
+  if(playerScore<aiScore)endRound('win',`Blocked board. Your pip total was ${playerScore} versus ${aiScore}.`);
+  else if(playerScore>aiScore)endRound('loss',`Blocked board. The AI kept a lighter hand: ${aiScore} versus ${playerScore}.`);
+  else endRound('draw',`Blocked board. You both finished on ${playerScore} pips.`);
+  return true;
+}
+function playTileFromHand(hand,index,side){
+  const tile=hand[index];
+  if(!tile)return null;
+  const legal=legalSides(tile);
+  if(!legal.includes(side))return null;
+  const oriented=orientTile(tile,side);
+  hand.splice(index,1);
+  if(side==='left')layout.unshift(oriented);
+  else layout.push(oriented);
+  return oriented;
+}
+function normalizeSelection(){
+  if(selectedIndex>=playerHand.length)selectedIndex=Math.max(0,playerHand.length-1);
+}
+function startRound(){
+  started=true;
+  hideOverlay();
+  deck=makeDeck();
+  layout=[];
+  playerHand=[];
+  aiHand=[];
+  drawTiles(playerHand,7);
+  drawTiles(aiHand,7);
+  layout.push(deck.pop());
+  playerTurn=true;
+  targetSide='left';
+  selectedIndex=0;
+  statusMsg='Match the open ends to add a domino to the train.';
+  normalizeSelection();
+  render();
+}
+function selectSide(side){
+  targetSide=side;
+  render();
+}
+function tryPlayerMove(side=targetSide,allowFallback=true){
+  if(!playerTurn)return;
+  const tile=playerHand[selectedIndex];
+  if(!tile){
+    statusMsg='Your hand is empty.';
+    updateStats();
+    return;
+  }
+  const legal=legalSides(tile);
+  if(!legal.length){
+    statusMsg='That domino does not match either open end.';
+    updateStats();
+    return;
+  }
+  const resolvedSide=legal.includes(side)?side:(allowFallback&&legal.length===1?legal[0]:null);
+  const placed=playTileFromHand(playerHand,selectedIndex,resolvedSide);
+  if(!placed){
+    statusMsg='Switch to the matching end before placing that domino.';
+    updateStats();
+    return;
+  }
+  statusMsg=`You played ${placed[0]}-${placed[1]} on the ${resolvedSide} end.`;
+  normalizeSelection();
+  render();
+  if(playerHand.length===0){
+    endRound('win','You emptied your hand before the AI could respond.');
+    return;
+  }
+  if(evaluateBlocked())return;
+  playerTurn=false;
+  updateStats();
+  setTimeout(aiTurn,550);
+}
+function drawOrPass(){
+  if(!started||!playerTurn)return;
+  if(hasLegalMove(playerHand)){
+    statusMsg='You already have a playable domino.';
+    updateStats();
+    return;
+  }
+  if(deck.length){
+    drawTiles(playerHand,1);
+    selectedIndex=playerHand.length-1;
+    statusMsg='You drew a domino from the boneyard.';
+    render();
+    return;
+  }
+  statusMsg='No matches and no boneyard tiles left. You pass.';
+  render();
+  if(evaluateBlocked())return;
+  playerTurn=false;
+  updateStats();
+  setTimeout(aiTurn,550);
+}
+function aiChoice(){
+  let bestChoice=null;
+  aiHand.forEach((tile,index)=>{
+    legalSides(tile).forEach(side=>{
+      const score=(tile[0]===tile[1]?10:0)+tile[0]+tile[1]+(side==='right'?0.2:0);
+      if(!bestChoice||score>bestChoice.score)bestChoice={index,side,score};
+    });
+  });
+  return bestChoice;
+}
+function aiTurn(){
+  if(playerTurn)return;
+  let drawn=0;
+  let choice=aiChoice();
+  while(!choice&&deck.length){
+    drawTiles(aiHand,1);
+    drawn++;
+    choice=aiChoice();
+  }
+  if(!choice){
+    statusMsg=drawn?`AI drew ${drawn} domino${drawn>1?'es':''} and still had to pass.`:'AI passed.';
+    render();
+    if(evaluateBlocked())return;
+    playerTurn=true;
+    updateStats();
+    return;
+  }
+  const placed=playTileFromHand(aiHand,choice.index,choice.side);
+  statusMsg=drawn?`AI drew ${drawn} and played ${placed[0]}-${placed[1]}.`:`AI played ${placed[0]}-${placed[1]} on the ${choice.side} end.`;
+  render();
+  if(aiHand.length===0){
+    endRound('loss','The AI emptied its hand first.');
+    return;
+  }
+  if(evaluateBlocked())return;
+  playerTurn=true;
+  updateStats();
+}
+leftTarget.addEventListener('click',()=>{selectSide('left');if(playerTurn)tryPlayerMove('left',false);});
+rightTarget.addEventListener('click',()=>{selectSide('right');if(playerTurn)tryPlayerMove('right',false);});
+document.getElementById('draw-btn').addEventListener('click',drawOrPass);
+document.getElementById('new-btn').addEventListener('click',()=>started?startRound():overlayBtn.click());
+overlayBtn.addEventListener('click',startRound);
+document.addEventListener('keydown',event=>{
+  if(overlayEl.style.display!=='none'&&(event.key==='Enter'||event.key===' ')){
+    event.preventDefault();
+    startRound();
+    return;
+  }
+  if(!started||!playerTurn)return;
+  if(event.key==='ArrowLeft'){
+    event.preventDefault();
+    selectedIndex=(selectedIndex-1+playerHand.length)%Math.max(1,playerHand.length);
+    renderHand();
+    updateStats();
+  }else if(event.key==='ArrowRight'){
+    event.preventDefault();
+    selectedIndex=(selectedIndex+1)%Math.max(1,playerHand.length);
+    renderHand();
+    updateStats();
+  }else if(event.key==='ArrowUp'||event.key==='ArrowDown'){
+    event.preventDefault();
+    targetSide=targetSide==='left'?'right':'left';
+    updateStats();
+  }else if(event.key==='Enter'){
+    event.preventDefault();
+    tryPlayerMove();
+  }else if(event.key==='d'||event.key==='D'){
+    event.preventDefault();
+    drawOrPass();
+  }else if(event.key==='r'||event.key==='R'){
+    event.preventDefault();
+    startRound();
+  }
+});
+bestEl.textContent=String(best);
+showOverlay('🁫 Domino','Use <strong>Left</strong> and <strong>Right</strong> to choose a domino, <strong>Up</strong> or <strong>Down</strong> to switch ends, and <strong>Enter</strong> to place it. Tap a tile, then tap a matching end on touch screens.');
+render();
+</script>
+</body>
+</html>

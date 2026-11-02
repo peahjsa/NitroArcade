@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Minesweeper — Game Portal</title>
+<meta name="description" content="Play Minesweeper free online — Uncover all safe cells without triggering any mines. A Medium Puzzle game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/minesweeper/"/>
+<meta property="og:title" content="💣 Minesweeper — Free Browser Game"/>
+<meta property="og:description" content="Play Minesweeper free in your browser. Uncover all safe cells without triggering any mines."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/minesweeper/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Minesweeper",
+  "description": "Uncover all safe cells without triggering any mines.",
+  "url": "https://arcade.sotshau.fun/games/minesweeper/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Puzzle",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px}.score-bar{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:92px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:18px;box-shadow:0 8px 20px rgba(0,0,0,.08)}.board{display:grid;grid-template-columns:repeat(9,36px);gap:4px}.cell{width:36px;height:36px;border:none;border-radius:10px;background:#dbeafe;font-weight:800;font-size:16px;cursor:pointer;color:#1f2937}.cell.revealed{background:#eff6ff;box-shadow:inset 0 0 0 1px #bfdbfe}.cell.mine{background:#fecaca}.cell.flagged{background:#fde68a}.cell.cursor{outline:3px solid #6c63ff;outline-offset:1px}.controls{display:flex;gap:10px;justify-content:center;margin-top:14px;flex-wrap:wrap}.btn{padding:9px 18px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}.btn.alt{background:#fff;color:#6c63ff;border:1px solid #6c63ff}.overlay{position:absolute;inset:18px;background:rgba(245,245,247,.95);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p{color:#6b7280;max-width:320px;line-height:1.5}.status{margin-top:12px;text-align:center;color:#374151;font-weight:700;min-height:24px}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>💣 Minesweeper</h1>
+<p class="sub">Reveal every safe tile, flag likely mines, and clear the board without detonating one.</p>
+<div class="score-bar">
+  <div class="score-box"><div class="score-label">Mines Left</div><div class="score-val" id="mines-left">10</div></div>
+  <div class="score-box"><div class="score-label">Time</div><div class="score-val" id="time">0</div></div>
+  <div class="score-box"><div class="score-label">Wins</div><div class="score-val" id="wins">0</div></div>
+  <div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">—</div></div>
+</div>
+<div class="game">
+  <div class="board" id="board"></div>
+  <div class="overlay" id="overlay">
+    <h2>💣 Minesweeper</h2>
+    <p>Use arrow keys to move the cursor, Enter to reveal, and F to flag. On touch screens, toggle flag mode and tap cells.</p>
+    <button class="btn" id="overlay-btn" >Start Game</button>
+  </div>
+  <div class="controls">
+    <button class="btn alt" id="mode-btn" >Flag Mode: Off</button>
+    <button class="btn" id="new-board-btn">New Board</button>
+  </div>
+  <div class="status" id="status">Press Start to begin.</div>
+</div>
+<p class="hint">Arrow keys + Enter + F · Right-click to flag · Touch: toggle flag mode then tap</p>
+<script>
+const SIZE=9,MINES=10,WIN_KEY='minesweeperWins',BEST_KEY='minesweeperBestTime';
+const boardEl=document.getElementById('board'),overlay=document.getElementById('overlay'),statusEl=document.getElementById('status');
+let board,cursor={r:0,c:0},started=false,active=false,flagMode=false,time=0,timer=null,wins=+(localStorage.getItem(WIN_KEY)||0),best=localStorage.getItem(BEST_KEY);function fmtTime(s){return s>=60?Math.floor(s/60)+':'+(s%60+'').padStart(2,'0'):s+'s';}document.getElementById('wins').textContent=wins;document.getElementById('best').textContent=best?fmtTime(+best):'—';
+function makeCell(){return{mine:false,revealed:false,flagged:false,count:0};}
+function startGame(){board=Array.from({length:SIZE},()=>Array.from({length:SIZE},makeCell));cursor={r:0,c:0};started=false;active=true;time=0;clearInterval(timer);document.getElementById('time').textContent='0';statusEl.textContent='Reveal a safe tile to start the timer.';overlay.style.display='none';render();updateMineCount();}
+function plantMines(safeR,safeC){let placed=0;while(placed<MINES){const r=Math.floor(Math.random()*SIZE),c=Math.floor(Math.random()*SIZE);if(board[r][c].mine||(r===safeR&&c===safeC))continue;board[r][c].mine=true;placed++;}
+for(let r=0;r<SIZE;r++)for(let c=0;c<SIZE;c++)if(!board[r][c].mine){let count=0;for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){const nr=r+dr,nc=c+dc;if(board[nr]?.[nc]?.mine)count++;}board[r][c].count=count;}}
+function ensureTimer(r,c){if(started)return;started=true;plantMines(r,c);timer=setInterval(()=>{time++;document.getElementById('time').textContent=String(time);},1000);} 
+function toggleFlagMode(){flagMode=!flagMode;document.getElementById('mode-btn').textContent='Flag Mode: '+(flagMode?'On':'Off');}
+function updateMineCount(){const flags=board.flat().filter(c=>c.flagged).length;document.getElementById('mines-left').textContent=String(MINES-flags);} 
+function reveal(r,c){const cell=board[r][c];if(!active||cell.flagged||cell.revealed)return;cursor={r,c};ensureTimer(r,c);if(cell.mine){cell.revealed=true;active=false;clearInterval(timer);statusEl.textContent='Boom! You hit a mine.';board.flat().forEach(c=>{if(c.mine)c.revealed=true;});render();showOverlay('Boom!','You detonated a mine. Try another board.');return;}const stack=[[r,c]];while(stack.length){const [cr,cc]=stack.pop(),current=board[cr][cc];if(current.revealed||current.flagged)continue;current.revealed=true;if(current.count===0){for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){const nr=cr+dr,nc=cc+dc;if(board[nr]?.[nc]&&!board[nr][nc].revealed)stack.push([nr,nc]);}}}render();checkWin();}
+function flag(r,c){const cell=board[r][c];if(!active||cell.revealed)return;cell.flagged=!cell.flagged;cursor={r,c};render();updateMineCount();}
+function handleCell(r,c){if(flagMode)flag(r,c);else reveal(r,c);} 
+function checkWin(){const safe=SIZE*SIZE-MINES;const revealed=board.flat().filter(c=>c.revealed&&!c.mine).length;if(revealed===safe){active=false;clearInterval(timer);wins++;localStorage.setItem(WIN_KEY,String(wins));if(!best||time<+best){best=String(time);localStorage.setItem(BEST_KEY,best);}document.getElementById('wins').textContent=wins;document.getElementById('best').textContent=fmtTime(+best);statusEl.textContent='Board cleared!';showOverlay('You Win!','Every safe tile is revealed. Great sweep.');}}
+function showOverlay(title,text){overlay.innerHTML=`<h2>${title}</h2><p>${text}</p><button class="btn" id="overlay-btn">Play Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);} 
+function render(){boardEl.innerHTML='';for(let r=0;r<SIZE;r++)for(let c=0;c<SIZE;c++){const cell=board[r][c],btn=document.createElement('button');btn.className='cell'+(cell.revealed?' revealed':'')+(cell.flagged?' flagged':'')+(cell.mine&&cell.revealed?' mine':'')+(cursor.r===r&&cursor.c===c?' cursor':'');btn.textContent=cell.revealed?(cell.mine?'💣':cell.count||''):(cell.flagged?'🚩':'');btn.style.color=['','#2563eb','#16a34a','#dc2626','#7c3aed','#b45309','#0f766e','#111827','#6b21a8'][cell.count]||'#111827';btn.addEventListener('click',()=>handleCell(r,c));btn.addEventListener('contextmenu',e=>{e.preventDefault();flag(r,c);});boardEl.appendChild(btn);}}
+document.addEventListener('keydown',e=>{if(overlay.style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}if(!board)return;const moveKeys={ArrowLeft:[0,-1],ArrowRight:[0,1],ArrowUp:[-1,0],ArrowDown:[1,0]};if(moveKeys[e.key]){e.preventDefault();cursor.r=(cursor.r+moveKeys[e.key][0]+SIZE)%SIZE;cursor.c=(cursor.c+moveKeys[e.key][1]+SIZE)%SIZE;render();return;}if(e.key==='f'||e.key==='F'){e.preventDefault();flag(cursor.r,cursor.c);}if(e.key==='Enter'){e.preventDefault();reveal(cursor.r,cursor.c);}});
+board=Array.from({length:SIZE},()=>Array.from({length:SIZE},makeCell));
+render();
+updateMineCount();
+document.getElementById("overlay-btn").addEventListener("click",startGame);
+document.getElementById("mode-btn").addEventListener("click",toggleFlagMode);
+document.getElementById("new-board-btn").addEventListener("click",startGame);
+</script>
+</body>
+</html>

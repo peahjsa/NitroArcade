@@ -1,0 +1,19 @@
+
+#nitroMixPanel{background:radial-gradient(ellipse at 15% 0%,rgba(0,193,255,.16),transparent 40%),radial-gradient(ellipse at 95% 85%,rgba(189,70,255,.14),transparent 45%),#070a12!important;color:#ecf6ff!important;padding:clamp(18px,4vw,55px)!important;font-family:Inter,system-ui,sans-serif!important}
+#nitroMixPanel .mixcard{max-width:1040px!important;margin:0 auto!important;border:1px solid #273e57;background:linear-gradient(145deg,rgba(18,28,49,.96),rgba(8,12,24,.97));border-radius:24px;padding:clamp(20px,4vw,40px);box-shadow:0 25px 90px #0008,0 0 70px #00baff0b}
+#nitroMixPanel h2{font-size:clamp(25px,4vw,39px);letter-spacing:-1.3px;margin:0;background:linear-gradient(100deg,#fff,#74dfff 65%,#bb8cff);background-clip:text;-webkit-background-clip:text;color:transparent}
+#nitroMixPanel p{color:#a8bbd4;line-height:1.65;max-width:790px}
+#nitroMixPanel .mixrow{gap:12px!important;margin:20px 0!important}
+#nitroMixPanel button{background:linear-gradient(140deg,#192c46,#101c32)!important;border:1px solid #35506d!important;color:#e5f7ff!important;padding:12px 16px!important;border-radius:11px!important;font-weight:750!important;transition:background .2s,transform .2s,border-color .2s}
+#nitroMixPanel button:hover{background:#254666!important;border-color:#5bbfff!important;transform:translateY(-1px)}
+#nitroMixPanel #nitroMixSave{background:linear-gradient(120deg,#117ab3,#7448c5)!important;border-color:#6cbcff!important}
+#nitroMixPanel #nitroMixClose{background:#17263b!important}
+#nitroMixPanel input:not([type=checkbox]):not([type=file]){background:#090f1e!important;border:1px solid #3b5370!important;color:white!important;padding:12px!important;border-radius:10px!important}
+#nitroMixPanel input[type=file]{background:#0b1425!important;border:1px dashed #486d90!important;padding:12px!important;border-radius:11px!important;max-width:100%}
+#nitroMixPanel label{font-weight:700;color:#c8dcf3}
+#nitroMixPanel #nitroMixInfo{border-top:1px solid #2d3d57;padding-top:22px;font-size:12px;text-transform:uppercase;letter-spacing:1.2px;color:#79caff;font-weight:800}
+#nitroMixPanel #nitroMixTracks{min-height:90px;border:1px solid #273d57;border-radius:13px;padding:12px 18px;background:#050a15b8;margin:14px 0}
+#nitroMixPanel .mixtrack{color:#dbefff;border-bottom-color:#243953!important}
+#nitroMixPanel audio{width:100%;margin:22px 0!important;filter:drop-shadow(0 8px 16px #0008)}
+#nitroMixPanel small{display:block;color:#8095b1;margin-top:18px;line-height:1.6}
+@media(max-width:700px){#nitroMixPanel .mixrow{align-items:stretch!important}#nitroMixPanel .mixrow>label{width:100%}#nitroMixPanel .mixrow input{max-width:100%}}

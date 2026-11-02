@@ -1,0 +1,4 @@
+@font-face{font-family:"Harabara Mais";src:url("../fonts/Harabara_Mais_Demo.otf") format("opentype");font-display:swap}
+@font-face{font-family:"Mario Party Hudson";src:url("../fonts/Mario-Party-Hudson-Font.ttf") format("truetype");font-display:swap}
+html,body,button,input,select,textarea{font-family:"Harabara Mais",Arial,sans-serif!important}
+.mario-font,[class*="mario-title"],[id*="marioTitle"],.mario-game-title{font-family:"Mario Party Hudson","Harabara Mais",sans-serif!important}

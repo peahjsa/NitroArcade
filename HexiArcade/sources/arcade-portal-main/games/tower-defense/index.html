@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Tower Defense — Game Portal</title>
+<meta name="description" content="Play Tower Defense free online — Place towers to stop waves of enemies from reaching your base. A Hard Strategy game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/tower-defense/"/>
+<meta property="og:title" content="🏰 Tower Defense — Free Browser Game"/>
+<meta property="og:description" content="Play Tower Defense free in your browser. Place towers to stop waves of enemies from reaching your base."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/tower-defense/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Tower Defense",
+  "description": "Place towers to stop waves of enemies from reaching your base.",
+  "url": "https://arcade.sotshau.fun/games/tower-defense/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Strategy",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:36px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px}.score-bar{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:12px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:92px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.toolbar{display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;margin-bottom:12px}.pill{background:#fff;border:1px solid #e5e7eb;border-radius:999px;padding:8px 14px;color:#4b5563;font-size:13px;box-shadow:0 1px 3px rgba(0,0,0,.06)}.btn{padding:9px 18px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer}.btn:hover{background:#574fd6}.wrap{position:relative}.panel{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:18px;box-shadow:0 8px 20px rgba(0,0,0,.08)}canvas{display:block;background:linear-gradient(#eef2ff,#dcfce7);border-radius:14px;border:1px solid #d1d5db;touch-action:none}.overlay{position:absolute;inset:18px;background:rgba(245,245,247,.95);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p,.status{color:#6b7280;line-height:1.5}.status{min-height:22px;text-align:center;font-weight:700;margin-top:12px;color:#374151}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center;padding:0 18px}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🛡️ Tower Defense</h1>
+<p class="sub">Place towers along the lane, stop marching blobs, and survive longer waves.</p>
+<div class="score-bar">
+  <div class="score-box"><div class="score-label">Gold</div><div class="score-val" id="gold">60</div></div>
+  <div class="score-box"><div class="score-label">Lives</div><div class="score-val" id="lives">10</div></div>
+  <div class="score-box"><div class="score-label">Wave</div><div class="score-val" id="wave">0</div></div>
+  <div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">0</div></div>
+</div>
+<div class="toolbar">
+  <div class="pill">Build: 20g · Upgrade: 30g, 50g, 70g…</div>
+  <button class="btn" id="wave-btn">Start Wave</button>
+</div>
+<div class="wrap panel">
+  <canvas id="game" width="540" height="360"></canvas>
+  <div class="overlay" id="overlay">
+    <h2>🛡️ Tower Defense</h2>
+    <p>Arrow keys move the cursor, Enter builds a tower, and Space starts the next wave. Tap a grass tile to build on touch screens.</p>
+    <button class="btn" id="overlay-btn">Start Game</button>
+  </div>
+  <div class="status" id="status">Protect the crystal road.</div>
+</div>
+<p class="hint">Keyboard: arrows + Enter + Space · Touch: tap empty tiles to build, button to start waves</p>
+<script>
+const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');
+if(!ctx) throw new Error('Canvas 2D context unavailable');
+const CELL=60,COLS=9,ROWS=6,BEST_KEY='towerDefenseBest';
+const path=[{x:0,y:2},{x:1,y:2},{x:2,y:2},{x:2,y:1},{x:3,y:1},{x:4,y:1},{x:4,y:2},{x:4,y:3},{x:5,y:3},{x:6,y:3},{x:6,y:4},{x:7,y:4},{x:8,y:4}];
+const pathSet=new Set(path.map(p=>`${p.x},${p.y}`));
+let towers=[],enemies=[],shots=[],cursor={x:0,y:0},gold=60,lives=10,wave=0,best=+(localStorage.getItem(BEST_KEY)||0),remaining=0,spawnTimer=0,waveActive=false,running=false,last=0,rafId=0,statusMsg='Protect the crystal road.',autoAdvanceTimer=0;
+document.getElementById('best').textContent=best;
+function updateStats(){gold=Math.max(0,gold);document.getElementById('gold').textContent=gold;document.getElementById('lives').textContent=lives;document.getElementById('wave').textContent=wave;document.getElementById('best').textContent=best;document.getElementById('status').textContent=statusMsg;}
+function upgradeCost(lv){return 30+(lv-1)*20;}
+function towerDmg(lv){return (14+wave*1.2)*(1+(lv-1)*0.4);}
+function towerRange(lv){return Math.min(120+(lv-1)*5,250);}
+function towerCd(lv){return Math.max(550-(lv-1)*15,150);}
+function towerHue(lv){return(260-(lv-1)*2.7+360)%360;}
+function getPoint(progress){const i=Math.floor(progress);const t=progress-i;const a=path[Math.min(i,path.length-1)],b=path[Math.min(i+1,path.length-1)];return{x:(a.x+(b.x-a.x)*t+.5)*CELL,y:(a.y+(b.y-a.y)*t+.5)*CELL};}
+function startGame(){towers=[];enemies=[];shots=[];cursor={x:0,y:0};gold=60;lives=10;wave=0;remaining=0;spawnTimer=0;waveActive=false;autoAdvanceTimer=0;running=true;last=0;statusMsg='Build wisely, then start the first wave.';document.getElementById('overlay').style.display='none';updateStats();draw();cancelAnimationFrame(rafId);rafId=requestAnimationFrame(loop);}
+function startWave(){if(!running||waveActive)return;wave++;autoAdvanceTimer=0;const boss=wave%5===0;remaining=boss?1:(4+wave*2)*5;spawnTimer=.2;waveActive=true;statusMsg=boss?`⚠️ Boss Wave ${wave}!`:`Wave ${wave} incoming!`;if(wave>best){best=wave;localStorage.setItem(BEST_KEY,String(best));}updateStats();}
+function buildTower(x,y){
+  if(!running)return;
+  if(pathSet.has(`${x},${y}`)){statusMsg='You can only build on grass.';return updateStats();}
+  const existing=towers.find(t=>t.x===x&&t.y===y);
+  if(existing){
+    if(existing.level>=99){statusMsg='Tower is max level (Lv99)!';return updateStats();}
+    const cost=upgradeCost(existing.level);
+    if(gold<cost){statusMsg=`Need ${cost}g to upgrade (have ${gold}g).`;return updateStats();}
+    gold-=cost;existing.level++;
+    statusMsg=`Tower upgraded to Lv${existing.level}!`;return updateStats();
+  }
+  if(gold<20){statusMsg='Not enough gold.';return updateStats();}
+  gold-=20;towers.push({x,y,cooldown:0,level:1});statusMsg='Tower placed! Click again to upgrade.';updateStats();
+}
+function spawnEnemy(isBoss=false){const hpBase=30+wave*10;const baseSpd=0.4+wave*.035;const spd=isBoss?baseSpd*0.45:baseSpd*5;enemies.push({progress:0,speed:spd,hp:isBoss?hpBase*6:hpBase,maxHp:isBoss?hpBase*6:hpBase,isBoss:isBoss});}
+function gameOver(){running=false;waveActive=false;const overlay=document.getElementById('overlay');overlay.innerHTML=`<h2>💥 Crystal Lost</h2><p>You reached wave <strong>${wave}</strong>. Build a tighter defense and try again.</p><button class="btn" id="overlay-btn">Try Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);}
+function update(dt){if(waveActive&&remaining>0){spawnTimer-=dt/1000;if(spawnTimer<=0){spawnEnemy(wave%5===0);remaining--;spawnTimer=Math.max(.15,.32-wave*.01);}}
+for(const enemy of enemies)enemy.progress+=enemy.speed*dt/1000;
+for(let i=enemies.length-1;i>=0;i--){if(enemies[i].progress>=path.length-1){enemies.splice(i,1);lives--;statusMsg='An enemy slipped through!';if(lives<=0){updateStats();return gameOver();}}}
+for(const tower of towers){tower.cooldown-=dt;const tx=(tower.x+.5)*CELL,ty=(tower.y+.5)*CELL;const range=towerRange(tower.level);const target=enemies.find(e=>{const p=getPoint(e.progress);return Math.hypot(p.x-tx,p.y-ty)<range;});if(target&&tower.cooldown<=0){target.hp-=towerDmg(tower.level);tower.cooldown=towerCd(tower.level);const p=getPoint(target.progress);shots.push({x1:tx,y1:ty,x2:p.x,y2:p.y,life:120});if(target.hp<=0){gold+=target.isBoss?30:8;statusMsg=target.isBoss?'Boss defeated! +30 gold!':'Enemy defeated!';}}}
+for(let i=enemies.length-1;i>=0;i--){if(enemies[i].hp<=0)enemies.splice(i,1);}
+for(let i=shots.length-1;i>=0;i--){shots[i].life-=dt;if(shots[i].life<=0)shots.splice(i,1);}
+if(waveActive&&remaining===0&&enemies.length===0){waveActive=false;gold+=10+wave*2;autoAdvanceTimer=5;statusMsg='Wave cleared! Next wave in 5...';updateStats();}
+if(!waveActive&&autoAdvanceTimer>0){autoAdvanceTimer-=dt/1000;if(autoAdvanceTimer<=0){autoAdvanceTimer=0;startWave();}else{statusMsg=`Wave cleared! Next wave in ${Math.ceil(autoAdvanceTimer)}...`;updateStats();}}}
+function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);for(let y=0;y<ROWS;y++)for(let x=0;x<COLS;x++){ctx.fillStyle=pathSet.has(`${x},${y}`)?'#cbd5e1':'#bbf7d0';ctx.fillRect(x*CELL,y*CELL,CELL,CELL);ctx.strokeStyle='rgba(17,24,39,.08)';ctx.strokeRect(x*CELL,y*CELL,CELL,CELL);}ctx.fillStyle='#fbbf24';ctx.beginPath();ctx.arc((path[path.length-1].x+.5)*CELL,(path[path.length-1].y+.5)*CELL,18,0,Math.PI*2);ctx.fill();for(const tower of towers){const cx=(tower.x+.5)*CELL,cy=(tower.y+.5)*CELL;const h=towerHue(tower.level);ctx.fillStyle=`hsl(${h},75%,55%)`;ctx.beginPath();ctx.arc(cx,cy,18,0,Math.PI*2);ctx.fill();ctx.fillStyle=`hsl(${h},75%,80%)`;ctx.beginPath();ctx.arc(cx,cy,9,0,Math.PI*2);ctx.fill();ctx.fillStyle='#fff';ctx.font='bold 9px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(`L${tower.level}`,cx,cy);}for(const e of enemies){const p=getPoint(e.progress);const r=e.isBoss?22:14;const barW=e.isBoss?48:32;ctx.fillStyle=e.isBoss?'#a855f7':'#ef4444';ctx.beginPath();ctx.arc(p.x,p.y,r,0,Math.PI*2);ctx.fill();ctx.fillStyle='#111827';ctx.fillRect(p.x-barW/2,p.y-r-8,barW,5);ctx.fillStyle='#22c55e';ctx.fillRect(p.x-barW/2,p.y-r-8,barW*(e.hp/e.maxHp),5);}for(const beam of shots){ctx.strokeStyle='rgba(124,58,237,.55)';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(beam.x1,beam.y1);ctx.lineTo(beam.x2,beam.y2);ctx.stroke();}const hovTower=towers.find(t=>t.x===cursor.x&&t.y===cursor.y);if(hovTower&&running&&!waveActive){const s=hovTower.level<99?`Lv${hovTower.level} tower — click to upgrade → Lv${hovTower.level+1} (${upgradeCost(hovTower.level)}g)`:'Max level tower (Lv99)!';document.getElementById('status').textContent=s;}ctx.strokeStyle='#111827';ctx.lineWidth=3;ctx.strokeRect(cursor.x*CELL+4,cursor.y*CELL+4,CELL-8,CELL-8);} 
+function loop(ts){if(!running)return;const dt=ts-last||16;last=ts;update(dt);updateStats();draw();rafId=requestAnimationFrame(loop);}
+canvas.addEventListener('click',e=>{const r=canvas.getBoundingClientRect(),x=Math.floor((e.clientX-r.left)/(r.width/COLS)),y=Math.floor((e.clientY-r.top)/(r.height/ROWS));cursor={x:Math.max(0,Math.min(COLS-1,x)),y:Math.max(0,Math.min(ROWS-1,y))};buildTower(cursor.x,cursor.y);draw();});
+document.getElementById('wave-btn').addEventListener('click',startWave);
+document.getElementById('overlay-btn').addEventListener('click',startGame);
+document.addEventListener('keydown',e=>{const overlay=document.getElementById('overlay');if(overlay.style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}if(e.key==='ArrowLeft'){e.preventDefault();cursor.x=(cursor.x+COLS-1)%COLS;draw();}if(e.key==='ArrowRight'){e.preventDefault();cursor.x=(cursor.x+1)%COLS;draw();}if(e.key==='ArrowUp'){e.preventDefault();cursor.y=(cursor.y+ROWS-1)%ROWS;draw();}if(e.key==='ArrowDown'){e.preventDefault();cursor.y=(cursor.y+1)%ROWS;draw();}if(e.key==='Enter'){e.preventDefault();buildTower(cursor.x,cursor.y);draw();}if(e.key===' '){e.preventDefault();startWave();}});
+draw();updateStats();
+</script>
+</body>
+</html>

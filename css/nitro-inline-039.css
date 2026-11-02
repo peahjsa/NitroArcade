@@ -1,0 +1,54 @@
+
+.ntPlusActions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.ntPlusActions button{background:#1b183a;border:1px solid #504079;border-radius:8px;color:#cfc0ff;padding:9px 12px;font-size:10px;font-weight:900;cursor:pointer}
+.ntPlusActions button:hover{border-color:#b576ff;background:#332259}
+#npOverlay{position:fixed;inset:0;z-index:2147483605;background:rgba(3,4,16,.90);backdrop-filter:blur(16px);display:none;overflow:auto;padding:clamp(12px,3vw,30px)}
+#npOverlay.open{display:block}
+#npShell{max-width:1050px;margin:3vh auto 30px;border:1px solid #6644a4;border-radius:18px;background:linear-gradient(135deg,#13132d,#090d20);color:#f5efff;box-shadow:0 30px 110px #000a;overflow:hidden;font-family:Inter,system-ui,sans-serif}
+#npHead{padding:20px 24px;background:linear-gradient(95deg,#3a1b65,#121735);display:flex;justify-content:space-between;align-items:center;gap:12px}
+#npHead h2{font-size:23px;letter-spacing:-.7px}
+#npHead small{font-size:10px;color:#bc9ddb;letter-spacing:1.5px}
+#npHead button,#npOverlay button{cursor:pointer}
+#npClose{border:1px solid #7b57aa;background:#251a40;color:white;padding:10px 13px;border-radius:9px}
+#npNav{display:flex;flex-wrap:wrap;gap:7px;padding:12px 20px;border-bottom:1px solid #322b50}
+#npNav button{background:#16152c;border:1px solid #3c345c;color:#c4b6de;border-radius:9px;padding:10px 12px;font-size:11px;font-weight:800}
+#npNav button.active{background:#5b2797;border-color:#a968ef;color:white}
+#npContent{padding:clamp(15px,3vw,28px);min-height:360px}
+.npIntro{color:#a99cbe;font-size:12px;line-height:1.7;margin:9px 0 20px}
+.npGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.npCard{border:1px solid #3c335f;background:linear-gradient(135deg,#191735,#10162b);padding:18px;border-radius:13px;min-width:0}
+.npCard h3{font-size:15px;margin-bottom:9px}
+.npCard p{color:#afa6c9;font-size:12px;line-height:1.7}
+.npCard small{color:#c1a5ec;font-size:10px}
+.npCard button,.npAction{border:1px solid #6a48a3;border-radius:9px;padding:10px 13px;background:#40256d;color:#fff;font-size:11px;font-weight:800;margin-top:12px}
+.npCard button:hover,.npAction:hover{background:#6534a5}
+.npRow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:12px 0}
+#npOverlay input:not([type=checkbox]):not([type=range]),#npOverlay textarea,#npOverlay select{background:#0c1025;border:1px solid #4c3b70;border-radius:9px;color:white;padding:11px;font:inherit;font-size:12px;max-width:100%;outline:none}
+#npOverlay input:focus,#npOverlay textarea:focus{border-color:#ad70ff}
+#npOverlay textarea{width:100%;min-height:230px;resize:vertical;line-height:1.6}
+#npOverlay input[type=range]{accent-color:#a35dff}
+#npOverlay input[type=color]{width:50px;height:38px;border:0;background:none}
+.npProgress{height:9px;background:#1b1937;border-radius:99px;overflow:hidden;margin:12px 0}
+.npProgress>span{display:block;height:100%;background:linear-gradient(90deg,#6534e8,#d868e9);border-radius:99px}
+.npQuest{display:flex;align-items:center;gap:12px;border:1px solid #38305b;background:#13152d;border-radius:10px;padding:13px;margin:9px 0}
+.npQuest>span{font-size:22px}
+.npQuest>div{flex:1;min-width:0}
+.npQuest b{display:block;font-size:12px}
+.npQuest small{display:block;color:#aaa0c7;margin-top:5px;font-size:10px}
+.npQuest button{border:1px solid #6b4b9e;background:#322253;color:#e6cfff;border-radius:8px;padding:9px 12px}
+.npQuest.done{border-color:#377f73;background:#102a2e}
+.npToast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#27204c;border:1px solid #b875ff;border-radius:11px;padding:12px 18px;display:none;z-index:2147483610;color:white;font-size:12px}
+.npKbd{font:11px monospace;background:#242046;border:1px solid #514177;border-radius:5px;padding:4px 7px;color:#d5baff}
+.npTag{font-size:9px;border:1px solid #6e4c9d;border-radius:99px;padding:4px 8px;color:#d3b4f8}
+.npDivider{height:1px;background:#383152;margin:20px 0}
+.npStatBig{font-size:33px;font-weight:900;color:#dfbaff}
+.npSearchList{display:grid;gap:7px;margin-top:15px}
+.npSearchResult{display:flex;justify-content:space-between;gap:15px;text-align:left;align-items:center;background:#17172f;border:1px solid #383459;border-radius:9px;color:#eee8ff;padding:13px 15px;width:100%}
+.npSearchResult:hover{background:#302050;border-color:#a465ec}
+.npSearchResult small{color:#aa9bc7}
+.npColorStrip{display:flex;gap:7px;flex-wrap:wrap}
+.npColorStrip button{width:37px;height:37px;border:2px solid #ffffff4b;border-radius:10px}
+.npNotesSaved{font-size:11px;color:#8ce3c0}
+@media(max-width:800px){.npGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:550px){.npGrid{grid-template-columns:1fr}#npHead{padding:16px}#npNav{padding:10px}#npNav button{font-size:10px;padding:8px}#npContent{padding:14px}}
+@media(prefers-reduced-motion:reduce){.ntPlusActions *{animation:none!important}}

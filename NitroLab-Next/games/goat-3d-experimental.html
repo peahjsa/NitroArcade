@@ -1,0 +1,51 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Goat Chaos Sandbox — NitroArcade</title><style>body{margin:0;background:#080b20;color:#eef;font:16px system-ui;overflow:hidden}#hud{position:absolute;top:12px;left:12px;background:#10172de8;padding:14px;border:1px solid #83edff;border-radius:12px;max-width:340px}button{background:#6040a0;color:white;border:1px solid #9ef;padding:8px;cursor:pointer}#msg{color:#ffdb80}canvas{display:block}</style></head><body><div id="hud"><b>GOAT CHAOS · MEGA MAP</b><p>WASD / Arrows: move · Space: jump · Shift: sprint · E: chaos bleat · R: reset</p><p>Explore the village, stunt ramps, lake, towers and park. Push bouncing crates and collect gems. <span id="score">Score: 0</span></p><button onclick="resetWorld()">Reset world</button> <a href="../index.html" style="color:#9ef">Back</a><p id="msg">Offline Three.js arcade physics · big map · original geometry (not a rigid-body simulator)</p></div><script src="../engine/three.min.js"></script><script>
+if(typeof THREE==='undefined'){document.body.insertAdjacentHTML('beforeend','<div style="padding:24px;margin:25vh auto;max-width:560px;background:#18213b;border:2px solid #83edff;border-radius:16px">The 3D engine did not load. Check that NitroLab-Next/engine/three.min.js exists.</div>');throw new Error('Three.js missing');}
+const testCanvas=document.createElement('canvas');
+if(!testCanvas.getContext('webgl')&&!testCanvas.getContext('experimental-webgl')){document.body.insertAdjacentHTML('beforeend','<div style="padding:24px;margin:25vh auto;max-width:560px;background:#18213b;border:2px solid #83edff;border-radius:16px">3D graphics are unavailable in this browser. Enable hardware acceleration or try another browser.</div>');throw new Error('WebGL unavailable');}
+const scene=new THREE.Scene();scene.background=new THREE.Color(0x88b7dd);scene.fog=new THREE.Fog(0x88b7dd,85,195);
+const camera=new THREE.PerspectiveCamera(68,innerWidth/innerHeight,.1,450);
+const renderer=new THREE.WebGLRenderer({antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,1.7));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;document.body.appendChild(renderer.domElement);
+scene.add(new THREE.HemisphereLight(0xeafaff,0x6e7d62,2));const sun=new THREE.DirectionalLight(0xfff3d4,2.4);sun.position.set(35,65,25);sun.castShadow=true;sun.shadow.mapSize.set(1024,1024);sun.shadow.camera.left=-85;sun.shadow.camera.right=85;sun.shadow.camera.top=85;sun.shadow.camera.bottom=-85;scene.add(sun);
+const mat=(c)=>new THREE.MeshStandardMaterial({color:c,roughness:.83});
+const grass=mat(0x6fae69),road=mat(0x565e70),water=new THREE.MeshStandardMaterial({color:0x38b9d6,transparent:true,opacity:.8,metalness:.25,roughness:.3});
+function cube(w,h,d,color,x,y,z,opts={}){let m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),typeof color==='number'?mat(color):color);m.position.set(x,y,z);m.castShadow=opts.shadow!==false;m.receiveShadow=true;scene.add(m);return m}
+const ground=cube(190,1,190,grass,0,-.6,0,{shadow:false});
+// Village roads, plaza, skate park, ramps, water park, bridge, trees, houses, towers
+cube(16,.07,175,road,-18,.02,0);cube(135,.07,13,road,0,.03,20);cube(29,.08,25,0xd3bc8c,23,.02,-10);
+cube(37,.06,32,water,42,.04,40);for(let x=23;x<=61;x+=4)cube(.12,.2,32,0xc7f9ff,x,.13,40);
+for(let z=-75;z<=75;z+=16)for(let x of [-25,-11]){const c=cube(.25,.1,3,0xf4e9ac,x,.11,z);}
+const obstacles=[],gems=[],trees=[];
+function house(x,z,color){cube(8,6,8,color,x,3,z);const roof=cube(9,1.5,9,0x744c5d,x,6.7,z);roof.rotation.z=.08;cube(2.1,3,.2,0x4a324c,x,1.5,z+4.1);for(let d of [-2,2])cube(1.4,1.4,.2,0x9aeaff,x+d,4,z+4.12);}
+for(let i=0;i<12;i++){let x=-75+(i%6)*17,z=-61+Math.floor(i/6)*25;house(x,z,[0xf3a87d,0xb8a0e5,0xf4d39b,0x8acdc7][i%4]);}
+function tree(x,z){cube(.65,4,.65,0x79503c,x,2,z);let leaf=new THREE.Mesh(new THREE.ConeGeometry(3,8,7),mat(0x348c54));leaf.position.set(x,7,z);scene.add(leaf)}
+for(let i=0;i<85;i++){let x=Math.sin(i*17.3)*86,z=Math.cos(i*8.71)*85;if(Math.abs(x+18)<12||Math.abs(z-20)<11||x>20&&x<65&&z>22&&z<60)continue;tree(x,z)}
+// Stunt park structures
+for(let i=0;i<5;i++){let ramp=cube(8,.7,12,0x6b55a7,(-36+i*15),.8,-5);ramp.rotation.x=-.18;}
+for(let i=0;i<4;i++){let tower=cube(3,3+i*3,3,0x8a8da5,45+i*9,(3+i*3)/2,-48);tower.userData.static=true;}
+for(let i=0;i<10;i++){const step=cube(5,.65,3,0xf6a86a,-40+i*4.8,.5+i*.58,48);step.rotation.x=-.04}
+for(let x=26;x<59;x+=5)cube(5,.8,6,0x9c8060,x,1.1,40);
+// Goat assembled in local coordinates
+const goat=new THREE.Group();scene.add(goat);
+function part(w,h,d,color,x,y,z){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat(color));m.position.set(x,y,z);m.castShadow=true;goat.add(m);return m}
+part(1.5,.9,.8,0xf4e8d4,0,1.18,0);part(.65,.65,.7,0xfff4e5,0,1.65,-.9);for(const x of [-.5,.5])for(const z of [-.28,.33])part(.2,.75,.22,0xbba68f,x,.48,z);for(const x of [-.2,.2]){part(.12,.46,.12,0xc4a17c,x,2.16,-.93);part(.12,.13,.08,0x252434,x,1.75,-1.28)}part(.27,.22,.25,0xc9a78b,0,1.43,-1.29);part(.22,.25,.3,0xf4e8d4,0,1.32,.58);
+let score=0,chaos=0,vy=0,vx=0,vz=0,last=performance.now(),crates=[],particles=[];const keys={};
+addEventListener('keydown',e=>{keys[e.code]=true;if(['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.code))e.preventDefault();if(e.code==='KeyR')resetWorld();if(e.code==='KeyE')bleat()});addEventListener('keyup',e=>keys[e.code]=false);
+function bleat(){document.getElementById('msg').textContent='BAAAAA! Goat chaos activated.';for(const c of crates)if(c.position.distanceTo(goat.position)<7){c.userData.vx+=(c.position.x-goat.position.x)*2;c.userData.vz+=(c.position.z-goat.position.z)*2;c.userData.vy+=6;chaos+=2}}
+function resetWorld(){crates.forEach(c=>scene.remove(c));gems.forEach(g=>scene.remove(g));crates=[];gems=[];goat.position.set(0,0,0);vx=vz=vy=0;score=chaos=0;
+for(let i=0;i<60;i++){let x=Math.sin(i*12.7)*61,z=Math.cos(i*8.5)*61;const c=cube(.9+Math.random()*.9,.9+Math.random()*.9,1.1,0xb47c57,x,1,z);c.userData={vx:0,vy:0,vz:0};crates.push(c)}
+for(let i=0;i<45;i++){let x=Math.sin(i*4.3)*75,z=Math.cos(i*9.2)*72;const g=new THREE.Mesh(new THREE.OctahedronGeometry(.55),new THREE.MeshStandardMaterial({color:0x9dffff,emissive:0x1484a2,emissiveIntensity:1.4}));g.position.set(x,1.2,z);scene.add(g);gems.push(g)}updateHud()}
+function updateHud(){document.getElementById('score').textContent='Gems: '+score+' · Chaos: '+chaos}
+resetWorld();
+function animate(now){requestAnimationFrame(animate);let dt=Math.min((now-last)/1000,.033);last=now;
+let dx=Number(!!(keys.KeyD||keys.ArrowRight))-Number(!!(keys.KeyA||keys.ArrowLeft));let dz=Number(!!(keys.KeyS||keys.ArrowDown))-Number(!!(keys.KeyW||keys.ArrowUp));let l=Math.hypot(dx,dz)||1;
+let speed=(keys.ShiftLeft||keys.ShiftRight)?22:12;vx+=(dx/l*speed-vx)*Math.min(1,dt*7);vz+=(dz/l*speed-vz)*Math.min(1,dt*7);goat.position.x=THREE.MathUtils.clamp(goat.position.x+vx*dt,-92,92);goat.position.z=THREE.MathUtils.clamp(goat.position.z+vz*dt,-92,92);
+if(dx||dz)goat.rotation.y=Math.atan2(-dx,-dz);
+if(keys.Space&&goat.position.y<.02)vy=12;vy-=27*dt;goat.position.y=Math.max(0,goat.position.y+vy*dt);if(goat.position.y===0)vy=0;
+// Arcade physics: boxes inherit momentum, tumble, bounce, and slow down by friction
+for(const c of crates){let distance=Math.hypot(c.position.x-goat.position.x,c.position.z-goat.position.z);if(distance<1.7){const force=keys.ShiftLeft?30:19;c.userData.vx+=(c.position.x-goat.position.x)/Math.max(distance,.1)*force*dt*9;c.userData.vz+=(c.position.z-goat.position.z)/Math.max(distance,.1)*force*dt*9;c.userData.vy+=dt*14;chaos++;updateHud()}
+c.userData.vy-=18*dt;c.position.x+=c.userData.vx*dt;c.position.z+=c.userData.vz*dt;c.position.y+=c.userData.vy*dt;if(c.position.y<.65){c.position.y=.65;c.userData.vy=Math.abs(c.userData.vy)*.28}c.userData.vx*=Math.exp(-2*dt);c.userData.vz*=Math.exp(-2*dt);c.rotation.x+=c.userData.vz*dt*.3;c.rotation.z-=c.userData.vx*dt*.3;
+if(Math.abs(c.position.x)>91||Math.abs(c.position.z)>91){c.position.x=THREE.MathUtils.clamp(c.position.x,-91,91);c.position.z=THREE.MathUtils.clamp(c.position.z,-91,91);c.userData.vx*=-.3;c.userData.vz*=-.3}}
+for(let i=gems.length-1;i>=0;i--){let g=gems[i];g.rotation.y+=dt*2;g.position.y=1.2+Math.sin(now*.003+i)*.25;if(Math.hypot(g.position.x-goat.position.x,g.position.z-goat.position.z)<1.4){scene.remove(g);gems.splice(i,1);score+=10;updateHud()}}
+const target=new THREE.Vector3(goat.position.x,goat.position.y+7.5,goat.position.z+15);camera.position.lerp(target,Math.min(1,dt*4.5));camera.lookAt(goat.position.x,goat.position.y+1,goat.position.z);renderer.render(scene,camera)}requestAnimationFrame(animate);
+addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
+</script></body></html>

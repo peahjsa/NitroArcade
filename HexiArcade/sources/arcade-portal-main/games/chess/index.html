@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>♟️ Chess — Game Portal</title>
+<meta name="description" content="Play Chess free online — Classic chess vs AI. Checkmate the king to win. A Hard Card &amp; Board game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/chess/"/>
+<meta property="og:title" content="♟️ Chess — Free Browser Game"/>
+<meta property="og:description" content="Play Chess free in your browser. Classic chess vs AI. Checkmate the king to win."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/chess/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Chess",
+  "description": "Classic chess vs AI. Checkmate the king to win.",
+  "url": "https://arcade.sotshau.fun/games/chess/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Card & Board",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px;color:#111827}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 18px}.score-bar{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:14px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:94px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700}.purple{color:#6c63ff}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:18px;box-shadow:0 8px 20px rgba(0,0,0,.08)}.board{display:grid;grid-template-columns:repeat(8,62px);gap:0;border-radius:14px;overflow:hidden;border:1px solid #cbd5e1}.cell{width:62px;height:62px;border:none;position:relative;cursor:pointer;font-size:40px;display:flex;align-items:center;justify-content:center}.light{background:#fde68a}.dark{background:#b45309;color:#fff}.cell.cursor{outline:3px solid #6c63ff;outline-offset:-3px}.cell.selected{box-shadow:inset 0 0 0 4px #93c5fd}.cell.move::after{content:'';position:absolute;inset:23px;border-radius:50%;background:rgba(255,255,255,.55)}.controls{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:14px}.btn{padding:9px 18px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer}.btn:hover{background:#574fd6}.status{margin-top:12px;font-weight:700;text-align:center;color:#374151;min-height:24px}.overlay{position:absolute;inset:18px;background:rgba(245,245,247,.95);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p{color:#6b7280;max-width:350px;line-height:1.5}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center;padding:0 18px}@media (max-width:620px){.board{grid-template-columns:repeat(8,42px)}.cell{width:42px;height:42px;font-size:28px}.cell.move::after{inset:15px}}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>♟️ Chess</h1>
+<p class="sub">Play a polished same-device chess match with check, checkmate, stalemate, and automatic queen promotion.</p>
+<div class="score-bar">
+  <div class="score-box"><div class="score-label">Turn</div><div class="score-val purple" id="turn">White</div></div>
+  <div class="score-box"><div class="score-label">White Wins</div><div class="score-val purple" id="white-wins">0</div></div>
+  <div class="score-box"><div class="score-label">Black Wins</div><div class="score-val purple" id="black-wins">0</div></div>
+  <div class="score-box"><div class="score-label">Status</div><div class="score-val purple" id="phase">Ready</div></div>
+</div>
+<div class="game">
+  <div class="board" id="board"></div>
+  <div class="controls"><button class="btn" id="new-match-btn">New Match</button></div>
+  <div class="overlay" id="overlay">
+    <h2>♟️ Chess</h2>
+    <p>Arrow keys move the cursor and Enter selects or moves. Touch players can tap a piece, then tap its destination. Queens auto-promote; castling and en passant are omitted for faster local play.</p>
+    <button class="btn" id="overlay-btn">Start Match</button>
+  </div>
+  <div class="status" id="status">Press Start to begin.</div>
+</div>
+<p class="hint">Arrow keys + Enter · Click/tap squares · Checkmate and stalemate are enforced</p>
+<script>
+const boardEl=document.getElementById('board'),overlay=document.getElementById('overlay'),statusEl=document.getElementById('status');
+document.getElementById('new-match-btn').addEventListener('click',startGame);
+document.getElementById('overlay-btn').addEventListener('click',startGame);
+const WINS_KEY='chessWins';
+const START=['rnbqkbnr','pppppppp','........','........','........','........','PPPPPPPP','RNBQKBNR'];
+const ICONS={K:'♔',Q:'♕',R:'♖',B:'♗',N:'♘',P:'♙',k:'♚',q:'♛',r:'♜',b:'♝',n:'♞',p:'♟'};
+let board,turn='w',cursor={r:6,c:4},selected=null,running=false,wins=JSON.parse(localStorage.getItem(WINS_KEY)||'{"w":0,"b":0}');
+function cloneBoard(src){return src.map(row=>row.slice());}
+function resetBoard(){return START.map(row=>row.split('').map(ch=>ch==='.'?'':ch));}
+function colorOf(piece){return piece?piece===piece.toUpperCase()?'w':'b':'';}
+function enemyOf(color){return color==='w'?'b':'w';}
+function inside(r,c){return r>=0&&r<8&&c>=0&&c<8;}
+function findKing(color,src){for(let r=0;r<8;r++)for(let c=0;c<8;c++)if(src[r][c]&&(src[r][c].toLowerCase()==='k')&&colorOf(src[r][c])===color)return{r,c};return null;}
+function pseudoMoves(r,c,src,attackOnly=false){const piece=src[r][c],color=colorOf(piece),enemy=enemyOf(color),type=piece.toLowerCase(),moves=[];if(!piece)return moves;const push=(tr,tc,stop=false)=>{if(!inside(tr,tc))return true;const target=src[tr][tc];if(!target){if(!attackOnly||type!=='p')moves.push({r:tr,c:tc});return false;}if(colorOf(target)===enemy)moves.push({r:tr,c:tc});return true;};if(type==='p'){const dir=color==='w'?-1:1,startRow=color==='w'?6:1;if(attackOnly){for(const dc of[-1,1])if(inside(r+dir,c+dc))moves.push({r:r+dir,c:c+dc});return moves;}if(inside(r+dir,c)&&!src[r+dir][c])moves.push({r:r+dir,c});if(r===startRow&&!src[r+dir][c]&&!src[r+2*dir][c])moves.push({r:r+2*dir,c});for(const dc of[-1,1]){const nr=r+dir,nc=c+dc;if(inside(nr,nc)&&src[nr][nc]&&colorOf(src[nr][nc])===enemy)moves.push({r:nr,c:nc});}return moves;}if(type==='n'){for(const[dr,dc]of[[2,1],[2,-1],[-2,1],[-2,-1],[1,2],[1,-2],[-1,2],[-1,-2]]){const nr=r+dr,nc=c+dc;if(inside(nr,nc)&&colorOf(src[nr][nc])!==color)moves.push({r:nr,c:nc});}return moves;}if(type==='k'){for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++)if(dr||dc){const nr=r+dr,nc=c+dc;if(inside(nr,nc)&&colorOf(src[nr][nc])!==color)moves.push({r:nr,c:nc});}return moves;}const lines=[];if(type==='b'||type==='q')lines.push([1,1],[1,-1],[-1,1],[-1,-1]);if(type==='r'||type==='q')lines.push([1,0],[-1,0],[0,1],[0,-1]);for(const[dr,dc]of lines){let nr=r+dr,nc=c+dc;while(inside(nr,nc)){const stop=push(nr,nc);if(stop)break;nr+=dr;nc+=dc;}}return moves;}
+function makeMove(src,sr,sc,tr,tc){const next=cloneBoard(src),piece=next[sr][sc];next[sr][sc]='';next[tr][tc]=piece; if(piece==='P'&&tr===0)next[tr][tc]='Q'; if(piece==='p'&&tr===7)next[tr][tc]='q'; return next;}
+function isInCheck(color,src){const king=findKing(color,src);if(!king)return true;for(let r=0;r<8;r++)for(let c=0;c<8;c++){const piece=src[r][c];if(piece&&colorOf(piece)===enemyOf(color)){if(pseudoMoves(r,c,src,true).some(m=>m.r===king.r&&m.c===king.c))return true;}}return false;}
+function legalMoves(r,c,src=board){const piece=src[r][c],color=colorOf(piece);if(!piece)return[];return pseudoMoves(r,c,src,false).filter(m=>!isInCheck(color,makeMove(src,r,c,m.r,m.c)));}
+function anyLegal(color){for(let r=0;r<8;r++)for(let c=0;c<8;c++)if(board[r][c]&&colorOf(board[r][c])===color&&legalMoves(r,c).length)return true;return false;}
+function updateStats(phase='Playing'){document.getElementById('turn').textContent=turn==='w'?'White':'Black';document.getElementById('white-wins').textContent=String(wins.w);document.getElementById('black-wins').textContent=String(wins.b);document.getElementById('phase').textContent=phase;}
+function finish(result,title,msg){running=false;if(result)wins[result]++,localStorage.setItem(WINS_KEY,JSON.stringify(wins));overlay.innerHTML=`<h2>${title}</h2><p>${msg}</p><button class="btn" id="overlay-btn">Play Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);statusEl.textContent=msg;updateStats(title.split(' ')[0]);render();}
+function afterMove(){const foe=turn;if(!anyLegal(foe)){if(isInCheck(foe,board))finish(enemyOf(foe),`${enemyOf(foe)==='w'?'White':'Black'} Checkmates`,` ${enemyOf(foe)==='w'?'White':'Black'} wins by checkmate.`.trim());else finish('',`Stalemate`,`No legal moves remain. The game is drawn.`);return;}const checked=isInCheck(foe,board);statusEl.textContent=`${foe==='w'?'White':'Black'} to move${checked?' — check!':''}.`;updateStats(checked?'Check':'Playing');render();}
+function selectCell(r,c){if(!running)return;cursor={r,c};const piece=board[r][c];if(selected){const move=legalMoves(selected.r,selected.c).find(m=>m.r===r&&m.c===c);if(move){board=makeMove(board,selected.r,selected.c,r,c);selected=null;turn=enemyOf(turn);afterMove();return;}}if(piece&&colorOf(piece)===turn&&legalMoves(r,c).length){selected={r,c};statusEl.textContent=`${turn==='w'?'White':'Black'} selected ${piece.toUpperCase()}.`;render();}else{selected=null;render();}}
+function render(){boardEl.innerHTML='';const moves=selected?legalMoves(selected.r,selected.c):[];for(let r=0;r<8;r++)for(let c=0;c<8;c++){const btn=document.createElement('button');const piece=board[r][c];btn.className='cell '+(((r+c)%2===0)?'light':'dark')+(cursor.r===r&&cursor.c===c?' cursor':'')+(selected&&selected.r===r&&selected.c===c?' selected':'')+(moves.some(m=>m.r===r&&m.c===c)?' move':'');btn.onclick=()=>selectCell(r,c);btn.textContent=piece?ICONS[piece]:'';boardEl.appendChild(btn);}}
+function startGame(){board=resetBoard();turn='w';cursor={r:6,c:4};selected=null;running=true;overlay.style.display='none';statusEl.textContent='White to move.';updateStats('Playing');render();}
+document.addEventListener('keydown',e=>{if(overlay.style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}if(!running)return;const keys={ArrowLeft:[0,-1],ArrowRight:[0,1],ArrowUp:[-1,0],ArrowDown:[1,0]};if(keys[e.key]){e.preventDefault();cursor={r:(cursor.r+keys[e.key][0]+8)%8,c:(cursor.c+keys[e.key][1]+8)%8};render();return;}if(e.key==='Enter'||e.key===' '){e.preventDefault();selectCell(cursor.r,cursor.c);}});
+board=resetBoard();updateStats('Ready');render();
+</script>
+</body>
+</html>

@@ -1,0 +1,96 @@
+
+:root{--nxPurple:#a54cff;--nxPink:#e14bd9;--nxBlue:#5a6dff}
+body{background:#060711!important;color:#f0edff}
+body::before{background-size:75px 75px!important;opacity:.11!important}
+.navbar{left:218px!important;width:calc(100% - 218px)!important;background:rgba(7,8,22,.96)!important;border-bottom:1px solid #24203c!important;box-shadow:none!important;height:73px}
+.navbar .brand{display:none}
+.navbar .nav-actions{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:thin;justify-content:flex-start;max-width:calc(100% - 240px)}
+.navbar .nav-actions>.btn,.navbar .nav-actions>.theme-picker{flex-shrink:0}
+.navbar .search-wrap{max-width:330px;min-width:150px}
+.navbar .search-wrap input{background:#0e1023;border-color:#242744;border-radius:12px}
+.nxSidebar{position:fixed;left:0;top:0;bottom:0;width:218px;z-index:31;background:#070814;border-right:1px solid #211d39;padding:24px 12px;overflow-y:auto;display:flex;flex-direction:column;gap:4px;scrollbar-width:thin}
+.nxSideBrand{display:flex;align-items:center;gap:8px;padding:4px 10px 29px;font-size:15px;letter-spacing:-.7px}
+.nxSideBrand>span{font-size:33px;color:#bf68ff;text-shadow:0 0 22px #9b37ff}
+.nxSideBrand strong span{color:#ad64ff}
+.nxSideLabel{font-size:9px;color:#777593;letter-spacing:1.6px;font-weight:900;margin:19px 10px 7px}
+.nxSidebar button{width:100%;display:flex;align-items:center;gap:12px;text-align:left;color:#a6a4c1;background:transparent;border:1px solid transparent;border-radius:9px;padding:12px 13px;font-size:12px;font-weight:700;cursor:pointer}
+.nxSidebar button:hover,.nxSidebar button.nxSideActive{background:linear-gradient(90deg,#4e2087,#26143c);border-color:#6c35a5;color:white;box-shadow:0 0 20px #8638cc21}
+.nxSideFooter{margin-top:auto;padding:22px 8px 3px;color:#81e5c5;font-size:9px;letter-spacing:.6px;font-weight:800}
+.nxSideFooter small{display:block;margin-top:7px;color:#74728d;font-size:9px;letter-spacing:0}
+.nxStatusDot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#35e3a2;box-shadow:0 0 12px #35e3a2;margin-right:6px}
+.page{margin-left:218px!important;width:calc(100% - 218px)!important;max-width:none!important;padding:24px clamp(18px,3vw,44px) 55px!important}
+.nxWelcome{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:20px}
+.nxWelcome>div>span{font-size:10px;letter-spacing:1.6px;font-weight:800;color:#8c86b0}
+.nxWelcome h2{font-size:clamp(22px,3vw,35px);letter-spacing:-1px;margin-top:4px}
+.nxPurple{color:#c16aff}
+.nxWelcomeRight{font-size:10px;color:#a3a0c5;display:flex;align-items:center;gap:7px}
+.nxWelcomeRight button{border:1px solid #50376f;background:#211536;color:#dbbbff;border-radius:9px;padding:9px;cursor:pointer;margin-left:9px;font-size:10px;font-weight:800}
+.nxDashboardGrid{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(260px,.82fr);gap:16px;align-items:start}
+.nxMainColumn,.nxRightColumn{min-width:0}
+.nxRightColumn{display:grid;gap:15px}
+.nxPanel{border:1px solid #262544;border-radius:14px;background:linear-gradient(150deg,#101123,#0a0b19);padding:17px;min-width:0}
+.nxPanelTitle{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:15px}
+.nxPanelTitle span{font-size:10px;color:#b7b3d2;font-weight:900;letter-spacing:1.3px}
+.nxPanelTitle button{border:0;background:none;color:#c17aff;font-size:9px;font-weight:900;cursor:pointer}
+.nxCollection{display:grid;gap:9px}
+.nxCollection>button{display:flex;align-items:center;gap:10px;width:100%;padding:8px;border:1px solid #262640;background:#101326;border-radius:9px;text-align:left;color:#f2edff;cursor:pointer}
+.nxCollection>button:hover{border-color:#994bea;background:#19152f}
+.nxCollection>button>span:nth-child(2){min-width:0;flex:1}
+.nxCollection strong{display:block;font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nxCollection small{display:block;font-size:9px;color:#8986aa;margin:5px 0}
+.nxCollection i{display:block;font-size:8px;font-style:normal;color:#9b75ee}
+.nxCollection b{color:#9160ce}
+.nxTile{width:62px;height:57px;flex-shrink:0;display:grid;place-items:center;font-size:26px;color:#fff;border-radius:8px;background:radial-gradient(circle at 65% 25%,#ed43e3,#6327a4 55%,#1c123d);text-shadow:0 0 18px white}
+.nxTile2{background:radial-gradient(circle at 60% 20%,#39dcff,#245eac 58%,#111939)}
+.nxTile3{background:radial-gradient(circle at 60% 20%,#ffb44e,#c15353 58%,#351128)}
+.nxTile4{background:radial-gradient(circle at 60% 20%,#5dfed0,#216b9c 58%,#111939)}
+.nxProfileCenter{display:flex;align-items:center;gap:12px;margin:19px 0}
+.nxAvatar{width:59px;height:59px;display:grid;place-items:center;border-radius:50%;font-size:30px;font-weight:900;color:#eec7ff;background:radial-gradient(circle,#6d37af,#181028);border:3px solid #a44bff;box-shadow:0 0 24px #9a44f04a}
+.nxProfileCenter strong{display:block;font-size:12px}
+.nxProfileCenter small{display:block;color:#9692b8;font-size:10px;margin-top:5px}
+.nxProfileStats{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid #272442;padding-top:15px}
+.nxProfileStats>div{text-align:center;border-right:1px solid #25213c}
+.nxProfileStats>div:last-child{border:0}
+.nxProfileStats b{display:block;font-size:20px}
+.nxProfileStats small{color:#9690b0;font-size:9px}
+.nxISGCard{background:radial-gradient(circle at 90% 0%,#7b328a66,transparent 55%),linear-gradient(130deg,#251137,#101024)}
+.nxISGCard>span{font-size:9px;letter-spacing:2px;color:#dc8cff}
+.nxISGCard h3{font-size:22px;line-height:1.12;margin:14px 0}
+.nxISGCard p{font-size:11px;line-height:1.6;color:#b6a6c7}
+.nxISGCard button{background:#612bb1;color:white;border:0;border-radius:9px;padding:10px 14px;margin-top:15px;cursor:pointer;font-weight:800;font-size:10px}
+.hero{min-height:355px!important;border:1px solid #683ca1!important;background:radial-gradient(circle at 78% 30%,#c93bc955,transparent 30%),linear-gradient(115deg,#100d26,#24103b 55%,#371550)!important;padding:clamp(24px,4vw,42px)!important;box-shadow:0 15px 45px #0007!important}
+.hero-content{max-width:60%;z-index:3}
+.hero .eyebrow{color:#c894ff}
+.hero h1{font-size:clamp(35px,4.4vw,64px)!important;letter-spacing:-2px!important;line-height:.99!important;text-shadow:0 0 35px #9c3dff33}
+.hero h1 span{color:#c276ff}
+.hero-copy{font-size:12px!important;color:#c2b2d9!important;max-width:430px}
+.hero-play{background:linear-gradient(110deg,#9a35ed,#682bd7)!important;color:white!important;box-shadow:0 7px 24px #812ef166}
+.hero-secondary{border-color:#8a4dbe!important}
+.nxHeroArtwork{right:3%!important;width:43%!important;height:88%!important;top:50%;overflow:visible}
+.nxPlanet{position:absolute;width:190px;height:190px;border-radius:50%;right:15%;top:3%;background:radial-gradient(circle at 32% 25%,#ffa3ff,#a532b5 37%,#491472 70%,#200c41);box-shadow:0 0 35px #e343d688,0 0 100px #a83ce477}
+.nxPlanet::after{content:"";position:absolute;inset:0;border-radius:50%;background:repeating-linear-gradient(165deg,transparent 0 18px,#ffffff12 19px 21px)}
+.nxPortal{position:absolute;width:185px;height:185px;border-radius:50%;right:8%;top:25%;border:18px solid #7831e8;box-shadow:0 0 30px #c143ff, inset 0 0 35px #9c38ff;transform:rotateX(65deg) rotateZ(-15deg);animation:nxPortalSpin 12s linear infinite}
+@keyframes nxPortalSpin{50%{transform:rotateX(65deg) rotateZ(165deg)}to{transform:rotateX(65deg) rotateZ(345deg)}}
+.nxController{position:absolute;left:8%;top:40%;width:180px;height:105px;border-radius:48% 48% 38% 38%;background:linear-gradient(145deg,#2b224f,#090c21);border:3px solid #9253db;box-shadow:0 16px 28px #0009,0 0 30px #a24fff66;transform:rotate(-18deg);animation:nxFloat 4s ease-in-out infinite alternate}
+.nxCross{position:absolute;left:35px;top:28px;color:#b78bff;font-size:34px}.nxDots{position:absolute;right:19px;top:34px;color:#ed76ff;font-size:19px;letter-spacing:6px}
+@keyframes nxFloat{to{translate:0 -15px}}
+.nxOrbit{position:absolute;border:1px solid #cb5fff99;border-radius:50%;width:270px;height:105px;right:0;top:35%;transform:rotate(-24deg)}
+.nxOrbit2{width:280px;height:95px;transform:rotate(38deg)}
+.nxStar{position:absolute;color:#f7b7ff;text-shadow:0 0 16px #f56bff;font-size:28px}
+.nxStar1{right:4%;top:10%}.nxStar2{left:12%;bottom:10%}
+.ntCommandDeck{margin-top:16px!important;background:linear-gradient(125deg,#111229,#17102a)!important;border-color:#342c5a!important;box-shadow:none!important;padding:18px!important}
+.ntCommandDeck .ntDeckTop h2{font-size:20px}
+.ntCommandDeck .ntLive{display:none}
+.ntQuickGrid{grid-template-columns:repeat(2,1fr)!important}
+.ntQuickGrid button{min-height:102px!important;padding:13px!important;background:linear-gradient(140deg,#20163d,#12172e)!important;border-color:#342c55!important}
+.ntQuickIcon{margin-bottom:5px!important;font-size:19px!important}
+.ntQuickGrid strong{font-size:10px!important}
+.ntInfoStrip{gap:10px 14px!important}
+.stat,.game-card,.game-topbar{background:#101123!important;border-color:#302a4c!important}
+.game-card:hover{border-color:#a54cff!important;box-shadow:0 15px 45px #7137b244!important}
+.section-head h2{background:linear-gradient(90deg,#fff,#b68cff)!important;background-clip:text!important}
+#gameView{min-width:0}
+@media(max-width:1150px){.nxDashboardGrid{grid-template-columns:1fr}.nxRightColumn{grid-template-columns:repeat(2,1fr)}.nxISGCard{grid-column:1/-1}}
+@media(max-width:760px){.nxSidebar{width:65px;padding:15px 7px}.nxSideBrand{padding:5px 7px 20px}.nxSideBrand strong,.nxSidebar button span,.nxSideLabel,.nxSideFooter{display:none}.nxSidebar button{justify-content:center;font-size:19px;padding:11px 6px}.navbar{left:65px!important;width:calc(100% - 65px)!important}.page{margin-left:65px!important;width:calc(100% - 65px)!important;padding:18px 13px!important}.nxRightColumn{grid-template-columns:1fr}.nxWelcomeRight{display:none}.hero-content{max-width:78%}.nxHeroArtwork{opacity:.43;right:0!important}.hero h1{font-size:clamp(31px,7vw,49px)!important}.navbar .nav-actions{max-width:65%}}
+@media(max-width:440px){.ntQuickGrid{grid-template-columns:1fr!important}.hero-content{max-width:100%}.nxHeroArtwork{opacity:.15}.nxWelcome h2{font-size:23px}.navbar .search-wrap{min-width:100px}}
+@media(prefers-reduced-motion:reduce){.nxPortal,.nxController{animation:none}}

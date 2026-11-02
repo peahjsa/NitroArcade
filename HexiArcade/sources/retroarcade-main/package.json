@@ -1,0 +1,33 @@
+{
+  "name": "retroarcade",
+  "version": "1.0.0",
+  "description": "RetroArcade — 零依赖、离线的复古街机游戏合集 | Zero-dependency offline retro arcade game collection (Snake, Tetris, Breakout, Pong, Minesweeper, 2048)",
+  "keywords": [
+    "retro",
+    "arcade",
+    "games",
+    "snake",
+    "tetris",
+    "breakout",
+    "pong",
+    "minesweeper",
+    "2048",
+    "zero-dependency",
+    "offline",
+    "vanilla-js",
+    "canvas"
+  ],
+  "license": "MIT",
+  "author": "gitstq",
+  "main": "index.html",
+  "scripts": {
+    "start": "node scripts/serve.mjs",
+    "build": "node scripts/build.mjs",
+    "test": "node --test tests/*.test.js",
+    "preview": "npm run build && node scripts/serve.mjs dist"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {}
+}

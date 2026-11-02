@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Flappy Bird — Game Portal</title>
+<meta name="description" content="Play Flappy Bird free online — Tap to flap through gaps between pipes. One touch to fly, one mistake to fall. A Medium Action &amp; Shooter game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/flappy-bird/"/>
+<meta property="og:title" content="🐦 Flappy Bird — Free Browser Game"/>
+<meta property="og:description" content="Play Flappy Bird free in your browser. Tap to flap through gaps between pipes. One touch to fly, one mistake to fall."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/flappy-bird/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Flappy Bird",
+  "description": "Tap to flap through gaps between pipes. One touch to fly, one mistake to fall.",
+  "url": "https://arcade.sotshau.fun/games/flappy-bird/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Action & Shooter",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px}.score-bar{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:92px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:18px;box-shadow:0 8px 20px rgba(0,0,0,.08)}canvas{display:block;background:linear-gradient(180deg,#7dd3fc,#dbeafe);border-radius:14px;border:1px solid #bfdbfe}.overlay{position:absolute;inset:18px;background:rgba(245,245,247,.94);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p{color:#6b7280;line-height:1.5;max-width:320px}.btn{padding:9px 22px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}.status{margin-top:12px;text-align:center;color:#374151;font-weight:700;min-height:24px}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🐤 Flappy Bird</h1>
+<p class="sub">Tap or press a key to flap through pipe gaps and keep your bird airborne.</p>
+<div class="score-bar">
+  <div class="score-box"><div class="score-label">Score</div><div class="score-val" id="score">0</div></div>
+  <div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">0</div></div>
+  <div class="score-box"><div class="score-label">Pipes</div><div class="score-val" id="pipes">0</div></div>
+  <div class="score-box"><div class="score-label">Height</div><div class="score-val" id="height">0</div></div>
+</div>
+<div class="game">
+  <canvas id="game" width="400" height="560"></canvas>
+  <div class="overlay" id="overlay">
+    <h2>🐤 Flappy Bird</h2>
+    <p>Press Space or Arrow Up to flap. On touch devices, tap the screen anywhere to gain altitude.</p>
+    <button class="btn" id="overlay-btn">Start Game</button>
+  </div>
+  <div class="status" id="status">Press Start to begin.</div>
+</div>
+<p class="hint">Space / Arrow Up / W to flap · Tap screen on mobile</p>
+<script>
+const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');
+if(!ctx) throw new Error('Canvas 2D context not available');
+const BEST_KEY='flappyBirdBest';
+let bird={x:110,y:260,vy:0,r:16},pipes=[],score=0,best=+(localStorage.getItem(BEST_KEY)||0),running=false,last=0,spawn=0,statusMsg='Press Start to begin.',rafId=0;
+document.getElementById('best').textContent=best;
+updateStats();
+function startGame(){bird={x:110,y:260,vy:0,r:16};pipes=[];score=0;spawn=0;running=true;last=0;statusMsg='Find a rhythm and stay centered.';updateStats();document.getElementById('overlay').style.display='none';cancelAnimationFrame(rafId);rafId=requestAnimationFrame(loop);}
+function flap(){if(!running)return;bird.vy=-6.6;statusMsg='Flap!';updateStats();}
+function updateStats(){document.getElementById('score').textContent=score;document.getElementById('best').textContent=best;document.getElementById('pipes').textContent=pipes.filter(p=>p.scored).length;document.getElementById('height').textContent=Math.max(0,Math.round(canvas.height-bird.y));document.getElementById('status').textContent=statusMsg;}
+function endGame(text){running=false;statusMsg=`Final score: ${score}`;updateStats();const overlay=document.getElementById('overlay');overlay.innerHTML=`<h2>Flight Over</h2><p>${text}</p><button class="btn" id="overlay-btn">Try Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);} 
+function addPipe(){const gap=146;const top=80+Math.random()*220;pipes.push({x:canvas.width+70,top,gap,w:62,scored:false});}
+function hitPipe(pipe){return bird.x+bird.r>pipe.x&&bird.x-bird.r<pipe.x+pipe.w&&(bird.y-bird.r<pipe.top||bird.y+bird.r>pipe.top+pipe.gap);} 
+function update(dt){spawn+=dt;if(spawn>1500){spawn=0;addPipe();}bird.vy+=.33;bird.y+=bird.vy;for(const pipe of pipes){pipe.x-=2.8;if(!pipe.scored&&pipe.x+pipe.w<bird.x){pipe.scored=true;score++;statusMsg='Clean pass!';if(score>best){best=score;localStorage.setItem(BEST_KEY,String(best));}}if(hitPipe(pipe))return endGame('A pipe clipped your wing.');}pipes=pipes.filter(p=>p.x+p.w>-20);if(bird.y+bird.r>canvas.height-28||bird.y-bird.r<0)endGame('You lost control of the bird.');updateStats();}
+function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);const sky=ctx.createLinearGradient(0,0,0,canvas.height);sky.addColorStop(0,'#7dd3fc');sky.addColorStop(1,'#dbeafe');ctx.fillStyle=sky;ctx.fillRect(0,0,canvas.width,canvas.height);ctx.fillStyle='#fff';for(let i=0;i<4;i++){ctx.beginPath();ctx.arc(60+i*100,70+(i%2)*30,22,0,Math.PI*2);ctx.arc(84+i*100,78+(i%2)*30,18,0,Math.PI*2);ctx.fill();}
+ctx.fillStyle='#22c55e';pipes.forEach(pipe=>{ctx.fillRect(pipe.x,0,pipe.w,pipe.top);ctx.fillRect(pipe.x,pipe.top+pipe.gap,pipe.w,canvas.height-(pipe.top+pipe.gap)-28);ctx.fillRect(pipe.x-4,pipe.top-16,pipe.w+8,16);ctx.fillRect(pipe.x-4,pipe.top+pipe.gap,pipe.w+8,16);});
+ctx.fillStyle='#84cc16';ctx.fillRect(0,canvas.height-28,canvas.width,28);
+ctx.save();ctx.translate(bird.x,bird.y);ctx.rotate(Math.max(-.5,Math.min(.8,bird.vy/10)));ctx.fillStyle='#facc15';ctx.beginPath();ctx.arc(0,0,bird.r,0,Math.PI*2);ctx.fill();ctx.fillStyle='#f97316';ctx.beginPath();ctx.moveTo(12,-2);ctx.lineTo(26,4);ctx.lineTo(12,10);ctx.fill();ctx.fillStyle='#111827';ctx.beginPath();ctx.arc(5,-5,3,0,Math.PI*2);ctx.fill();ctx.restore();}
+function loop(ts){if(!running)return;const dt=ts-last||16;last=ts;update(dt);draw();if(running)rafId=requestAnimationFrame(loop);}
+document.getElementById('overlay-btn').addEventListener('click',startGame);
+document.addEventListener('keydown',e=>{if(document.getElementById('overlay').style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}if([' ','ArrowUp','w','W'].includes(e.key)){e.preventDefault();flap();}});canvas.addEventListener('pointerdown',()=>{if(running)flap();});draw();
+</script>
+</body>
+</html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Tower of Hanoi — Game Portal</title>
+<meta name="description" content="Play Tower of Hanoi free online — Move disks to the target rod — never place a larger on a smaller. A Easy Puzzle game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/tower-of-hanoi/"/>
+<meta property="og:title" content="🗼 Tower of Hanoi — Free Browser Game"/>
+<meta property="og:description" content="Play Tower of Hanoi free in your browser. Move disks to the target rod — never place a larger on a smaller."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/tower-of-hanoi/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Tower of Hanoi",
+  "description": "Move disks to the target rod — never place a larger on a smaller.",
+  "url": "https://arcade.sotshau.fun/games/tower-of-hanoi/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Puzzle",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}
+nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}
+nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}
+h1{margin:20px 0 4px;font-size:24px;font-weight:700}
+.sub{color:#6b7280;font-size:14px;margin-bottom:16px}
+.score-bar{display:flex;gap:16px;margin-bottom:14px}
+.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 20px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:100px}
+.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}
+.score-val{font-size:20px;font-weight:700;color:#6c63ff}
+canvas{background:#fff;border-radius:14px;border:1px solid #e5e7eb;box-shadow:0 4px 12px rgba(0,0,0,.08);cursor:pointer;display:block}
+.controls{margin-top:16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center}
+.btn{padding:9px 22px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}
+.btn:hover{background:#574fd6}
+.btn-outline{background:transparent;border:1.5px solid #6c63ff;color:#6c63ff}
+.btn-outline:hover{background:#ede9ff}
+select{padding:8px 12px;border:1.5px solid #e5e7eb;border-radius:8px;font-size:14px;background:#fff;color:#1a1a2e}
+.hint{margin-top:10px;font-size:12px;color:#9ca3af;text-align:center}
+.msg{margin-top:10px;font-size:16px;font-weight:600;min-height:24px;color:#6c63ff}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🗼 Tower of Hanoi</h1>
+<p class="sub">Move all disks to the target rod — never place a larger disk on a smaller one.</p>
+
+<div class="score-bar">
+  <div class="score-box"><div class="score-label">Moves</div><div class="score-val" id="moves">0</div></div>
+  <div class="score-box"><div class="score-label">Minimum</div><div class="score-val" id="minmoves">7</div></div>
+</div>
+
+<canvas id="c" width="480" height="300"></canvas>
+<div class="msg" id="msg"></div>
+
+<div class="controls">
+  <select id="disks">
+    <option value="3">3 Disks</option>
+    <option value="4">4 Disks</option>
+    <option value="5">5 Disks</option>
+    <option value="6">6 Disks</option>
+    <option value="7">7 Disks</option>
+  </select>
+  <button class="btn btn-outline" id="restart-btn">Restart</button>
+</div>
+<p class="hint">Click a rod to pick up / place a disk · Move all disks to rod 3</p>
+
+<script>
+const canvas=document.getElementById('c');
+const ctx=canvas.getContext('2d');
+if(!ctx) throw new Error('Canvas 2D context unavailable');
+const W=480,H=300;
+
+const DISK_COLORS=['#ef4444','#f97316','#f59e0b','#84cc16','#22d3ee','#6c63ff','#ec4899'];
+
+let rods,moves,selected,n;
+
+function newGame(){
+  n=+document.getElementById('disks').value;
+  rods=[[...Array(n).keys()].map(i=>n-i).reverse().reverse(),[],[]];
+  // rods[0] has disks from bottom (largest) to top (smallest)
+  rods=[[...Array(n).keys()].map(i=>n-i),[],[]];
+  moves=0;selected=null;
+  document.getElementById('moves').textContent=0;
+  document.getElementById('minmoves').textContent=(Math.pow(2,n)-1);
+  document.getElementById('msg').textContent='';
+  draw();
+}
+
+function rodX(i){return 80+i*160;}
+const BASE_Y=250,ROD_H=180,DISK_H=22;
+const maxW=130,minW=30;
+
+function diskW(d){return minW+(d-1)*(maxW-minW)/(n-1|1);}
+
+function draw(){
+  ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+  // Base
+  ctx.fillStyle='#d1d5db';
+  ctx.beginPath();ctx.roundRect(20,BASE_Y,W-40,14,4);ctx.fill();
+
+  for(let i=0;i<3;i++){
+    const rx=rodX(i);
+    // Rod shadow
+    ctx.fillStyle='#e5e7eb';
+    ctx.beginPath();ctx.roundRect(rx-5,BASE_Y-ROD_H,12,ROD_H,4);ctx.fill();
+    // Rod
+    ctx.fillStyle=selected===i?'#6c63ff':'#9ca3af';
+    ctx.beginPath();ctx.roundRect(rx-4,BASE_Y-ROD_H,10,ROD_H,4);ctx.fill();
+    // Label
+    ctx.fillStyle='#6b7280';ctx.font='13px system-ui';ctx.textAlign='center';
+    ctx.fillText(['Rod 1','Rod 2 (Target→','Rod 3'][i],rx,H-8);
+
+    // Disks
+    rods[i].forEach((d,idx)=>{
+      const dw=diskW(d);
+      const dy=BASE_Y-DISK_H-(idx*DISK_H);
+      const color=DISK_COLORS[(d-1)%DISK_COLORS.length];
+      // Shadow
+      ctx.fillStyle='rgba(0,0,0,.1)';
+      ctx.beginPath();ctx.roundRect(rx-dw/2+2,dy+4,dw,DISK_H-4,6);ctx.fill();
+      // Disk
+      const g=ctx.createLinearGradient(rx-dw/2,dy,rx-dw/2,dy+DISK_H);
+      g.addColorStop(0,lighten(color,.2));g.addColorStop(1,color);
+      ctx.fillStyle=g;
+      ctx.beginPath();ctx.roundRect(rx-dw/2,dy,dw,DISK_H-2,6);ctx.fill();
+      // Number
+      ctx.fillStyle='rgba(255,255,255,.9)';ctx.font='bold 12px system-ui';
+      ctx.fillText(d,rx,dy+DISK_H/2+4);
+    });
+
+    // Glow if selected
+    if(selected===i){
+      ctx.strokeStyle='#6c63ff';ctx.lineWidth=2.5;
+      ctx.strokeRect(rx-72,BASE_Y-ROD_H-10,144,ROD_H+20);
+      ctx.lineWidth=1;
+    }
+  }
+}
+
+function lighten(hex,amt){
+  const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+  return `rgb(${Math.min(255,r+amt*255)},${Math.min(255,g+amt*255)},${Math.min(255,b+amt*255)})`;
+}
+
+canvas.addEventListener('click',e=>{
+  const r=canvas.getBoundingClientRect();
+  const x=e.clientX-r.left;
+  for(let i=0;i<3;i++){
+    if(Math.abs(x-rodX(i))<72){
+      clickRod(i);return;
+    }
+  }
+});
+
+function clickRod(i){
+  if(selected===null){
+    if(rods[i].length>0){selected=i;draw();}
+  }else{
+    if(selected===i){selected=null;draw();return;}
+    // Move
+    const from=rods[selected],to=rods[i];
+    const disk=from[from.length-1];
+    if(to.length===0||to[to.length-1]>disk){
+      to.push(from.pop());
+      moves++;document.getElementById('moves').textContent=moves;
+      selected=null;draw();
+      if(rods[2].length===n){win();}
+    }else{
+      // Invalid
+      document.getElementById('msg').textContent='❌ Cannot place larger disk on smaller!';
+      setTimeout(()=>document.getElementById('msg').textContent='',1500);
+      selected=null;draw();
+    }
+  }
+}
+
+function win(){
+  const min=Math.pow(2,n)-1;
+  document.getElementById('msg').textContent=
+    moves===min?`🎉 Perfect! ${moves} moves (optimal!)`:`🎉 Solved in ${moves} moves! (min: ${min})`;
+}
+
+document.getElementById('disks').addEventListener('change',newGame);
+document.getElementById('restart-btn').addEventListener('click',newGame);
+newGame();
+</script>
+</body>
+</html>

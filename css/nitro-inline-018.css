@@ -1,0 +1,7 @@
+
+.voxel-deluxe .three3d-stage canvas{filter:saturate(1.08) contrast(1.12) brightness(.82)!important}
+.voxel-deluxe .three3d-stage{background:#17232a!important}
+.voxel-deluxe .v3-top-left,.voxel-deluxe .v3-bars,.voxel-deluxe .v3-controls-btn,.voxel-deluxe .v3-hotbar{
+  background:rgba(5,12,17,.82)!important;backdrop-filter:blur(8px);box-shadow:0 8px 24px #0007!important}
+.v3-world-info{position:absolute;left:12px;bottom:12px;z-index:4;padding:6px 9px;border-radius:8px;background:rgba(4,10,14,.75);border:1px solid #ffffff1f;color:#d8edf2;font:800 9px monospace;letter-spacing:.5px;pointer-events:none}
+.voxel-deluxe .v3-minimap{filter:brightness(.82) saturate(.9);box-shadow:0 8px 30px #000b!important}

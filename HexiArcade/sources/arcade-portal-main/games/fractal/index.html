@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Fractal — Game Portal</title>
+<meta name="description" content="Play Fractal Explorer free online — Zoom deep into the Mandelbrot set and discover infinite complexity. A Easy Creative &amp; Art game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/fractal/"/>
+<meta property="og:title" content="🌀 Fractal Explorer — Free Browser Game"/>
+<meta property="og:description" content="Play Fractal Explorer free in your browser. Zoom deep into the Mandelbrot set and discover infinite complexity."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/fractal/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Fractal Explorer",
+  "description": "Zoom deep into the Mandelbrot set and discover infinite complexity.",
+  "url": "https://arcade.sotshau.fun/games/fractal/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Creative & Art",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px}.score-bar,.controls{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}.score-bar{margin-bottom:14px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 18px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:96px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:20px;padding:18px;box-shadow:0 8px 20px rgba(0,0,0,.08);width:min(700px,94vw)}canvas{display:block;width:min(620px,90vw);height:auto;margin:0 auto;background:linear-gradient(#dbeafe,#f8fafc 55%,#ecfccb);border-radius:18px;border:1px solid #d1d5db}.controls{margin-top:14px}.btn{padding:9px 16px;background:#6c63ff;color:#fff;border:none;border-radius:10px;font-weight:700;cursor:pointer}.ghost{background:#374151}.status{min-height:24px;margin-top:12px;text-align:center;color:#374151;font-weight:700}.overlay{position:absolute;inset:18px;background:rgba(245,245,247,.95);border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p{max-width:340px;color:#6b7280;line-height:1.5}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center;padding:0 16px}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🌿 Fractal</h1>
+<p class="sub">Grow an animated fractal tree. Increase depth for finer branching and nudge the wind to sway it.</p>
+<div class="score-bar"><div class="score-box"><div class="score-label">Depth</div><div class="score-val" id="depth">8</div></div><div class="score-box"><div class="score-label">Wind</div><div class="score-val" id="wind">0</div></div><div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">8</div></div></div>
+<div class="game">
+  <canvas id="canvas" width="620" height="430"></canvas>
+  <div class="controls"><button class="btn ghost" id="depth-down">Depth -</button><button class="btn ghost" id="wind-down">Wind ←</button><button class="btn ghost" id="wind-up">Wind →</button><button class="btn" id="depth-up">Depth +</button></div>
+  <div class="status" id="status">Press Start to grow the tree.</div>
+  <div class="overlay" id="overlay"><h2>🌿 Fractal</h2><p>Use up and down arrows to change recursion depth, left and right to steer the wind, and Space to randomize colors.</p><button class="btn" id="overlay-btn">Start Growing</button></div>
+</div>
+<p class="hint">Keyboard: ↑/↓ depth, ←/→ wind, Space randomizes the palette · Touch: use the control buttons</p>
+<script>
+const BEST_KEY='fractalBestDepth';
+const canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d'),overlay=document.getElementById('overlay'),statusEl=document.getElementById('status');
+if(!ctx) throw new Error('Canvas 2D context not available');
+let depth=8,wind=0,hue=120,phase=0,started=false,frame=0,best=+(localStorage.getItem(BEST_KEY)||8);
+document.getElementById('best').textContent=String(best);
+function updateStats(){document.getElementById('depth').textContent=String(depth);document.getElementById('wind').textContent=String(wind);if(depth>best){best=depth;localStorage.setItem(BEST_KEY,String(best));document.getElementById('best').textContent=String(best);}}
+function branch(x,y,length,angle,level){if(level===0||length<4)return;const sway=Math.sin(phase+y*.01)*wind*.02;const x2=x+Math.cos(angle+sway)*length;const y2=y+Math.sin(angle+sway)*length;ctx.strokeStyle=`hsl(${(hue+level*4)%360},55%,${Math.max(22,72-level*5)}%)`;ctx.lineWidth=Math.max(1,level*.85);ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x2,y2);ctx.stroke();branch(x2,y2,length*.76,angle-.45,level-1);branch(x2,y2,length*.76,angle+.42,level-1);if(level<3){ctx.fillStyle=`hsla(${(hue+80)%360},82%,62%,.72)`;ctx.beginPath();ctx.arc(x2,y2,level+1,0,Math.PI*2);ctx.fill();}}
+function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);const sky=ctx.createLinearGradient(0,0,0,canvas.height);sky.addColorStop(0,'#dbeafe');sky.addColorStop(.6,'#f8fafc');sky.addColorStop(1,'#dcfce7');ctx.fillStyle=sky;ctx.fillRect(0,0,canvas.width,canvas.height);ctx.fillStyle='#84cc16';ctx.fillRect(0,360,620,70);branch(310,395,84,-Math.PI/2,depth);if(started){phase+=.05;}frame=requestAnimationFrame(draw);} 
+function startGame(){cancelAnimationFrame(frame);started=true;overlay.style.display='none';statusEl.textContent='Adjust the tree to discover new shapes.';updateStats();frame=requestAnimationFrame(draw);}
+function adjustDepth(delta){depth=Math.max(5,Math.min(11,depth+delta));updateStats();statusEl.textContent=`Depth set to ${depth}.`;}
+function adjustWind(delta){wind=Math.max(-6,Math.min(6,wind+delta));updateStats();statusEl.textContent=`Wind set to ${wind}.`;}
+function randomize(){hue=(Math.random()*360)|0;statusEl.textContent='Palette randomized.';}
+document.getElementById('overlay-btn').addEventListener('click',startGame);document.getElementById('depth-down').addEventListener('click',()=>adjustDepth(-1));document.getElementById('depth-up').addEventListener('click',()=>adjustDepth(1));document.getElementById('wind-down').addEventListener('click',()=>adjustWind(-1));document.getElementById('wind-up').addEventListener('click',()=>adjustWind(1));
+document.addEventListener('keydown',event=>{if(overlay.style.display!=='none'&&(event.key==='Enter'||event.key===' ')){event.preventDefault();startGame();return;}if(event.key==='ArrowUp'){event.preventDefault();adjustDepth(1);}if(event.key==='ArrowDown'){event.preventDefault();adjustDepth(-1);}if(event.key==='ArrowLeft'){event.preventDefault();adjustWind(-1);}if(event.key==='ArrowRight'){event.preventDefault();adjustWind(1);}if(event.key===' '){{event.preventDefault();randomize();}}});
+updateStats();draw();
+</script>
+</body>
+</html>

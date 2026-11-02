@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Snake — Game Portal</title>
+<meta name="description" content="Play Snake free online — Eat food to grow longer. Don't hit the walls or yourself! A Easy Classic Arcade game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/snake/"/>
+<meta property="og:title" content="🐍 Snake — Free Browser Game"/>
+<meta property="og:description" content="Play Snake free in your browser. Eat food to grow longer. Don't hit the walls or yourself!"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/snake/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Snake",
+  "description": "Eat food to grow longer. Don't hit the walls or yourself!",
+  "url": "https://arcade.sotshau.fun/games/snake/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Classic Arcade",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh}
+nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}
+nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}
+nav a:hover{text-decoration:underline}
+h1{margin:20px 0 4px;font-size:24px;font-weight:700}
+.sub{color:#6b7280;font-size:14px;margin-bottom:16px}
+.score-bar{display:flex;gap:24px;margin-bottom:12px}
+.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 20px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}
+.score-val{font-size:22px;font-weight:700;color:#6c63ff}
+canvas{background:#fff;border-radius:14px;border:1px solid #e5e7eb;box-shadow:0 4px 12px rgba(0,0,0,.08);display:block}
+.controls{margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.btn{padding:9px 22px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:background .15s}
+.btn:hover{background:#574fd6}
+.btn-outline{background:transparent;border:1.5px solid #6c63ff;color:#6c63ff}
+.btn-outline:hover{background:#ede9ff}
+.overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(245,245,247,.92);border-radius:14px;gap:10px}
+.overlay h2{font-size:28px;font-weight:700}
+.overlay p{color:#6b7280;font-size:15px}
+.canvas-wrap{position:relative}
+.hint{margin-top:10px;font-size:12px;color:#9ca3af}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🐍 Snake</h1>
+<p class="sub">Eat food to grow longer. Don't hit the walls or yourself!</p>
+
+<div class="score-bar">
+  <div class="score-box"><div class="score-label">Score</div><div class="score-val" id="score">0</div></div>
+  <div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">0</div></div>
+  <div class="score-box"><div class="score-label">Length</div><div class="score-val" id="length">1</div></div>
+</div>
+
+<div class="canvas-wrap">
+  <canvas id="c" width="400" height="400"></canvas>
+  <div class="overlay" id="overlay">
+    <h2>🐍 Snake</h2>
+    <p>Use arrow keys or WASD to move</p>
+    <button class="btn" id="start-btn">Start Game</button>
+  </div>
+</div>
+
+<div class="controls">
+  <button class="btn btn-outline" id="restart-btn">Restart</button>
+</div>
+<p class="hint">Arrow keys / WASD · Mobile: swipe to move</p>
+
+<script>
+const COLS=20,ROWS=20,CELL=20;
+const canvas=document.getElementById('c');
+const ctx=canvas.getContext('2d');
+if(!ctx) throw new Error('Canvas 2d context unavailable');
+const scoreEl=document.getElementById('score');
+const bestEl=document.getElementById('best');
+const lenEl=document.getElementById('length');
+const overlay=document.getElementById('overlay');
+
+let snake,dir,nextDir,food,score,best=0,running=false,timer;
+
+function startGame(){
+  snake=[{x:10,y:10},{x:9,y:10},{x:8,y:10}];
+  dir={x:1,y:0};nextDir={x:1,y:0};
+  score=0;
+  overlay.style.display='none';
+  running=true;
+  spawnFood();
+  clearInterval(timer);
+  timer=setInterval(step,120);
+}
+
+function spawnFood(){
+  let pos;
+  do{pos={x:Math.floor(Math.random()*COLS),y:Math.floor(Math.random()*ROWS)}}
+  while(snake.some(s=>s.x===pos.x&&s.y===pos.y));
+  food=pos;
+}
+
+function step(){
+  dir=nextDir;
+  const head={x:snake[0].x+dir.x,y:snake[0].y+dir.y};
+  if(head.x<0||head.x>=COLS||head.y<0||head.y>=ROWS||snake.some(s=>s.x===head.x&&s.y===head.y)){
+    gameOver();return;
+  }
+  snake.unshift(head);
+  if(head.x===food.x&&head.y===food.y){
+    score+=10;if(score>best)best=score;
+    scoreEl.textContent=score;bestEl.textContent=best;
+    spawnFood();
+  }else{
+    snake.pop();
+  }
+  lenEl.textContent=snake.length;
+  draw();
+}
+
+function draw(){
+  ctx.fillStyle='#fff';
+  ctx.fillRect(0,0,400,400);
+  // Grid
+  ctx.strokeStyle='#f3f4f6';
+  for(let i=0;i<=COLS;i++){ctx.beginPath();ctx.moveTo(i*CELL,0);ctx.lineTo(i*CELL,400);ctx.stroke();}
+  for(let i=0;i<=ROWS;i++){ctx.beginPath();ctx.moveTo(0,i*CELL);ctx.lineTo(400,i*CELL);ctx.stroke();}
+  // Food
+  ctx.fillStyle='#ef4444';
+  ctx.beginPath();
+  ctx.arc(food.x*CELL+CELL/2,food.y*CELL+CELL/2,CELL/2-2,0,Math.PI*2);
+  ctx.fill();
+  // Snake
+  snake.forEach((s,i)=>{
+    const ratio=1-i/snake.length;
+    ctx.fillStyle=`hsl(${247+ratio*10},${60+ratio*20}%,${55+ratio*10}%)`;
+    ctx.beginPath();
+    ctx.roundRect(s.x*CELL+1,s.y*CELL+1,CELL-2,CELL-2,4);
+    ctx.fill();
+  });
+  // Eyes on head
+  const h=snake[0];
+  ctx.fillStyle='#fff';
+  const ex=dir.x===0?[-4,4]:[dir.x>0?4:-4,dir.x>0?4:-4];
+  const ey=dir.y===0?[-4,4]:[dir.y>0?4:-4,dir.y>0?4:-4];
+  ctx.beginPath();ctx.arc(h.x*CELL+CELL/2+ex[0],h.y*CELL+CELL/2+ey[0],3,0,Math.PI*2);ctx.fill();
+  ctx.beginPath();ctx.arc(h.x*CELL+CELL/2+ex[1],h.y*CELL+CELL/2+ey[1]+4,3,0,Math.PI*2);ctx.fill();
+}
+
+function gameOver(){
+  clearInterval(timer);running=false;
+  overlay.innerHTML=`<h2>Game Over!</h2><p>Score: ${score}</p><button class="btn" onclick="startGame()">Play Again</button>`;
+  overlay.style.display='flex';
+}
+
+// Keyboard
+document.addEventListener('keydown',e=>{
+  if(!running)return;
+  const map={ArrowUp:{x:0,y:-1},ArrowDown:{x:0,y:1},ArrowLeft:{x:-1,y:0},ArrowRight:{x:1,y:0},
+    w:{x:0,y:-1},s:{x:0,y:1},a:{x:-1,y:0},d:{x:1,y:0},
+    W:{x:0,y:-1},S:{x:0,y:1},A:{x:-1,y:0},D:{x:1,y:0}};
+  const nd=map[e.key];
+  if(nd&&!(nd.x===-dir.x&&nd.y===-dir.y)){nextDir=nd;e.preventDefault();}
+});
+
+// Touch / Swipe
+let tx=0,ty=0;
+canvas.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;ty=e.touches[0].clientY;},{passive:true});
+canvas.addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-tx;
+  const dy=e.changedTouches[0].clientY-ty;
+  if(!running)return;
+  if(Math.abs(dx)>Math.abs(dy)){
+    if(dx>20&&dir.x!==1)nextDir={x:1,y:0};
+    else if(dx<-20&&dir.x!==-1)nextDir={x:-1,y:0};
+  }else{
+    if(dy>20&&dir.y!==1)nextDir={x:0,y:1};
+    else if(dy<-20&&dir.y!==-1)nextDir={x:0,y:-1};
+  }
+},{passive:true});
+
+document.getElementById('start-btn').addEventListener('click',startGame);
+document.getElementById('restart-btn').addEventListener('click',startGame);
+// Init draw
+draw();
+</script>
+</body>
+</html>

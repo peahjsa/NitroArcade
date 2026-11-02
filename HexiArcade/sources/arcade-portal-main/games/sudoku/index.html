@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Sudoku — Game Portal</title>
+<meta name="description" content="Play Sudoku free online — Fill the 9×9 grid so every row, column, and box has digits 1–9. A Medium Puzzle game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/sudoku/"/>
+<meta property="og:title" content="🔢 Sudoku — Free Browser Game"/>
+<meta property="og:description" content="Play Sudoku free in your browser. Fill the 9×9 grid so every row, column, and box has digits 1–9."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/sudoku/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Sudoku",
+  "description": "Fill the 9×9 grid so every row, column, and box has digits 1–9.",
+  "url": "https://arcade.sotshau.fun/games/sudoku/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Puzzle",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px}.score-bar{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:92px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:18px;box-shadow:0 8px 20px rgba(0,0,0,.08)}.board{display:grid;grid-template-columns:repeat(9,44px);gap:3px;background:#c7d2fe;padding:6px;border-radius:14px}.cell{width:44px;height:44px;border:none;border-radius:10px;background:#eef2ff;font-size:20px;font-weight:700;cursor:pointer;color:#312e81}.cell.given{background:#e0e7ff;color:#111827}.cell.selected{outline:3px solid #6c63ff;outline-offset:1px}.cell.error{background:#fee2e2;color:#b91c1c}.cell:nth-child(3n){margin-right:3px}.pad{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:14px}.pad button,.btn{padding:10px 0;border:none;border-radius:10px;background:#6c63ff;color:#fff;font-weight:700;cursor:pointer}.pad button.clear{background:#e5e7eb;color:#111827}.overlay{position:absolute;inset:18px;background:rgba(245,245,247,.95);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p{color:#6b7280;line-height:1.5;max-width:320px}.status{margin-top:12px;text-align:center;color:#374151;font-weight:700;min-height:24px}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🔢 Sudoku</h1>
+<p class="sub">Fill every row, column, and 3×3 box with the digits 1 through 9.</p>
+<div class="score-bar">
+  <div class="score-box"><div class="score-label">Filled</div><div class="score-val" id="filled">0 / 81</div></div>
+  <div class="score-box"><div class="score-label">Mistakes</div><div class="score-val" id="mistakes">0</div></div>
+  <div class="score-box"><div class="score-label">Time</div><div class="score-val" id="time">0s</div></div>
+  <div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">—</div></div>
+</div>
+<div class="game">
+  <div class="board" id="board"></div>
+  <div class="pad" id="pad"></div>
+  <div class="overlay" id="overlay">
+    <h2>🔢 Sudoku</h2>
+    <p>Click a cell, use 1–9 on your keyboard, and press Backspace to clear. Touch devices can use the number pad below.</p>
+    <button class="btn" id="overlay-btn">Start Game</button>
+  </div>
+  <div class="status" id="status">Press Start to begin.</div>
+</div>
+<p class="hint">Arrow keys to move · 1–9 to enter · Backspace/Delete to clear</p>
+<script>
+const boardEl=document.getElementById('board'),padEl=document.getElementById('pad'),overlay=document.getElementById('overlay'),statusEl=document.getElementById('status');
+const BEST_KEY='sudokuBestTime';
+let solution,puzzle,selected={r:0,c:0},mistakes=0,time=0,timer=null,active=false,best=localStorage.getItem(BEST_KEY);document.getElementById('best').textContent=best?best+'s':'—';
+function shuffle(arr){for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}return arr;}
+function pattern(r,c){return(r*3+Math.floor(r/3)+c)%9;}
+function makeSolved(){const nums=[1,2,3,4,5,6,7,8,9];const rowOrder=shuffle([0,1,2]).flatMap(g=>shuffle([0,1,2]).map(r=>g*3+r));const colOrder=shuffle([0,1,2]).flatMap(g=>shuffle([0,1,2]).map(c=>g*3+c));const numOrder=shuffle(nums);return rowOrder.map(r=>colOrder.map(c=>numOrder[pattern(r,c)]));}
+function startGame(){solution=makeSolved();puzzle=solution.map(row=>row.map(v=>({value:Math.random()<0.52?0:v,given:false,error:false})));puzzle.forEach(row=>row.forEach(cell=>{cell.given=cell.value!==0;cell.error=false;}));selected=findFirstEditable();mistakes=0;time=0;active=true;clearInterval(timer);timer=setInterval(()=>{time++;document.getElementById('time').textContent=time+'s';},1000);statusEl.textContent='Fill the empty cells without mistakes.';overlay.style.display='none';buildPad();render();updateStats();}
+function findFirstEditable(){for(let r=0;r<9;r++)for(let c=0;c<9;c++)if(!puzzle[r][c].given)return{r,c};return{r:0,c:0};}
+function updateStats(){const filled=puzzle.flat().filter(c=>c.value).length;document.getElementById('filled').textContent=`${filled} / 81`;document.getElementById('mistakes').textContent=String(mistakes);document.getElementById('time').textContent=time+'s';document.getElementById('best').textContent=best?best+'s':'—';}
+function buildPad(){padEl.innerHTML='';for(let i=1;i<=9;i++){const btn=document.createElement('button');btn.textContent=String(i);btn.onclick=()=>inputNumber(i);padEl.appendChild(btn);}const clear=document.createElement('button');clear.textContent='Clear';clear.className='clear';clear.onclick=()=>inputNumber(0);padEl.appendChild(clear);} 
+function inputNumber(num){if(!active)return;const cell=puzzle[selected.r][selected.c];if(cell.given)return;if(num===0){cell.value=0;cell.error=false;render();updateStats();return;}if(solution[selected.r][selected.c]===num){cell.value=num;cell.error=false;statusEl.textContent='Good placement.';render();updateStats();checkWin();}else{mistakes++;cell.error=true;statusEl.textContent='That number does not fit there.';updateStats();render();if(mistakes>=5)finish(false,'Too many mistakes this round.');}}
+function checkWin(){const done=puzzle.every((row,r)=>row.every((cell,c)=>cell.value===solution[r][c]));if(done){if(!best||time<+best){best=String(time);localStorage.setItem(BEST_KEY,best);}finish(true,'You solved the puzzle cleanly.');}}
+function finish(win,text){active=false;clearInterval(timer);statusEl.textContent=text;overlay.innerHTML=`<h2>${win?'Puzzle Solved!':'Round Over'}</h2><p>${text}</p><button class="btn" id="overlay-btn">${win?'Play Again':'Try Again'}</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);updateStats();}
+function render(){boardEl.innerHTML='';for(let r=0;r<9;r++)for(let c=0;c<9;c++){const cell=puzzle[r][c],btn=document.createElement('button');btn.className='cell'+(cell.given?' given':'')+(selected.r===r&&selected.c===c?' selected':'')+(cell.error?' error':'');btn.textContent=cell.value||'';btn.style.marginRight=c===2||c===5?'5px':'0';btn.style.marginBottom=r===2||r===5?'5px':'0';btn.onclick=()=>{selected={r,c};render();};boardEl.appendChild(btn);}}
+document.addEventListener('keydown',e=>{if(overlay.style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}if(!puzzle)return;const arrows={ArrowLeft:[0,-1],ArrowRight:[0,1],ArrowUp:[-1,0],ArrowDown:[1,0]};if(arrows[e.key]){e.preventDefault();selected={r:(selected.r+arrows[e.key][0]+9)%9,c:(selected.c+arrows[e.key][1]+9)%9};render();return;}if(/^[1-9]$/.test(e.key)){inputNumber(+e.key);return;}if(e.key==='Backspace'||e.key==='Delete'||e.key==='0'){inputNumber(0);}});
+document.getElementById('overlay-btn').addEventListener('click',startGame);
+buildPad();
+</script>
+</body>
+</html>

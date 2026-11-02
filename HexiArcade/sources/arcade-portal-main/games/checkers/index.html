@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Checkers — Game Portal</title>
+<meta name="description" content="Play Checkers free online — Jump over opponent's pieces to capture them all. A Medium Card &amp; Board game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/checkers/"/>
+<meta property="og:title" content="⚫ Checkers — Free Browser Game"/>
+<meta property="og:description" content="Play Checkers free in your browser. Jump over opponent's pieces to capture them all."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/checkers/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Checkers",
+  "description": "Jump over opponent's pieces to capture them all.",
+  "url": "https://arcade.sotshau.fun/games/checkers/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Card & Board",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px}.score-bar{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:92px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700}.red{color:#dc2626}.black{color:#111827}.purple{color:#6c63ff}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:18px;box-shadow:0 8px 20px rgba(0,0,0,.08)}.board{display:grid;grid-template-columns:repeat(8,56px);gap:0;border-radius:14px;overflow:hidden;border:1px solid #cbd5e1}.cell{width:56px;height:56px;border:none;position:relative;cursor:pointer}.light{background:#fde68a}.dark{background:#b45309}.cell.cursor{outline:3px solid #6c63ff;outline-offset:-3px}.cell.move::after{content:'';position:absolute;inset:20px;border-radius:50%;background:rgba(255,255,255,.55)}.piece{position:absolute;inset:7px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900}.piece.red{background:#ef4444;box-shadow:inset 0 -4px 0 rgba(0,0,0,.2)}.piece.black{background:#111827;color:#fff;box-shadow:inset 0 -4px 0 rgba(255,255,255,.12)}.piece.selected{outline:4px solid #93c5fd}.controls{display:flex;gap:10px;justify-content:center;margin-top:14px;flex-wrap:wrap}.btn{padding:9px 18px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}.overlay{position:absolute;inset:18px;background:rgba(245,245,247,.95);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p{color:#6b7280;max-width:320px;line-height:1.5}.status{margin-top:12px;text-align:center;color:#374151;font-weight:700;min-height:24px}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>⛀ Checkers</h1>
+<p class="sub">Capture diagonally, promote kings, and outmaneuver your local opponent on the same device.</p>
+<div class="score-bar">
+  <div class="score-box"><div class="score-label">Turn</div><div class="score-val purple" id="turn">Red</div></div>
+  <div class="score-box"><div class="score-label">Red</div><div class="score-val red" id="red-count">12</div></div>
+  <div class="score-box"><div class="score-label">Black</div><div class="score-val black" id="black-count">12</div></div>
+  <div class="score-box"><div class="score-label">Match Wins</div><div class="score-val purple" id="wins">0 - 0</div></div>
+</div>
+<div class="game">
+  <div class="board" id="board"></div>
+  <div class="controls">
+    <button class="btn" id="new-match-btn">New Match</button>
+  </div>
+  <div class="overlay" id="overlay">
+    <h2>⛀ Checkers</h2>
+    <p>Use arrow keys to move the cursor and Enter to select or move. Captures are mandatory, and taps work on touch devices.</p>
+    <button class="btn" id="overlay-btn">Start Match</button>
+  </div>
+  <div class="status" id="status">Press Start to begin.</div>
+</div>
+<p class="hint">Arrow keys + Enter · Click/tap squares · Captures are mandatory</p>
+<script>
+const boardEl=document.getElementById('board'),overlay=document.getElementById('overlay'),statusEl=document.getElementById('status');
+document.getElementById('new-match-btn').addEventListener('click',startGame);
+document.getElementById('overlay-btn').addEventListener('click',startGame);
+const WINS_KEY='checkersWins';
+let board=Array.from({length:8},(_,r)=>Array.from({length:8},(_,c)=>{if((r+c)%2===0)return'';if(r<3)return'b';if(r>4)return'r';return'';})),turn='r',selected=null,cursor={r:5,c:0},multiCapture=false,wins=JSON.parse(localStorage.getItem(WINS_KEY)||'{"r":0,"b":0}');document.getElementById('wins').textContent=`${wins.r} - ${wins.b}`;
+updateStats();
+function startGame(){board=Array.from({length:8},(_,r)=>Array.from({length:8},(_,c)=>{if((r+c)%2===0)return'';if(r<3)return'b';if(r>4)return'r';return'';}));turn='r';selected=null;multiCapture=false;cursor={r:5,c:0};overlay.style.display='none';statusEl.textContent='Red moves first.';updateStats();render();}
+function pieceColor(piece){return piece.toLowerCase();}
+function isKing(piece){return piece===piece.toUpperCase()&&piece!=='';}
+function dirs(piece){if(isKing(piece))return[[1,1],[1,-1],[-1,1],[-1,-1]];return piece.toLowerCase()==='r'?[[-1,1],[-1,-1]]:[[1,1],[1,-1]];}
+function forcedCaptures(player){const caps=[];for(let r=0;r<8;r++)for(let c=0;c<8;c++)if(pieceColor(board[r][c])===player&&getMoves(r,c,true).length)caps.push([r,c]);return caps;}
+function getMoves(r,c,capturesOnly=false){const piece=board[r][c];if(!piece)return[];const moves=[];for(const[dr,dc]of dirs(piece)){const nr=r+dr,nc=c+dc;if(board[nr]?.[nc]===''){if(!capturesOnly)moves.push({r:nr,c:nc,capture:null});}else if(board[nr]?.[nc]&&pieceColor(board[nr][nc])!==pieceColor(piece)&&board[nr+dr]?.[nc+dc]===''){moves.push({r:nr+dr,c:nc+dc,capture:[nr,nc]});}}
+return moves;}
+function legalMovesForSelection(r,c){const caps=forcedCaptures(turn);const mustCapture=caps.length>0;const allowedMulti=multiCapture&&selected&&selected.r===r&&selected.c===c; if(multiCapture&&!allowedMulti)return[]; if(mustCapture&&!caps.some(([sr,sc])=>sr===r&&sc===c))return[];return getMoves(r,c,mustCapture);}
+function selectCell(r,c){cursor={r,c};const piece=board[r][c];if(selected){const moves=legalMovesForSelection(selected.r,selected.c);const move=moves.find(m=>m.r===r&&m.c===c);if(move){applyMove(selected.r,selected.c,move);return;}}
+if(piece&&pieceColor(piece)===turn&&legalMovesForSelection(r,c).length){selected={r,c};statusEl.textContent=`${turn==='r'?'Red':'Black'} selected a piece.`;}else if(piece&&pieceColor(piece)===turn){statusEl.textContent='That piece has no legal move right now.';}else{selected=null;}render();}
+function applyMove(sr,sc,move){let piece=board[sr][sc];board[sr][sc]='';board[move.r][move.c]=piece;if(move.capture){board[move.capture[0]][move.capture[1]]='';statusEl.textContent='Capture made!';}
+if(piece==='r'&&move.r===0)board[move.r][move.c]='R';if(piece==='b'&&move.r===7)board[move.r][move.c]='B';selected={r:move.r,c:move.c};const follow=move.capture?getMoves(move.r,move.c,true):[];if(move.capture&&follow.length){multiCapture=true;statusEl.textContent='Continue capturing with the same piece.';}else{multiCapture=false;selected=null;turn=turn==='r'?'b':'r';statusEl.textContent=`${turn==='r'?'Red':'Black'} to move.`;}checkGameEnd();updateStats();render();}
+function updateStats(){const red=board?board.flat().filter(p=>pieceColor(p)==='r').length:12;const black=board?board.flat().filter(p=>pieceColor(p)==='b').length:12;document.getElementById('red-count').textContent=String(red);document.getElementById('black-count').textContent=String(black);document.getElementById('turn').textContent=turn==='r'?'Red':'Black';document.getElementById('wins').textContent=`${wins.r} - ${wins.b}`;}
+function checkGameEnd(){const enemy=turn;const movesExist=[];for(let r=0;r<8;r++)for(let c=0;c<8;c++)if(pieceColor(board[r][c])===enemy&&legalMovesForSelection(r,c).length)movesExist.push(1);const red=board.flat().filter(p=>pieceColor(p)==='r').length;const black=board.flat().filter(p=>pieceColor(p)==='b').length;if(red===0||black===0||!movesExist.length){const winner=red===0?'Black':black===0?'Red':turn==='r'?'Black':'Red';wins[winner==='Red'?'r':'b']++;localStorage.setItem(WINS_KEY,JSON.stringify(wins));overlay.innerHTML=`<h2>${winner} Wins!</h2><p>${winner} controls the board. Start another match to play again.</p><button class="btn" id="overlay-btn">Play Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);statusEl.textContent=`${winner} wins the match.`;updateStats();}}
+function render(){boardEl.innerHTML='';const moves=selected?legalMovesForSelection(selected.r,selected.c):[];for(let r=0;r<8;r++)for(let c=0;c<8;c++){const cell=document.createElement('button');cell.className='cell '+(((r+c)%2===0)?'light':'dark')+(cursor.r===r&&cursor.c===c?' cursor':'')+(moves.some(m=>m.r===r&&m.c===c)?' move':'');cell.onclick=()=>selectCell(r,c);const piece=board[r][c];if(piece){const disc=document.createElement('div');disc.className='piece '+(pieceColor(piece)==='r'?'red':'black')+(selected&&selected.r===r&&selected.c===c?' selected':'');disc.textContent=isKing(piece)?'♛':'';cell.appendChild(disc);}boardEl.appendChild(cell);}}
+document.addEventListener('keydown',e=>{if(overlay.style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}if(!board)return;const arrows={ArrowLeft:[0,-1],ArrowRight:[0,1],ArrowUp:[-1,0],ArrowDown:[1,0]};if(arrows[e.key]){e.preventDefault();cursor={r:(cursor.r+arrows[e.key][0]+8)%8,c:(cursor.c+arrows[e.key][1]+8)%8};render();return;}if(e.key==='Enter'){e.preventDefault();selectCell(cursor.r,cursor.c);}});
+render();
+</script>
+</body>
+</html>

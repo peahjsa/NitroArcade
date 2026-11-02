@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Hex Strategy — Game Portal</title>
+<meta name="description" content="Play Hex Strategy free online — Capture hexagonal territory to connect your sides of the board. A Hard Strategy game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/hex-strategy/"/>
+<meta property="og:title" content="⬡ Hex Strategy — Free Browser Game"/>
+<meta property="og:description" content="Play Hex Strategy free in your browser. Capture hexagonal territory to connect your sides of the board."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/hex-strategy/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Hex Strategy",
+  "description": "Capture hexagonal territory to connect your sides of the board.",
+  "url": "https://arcade.sotshau.fun/games/hex-strategy/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Strategy",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 18px}.score-bar{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:12px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:92px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:18px;box-shadow:0 8px 20px rgba(0,0,0,.08)}canvas{display:block;background:linear-gradient(#eef2ff,#f8fafc);border-radius:14px;border:1px solid #d1d5db;touch-action:none}.status{min-height:22px;text-align:center;margin-top:12px;font-weight:700;color:#374151}.overlay{position:absolute;inset:18px;background:rgba(245,245,247,.95);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p{color:#6b7280;line-height:1.5;max-width:360px}.btn{padding:9px 18px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center;padding:0 18px}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>⬡ Hex Strategy</h1>
+<p class="sub">Expand across the hex field, attack red cells, and keep your blue frontier alive.</p>
+<div class="score-bar">
+  <div class="score-box"><div class="score-label">Turn</div><div class="score-val" id="turn">1</div></div>
+  <div class="score-box"><div class="score-label">Blue</div><div class="score-val" id="blue">0</div></div>
+  <div class="score-box"><div class="score-label">Red</div><div class="score-val" id="red">0</div></div>
+  <div class="score-box"><div class="score-label">Wins</div><div class="score-val" id="wins">0</div></div>
+</div>
+<div class="game">
+  <canvas id="board" width="520" height="420"></canvas>
+  <div class="overlay" id="overlay">
+    <h2>⬡ Hex Strategy</h2>
+    <p>Select a blue cell with more than one unit, then choose an adjacent tile to move or attack. Arrow keys move the cursor and Enter confirms.</p>
+    <button class="btn" id="overlay-btn">Start Game</button>
+  </div>
+  <div class="status" id="status">Command your blue empire.</div>
+</div>
+<p class="hint">Keyboard: arrows + Enter · Space to pass · Touch: tap hexes</p>
+<script>
+const canvas=document.getElementById('board'),ctx=canvas.getContext('2d');
+if(!ctx) throw new Error('canvas 2d context unavailable');
+const ROWS=5,COLS=5,R=36,WINS_KEY='hexStrategyWins';
+let board=[],cursor={c:0,r:0},selected=null,turn=1,wins=+(localStorage.getItem(WINS_KEY)||0),playerTurn=true,running=false,statusMsg='Command your blue empire.';
+document.getElementById('wins').textContent=wins;
+function idx(c,r){return r*COLS+c;} 
+function cell(c,r){return board[idx(c,r)];}
+function neighbors(c,r){const even=r%2===0;const dirs=even?[[1,0],[-1,0],[0,-1],[-1,-1],[0,1],[-1,1]]:[[1,0],[-1,0],[1,-1],[0,-1],[1,1],[0,1]];return dirs.map(([dc,dr])=>({c:c+dc,r:r+dr})).filter(n=>n.c>=0&&n.c<COLS&&n.r>=0&&n.r<ROWS);}
+function center(c,r){const x=90+c*70+(r%2)*35,y=75+r*62;return{x,y};}
+function drawHex(x,y,fill,stroke='#cbd5e1'){ctx.beginPath();for(let i=0;i<6;i++){const a=Math.PI/180*(60*i-30),px=x+R*Math.cos(a),py=y+R*Math.sin(a);if(i===0)ctx.moveTo(px,py);else ctx.lineTo(px,py);}ctx.closePath();ctx.fillStyle=fill;ctx.fill();ctx.strokeStyle=stroke;ctx.lineWidth=2;ctx.stroke();}
+function setup(){board=[];for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){let owner=0,units=1+Math.floor(Math.random()*3);if(c===0){owner=1;units=2+r%2;}if(c===COLS-1){owner=2;units=2+(r+1)%2;}board.push({owner,units});}turn=1;playerTurn=true;selected=null;cursor={c:0,r:2};statusMsg='Blue moves first. Select a strong tile.';updateStats();draw();}
+function counts(owner){return board.filter(c=>c.owner===owner).length;}
+function updateStats(){document.getElementById('turn').textContent=turn;document.getElementById('blue').textContent=counts(1);document.getElementById('red').textContent=counts(2);document.getElementById('wins').textContent=wins;document.getElementById('status').textContent=statusMsg;}
+function sumDice(n){let total=0;for(let i=0;i<n;i++)total+=1+Math.floor(Math.random()*6);return total;}
+function samePos(a,b){return a&&b&&a.c===b.c&&a.r===b.r;}
+function onWin(){wins++;localStorage.setItem(WINS_KEY,String(wins));running=false;const overlay=document.getElementById('overlay');overlay.innerHTML=`<h2>🏆 Hex Victory</h2><p>You conquered the red kingdom in <strong>${turn}</strong> turns.</p><button class="btn" id="overlay-btn">Play Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);updateStats();}
+function onLose(){running=false;const overlay=document.getElementById('overlay');overlay.innerHTML=`<h2>⚔️ Defeat</h2><p>The red empire swallowed the map. Rally again!</p><button class="btn" id="overlay-btn">Try Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);updateStats();}
+function reinforce(){[1,2].forEach(owner=>{const owned=board.map((c,i)=>({c,i})).filter(v=>v.c.owner===owner);for(let k=0;k<Math.max(1,Math.floor(owned.length/3));k++){const pick=owned[Math.floor(Math.random()*owned.length)];pick.c.units=Math.min(8,pick.c.units+1);}});} 
+function endPlayerTurn(msg){statusMsg=msg;selected=null;playerTurn=false;updateStats();setTimeout(aiTurn,420);} 
+function aiTurn(){if(!running)return;const options=[];for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){const from=cell(c,r);if(from.owner!==2||from.units<2)continue;for(const n of neighbors(c,r)){const to=cell(n.c,n.r);if(to.owner!==2)options.push({from:{c,r},to:n,weight:to.owner===1?3:1});}}
+if(options.length){options.sort((a,b)=>b.weight-a.weight||cell(b.from.c,b.from.r).units-cell(a.from.c,a.from.r).units);const move=options[0];const from=cell(move.from.c,move.from.r),to=cell(move.to.c,move.to.r);if(to.owner===2){to.units=Math.min(8,to.units+from.units-1);from.units=1;statusMsg='Red regrouped.';}else{const atk=sumDice(from.units-1),def=sumDice(to.units);if(atk>=def){to.owner=2;to.units=Math.max(1,Math.min(8,from.units-1));from.units=1;statusMsg='Red captured a hex!';}else{from.units=1;to.units=Math.max(1,to.units-1);statusMsg='Red attack failed.';}}}
+reinforce();turn++;playerTurn=true;updateStats();if(counts(2)===0)return onWin();if(counts(1)===0)return onLose();draw();}
+function handleCell(c,r){if(!running||!playerTurn)return;const current=cell(c,r);if(!selected){if(current.owner===1&&current.units>1){selected={c,r};statusMsg='Choose an adjacent hex to move or attack.';}else statusMsg='Pick a blue hex with at least 2 units.';return updateStats();}
+if(samePos(selected,{c,r})){selected=null;statusMsg='Selection cleared.';return updateStats();}
+if(!neighbors(selected.c,selected.r).some(n=>n.c===c&&n.r===r)){statusMsg='Target must be adjacent.';return updateStats();}
+const from=cell(selected.c,selected.r),to=cell(c,r);if(to.owner===1){to.units=Math.min(8,to.units+from.units-1);from.units=1;endPlayerTurn('Blue troops repositioned.');}else{const atk=sumDice(from.units-1),def=sumDice(to.units);if(atk>=def){to.owner=1;to.units=Math.max(1,Math.min(8,from.units-1));from.units=1;endPlayerTurn('Blue captured a hex!');}else{from.units=1;to.units=Math.max(1,to.units-1);endPlayerTurn('Blue attack stalled.');}}if(counts(2)===0)onWin();if(counts(1)===0)onLose();draw();}
+function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){const h=center(c,r),tile=cell(c,r);const fill=tile.owner===1?'#60a5fa':tile.owner===2?'#f87171':'#e5e7eb';drawHex(h.x,h.y,fill,tile.owner===0?'#94a3b8':'#475569');if(samePos(selected,{c,r})){ctx.strokeStyle='#f59e0b';ctx.lineWidth=4;drawHex(h.x,h.y,'rgba(0,0,0,0)','#f59e0b');}if(cursor.c===c&&cursor.r===r){ctx.strokeStyle='#111827';ctx.lineWidth=3;drawHex(h.x,h.y,'rgba(0,0,0,0)','#111827');}ctx.fillStyle='#111827';ctx.font='700 22px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(tile.units,h.x,h.y);}}
+function startGame(){running=true;document.getElementById('overlay').style.display='none';setup();}
+canvas.addEventListener('click',e=>{const r=canvas.getBoundingClientRect(),mx=(e.clientX-r.left)*(canvas.width/r.width),my=(e.clientY-r.top)*(canvas.height/r.height);let bestDist=Infinity,bestCell=null;for(let row=0;row<ROWS;row++)for(let col=0;col<COLS;col++){const h=center(col,row),d=Math.hypot(mx-h.x,my-h.y);if(d<bestDist){bestDist=d;bestCell={c:col,r:row};}}if(bestCell&&bestDist<42){cursor=bestCell;handleCell(bestCell.c,bestCell.r);draw();}});
+document.getElementById('overlay-btn').addEventListener('click',startGame);
+document.addEventListener('keydown',e=>{const overlay=document.getElementById('overlay');if(overlay.style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}if(e.key==='ArrowLeft'){e.preventDefault();cursor.c=(cursor.c+COLS-1)%COLS;draw();}if(e.key==='ArrowRight'){e.preventDefault();cursor.c=(cursor.c+1)%COLS;draw();}if(e.key==='ArrowUp'){e.preventDefault();cursor.r=(cursor.r+ROWS-1)%ROWS;draw();}if(e.key==='ArrowDown'){e.preventDefault();cursor.r=(cursor.r+1)%ROWS;draw();}if(e.key==='Enter'){e.preventDefault();handleCell(cursor.c,cursor.r);draw();}if(e.key===' '&&running&&playerTurn){e.preventDefault();selected=null;endPlayerTurn('Blue holds position.');}});
+setup();
+</script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+
+
+:root{--nitro-cyan:#66e2ff;--nitro-violet:#8a6cff;--nitro-gold:#ffd56a;--nitro-glass:rgba(8,14,25,.86)}
+#playerContainer{background:radial-gradient(circle at 50% 20%,#14233a 0,#070b12 46%,#020305 100%);position:relative;overflow:hidden}
+#playerContainer:before{content:"";position:absolute;inset:-30%;pointer-events:none;background:conic-gradient(from 0deg,transparent,#49cfff0b,transparent,#9a6cff0c,transparent);animation:nitroWorldGlow 18s linear infinite;z-index:0}
+#playerContainer>*{position:relative;z-index:1}
+@keyframes nitroWorldGlow{to{transform:rotate(360deg)}}
+.mega-panel,.nova-panel,.native-game-shell{box-shadow:0 24px 80px #0009,inset 0 1px #ffffff12;border:1px solid #ffffff18;background:linear-gradient(145deg,rgba(13,21,34,.96),rgba(3,6,11,.98))!important}
+.mega-head,.nova-head{background:linear-gradient(90deg,#ffffff08,transparent 65%);border-bottom:1px solid #ffffff12;padding-bottom:12px}
+.mega-title,.nova-title{text-shadow:0 0 24px #6edfff35;letter-spacing:.02em}
+.mega-canvas,.runner-canvas,.native-game-canvas,#sncv,#nwfCanvas,.bm95-stage canvas{box-shadow:0 18px 60px #000b,0 0 0 1px #ffffff16,0 0 35px #4ecfff0d;filter:saturate(1.12) contrast(1.045);border-radius:12px}
+.mega-btn,.nova-option,.bm95-btn,.nwf button{transition:transform .12s ease,box-shadow .12s ease,filter .12s ease;box-shadow:inset 0 1px #ffffff1a,0 7px 20px #0005}
+.mega-btn:hover,.nova-option:hover,.bm95-btn:hover,.nwf button:hover{transform:translateY(-1px);filter:brightness(1.12);box-shadow:inset 0 1px #ffffff25,0 10px 28px #0008,0 0 18px #5ee5ff1a}
+
+.burst-board{padding:10px!important;border-radius:18px!important;background:linear-gradient(145deg,#0d1725,#05080e)!important;box-shadow:inset 0 0 30px #000b,0 16px 45px #0008!important}
+.burst-cell{border-radius:7px!important;border:1px solid #ffffff12!important;background:linear-gradient(145deg,#182333,#0c121c)!important;box-shadow:inset 0 1px #ffffff0c!important}
+.burst-cell.on{background:linear-gradient(145deg,#8af0ff,#397ee8)!important;box-shadow:0 0 16px #5bdfff55,inset 0 1px #fff9!important;border-color:#c9f8ff88!important}
+.burst-shape{background:linear-gradient(145deg,#151f30,#080d16)!important;border:1px solid #ffffff18!important}
+
+#sncv{filter:saturate(1.16) contrast(1.07) brightness(1.02);background:#0a1119}
+
+.nwf{background:radial-gradient(circle at 50% 45%,#182027,#060708 62%,#000 100%)!important;box-shadow:inset 0 0 120px #000}
+.nwf-feed{position:relative;overflow:hidden;border-radius:10px;box-shadow:0 18px 55px #000c,0 0 0 1px #ffffff18}
+.nwf-feed:after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(255,255,255,.025) 0 1px,transparent 1px 4px),linear-gradient(90deg,rgba(80,180,255,.035),transparent 30%,rgba(255,80,80,.025));mix-blend-mode:screen}
+.nwf-office{box-shadow:inset 0 0 90px #000b;background-image:radial-gradient(circle at 50% 70%,#33404a22,transparent 40%)}
+.nwf-screen{box-shadow:0 0 28px #72d9ff22,inset 0 0 18px #72d9ff12!important}
+
+.bm95-stage{box-shadow:0 22px 70px #000c,0 0 0 1px #ffffff18;border-radius:14px;overflow:hidden}
+.bm95-hud{backdrop-filter:blur(8px);background:#05070bcc!important;border:1px solid #ffffff1c!important;text-shadow:0 0 12px #ffd78a55}
+
+.mega-grid{padding:12px;border-radius:16px;background:linear-gradient(145deg,#0c1522,#05080e);box-shadow:inset 0 0 28px #0009,0 15px 45px #0007}
+.ttcell,.c4cell{box-shadow:inset 0 2px #ffffff12,0 5px 14px #0006!important;transition:.12s ease!important}.ttcell:hover,.c4cell:hover{transform:translateY(-2px);filter:brightness(1.15)}
+
+.nova-status,.mega-help,.bm95-help,.nwf-bottom{backdrop-filter:blur(8px);text-shadow:0 1px 2px #000}
+@media(prefers-reduced-motion:reduce){#playerContainer:before{animation:none}.mega-btn,.nova-option,.bm95-btn,.nwf button{transition:none}}

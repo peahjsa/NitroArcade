@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Color Memory — Game Portal</title>
+<meta name="description" content="Play Color Memory free online — Memorize the color pattern, then reproduce it from memory. A Easy Memory &amp; Reflex game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/color-memory/"/>
+<meta property="og:title" content="🌈 Color Memory — Free Browser Game"/>
+<meta property="og:description" content="Play Color Memory free in your browser. Memorize the color pattern, then reproduce it from memory."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/color-memory/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Color Memory",
+  "description": "Memorize the color pattern, then reproduce it from memory.",
+  "url": "https://arcade.sotshau.fun/games/color-memory/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Memory & Reflex",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px}.score-bar{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 18px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:96px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.game{position:relative;background:#111827;border-radius:22px;box-shadow:0 12px 28px rgba(0,0,0,.18);padding:24px;width:min(700px,94vw)}.memory-row,.buttons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.memory-card,.color-btn{border:none;border-radius:16px;height:92px;font-size:20px;font-weight:800;cursor:pointer;color:#fff;opacity:.9;transition:transform .08s,opacity .08s}.memory-card.active,.color-btn:active{transform:scale(.98);opacity:1;box-shadow:0 0 0 4px rgba(255,255,255,.25) inset}.memory-card{background:#1f2937;border:1px solid rgba(255,255,255,.08)}.status{min-height:24px;text-align:center;color:#e5e7eb;font-weight:700;margin:16px 0}.overlay{position:absolute;inset:0;background:rgba(17,24,39,.94);border-radius:22px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center;color:#fff}.overlay p{color:#cbd5e1;max-width:320px;line-height:1.5}.btn{padding:10px 18px;border:none;border-radius:10px;background:#6c63ff;color:#fff;font-weight:700;cursor:pointer}.hint{margin-top:14px;font-size:12px;color:#9ca3af;text-align:center;padding:0 16px}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🌈 Color Memory</h1>
+<p class="sub">Memorize the color sequence, then repeat it with the matching buttons. Each round adds another color.</p>
+<div class="score-bar"><div class="score-box"><div class="score-label">Round</div><div class="score-val" id="round">0</div></div><div class="score-box"><div class="score-label">Input</div><div class="score-val" id="input">0</div></div><div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">0</div></div></div>
+<div class="game">
+  <div class="memory-row" id="memory-row"></div>
+  <div class="status" id="status">Press Start to begin.</div>
+  <div class="buttons" id="buttons"></div>
+  <div class="overlay" id="overlay"><h2>🌈 Color Memory</h2><p>Watch the flash cards, then repeat the sequence. Use keys 1–6 or tap the color buttons.</p><button class="btn" id="overlay-btn">Start Game</button></div>
+</div>
+<p class="hint">Keyboard: 1–6 · Touch: tap the color buttons</p>
+<script>
+const COLORS=[{name:'Coral',value:'#fb7185'},{name:'Gold',value:'#f59e0b'},{name:'Mint',value:'#10b981'},{name:'Sky',value:'#38bdf8'},{name:'Violet',value:'#8b5cf6'},{name:'Slate',value:'#64748b'}];
+const BEST_KEY='colorMemoryBest';
+const rowEl=document.getElementById('memory-row'),buttonsEl=document.getElementById('buttons'),statusEl=document.getElementById('status'),overlay=document.getElementById('overlay');
+let sequence=[],inputIndex=0,accepting=false;
+document.getElementById('best').textContent=localStorage.getItem(BEST_KEY)||'0';
+function buildUI(){rowEl.innerHTML='';buttonsEl.innerHTML='';COLORS.forEach((color,index)=>{const card=document.createElement('button');card.className='memory-card';card.textContent='?';rowEl.appendChild(card);const btn=document.createElement('button');btn.className='color-btn';btn.textContent=`${index+1}. ${color.name}`;btn.style.background=color.value;btn.addEventListener('click',()=>press(index));buttonsEl.appendChild(btn);});}
+function startGame(){sequence=[];document.getElementById('round').textContent='0';document.getElementById('input').textContent='0';overlay.style.display='none';nextRound();}
+function nextRound(){accepting=false;inputIndex=0;sequence.push(Math.floor(Math.random()*COLORS.length));document.getElementById('round').textContent=String(sequence.length);document.getElementById('input').textContent='0';statusEl.textContent='Watch the sequence...';playSequence(0);}
+function flash(index){const card=rowEl.children[index%rowEl.children.length],button=buttonsEl.children[index];if(!button)return;button.classList.add('active');card.textContent=COLORS[index].name;card.style.background=COLORS[index].value;setTimeout(()=>{button.classList.remove('active');card.textContent='?';card.style.background='#1f2937';},420);}
+function playSequence(step){if(step>=sequence.length){accepting=true;statusEl.textContent='Repeat the colors.';return;}flash(sequence[step]);setTimeout(()=>playSequence(step+1),700);}
+function press(index){if(!accepting)return;flash(index);if(index!==sequence[inputIndex]){finishGame();return;}inputIndex++;document.getElementById('input').textContent=String(inputIndex);if(inputIndex===sequence.length){accepting=false;const best=Math.max(sequence.length,+(localStorage.getItem(BEST_KEY)||0));localStorage.setItem(BEST_KEY,String(best));document.getElementById('best').textContent=String(best);statusEl.textContent='Correct! Next round...';setTimeout(nextRound,700);}}
+function finishGame(){accepting=false;const round=Math.max(0,sequence.length-1);statusEl.textContent=`You reached round ${round}.`;overlay.innerHTML=`<h2>❌ Wrong Color</h2><p>You reached <strong>round ${round}</strong>. Ready to try again?</p><button class="btn" id="overlay-btn">Play Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);}
+document.getElementById('overlay-btn').addEventListener('click',startGame);document.addEventListener('keydown',e=>{if(overlay.style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}const index=Number(e.key)-1;if(index>=0&&index<COLORS.length){press(index);}});buildUI();
+</script>
+</body>
+</html>

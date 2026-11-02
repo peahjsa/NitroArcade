@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Turret — Game Portal</title>
+<meta name="description" content="Play Turret Defense free online — Aim and shoot enemies approaching your base. Upgrade your turret! A Medium Action &amp; Shooter game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/turret/"/>
+<meta property="og:title" content="🎯 Turret Defense — Free Browser Game"/>
+<meta property="og:description" content="Play Turret Defense free in your browser. Aim and shoot enemies approaching your base. Upgrade your turret!"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/turret/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Turret Defense",
+  "description": "Aim and shoot enemies approaching your base. Upgrade your turret!",
+  "url": "https://arcade.sotshau.fun/games/turret/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Action & Shooter",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px;max-width:760px}.score-bar{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:92px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:18px;box-shadow:0 8px 20px rgba(0,0,0,.08)}canvas{display:block;background:radial-gradient(circle at center,#1e293b,#020617);border-radius:14px;border:1px solid #1e293b;touch-action:none}.overlay{position:absolute;inset:18px;background:rgba(245,245,247,.94);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p{color:#6b7280;line-height:1.5;max-width:360px}.btn{padding:9px 22px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}.status{margin-top:12px;text-align:center;color:#374151;font-weight:700;min-height:24px;max-width:560px}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center;padding:0 16px;max-width:640px}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🌀 Turret</h1>
+<p class="sub">Rotate a central defense cannon, shoot incoming drones, and stop them from punching through the reactor core.</p>
+<div class="score-bar"><div class="score-box"><div class="score-label">Score</div><div class="score-val" id="score">0</div></div><div class="score-box"><div class="score-label">Integrity</div><div class="score-val" id="health">100</div></div><div class="score-box"><div class="score-label">Wave</div><div class="score-val" id="wave">1</div></div><div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">0</div></div></div>
+<div class="game">
+  <canvas id="game" width="560" height="560"></canvas>
+  <div class="overlay" id="overlay">
+    <h2>🌀 Turret</h2>
+    <p>Rotate with A/D or the arrow keys, fire with Space, and drag around the arena on touch screens to aim the turret before tapping to shoot.</p>
+    <button class="btn" id="overlay-btn">Start Game</button>
+  </div>
+  <div class="status" id="status">Press Start to begin.</div>
+</div>
+<p class="hint">A / D or ← → rotates · Space fires · Drag to aim and tap to shoot</p>
+<script>
+
+const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');
+if(!ctx) throw new Error('Canvas 2D context unavailable');
+const BEST_KEY='turretBest';
+let angle=-Math.PI/2,projectiles=[],enemies=[],score=0,health=100,wave=1,best=+(localStorage.getItem(BEST_KEY)||0),running=false,last=0,spawn=0,spawned=0,targetCount=0,keys={},statusMsg='Press Start to begin.',rafId=0;
+document.getElementById('best').textContent=best;
+function updateStats(){document.getElementById('score').textContent=score;document.getElementById('health').textContent=health;document.getElementById('wave').textContent=wave;document.getElementById('best').textContent=best;document.getElementById('status').textContent=statusMsg;}
+function startGame(){angle=-Math.PI/2;projectiles=[];enemies=[];score=0;health=100;wave=1;spawn=0;spawned=0;targetCount=8+wave*2;keys={};running=true;last=0;statusMsg='Wave 1: hold the perimeter.';document.getElementById('overlay').style.display='none';updateStats();cancelAnimationFrame(rafId);rafId=requestAnimationFrame(loop);}
+function fire(){if(!running)return;projectiles.push({x:280,y:280,vx:Math.cos(angle)*7,vy:Math.sin(angle)*7,life:90});statusMsg='Turret fired.';updateStats();}
+function addEnemy(){const edge=Math.floor(Math.random()*4);const pos=Math.random()*canvas.width;let x=0,y=0;if(edge===0){x=pos;y=-20;}else if(edge===1){x=canvas.width+20;y=pos;}else if(edge===2){x=pos;y=canvas.height+20;}else{x=-20;y=pos;}const dx=280-x,dy=280-y,len=Math.hypot(dx,dy)||1;enemies.push({x,y,vx:dx/len*(1.1+wave*.12),vy:dy/len*(1.1+wave*.12),r:14+Math.random()*6,hp:1+Math.floor(wave/3)});spawned++;}
+function gameOver(text){running=false;statusMsg='Final score: '+score;updateStats();const overlay=document.getElementById('overlay');overlay.innerHTML=`<h2>Core Breached</h2><p>${text}</p><button class="btn" id="overlay-btn">Defend Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);} 
+function nextWave(){wave++;spawned=0;targetCount=8+wave*2;statusMsg='Wave '+wave+': drones closing in.';updateStats();}
+function update(dt){if(keys.ArrowLeft||keys.a||keys.A)angle-=.06;if(keys.ArrowRight||keys.d||keys.D)angle+=.06;spawn+=dt;if(spawned<targetCount&&spawn>Math.max(220,760-wave*30)){spawn=0;addEnemy();if(Math.random()<.2+wave*.03)addEnemy();}projectiles.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.life--;});projectiles=projectiles.filter(p=>p.life>0&&p.x>-20&&p.x<canvas.width+20&&p.y>-20&&p.y<canvas.height+20);enemies.forEach(e=>{e.x+=e.vx;e.y+=e.vy;});for(const p of projectiles){for(const e of enemies){if(e.hp>0&&Math.hypot(p.x-e.x,p.y-e.y)<e.r+4){p.life=0;e.hp--;if(e.hp<=0){score+=20;statusMsg='Drone destroyed.';if(score>best){best=score;localStorage.setItem(BEST_KEY,String(best));}}}}}enemies=enemies.filter(e=>e.hp>0);for(const e of enemies){if(Math.hypot(e.x-280,e.y-280)<52){health-=10;statusMsg='The reactor took damage!';e.hp=0;if(health<=0)return gameOver('Too many drones reached the core.');}}enemies=enemies.filter(e=>e.hp>0);if(spawned>=targetCount&&!enemies.length)nextWave();updateStats();}
+function draw(){const g=ctx.createRadialGradient(280,280,40,280,280,320);g.addColorStop(0,'#334155');g.addColorStop(1,'#020617');ctx.fillStyle=g;ctx.fillRect(0,0,canvas.width,canvas.height);ctx.strokeStyle='rgba(148,163,184,.18)';for(let r=90;r<=240;r+=50){ctx.beginPath();ctx.arc(280,280,r,0,Math.PI*2);ctx.stroke();}ctx.fillStyle='#6c63ff';ctx.beginPath();ctx.arc(280,280,40,0,Math.PI*2);ctx.fill();ctx.save();ctx.translate(280,280);ctx.rotate(angle);ctx.fillStyle='#e0e7ff';ctx.fillRect(0,-8,78,16);ctx.fillStyle='#c4b5fd';ctx.beginPath();ctx.arc(0,0,24,0,Math.PI*2);ctx.fill();ctx.restore();projectiles.forEach(p=>{ctx.fillStyle='#facc15';ctx.beginPath();ctx.arc(p.x,p.y,4,0,Math.PI*2);ctx.fill();});enemies.forEach(e=>{ctx.fillStyle='#fb7185';ctx.beginPath();ctx.arc(e.x,e.y,e.r,0,Math.PI*2);ctx.fill();ctx.fillStyle='#111827';ctx.beginPath();ctx.arc(e.x-4,e.y-2,3,0,Math.PI*2);ctx.arc(e.x+4,e.y-2,3,0,Math.PI*2);ctx.fill();});}
+function loop(ts){if(!running)return;const dt=ts-last||16;last=ts;update(dt);draw();if(running)rafId=requestAnimationFrame(loop);}
+document.getElementById('overlay-btn').addEventListener('click',startGame);
+document.addEventListener('keydown',e=>{if(document.getElementById('overlay').style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}keys[e.key]=true;if(e.key===' '){e.preventDefault();fire();}});document.addEventListener('keyup',e=>{keys[e.key]=false;});function aimAt(clientX,clientY){const rect=canvas.getBoundingClientRect();const x=(clientX-rect.left)/rect.width*canvas.width,y=(clientY-rect.top)/rect.height*canvas.height;angle=Math.atan2(y-280,x-280);}canvas.addEventListener('pointerdown',e=>{aimAt(e.clientX,e.clientY);fire();});canvas.addEventListener('pointermove',e=>{if(running){aimAt(e.clientX,e.clientY);draw();}});draw();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+
+#nfGate{position:fixed;inset:0;z-index:2147483600;background:radial-gradient(circle at 75% 15%,#482068,#080616 58%);color:#f8edff;font:500 16px/1.5 system-ui,sans-serif;overflow:auto;display:none}
+#nfGate.nf-on{display:block}
+#nfGate *{box-sizing:border-box}
+.nf-wrap{max-width:1100px;margin:auto;padding:32px 20px 70px}
+.nf-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.nf-logo{font-weight:900;letter-spacing:2px;color:#e5b9ff}
+.nf-panel{background:linear-gradient(145deg,#211338,#110d24);border:1px solid #8652bd;border-radius:22px;padding:24px;box-shadow:0 14px 45px #0006}
+.nf-panel h1{font-size:clamp(27px,5vw,46px);margin:6px 0}
+.nf-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));gap:15px;margin-top:20px}
+.nf-card{background:#17112c;border:1px solid #63448c;border-radius:16px;padding:19px}
+#nfGate button,.nf-settings button,#nfOpenSettings{border:1px solid #c78dff;border-radius:12px;background:linear-gradient(130deg,#702ac3,#a12bce);color:white;font:700 14px system-ui;cursor:pointer;padding:11px 15px}
+#nfGate button:hover,.nf-settings button:hover{filter:brightness(1.15)}
+#nfGate button:focus-visible,.nf-settings button:focus-visible{outline:3px solid #f5d8ff;outline-offset:3px}
+#nfGate input,#nfGate select,.nf-settings input,.nf-settings select{background:#100c20;color:white;border:1px solid #a477d2;border-radius:9px;padding:10px;max-width:100%;font:inherit}
+#nfGate label,.nf-settings label{display:grid;gap:5px;margin:10px 0;font-size:13px}
+.nf-muted{color:#c7b3db}.nf-hidden{display:none!important}
+.nf-book{max-width:760px;margin:15px auto;background:#f8edd6;color:#352444;border-radius:18px;padding:clamp(20px,4vw,45px);font:19px/1.8 Georgia,serif;min-height:340px}
+.nf-book h2{font:700 30px Georgia,serif}
+.nf-book p{margin:1em 0}
+.nf-settings{position:fixed;inset:0;z-index:2147483640;background:#080513ee;color:#f8efff;overflow:auto;display:none;font:15px system-ui}
+.nf-settings.nf-on{display:block}
+.nf-settings .nf-wrap{max-width:680px}
+.nf-error{color:#ffbbcc;min-height:24px}
+.nf-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+

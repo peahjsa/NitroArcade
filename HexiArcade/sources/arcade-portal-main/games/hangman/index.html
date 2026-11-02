@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Hangman — Game Portal</title>
+<meta name="description" content="Play Hangman free online — Guess letters to reveal the hidden word before the man is hanged. A Easy Word &amp; Trivia game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/hangman/"/>
+<meta property="og:title" content="🪢 Hangman — Free Browser Game"/>
+<meta property="og:description" content="Play Hangman free in your browser. Guess letters to reveal the hidden word before the man is hanged."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/hangman/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Hangman",
+  "description": "Guess letters to reveal the hidden word before the man is hanged.",
+  "url": "https://arcade.sotshau.fun/games/hangman/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Word & Trivia",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}
+nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}
+nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}
+h1{margin:20px 0 4px;font-size:24px;font-weight:700}
+.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px}
+.score-bar{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}
+.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 18px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:92px}
+.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}
+.score-val{font-size:20px;font-weight:700;color:#6c63ff}
+.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;box-shadow:0 8px 20px rgba(0,0,0,.08);padding:24px;width:min(620px,94vw)}
+.word{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:18px}
+.letter-slot{width:42px;border-bottom:3px solid #6c63ff;text-align:center;font-size:28px;font-weight:800;color:#1f2937;padding-bottom:4px;text-transform:uppercase}
+.meta{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px;color:#374151;font-weight:600}
+.hint-box,.wrong-box{background:#f8fafc;border:1px solid #e5e7eb;border-radius:12px;padding:12px 14px}
+.keyboard{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;margin-top:18px}
+.key{padding:10px 0;border:none;border-radius:10px;background:#ede9fe;color:#4c1d95;font-weight:800;cursor:pointer}
+.key:hover:not(:disabled){background:#ddd6fe}
+.key:disabled{background:#e5e7eb;color:#9ca3af;cursor:default}
+.status{margin-top:16px;text-align:center;min-height:24px;color:#374151;font-weight:700}
+.overlay{position:absolute;inset:0;background:rgba(245,245,247,.95);border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:24px;text-align:center}
+.overlay p{color:#6b7280;max-width:300px;line-height:1.5}
+.btn{padding:9px 22px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}
+.btn:hover{background:#574fd6}
+.hint{margin-top:14px;font-size:12px;color:#9ca3af;text-align:center;padding:0 16px}
+@media (max-width:560px){.keyboard{grid-template-columns:repeat(6,minmax(0,1fr));}}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🪢 Hangman</h1>
+<p class="sub">Guess letters to reveal the hidden word before you run out of chances.</p>
+
+<div class="score-bar">
+  <div class="score-box"><div class="score-label">Lives</div><div class="score-val" id="lives">6</div></div>
+  <div class="score-box"><div class="score-label">Wins</div><div class="score-val" id="wins">0</div></div>
+  <div class="score-box"><div class="score-label">Best Streak</div><div class="score-val" id="best">0</div></div>
+</div>
+
+<div class="game">
+  <div class="word" id="word"></div>
+  <div class="meta">
+    <div class="hint-box" id="hint-box">Hint: —</div>
+    <div class="wrong-box" id="wrong-box">Wrong: —</div>
+  </div>
+  <div class="keyboard" id="keyboard"></div>
+  <div class="status" id="status">Press Start to begin.</div>
+  <div class="overlay" id="overlay">
+    <h2>🪢 Hangman</h2>
+    <p>Use your keyboard or tap the on-screen letters. Every wrong guess costs a life.</p>
+    <button class="btn" id="overlay-btn">Start Game</button>
+  </div>
+</div>
+<p class="hint">Keyboard letters work instantly · Touch any key on mobile</p>
+
+<script>
+const WORDS=[
+  {word:'GALAXY',hint:'A giant system of stars'},
+  {word:'GARDEN',hint:'A place to grow flowers'},
+  {word:'JUNGLE',hint:'A dense tropical forest'},
+  {word:'ROCKET',hint:'Launches into space'},
+  {word:'PIRATE',hint:'A sailor hunting treasure'},
+  {word:'CASTLE',hint:'A fortified royal home'},
+  {word:'THUNDER',hint:'The sound after lightning'},
+  {word:'PUZZLE',hint:'A challenge to solve'},
+  {word:'MARKET',hint:'A place to buy and sell'},
+  {word:'BUTTON',hint:'You click or tap this'}
+];
+const BEST_KEY='hangmanBestStreak';
+const alphabet='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+const wordEl=document.getElementById('word');
+const keyboardEl=document.getElementById('keyboard');
+const overlay=document.getElementById('overlay');
+let answer='',hint='',guessed=new Set(),wrong=[],lives=6,wins=0,streak=0,best=+(localStorage.getItem(BEST_KEY)||0),active=false;
+document.getElementById('best').textContent=best;
+
+function buildKeyboard(){
+  keyboardEl.innerHTML='';
+  alphabet.forEach(letter=>{
+    const btn=document.createElement('button');
+    btn.className='key';
+    btn.textContent=letter;
+    btn.dataset.letter=letter;
+    btn.addEventListener('click',()=>guess(letter));
+    keyboardEl.appendChild(btn);
+  });
+}
+
+function startGame(){
+  const pick=WORDS[Math.floor(Math.random()*WORDS.length)];
+  answer=pick.word;
+  hint=pick.hint;
+  guessed=new Set();
+  wrong=[];
+  lives=6;
+  active=true;
+  document.getElementById('lives').textContent=lives;
+  document.getElementById('hint-box').textContent=`Hint: ${hint}`;
+  document.getElementById('wrong-box').textContent='Wrong: —';
+  document.getElementById('status').textContent='Guess a letter.';
+  overlay.style.display='none';
+  [...keyboardEl.children].forEach(btn=>btn.disabled=false);
+  renderWord();
+}
+
+function renderWord(){
+  wordEl.innerHTML='';
+  answer.split('').forEach(char=>{
+    const slot=document.createElement('div');
+    slot.className='letter-slot';
+    slot.textContent=guessed.has(char)?char:'';
+    wordEl.appendChild(slot);
+  });
+}
+
+function guess(letter){
+  if(!active||guessed.has(letter)||wrong.includes(letter))return;
+  const button=keyboardEl.querySelector(`[data-letter="${letter}"]`);
+  if(button)button.disabled=true;
+  if(answer.includes(letter)){
+    guessed.add(letter);
+    renderWord();
+    if(answer.split('').every(char=>guessed.has(char))){
+      wins++;streak++;
+      if(streak>best){best=streak;localStorage.setItem(BEST_KEY,String(best));}
+      document.getElementById('wins').textContent=wins;
+      document.getElementById('best').textContent=best;
+      finish('🎉 You guessed it!',`The word was ${answer}.`);
+    }else{
+      document.getElementById('status').textContent=`Nice! ${letter} is in the word.`;
+    }
+  }else{
+    wrong.push(letter);
+    lives--;
+    document.getElementById('lives').textContent=lives;
+    document.getElementById('wrong-box').textContent=`Wrong: ${wrong.join(', ')}`;
+    document.getElementById('status').textContent=`No ${letter}. ${lives} lives left.`;
+    if(lives===0){
+      streak=0;
+      finish('💥 Out of lives!',`The word was ${answer}.`);
+    }
+  }
+}
+
+function finish(title,text){
+  active=false;
+  overlay.innerHTML=`<h2>${title}</h2><p>${text}</p><button class="btn" id="overlay-btn">Play Again</button>`;
+  overlay.style.display='flex';
+  document.getElementById('overlay-btn').addEventListener('click',startGame);
+}
+
+document.addEventListener('keydown',e=>{
+  if(overlay.style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}
+  const letter=e.key.toUpperCase();
+  if(/^[A-Z]$/.test(letter)){guess(letter);}
+});
+
+document.getElementById('overlay-btn').addEventListener('click',startGame);
+buildKeyboard();
+renderWord();
+</script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Missile Command — Game Portal</title>
+<meta name="description" content="Play Missile Command free online — Intercept incoming missiles to protect your cities. A Medium Action &amp; Shooter game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/missile-command/"/>
+<meta property="og:title" content="🚀 Missile Command — Free Browser Game"/>
+<meta property="og:description" content="Play Missile Command free in your browser. Intercept incoming missiles to protect your cities."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/missile-command/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Missile Command",
+  "description": "Intercept incoming missiles to protect your cities.",
+  "url": "https://arcade.sotshau.fun/games/missile-command/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Action & Shooter",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px;max-width:760px}.score-bar{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:92px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:18px;box-shadow:0 8px 20px rgba(0,0,0,.08)}canvas{display:block;background:linear-gradient(180deg,#0f172a,#1e293b);border-radius:14px;border:1px solid #334155;touch-action:none}.overlay{position:absolute;inset:18px;background:rgba(245,245,247,.94);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p{color:#6b7280;line-height:1.5;max-width:360px}.btn{padding:9px 22px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}.status{margin-top:12px;text-align:center;color:#374151;font-weight:700;min-height:24px;max-width:760px}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center;padding:0 16px;max-width:840px}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🛡️ Missile Command</h1>
+<p class="sub">Protect the cities below by launching interceptors that burst enemy missiles out of the sky.</p>
+<div class="score-bar"><div class="score-box"><div class="score-label">Score</div><div class="score-val" id="score">0</div></div><div class="score-box"><div class="score-label">Cities</div><div class="score-val" id="cities">5</div></div><div class="score-box"><div class="score-label">Wave</div><div class="score-val" id="wave">1</div></div><div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">0</div></div></div>
+<div class="game">
+  <canvas id="game" width="760" height="460"></canvas>
+  <div class="overlay" id="overlay">
+    <h2>🛡️ Missile Command</h2>
+    <p>Move the targeting reticle with the arrow keys or WASD, press Space to fire an interceptor, and tap anywhere on touch screens to launch toward that point.</p>
+    <button class="btn" id="overlay-btn">Start Game</button>
+  </div>
+  <div class="status" id="status">Press Start to begin.</div>
+</div>
+<p class="hint">Arrow keys / WASD move the reticle · Space launches · Tap or click to fire at a target</p>
+<script>
+
+const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');
+if(\!ctx) return;
+const BEST_KEY='missileCommandBest';
+let cities=[],enemyMissiles=[],interceptors=[],explosions=[],reticle={x:canvas.width/2,y:200},score=0,wave=1,best=+(localStorage.getItem(BEST_KEY)||0),running=false,rafId=0,last=0,spawn=0,spawned=0,targetCount=0,keys={},statusMsg='Press Start to begin.';
+document.getElementById('best').textContent=best;
+function makeCities(){cities=[];for(let i=0;i<5;i++)cities.push({x:90+i*145,y:392,alive:true});}
+function aliveCities(){return cities.filter(c=>c.alive).length;}
+function updateStats(){document.getElementById('score').textContent=score;document.getElementById('cities').textContent=aliveCities();document.getElementById('wave').textContent=wave;document.getElementById('best').textContent=best;document.getElementById('status').textContent=statusMsg;}
+function startGame(){makeCities();enemyMissiles=[];interceptors=[];explosions=[];reticle={x:canvas.width/2,y:200};score=0;wave=1;spawn=0;spawned=0;targetCount=8+wave*3;keys={};cancelAnimationFrame(rafId);running=true;last=0;statusMsg='Wave 1: defend every skyline.';document.getElementById('overlay').style.display='none';updateStats();rafId=requestAnimationFrame(loop);} 
+function fire(targetX=reticle.x,targetY=reticle.y){if(!running)return;const baseX=canvas.width/2,baseY=414;const dx=targetX-baseX,dy=targetY-baseY;const len=Math.hypot(dx,dy)||1;interceptors.push({x:baseX,y:baseY,vx:dx/len*6,vy:dy/len*6,tx:targetX,ty:targetY});statusMsg='Interceptor launched.';updateStats();}
+function addEnemy(){const options=cities.filter(c=>c.alive);if(!options.length)return;const city=options[Math.floor(Math.random()*options.length)];const sx=40+Math.random()*(canvas.width-80),sy=-20;const dx=city.x-sx,dy=city.y-sy,len=Math.hypot(dx,dy)||1;enemyMissiles.push({x:sx,y:sy,vx:dx/len*(1.2+wave*.12),vy:dy/len*(1.2+wave*.12),tx:city.x,ty:city.y,alive:true});spawned++;}
+function explode(x,y,r=10){explosions.push({x,y,r,life:28,max:56});}
+function gameOver(text){running=false;statusMsg='Final score: '+score;updateStats();const overlay=document.getElementById('overlay');overlay.innerHTML=`<h2>Defense Broken</h2><p>${text}</p><button class="btn" id="overlay-btn">Defend Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);} 
+function nextWave(){wave++;spawned=0;targetCount=8+wave*3;statusMsg='Wave '+wave+': faster warheads incoming.';updateStats();}
+function update(dt){const move=4.5;if(keys.ArrowLeft||keys.a||keys.A)reticle.x-=move;if(keys.ArrowRight||keys.d||keys.D)reticle.x+=move;if(keys.ArrowUp||keys.w||keys.W)reticle.y-=move;if(keys.ArrowDown||keys.s||keys.S)reticle.y+=move;reticle.x=Math.max(20,Math.min(canvas.width-20,reticle.x));reticle.y=Math.max(30,Math.min(canvas.height-90,reticle.y));spawn+=dt;if(spawned<targetCount&&spawn>Math.max(220,980-wave*55)){spawn=0;addEnemy();if(Math.random()<.25+wave*.04)addEnemy();}interceptors.forEach(m=>{m.x+=m.vx;m.y+=m.vy;if(Math.hypot(m.x-m.tx,m.y-m.ty)<8){m.done=true;explode(m.tx,m.ty,12);}});interceptors=interceptors.filter(m=>!m.done&&m.y>-20);enemyMissiles.forEach(m=>{m.x+=m.vx;m.y+=m.vy;if(Math.hypot(m.x-m.tx,m.y-m.ty)<8){m.done=true;const city=cities.find(c=>c.alive&&Math.abs(c.x-m.tx)<40);if(city){city.alive=false;statusMsg='A city was destroyed.';}}});enemyMissiles=enemyMissiles.filter(m=>!m.done&&m.alive);explosions.forEach(ex=>{ex.life--;ex.r=Math.min(ex.max,ex.r+1.8);for(const missile of enemyMissiles){if(Math.hypot(missile.x-ex.x,missile.y-ex.y)<ex.r){missile.alive=false;score+=15;statusMsg='Missile intercepted!';if(score>best){best=score;localStorage.setItem(BEST_KEY,String(best));}}}});explosions=explosions.filter(ex=>ex.life>0);enemyMissiles=enemyMissiles.filter(m=>m.alive!==false);if(aliveCities()===0)return gameOver('All of the cities were lost.');if(spawned>=targetCount&&!enemyMissiles.length&&!explosions.length)nextWave();updateStats();}
+function draw(){const bg=ctx.createLinearGradient(0,0,0,canvas.height);bg.addColorStop(0,'#0f172a');bg.addColorStop(1,'#1e293b');ctx.fillStyle=bg;ctx.fillRect(0,0,canvas.width,canvas.height);ctx.fillStyle='rgba(255,255,255,.65)';for(let i=0;i<65;i++)ctx.fillRect((i*97)%canvas.width,(i*61)%260,2,2);ctx.fillStyle='#1d4ed8';ctx.fillRect(0,420,canvas.width,40);ctx.fillStyle='#94a3b8';ctx.beginPath();ctx.moveTo(canvas.width/2-26,420);ctx.lineTo(canvas.width/2,380);ctx.lineTo(canvas.width/2+26,420);ctx.closePath();ctx.fill();cities.forEach(city=>{ctx.fillStyle=city.alive?'#22c55e':'#ef4444';ctx.fillRect(city.x-32,392,64,24);ctx.fillStyle='rgba(255,255,255,.2)';ctx.fillRect(city.x-20,380,12,12);ctx.fillRect(city.x+8,380,12,12);});ctx.strokeStyle='#f8fafc';ctx.lineWidth=2;interceptors.forEach(m=>{ctx.beginPath();ctx.moveTo(canvas.width/2,414);ctx.lineTo(m.x,m.y);ctx.stroke();});ctx.strokeStyle='#fb7185';enemyMissiles.forEach(m=>{ctx.beginPath();ctx.moveTo(m.x-m.vx*6,m.y-m.vy*6);ctx.lineTo(m.x,m.y);ctx.stroke();ctx.fillStyle='#f97316';ctx.fillRect(m.x-2,m.y-2,4,4);});explosions.forEach(ex=>{ctx.fillStyle=`rgba(250,204,21,${ex.life/28})`;ctx.beginPath();ctx.arc(ex.x,ex.y,ex.r,0,Math.PI*2);ctx.fill();});ctx.strokeStyle='#ef4444';ctx.lineWidth=2;ctx.beginPath();ctx.arc(reticle.x,reticle.y,18,0,Math.PI*2);ctx.moveTo(reticle.x-26,reticle.y);ctx.lineTo(reticle.x+26,reticle.y);ctx.moveTo(reticle.x,reticle.y-26);ctx.lineTo(reticle.x,reticle.y+26);ctx.stroke();}
+function loop(ts){if(!running)return;const dt=ts-last||16;last=ts;update(dt);draw();if(running)requestAnimationFrame(loop);} 
+document.addEventListener('keydown',e=>{if(document.getElementById('overlay').style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}keys[e.key]=true;if(e.key===' '){e.preventDefault();fire();}});document.addEventListener('keyup',e=>{keys[e.key]=false;});function setReticle(clientX,clientY){const rect=canvas.getBoundingClientRect();reticle.x=(clientX-rect.left)/rect.width*canvas.width;reticle.y=(clientY-rect.top)/rect.height*canvas.height;}canvas.addEventListener('pointermove',e=>{setReticle(e.clientX,e.clientY);if(running)draw();});canvas.addEventListener('pointerdown',e=>{setReticle(e.clientX,e.clientY);fire(reticle.x,reticle.y);});document.getElementById('overlay-btn').addEventListener('click',startGame);
+makeCities();draw();
+
+</script>
+</body>
+</html>

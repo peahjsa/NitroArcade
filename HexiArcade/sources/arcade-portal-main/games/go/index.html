@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>⚪ Go — Game Portal</title>
+<meta name="description" content="Play Go (9×9) free online — Ancient strategy game. Surround territory to outscore your opponent. A Hard Card &amp; Board game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/go/"/>
+<meta property="og:title" content="⚪ Go (9×9) — Free Browser Game"/>
+<meta property="og:description" content="Play Go (9×9) free in your browser. Ancient strategy game. Surround territory to outscore your opponent."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/go/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Go (9×9)",
+  "description": "Ancient strategy game. Surround territory to outscore your opponent.",
+  "url": "https://arcade.sotshau.fun/games/go/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Card & Board",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px;color:#111827}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 18px}.score-bar{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:14px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:94px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700}.purple{color:#6c63ff}.black{color:#111827}.white{color:#94a3b8}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:18px;box-shadow:0 8px 20px rgba(0,0,0,.08)}.board{display:grid;grid-template-columns:repeat(9,40px);grid-template-rows:repeat(9,40px);gap:0;background:#d6a75d;border:2px solid #8b5a2b;border-radius:14px;padding:14px;position:relative}.cell{width:40px;height:40px;border:none;background:transparent;position:relative;cursor:pointer}.cell::before,.cell::after{content:'';position:absolute;background:#7c4a1f;opacity:.75}.cell::before{height:1.5px;left:0;right:0;top:50%;transform:translateY(-50%)}.cell::after{width:1.5px;top:0;bottom:0;left:50%;transform:translateX(-50%)}.stone{position:absolute;inset:5px;border-radius:50%;box-shadow:inset 0 -4px 0 rgba(0,0,0,.22),0 3px 6px rgba(0,0,0,.18)}.stone.b{background:#111827}.stone.w{background:#f8fafc;border:1px solid #cbd5e1}.cell.cursor{outline:3px solid #6c63ff;outline-offset:-2px;border-radius:50%}.star{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:24px;color:#7c4a1f}.controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px}.btn{padding:9px 18px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer}.btn:hover{background:#574fd6}.status{margin-top:12px;font-weight:700;text-align:center;color:#374151;min-height:24px}.overlay{position:absolute;inset:18px;background:rgba(245,245,247,.95);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p{color:#6b7280;max-width:340px;line-height:1.5}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center;padding:0 18px}@media (max-width:560px){.board{grid-template-columns:repeat(9,32px);grid-template-rows:repeat(9,32px);padding:10px}.cell{width:32px;height:32px}}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>⚪ Go</h1>
+<p class="sub">Place stones, capture groups without liberties, and pass wisely on a compact 9×9 board.</p>
+<div class="score-bar">
+  <div class="score-box"><div class="score-label">Turn</div><div class="score-val purple" id="turn">Black</div></div>
+  <div class="score-box"><div class="score-label">Black Caps</div><div class="score-val black" id="black-cap">0</div></div>
+  <div class="score-box"><div class="score-label">White Caps</div><div class="score-val white" id="white-cap">0</div></div>
+  <div class="score-box"><div class="score-label">Wins</div><div class="score-val purple" id="wins">0 - 0</div></div>
+</div>
+<div class="game">
+  <div class="board" id="board"></div>
+  <div class="controls">
+    <button class="btn" id="pass-btn">Pass</button>
+    <button class="btn" id="new-match-btn">New Match</button>
+  </div>
+  <div class="overlay" id="overlay">
+    <h2>⚪ Go</h2>
+    <p>Arrow keys move the cursor and Enter places a stone. Space passes. Two passes end the round, then stones plus territory decide the winner.</p>
+    <button class="btn" id="overlay-btn">Start Match</button>
+  </div>
+  <div class="status" id="status">Press Start to begin.</div>
+</div>
+<p class="hint">Arrow keys + Enter · Space to pass · Click/tap intersections · Simple ko prevention enabled</p>
+<script>
+const SIZE=9,boardEl=document.getElementById('board'),overlay=document.getElementById('overlay'),statusEl=document.getElementById('status');
+const DIRS=[[1,0],[-1,0],[0,1],[0,-1]],WINS_KEY='goWins';
+let board,cursor={r:4,c:4},turn='b',running=false,passStreak=0,captures={b:0,w:0},history=[],wins=JSON.parse(localStorage.getItem(WINS_KEY)||'{"b":0,"w":0}');
+function freshBoard(){return Array.from({length:SIZE},()=>Array(SIZE).fill(''));}
+function inside(r,c){return r>=0&&r<SIZE&&c>=0&&c<SIZE;}
+function cloneBoard(src){return src.map(row=>row.slice());}
+function hashBoard(src){return src.map(row=>row.join('')).join('/');}
+function groupAt(src,r,c){const color=src[r][c],stack=[[r,c]],seen=new Set([r+','+c]),group=[];while(stack.length){const [cr,cc]=stack.pop();group.push([cr,cc]);for(const[dr,dc]of DIRS){const nr=cr+dr,nc=cc+dc,key=nr+','+nc;if(inside(nr,nc)&&src[nr][nc]===color&&!seen.has(key)){seen.add(key);stack.push([nr,nc]);}}}return group;}
+function liberties(src,group){const libs=new Set();for(const[r,c]of group)for(const[dr,dc]of DIRS){const nr=r+dr,nc=c+dc;if(inside(nr,nc)&&!src[nr][nc])libs.add(nr+','+nc);}return libs.size;}
+function legalMove(r,c,player){if(board[r][c])return null;const next=cloneBoard(board);next[r][c]=player;let removed=0;for(const[dr,dc]of DIRS){const nr=r+dr,nc=c+dc;if(!inside(nr,nc)||!next[nr][nc]||next[nr][nc]===player)continue;const enemyGroup=groupAt(next,nr,nc);if(!liberties(next,enemyGroup)){enemyGroup.forEach(([gr,gc])=>{next[gr][gc]='';removed++;});}}
+const ownGroup=groupAt(next,r,c);if(!liberties(next,ownGroup))return null;const nextHash=hashBoard(next);if(history.length>=2&&nextHash===history[history.length-2])return null;return{next,removed};}
+function hasAnyLegal(player){for(let r=0;r<SIZE;r++)for(let c=0;c<SIZE;c++)if(legalMove(r,c,player))return true;return false;}
+function updateStats(){document.getElementById('turn').textContent=turn==='b'?'Black':'White';document.getElementById('black-cap').textContent=String(captures.b);document.getElementById('white-cap').textContent=String(captures.w);document.getElementById('wins').textContent=`${wins.b} - ${wins.w}`;}
+function territoryScore(){const visited=new Set(),score={b:captures.b,w:captures.w};for(let r=0;r<SIZE;r++)for(let c=0;c<SIZE;c++){if(board[r][c]){score[board[r][c]]++;continue;}const key=r+','+c;if(visited.has(key))continue;const stack=[[r,c]],region=[],touch=new Set([ ]);visited.add(key);while(stack.length){const [cr,cc]=stack.pop();region.push([cr,cc]);for(const[dr,dc]of DIRS){const nr=cr+dr,nc=cc+dc,nkey=nr+','+nc;if(!inside(nr,nc))continue;if(board[nr][nc])touch.add(board[nr][nc]);else if(!visited.has(nkey)){visited.add(nkey);stack.push([nr,nc]);}}}if(touch.size===1)score[[...touch][0]]+=region.length;}return score;}
+function endGame(){running=false;const score=territoryScore();let title='Draw Game',msg=`Final score — Black ${score.b}, White ${score.w}.`;if(score.b!==score.w){const winner=score.b>score.w?'b':'w';wins[winner]++;localStorage.setItem(WINS_KEY,JSON.stringify(wins));title=(winner==='b'?'Black':'White')+' Wins!';msg=`Final score — Black ${score.b}, White ${score.w}.`; }overlay.innerHTML=`<h2>${title}</h2><p>${msg}</p><button class="btn" id="overlay-btn">Play Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);statusEl.textContent=msg;updateStats();render();}
+function play(r,c){if(!running)return;const move=legalMove(r,c,turn);cursor={r,c};if(!move){statusEl.textContent='Illegal move: occupied, suicide, or ko.';render();return;}board=move.next;captures[turn]+=move.removed;history.push(hashBoard(board));passStreak=0;turn=turn==='b'?'w':'b';statusEl.textContent=move.removed?`${turn==='b'?'White':'Black'} captured ${move.removed} stone${move.removed>1?'s':''}.`:`${turn==='b'?'Black':'White'} to move.`;updateStats();render();}
+function passTurn(){if(!running)return;passStreak++;if(passStreak>=2){endGame();return;}turn=turn==='b'?'w':'b';statusEl.textContent=`${turn==='b'?'Black':'White'} to move after a pass.`;updateStats();render();}
+function render(){boardEl.innerHTML='';for(let r=0;r<SIZE;r++)for(let c=0;c<SIZE;c++){const btn=document.createElement('button');btn.className='cell'+(cursor.r===r&&cursor.c===c?' cursor':'');btn.onclick=()=>play(r,c);if([2,4,6].includes(r)&&[2,4,6].includes(c)&&!board[r][c]){const dot=document.createElement('div');dot.className='star';dot.textContent='·';btn.appendChild(dot);}if(board[r][c]){const stone=document.createElement('div');stone.className='stone '+board[r][c];btn.appendChild(stone);}boardEl.appendChild(btn);}}
+function startGame(){board=freshBoard();cursor={r:4,c:4};turn='b';running=true;passStreak=0;captures={b:0,w:0};history=[hashBoard(board)];overlay.style.display='none';statusEl.textContent='Black plays first.';updateStats();render();}
+document.addEventListener('keydown',e=>{if(overlay.style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}if(!running)return;const keys={ArrowLeft:[0,-1],ArrowRight:[0,1],ArrowUp:[-1,0],ArrowDown:[1,0]};if(keys[e.key]){e.preventDefault();cursor={r:(cursor.r+keys[e.key][0]+SIZE)%SIZE,c:(cursor.c+keys[e.key][1]+SIZE)%SIZE};render();return;}if(e.key==='Enter'){e.preventDefault();play(cursor.r,cursor.c);return;}if(e.key===' '){e.preventDefault();passTurn();}});
+document.getElementById('overlay-btn').addEventListener('click',startGame);
+document.getElementById('pass-btn').addEventListener('click',passTurn);
+document.getElementById('new-match-btn').addEventListener('click',startGame);
+board=freshBoard();updateStats();render();
+</script>
+</body>
+</html>

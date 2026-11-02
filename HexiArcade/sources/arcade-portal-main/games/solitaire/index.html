@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>🂡 Solitaire — Game Portal</title>
+<meta name="description" content="Play Solitaire free online — Classic Klondike solitaire. Build suit stacks from Ace to King. A Medium Card &amp; Board game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/solitaire/"/>
+<meta property="og:title" content="🃏 Solitaire — Free Browser Game"/>
+<meta property="og:description" content="Play Solitaire free in your browser. Classic Klondike solitaire. Build suit stacks from Ace to King."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/solitaire/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Solitaire",
+  "description": "Classic Klondike solitaire. Build suit stacks from Ace to King.",
+  "url": "https://arcade.sotshau.fun/games/solitaire/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Card & Board",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px;color:#111827}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 18px}.score-bar{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:14px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:94px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.game{position:relative;background:#0f6f3e;border:1px solid #0a5a31;border-radius:18px;padding:18px;box-shadow:0 8px 20px rgba(0,0,0,.12);width:min(1080px,98vw)}.top-row,.tableau{display:grid;gap:12px}.top-row{grid-template-columns:repeat(7,minmax(86px,1fr));margin-bottom:16px}.tableau{grid-template-columns:repeat(7,minmax(86px,1fr));align-items:start}.slot,.pile{background:rgba(255,255,255,.12);border:2px dashed rgba(255,255,255,.16);border-radius:12px;min-height:118px;position:relative}.pile{min-height:460px}.slot.cursor,.pile.cursor{outline:3px solid #6c63ff;outline-offset:2px}.slot.selected,.pile.selected{box-shadow:inset 0 0 0 4px rgba(245,158,11,.75)}.card{position:absolute;left:8px;right:8px;height:104px;border:none;border-radius:12px;background:#fff;border:1px solid #cbd5e1;box-shadow:0 8px 16px rgba(0,0,0,.18);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:800;cursor:pointer;color:#111827}.card.red{color:#dc2626}.card.down{background:linear-gradient(135deg,#6c63ff,#8b5cf6);color:#fff;border-color:#7c3aed}.card .small{position:absolute;font-size:13px;top:8px;left:10px}.card .suit{position:absolute;font-size:16px;right:10px;bottom:8px}.label-row{display:grid;grid-template-columns:repeat(7,minmax(86px,1fr));gap:12px;margin-bottom:6px;color:rgba(255,255,255,.8);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em}.controls{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:14px}.btn{padding:9px 18px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer}.btn:hover{background:#574fd6}.status{margin-top:12px;font-weight:700;text-align:center;color:#fff;min-height:24px}.overlay{position:absolute;inset:18px;background:rgba(15,23,42,.92);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center;color:#fff}.overlay p{color:#cbd5e1;max-width:360px;line-height:1.5}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center;padding:0 18px}@media (max-width:960px){.game{overflow:auto}.top-row,.tableau,.label-row{min-width:860px}}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🂡 Solitaire</h1>
+<p class="sub">Draw from the stock, reveal hidden cards, and build all four suits to the foundations in a classic Klondike-style deal.</p>
+<div class="score-bar">
+  <div class="score-box"><div class="score-label">Moves</div><div class="score-val" id="moves">0</div></div>
+  <div class="score-box"><div class="score-label">Home</div><div class="score-val" id="home">0/52</div></div>
+  <div class="score-box"><div class="score-label">Wins</div><div class="score-val" id="wins">0</div></div>
+  <div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">—</div></div>
+</div>
+<div class="game">
+  <div class="label-row"><div>Stock</div><div>Waste</div><div>Home ♠</div><div>Home ♥</div><div>Home ♦</div><div>Home ♣</div><div>Reset</div></div>
+  <div class="top-row" id="top-row"></div>
+  <div class="label-row"><div>Col 1</div><div>Col 2</div><div>Col 3</div><div>Col 4</div><div>Col 5</div><div>Col 6</div><div>Col 7</div></div>
+  <div class="tableau" id="tableau"></div>
+  <div class="controls"><button class="btn" id="new-deal-btn">New Deal</button></div>
+  <div class="overlay" id="overlay">
+    <h2>🂡 Solitaire</h2>
+    <p>Tap cards to select stacks, build down in alternating colors on the tableau, and move aces upward to the four foundations. Keyboard support moves between piles and operates the top visible stack or card.</p>
+    <button class="btn" id="overlay-btn">Start Deal</button>
+  </div>
+  <div class="status" id="status">Press Start to begin.</div>
+</div>
+<p class="hint">Click/tap cards for full moves · Keyboard controls operate stock, waste, foundations, and top tableau stacks</p>
+<script>
+const SUITS=['♠','♥','♦','♣'],RANKS=['A','2','3','4','5','6','7','8','9','10','J','Q','K'],RED=new Set(['♥','♦']);
+const topRow=document.getElementById('top-row'),tableauEl=document.getElementById('tableau'),overlay=document.getElementById('overlay'),statusEl=document.getElementById('status');
+const WINS_KEY='solitaireWins',BEST_KEY='solitaireBestTime';
+let stock=[],waste=[],foundations=[[],[],[],[]],tableau=[[],[],[],[],[],[],[]],selected=null,moves=0,running=false,startTime=0,timer=null,cursor={row:0,index:0},wins=+(localStorage.getItem(WINS_KEY)||0),best=+(localStorage.getItem(BEST_KEY)||0);
+function shuffle(arr){for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}return arr;}
+function makeDeck(){return shuffle(SUITS.flatMap(s=>RANKS.map((r,i)=>({s,r,v:i+1,id:s+r,color:RED.has(s)?'red':'black',up:false}))))}
+function formatTime(sec){return sec?sec+'s':'—';}
+function updateStats(){document.getElementById('moves').textContent=String(moves);document.getElementById('home').textContent=`${foundations.reduce((sum,f)=>sum+f.length,0)}/52`;document.getElementById('wins').textContent=String(wins);document.getElementById('best').textContent=formatTime(best);}
+function canToFoundation(card,foundation){return !card?false:(!foundation.length?card.v===1:foundation[foundation.length-1].s===card.s&&card.v===foundation[foundation.length-1].v+1);}
+function canToTableau(cards,pile){if(!cards.length)return false;const first=cards[0];return !pile.length?first.v===13:(pile[pile.length-1].up&&pile[pile.length-1].color!==first.color&&pile[pile.length-1].v===first.v+1);}
+function clearSelection(){selected=null;}
+function visibleStart(index){const pile=tableau[index];return pile.findIndex(card=>card.up);}
+function currentSelectionCards(){if(!selected)return[];if(selected.type==='waste')return waste.length?[waste[waste.length-1]]:[];if(selected.type==='foundation')return foundations[selected.index].length?[foundations[selected.index][foundations[selected.index].length-1]]:[];if(selected.type==='tableau')return tableau[selected.index].slice(selected.depth);return[];}
+function removeSelectedCards(){if(selected.type==='waste')return [waste.pop()];if(selected.type==='foundation')return [foundations[selected.index].pop()];return tableau[selected.index].splice(selected.depth);}
+function autoFlip(index){const pile=tableau[index];if(pile.length&&!pile[pile.length-1].up){pile[pile.length-1].up=true;}}
+function zoneSelected(type,index){return selected&&selected.type===type&&selected.index===index;}
+function drawStock(){if(!stock.length){if(!waste.length){statusEl.textContent='No cards left to draw.';return;}stock=waste.reverse().map(card=>({...card,up:false}));waste=[];moves++;statusEl.textContent='Waste recycled into stock.';render();return;}const card=stock.pop();card.up=true;waste.push(card);moves++;statusEl.textContent='Drew a card from stock.';render();}
+function checkWin(){if(foundations.reduce((sum,f)=>sum+f.length,0)!==52)return;running=false;clearInterval(timer);wins++;localStorage.setItem(WINS_KEY,String(wins));const elapsed=Math.floor((Date.now()-startTime)/1000);if(!best||elapsed<best){best=elapsed;localStorage.setItem(BEST_KEY,String(best));}overlay.innerHTML=`<h2>🏆 Solitaire Cleared</h2><p>You completed the deal in ${elapsed}s and ${moves} moves.</p><button class="btn" id="overlay-btn">Play Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);statusEl.textContent=`Deal cleared in ${elapsed}s.`;updateStats();render();}
+function moveToFoundation(index){if(!selected)return false;const cards=currentSelectionCards();if(cards.length!==1)return false;if(canToFoundation(cards[0],foundations[index])){foundations[index].push(removeSelectedCards()[0]);if(selected.type==='tableau')autoFlip(selected.index);moves++;clearSelection();statusEl.textContent='Moved to foundation.';updateStats();render();checkWin();return true;}statusEl.textContent='That foundation move is not legal.';return false;}
+function moveToTableau(index){if(!selected)return false;const cards=currentSelectionCards();if(canToTableau(cards,tableau[index])){tableau[index].push(...removeSelectedCards());if(selected.type==='tableau')autoFlip(selected.index);moves++;clearSelection();statusEl.textContent='Moved to tableau.';updateStats();render();checkWin();return true;}statusEl.textContent='That tableau move is not legal.';return false;}
+function topAction(index){if(!running)return;if(index===0){if(selected){clearSelection();statusEl.textContent='Selection cleared.';render();return;}drawStock();return;}if(index===1){if(selected&&moveToTableau(0))return;if(waste.length){selected=zoneSelected('waste',0)?null:{type:'waste',index:0};statusEl.textContent=selected?'Waste selected.':'Selection cleared.';render();}return;}if(index>=2&&index<=5){if(selected&&moveToFoundation(index-2))return;if(foundations[index-2].length){selected=zoneSelected('foundation',index-2)?null:{type:'foundation',index:index-2};statusEl.textContent=selected?'Foundation card selected.':'Selection cleared.';render();}return;}if(index===6){startGame();}}
+function onTableau(index,depth){if(!running)return;if(selected&&moveToTableau(index))return;const pile=tableau[index];if(depth===undefined){if(pile.length&&!pile[pile.length-1].up){pile[pile.length-1].up=true;moves++;statusEl.textContent='Revealed a hidden card.';updateStats();render();return;}const start=visibleStart(index);if(start!==-1){selected=zoneSelected('tableau',index)?null:{type:'tableau',index,depth:start};statusEl.textContent=selected?'Selected visible stack.':'Selection cleared.';render();}return;}const card=pile[depth];if(!card.up){if(depth===pile.length-1){card.up=true;moves++;statusEl.textContent='Revealed a hidden card.';updateStats();render();}return;}selected=zoneSelected('tableau',index)&&selected.depth===depth?null:{type:'tableau',index,depth};statusEl.textContent=selected?'Selected tableau stack.':'Selection cleared.';render();}
+function cardNode(card,top,handler,extra=''){const el=document.createElement('button');el.className='card '+(card.up?card.color:'down')+extra;el.style.top=top+'px';if(card.up)el.innerHTML=`<span class="small">${card.r}</span>${card.s}<span class="suit">${card.s}</span>`;else el.textContent='🂠';el.onclick=e=>{e.stopPropagation();handler();};return el;}
+function render(){topRow.innerHTML='';tableauEl.innerHTML='';for(let i=0;i<7;i++){const slot=document.createElement('div');slot.className='slot'+(cursor.row===0&&cursor.index===i?' cursor':'')+(((i===1&&zoneSelected('waste',0))||(i>=2&&i<=5&&zoneSelected('foundation',i-2)))?' selected':'');slot.onclick=()=>topAction(i);if(i===0&&stock.length)slot.appendChild(cardNode({up:false},0,()=>topAction(0)));if(i===1&&waste.length)slot.appendChild(cardNode(waste[waste.length-1],0,()=>topAction(1)));if(i>=2&&i<=5&&foundations[i-2].length)slot.appendChild(cardNode(foundations[i-2][foundations[i-2].length-1],0,()=>topAction(i)));if(i===6){const badge=document.createElement('button');badge.className='card down';badge.style.top='0px';badge.textContent='↺';badge.onclick=e=>{e.stopPropagation();startGame();};slot.appendChild(badge);}topRow.appendChild(slot);}for(let i=0;i<7;i++){const pile=document.createElement('div');pile.className='pile'+(cursor.row===1&&cursor.index===i?' cursor':'')+(zoneSelected('tableau',i)?' selected':'');pile.onclick=()=>onTableau(i);tableau[i].forEach((card,idx)=>pile.appendChild(cardNode(card,idx*26,()=>onTableau(i,idx),selected&&selected.type==='tableau'&&selected.index===i&&selected.depth===idx?' selected':'')));tableauEl.appendChild(pile);}updateStats();}
+function startGame(){const deck=makeDeck();stock=[];waste=[];foundations=[[],[],[],[]];tableau=[[],[],[],[],[],[],[]];for(let i=0;i<7;i++)for(let j=0;j<=i;j++){const card=deck.pop();card.up=j===i;tableau[i].push(card);}stock=deck.map(card=>({...card,up:false}));selected=null;moves=0;cursor={row:0,index:0};running=true;startTime=Date.now();overlay.style.display='none';statusEl.textContent='Clear the tableau and build the four homes.';clearInterval(timer);timer=setInterval(()=>{if(running)updateStats();},1000);updateStats();render();}
+document.getElementById('new-deal-btn').addEventListener('click',startGame);
+document.getElementById('overlay-btn').addEventListener('click',startGame);
+document.addEventListener('keydown',e=>{if(overlay.style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}if(!running)return;if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key)){e.preventDefault();if(e.key==='ArrowLeft')cursor.index=(cursor.index+6)%7;else if(e.key==='ArrowRight')cursor.index=(cursor.index+1)%7;else cursor.row=1-cursor.row;render();return;}if(e.key==='Enter'||e.key===' '){e.preventDefault();if(cursor.row===0)topAction(cursor.index);else onTableau(cursor.index);}});
+updateStats();render();
+</script>
+</body>
+</html>

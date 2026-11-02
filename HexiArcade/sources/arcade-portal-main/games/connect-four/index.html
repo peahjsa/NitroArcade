@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Connect Four — Game Portal</title>
+<meta name="description" content="Play Connect Four free online — Drop discs to connect four of your color in a row. A Easy Card &amp; Board game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/connect-four/"/>
+<meta property="og:title" content="🔴 Connect Four — Free Browser Game"/>
+<meta property="og:description" content="Play Connect Four free in your browser. Drop discs to connect four of your color in a row."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/connect-four/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Connect Four",
+  "description": "Drop discs to connect four of your color in a row.",
+  "url": "https://arcade.sotshau.fun/games/connect-four/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Card & Board",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}
+nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}
+nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}
+h1{margin:20px 0 4px;font-size:24px;font-weight:700}
+.sub{color:#6b7280;font-size:14px;margin-bottom:16px}
+.score-bar{display:flex;gap:12px;margin-bottom:14px}
+.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:90px}
+.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}
+.score-val{font-size:18px;font-weight:700}
+.score-val.p1{color:#f59e0b}.score-val.p2{color:#ef4444}.score-val.draws{color:#6b7280}
+.board-wrap{background:#2563eb;border-radius:14px;padding:10px;box-shadow:0 6px 20px rgba(37,99,235,.4)}
+.board{display:grid;grid-template-columns:repeat(7,54px);gap:6px}
+.col-btn{width:54px;height:28px;background:transparent;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;opacity:0;transition:opacity .2s}
+.col-btn:hover{opacity:1}
+.cell{width:54px;height:54px;border-radius:50%;background:rgba(0,0,0,.2);position:relative;transition:background .2s}
+.cell.p1{background:#f59e0b;box-shadow:inset 0 -4px 0 rgba(0,0,0,.2)}
+.cell.p2{background:#ef4444;box-shadow:inset 0 -4px 0 rgba(0,0,0,.2)}
+.cell.win{animation:pulse .5s ease infinite alternate}
+@keyframes pulse{from{transform:scale(1)}to{transform:scale(1.1)}}
+.status{margin-top:14px;font-size:16px;font-weight:600;color:#1a1a2e;min-height:24px}
+.controls{margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.btn{padding:9px 22px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}
+.btn:hover{background:#574fd6}
+.btn-outline{background:transparent;border:1.5px solid #6c63ff;color:#6c63ff}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🔴 Connect Four</h1>
+<p class="sub">Drop discs to connect four of your color in a row!</p>
+
+<div class="score-bar">
+  <div class="score-box"><div class="score-label">🟡 Player 1</div><div class="score-val p1" id="s1">0</div></div>
+  <div class="score-box"><div class="score-label">Draws</div><div class="score-val draws" id="sd">0</div></div>
+  <div class="score-box"><div class="score-label">🔴 Player 2</div><div class="score-val p2" id="s2">0</div></div>
+</div>
+
+<div class="board-wrap">
+  <div class="board" id="col-btns"></div>
+  <div class="board" id="board"></div>
+</div>
+
+<div class="status" id="status">🟡 Player 1's turn</div>
+
+<div class="controls">
+  <button class="btn btn-outline" id="new-game-btn">New Game</button>
+  <button class="btn" id="ai-btn">vs AI: OFF</button>
+</div>
+
+<script>
+const ROWS=6,COLS=7;
+let grid,turn,scores={p1:0,p2:0,d:0},gameOver,aiMode=false;
+
+function newGame(){
+  grid=Array.from({length:ROWS},()=>Array(COLS).fill(0));
+  turn=1;gameOver=false;
+  document.getElementById('status').textContent='🟡 Player 1\'s turn';
+  render();
+}
+
+function toggleAI(){
+  aiMode=!aiMode;
+  document.getElementById('ai-btn').textContent='vs AI: '+(aiMode?'ON':'OFF');
+  newGame();
+}
+
+function dropDisc(col){
+  if(gameOver)return;
+  if(turn===2&&aiMode)return;
+  if(!doMove(col))return;
+  if(!gameOver&&aiMode&&turn===2)setTimeout(aiMove,350);
+}
+
+function doMove(col){
+  // Find lowest empty row
+  let row=-1;
+  for(let r=ROWS-1;r>=0;r--){if(grid[r][col]===0){row=r;break;}}
+  if(row===-1)return false;
+  grid[row][col]=turn;
+  render();
+  const wins=checkWin(row,col,turn);
+  if(wins){
+    gameOver=true;
+    wins.forEach(([r,c])=>document.querySelectorAll(`[data-r="${r}"][data-c="${c}"]`)[0]?.classList.add('win'));
+    document.getElementById('status').textContent=`${turn===1?'🟡 Player 1':'🔴 Player 2'} wins! 🎉`;
+    scores[turn===1?'p1':'p2']++;
+    updateScores();
+    return true;
+  }
+  if(grid[0].every(v=>v!==0)){
+    gameOver=true;
+    document.getElementById('status').textContent='Draw! 🤝';
+    scores.d++;updateScores();
+    return true;
+  }
+  turn=turn===1?2:1;
+  document.getElementById('status').textContent=`${turn===1?'🟡 Player 1':'🔴 Player 2'}${aiMode&&turn===2?' (AI)':''}'s turn`;
+  return true;
+}
+
+function aiMove(){
+  // Score each column
+  let best=-Infinity,bestCol=0;
+  for(let c=0;c<COLS;c++){
+    let row=-1;for(let r=ROWS-1;r>=0;r--){if(grid[r][c]===0){row=r;break;}}
+    if(row===-1)continue;
+    // Block player win
+    grid[row][c]=1;
+    if(checkWin(row,c,1)){grid[row][c]=0;doMove(c);return;}
+    grid[row][c]=0;
+    // Try AI win
+    grid[row][c]=2;
+    if(checkWin(row,c,2)){grid[row][c]=0;doMove(c);return;}
+    grid[row][c]=0;
+    // Score heuristic
+    const s=scorePos(row,c,2)-scorePos(row,c,1)*.9;
+    if(s>best){best=s;bestCol=c;}
+  }
+  doMove(bestCol);
+}
+
+function scorePos(row,col,p){
+  let s=0;
+  const dirs=[[0,1],[1,0],[1,1],[1,-1]];
+  for(const[dr,dc]of dirs){
+    let cnt=1,open=0;
+    for(let d=1;d<4;d++){
+      const r=row+dr*d,c=col+dc*d;
+      if(r>=0&&r<ROWS&&c>=0&&c<COLS&&grid[r][c]===p)cnt++;
+      else if(r>=0&&r<ROWS&&c>=0&&c<COLS&&grid[r][c]===0){open++;break;}
+      else break;
+    }
+    for(let d=1;d<4;d++){
+      const r=row-dr*d,c=col-dc*d;
+      if(r>=0&&r<ROWS&&c>=0&&c<COLS&&grid[r][c]===p)cnt++;
+      else if(r>=0&&r<ROWS&&c>=0&&c<COLS&&grid[r][c]===0){open++;break;}
+      else break;
+    }
+    if(cnt>=4)s+=1000;
+    else if(cnt===3&&open)s+=10;
+    else if(cnt===2&&open)s+=2;
+  }
+  return s;
+}
+
+function checkWin(row,col,p){
+  const dirs=[[0,1],[1,0],[1,1],[1,-1]];
+  for(const[dr,dc]of dirs){
+    const cells=[[row,col]];
+    for(const d of[1,-1])for(let i=1;i<4;i++){
+      const r=row+dr*d*i,c=col+dc*d*i;
+      if(r>=0&&r<ROWS&&c>=0&&c<COLS&&grid[r][c]===p)cells.push([r,c]);else break;
+    }
+    if(cells.length>=4)return cells;
+  }
+  return null;
+}
+
+function updateScores(){
+  document.getElementById('s1').textContent=scores.p1;
+  document.getElementById('s2').textContent=scores.p2;
+  document.getElementById('sd').textContent=scores.d;
+}
+
+function render(){
+  const btns=document.getElementById('col-btns');
+  btns.innerHTML='';
+  for(let c=0;c<COLS;c++){
+    const b=document.createElement('button');
+    b.className='col-btn';b.textContent=turn===1?'🟡':'🔴';
+    b.onclick=()=>dropDisc(c);
+    btns.appendChild(b);
+  }
+  const board=document.getElementById('board');
+  board.innerHTML='';
+  for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){
+    const cell=document.createElement('div');
+    cell.className='cell'+(grid[r][c]===1?' p1':grid[r][c]===2?' p2':'');
+    cell.dataset.r=r;cell.dataset.c=c;
+    board.appendChild(cell);
+  }
+}
+
+document.getElementById('new-game-btn').addEventListener('click',newGame);
+document.getElementById('ai-btn').addEventListener('click',toggleAI);
+newGame();
+</script>
+</body>
+</html>

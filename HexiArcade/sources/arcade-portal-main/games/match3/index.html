@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Match 3 — Game Portal</title>
+<meta name="description" content="Play Match 3 free online — Swap gems to match 3 or more in a row. Chain combos for big scores! A Easy Puzzle game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/match3/"/>
+<meta property="og:title" content="💎 Match 3 — Free Browser Game"/>
+<meta property="og:description" content="Play Match 3 free in your browser. Swap gems to match 3 or more in a row. Chain combos for big scores!"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/match3/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Match 3",
+  "description": "Swap gems to match 3 or more in a row. Chain combos for big scores!",
+  "url": "https://arcade.sotshau.fun/games/match3/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Puzzle",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}
+nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}
+nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}
+h1{margin:20px 0 4px;font-size:24px;font-weight:700}
+.sub{color:#6b7280;font-size:14px;margin-bottom:14px}
+.score-bar{display:flex;gap:16px;margin-bottom:14px}
+.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 20px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:90px}
+.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}
+.score-val{font-size:20px;font-weight:700;color:#6c63ff}
+canvas{background:#fff;border-radius:14px;border:1px solid #e5e7eb;box-shadow:0 4px 12px rgba(0,0,0,.08);display:block;cursor:pointer;touch-action:none}
+.btn{padding:9px 22px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;margin-top:14px}
+.btn:hover{background:#574fd6}
+.hint{margin-top:10px;font-size:12px;color:#9ca3af}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>💎 Match 3</h1>
+<p class="sub">Swap gems to match 3 or more in a row. Chain combos for big scores!</p>
+
+<div class="score-bar">
+  <div class="score-box"><div class="score-label">Score</div><div class="score-val" id="score">0</div></div>
+  <div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">0</div></div>
+  <div class="score-box"><div class="score-label">Moves</div><div class="score-val" id="moves">30</div></div>
+</div>
+
+<canvas id="c" width="400" height="400"></canvas>
+<button class="btn" id="new-game-btn">New Game</button>
+<p class="hint">Click/tap two adjacent gems to swap them</p>
+
+<script>
+const canvas=document.getElementById('c');
+const ctx=canvas.getContext('2d');
+if(!ctx) throw new Error('canvas 2d context unavailable');
+const COLS=8,ROWS=8,CELL=50;
+const GEMS=['💎','🔴','🟡','🟢','🔵','🟣','🟠'];
+const GEM_COLORS=['#22d3ee','#ef4444','#f59e0b','#22c55e','#3b82f6','#a855f7','#f97316'];
+
+let grid,score,best=+localStorage.getItem('match3best')||0;
+let moves,selected,animating;
+document.getElementById('best').textContent=best;
+
+function newGame(){
+  moves=30;score=0;selected=null;animating=false;
+  document.getElementById('score').textContent=0;
+  document.getElementById('moves').textContent=30;
+  do{grid=Array.from({length:ROWS},()=>Array.from({length:COLS},()=>randGem()));}
+  while(findMatches().length);
+  draw();
+}
+
+function randGem(){return Math.floor(Math.random()*GEMS.length);}
+
+function draw(){
+  ctx.fillStyle='#fff';ctx.fillRect(0,0,400,400);
+  for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){
+    if(grid[r][c]===null)continue;
+    const x=c*CELL,y=r*CELL,g=grid[r][c];
+    const isSelected=selected&&selected[0]===r&&selected[1]===c;
+    // Background
+    ctx.fillStyle=isSelected?'#ede9ff':((r+c)%2===0?'#fafafa':'#f5f5f7');
+    ctx.beginPath();ctx.roundRect(x+2,y+2,CELL-4,CELL-4,8);ctx.fill();
+    if(isSelected){ctx.strokeStyle='#6c63ff';ctx.lineWidth=2;ctx.beginPath();ctx.roundRect(x+2,y+2,CELL-4,CELL-4,8);ctx.stroke();}
+    // Gem
+    ctx.fillStyle=GEM_COLORS[g];
+    ctx.beginPath();ctx.roundRect(x+8,y+8,CELL-16,CELL-16,6);ctx.fill();
+    // Shine
+    ctx.fillStyle='rgba(255,255,255,.35)';
+    ctx.beginPath();ctx.ellipse(x+CELL/2-4,y+12,8,5,0,0,Math.PI*2);ctx.fill();
+    // Symbol
+    ctx.font=`${CELL*.45}px serif`;ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText(GEMS[g],x+CELL/2,y+CELL/2+1);
+  }
+}
+
+function findMatches(){
+  const matched=new Set();
+  // Horizontal
+  for(let r=0;r<ROWS;r++)for(let c=0;c<COLS-2;c++){
+    const g=grid[r][c];if(g===null)continue;
+    if(grid[r][c+1]===g&&grid[r][c+2]===g){
+      let l=c;while(l<COLS&&grid[r][l]===g)matched.add(`${r},${l++}`);
+    }
+  }
+  // Vertical
+  for(let r=0;r<ROWS-2;r++)for(let c=0;c<COLS;c++){
+    const g=grid[r][c];if(g===null)continue;
+    if(grid[r+1][c]===g&&grid[r+2][c]===g){
+      let i=r;while(i<ROWS&&grid[i][c]===g)matched.add(`${i++},${c}`);
+    }
+  }
+  return [...matched].map(k=>{const[r,c]=k.split(',');return[+r,+c];});
+}
+
+function swap(r1,c1,r2,c2){
+  [grid[r1][c1],grid[r2][c2]]=[grid[r2][c2],grid[r1][c1]];
+}
+
+async function processMatches(){
+  animating=true;
+  let chain=0;
+  while(true){
+    const m=findMatches();
+    if(!m.length)break;
+    chain++;
+    m.forEach(([r,c])=>grid[r][c]=null);
+    score+=m.length*10*chain;
+    if(score>best){best=score;localStorage.setItem('match3best',best);}
+    document.getElementById('score').textContent=score;
+    document.getElementById('best').textContent=best;
+    draw();
+    await sleep(300);
+    // Drop
+    for(let c=0;c<COLS;c++){
+      let empty=ROWS-1;
+      for(let r=ROWS-1;r>=0;r--){
+        if(grid[r][c]!==null){grid[empty][c]=grid[r][c];if(empty!==r)grid[r][c]=null;empty--;}
+      }
+      while(empty>=0){grid[empty--][c]=randGem();}
+    }
+    draw();
+    await sleep(200);
+  }
+  animating=false;
+  if(moves<=0){document.getElementById('msg')?.remove();
+    const d=document.createElement('p');d.style.cssText='margin-top:10px;font-size:16px;font-weight:600;color:#ef4444';
+    d.textContent='Game Over! Final score: '+score;canvas.after(d);}
+}
+
+function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
+
+function adj(r1,c1,r2,c2){return Math.abs(r1-r2)+Math.abs(c1-c2)===1;}
+
+canvas.addEventListener('click',async e=>{
+  if(animating||moves<=0)return;
+  const r=canvas.getBoundingClientRect();
+  const c=Math.floor((e.clientX-r.left)/CELL);
+  const row=Math.floor((e.clientY-r.top)/CELL);
+  if(c<0||c>=COLS||row<0||row>=ROWS)return;
+
+  if(!selected){selected=[row,c];draw();return;}
+  const[sr,sc]=selected;
+  if(sr===row&&sc===c){selected=null;draw();return;}
+  if(!adj(sr,sc,row,c)){selected=[row,c];draw();return;}
+
+  // Attempt swap
+  swap(sr,sc,row,c);
+  const m=findMatches();
+  if(m.length){
+    selected=null;moves--;document.getElementById('moves').textContent=moves;
+    await processMatches();
+  }else{
+    swap(sr,sc,row,c);// undo
+    selected=null;
+  }
+  draw();
+});
+
+// Touch swipe
+let tx,ty,tc,tr;
+canvas.addEventListener('touchstart',e=>{
+  const r=canvas.getBoundingClientRect();
+  tx=e.touches[0].clientX-r.left;ty=e.touches[0].clientY-r.top;
+  tc=Math.floor(tx/CELL);tr=Math.floor(ty/CELL);
+},{passive:true});
+canvas.addEventListener('touchend',async e=>{
+  if(animating||moves<=0)return;
+  const r=canvas.getBoundingClientRect();
+  const ex=e.changedTouches[0].clientX-r.left,ey=e.changedTouches[0].clientY-r.top;
+  const dx=ex-tx,dy=ey-ty;
+  if(Math.abs(dx)<10&&Math.abs(dy)<10){
+    // Tap
+    if(!selected){selected=[tr,tc];draw();return;}
+    const[sr,sc]=selected;
+    if(sr===tr&&sc===tc){selected=null;draw();return;}
+    if(!adj(sr,sc,tr,tc)){selected=[tr,tc];draw();return;}
+    swap(sr,sc,tr,tc);
+    if(findMatches().length){selected=null;moves--;document.getElementById('moves').textContent=moves;await processMatches();}
+    else{swap(sr,sc,tr,tc);selected=null;}
+    draw();
+  }else{
+    // Swipe
+    let dc=0,dr=0;
+    if(Math.abs(dx)>Math.abs(dy))dc=dx>0?1:-1;else dr=dy>0?1:-1;
+    const nc=tc+dc,nr=tr+dr;
+    if(nc<0||nc>=COLS||nr<0||nr>=ROWS)return;
+    swap(tr,tc,nr,nc);
+    if(findMatches().length){selected=null;moves--;document.getElementById('moves').textContent=moves;await processMatches();}
+    else{swap(tr,tc,nr,nc);}
+    draw();
+  }
+},{passive:true});
+
+document.getElementById('new-game-btn').addEventListener('click',newGame);
+newGame();
+</script>
+</body>
+</html>

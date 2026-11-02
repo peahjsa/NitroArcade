@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Kingdom Builder — Game Portal</title>
+<meta name="description" content="Play Kingdom Builder free online — Manage resources, build structures, and grow your medieval kingdom. A Hard Strategy game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/kingdom-builder/"/>
+<meta property="og:title" content="👑 Kingdom Builder — Free Browser Game"/>
+<meta property="og:description" content="Play Kingdom Builder free in your browser. Manage resources, build structures, and grow your medieval kingdom."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/kingdom-builder/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Kingdom Builder",
+  "description": "Manage resources, build structures, and grow your medieval kingdom.",
+  "url": "https://arcade.sotshau.fun/games/kingdom-builder/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Strategy",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:38px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px}.score-bar{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:12px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:92px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.toolbar{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:12px}.tool{padding:8px 12px;border:1px solid #d1d5db;background:#fff;border-radius:999px;font-size:13px;font-weight:700;cursor:pointer}.tool.active{background:#6c63ff;color:#fff;border-color:#6c63ff}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;box-shadow:0 8px 20px rgba(0,0,0,.08);padding:20px;width:min(720px,94vw)}.board{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}.cell{aspect-ratio:1/1;border:1px solid #d1d5db;border-radius:14px;background:#ecfccb;cursor:pointer;font-size:28px;display:flex;align-items:center;justify-content:center;transition:transform .08s,box-shadow .08s}.cell.cursor{box-shadow:0 0 0 3px #6c63ff inset}.cell.farm{background:#fde68a}.cell.house{background:#bfdbfe}.cell.market{background:#fecaca}.cell.park{background:#bbf7d0}.status{min-height:22px;text-align:center;font-weight:700;color:#374151;margin-top:14px}.overlay{position:absolute;inset:0;background:rgba(245,245,247,.96);border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p,.hint{color:#6b7280}.btn{padding:10px 18px;border:none;border-radius:10px;background:#6c63ff;color:#fff;font-weight:700;cursor:pointer}.hint{margin-top:12px;font-size:12px;text-align:center;padding:0 18px}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🏰 Kingdom Builder</h1>
+<p class="sub">Spend your treasury on farms, houses, markets, and parks to create the strongest little realm in 18 turns.</p>
+<div class="score-bar">
+  <div class="score-box"><div class="score-label">Gold</div><div class="score-val" id="gold">12</div></div>
+  <div class="score-box"><div class="score-label">Food</div><div class="score-val" id="food">6</div></div>
+  <div class="score-box"><div class="score-label">Population</div><div class="score-val" id="pop">0</div></div>
+  <div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">0</div></div>
+</div>
+<div class="toolbar" id="toolbar"></div>
+<div class="game">
+  <div class="board" id="board"></div>
+  <div class="status" id="status">Choose a building and claim an empty tile.</div>
+  <div class="overlay" id="overlay">
+    <h2>🏰 Kingdom Builder</h2>
+    <p>Use keys 1–4 to choose a building, arrows to move, and Enter to place it. Tap a building button and then any tile on touch devices.</p>
+    <button class="btn" id="overlay-btn">Start Game</button>
+  </div>
+</div>
+<p class="hint">1 Farm · 2 House · 3 Market · 4 Park · Enter place · Touch: tap buttons then tiles</p>
+<script>
+const BEST_KEY='kingdomBuilderBest';
+const defs=[
+  {id:'farm',emoji:'🌾',name:'Farm',cost:3},
+  {id:'house',emoji:'🏠',name:'House',cost:4},
+  {id:'market',emoji:'🏪',name:'Market',cost:5},
+  {id:'park',emoji:'🌳',name:'Park',cost:3}
+];
+const boardEl=document.getElementById('board'),toolbar=document.getElementById('toolbar');
+let grid=[],cursor=0,selected='farm',gold=12,food=6,pop=0,turn=1,best=+(localStorage.getItem(BEST_KEY)||0),running=false,statusMsg='Choose a building and claim an empty tile.';
+document.getElementById('best').textContent=best;
+function setup(){grid=Array(36).fill('');cursor=0;selected='farm';gold=12;food=6;pop=0;turn=1;statusMsg='Choose a building and claim an empty tile.';buildToolbar();render();updateStats();}
+function buildToolbar(){toolbar.innerHTML='';defs.forEach((d,i)=>{const b=document.createElement('button');b.className='tool'+(selected===d.id?' active':'');b.textContent=`${i+1}. ${d.emoji} ${d.name} (${d.cost})`;b.addEventListener('click',()=>{selected=d.id;buildToolbar();});toolbar.appendChild(b);});}
+function neighbors(i){const x=i%6,y=Math.floor(i/6),list=[];[[1,0],[-1,0],[0,1],[0,-1]].forEach(([dx,dy])=>{const nx=x+dx,ny=y+dy;if(nx>=0&&nx<6&&ny>=0&&ny<6)list.push(ny*6+nx);});return list;}
+function count(type){return grid.filter(v=>v===type).length;}
+function advanceTurn(){const farms=count('farm'),houses=count('house'),markets=count('market'),parks=count('park');let newFood=food+farms*2-houses;let houseBonus=0;grid.forEach((cell,i)=>{if(cell==='house'){if(neighbors(i).some(n=>grid[n]==='farm'))houseBonus++;if(neighbors(i).some(n=>grid[n]==='park'))houseBonus++;}if(cell==='market')gold+=neighbors(i).filter(n=>grid[n]==='house').length;});if(newFood<0){pop=Math.max(0,pop+newFood);newFood=0;statusMsg='A food shortage shrank your population.';}else{pop+=houseBonus;}food=newFood;gold+=2+markets*2+parks;turn++;if(turn>18)return finishGame();statusMsg=`Turn ${turn}: your kingdom keeps growing.`;}
+function score(){return pop*4+gold+food*2;}
+function finishGame(){running=false;const s=score();if(s>best){best=s;localStorage.setItem(BEST_KEY,String(best));}document.getElementById('best').textContent=best;const overlay=document.getElementById('overlay');overlay.innerHTML=`<h2>👑 Realm Complete</h2><p>Your kingdom score is <strong>${s}</strong> with <strong>${pop}</strong> population.</p><button class="btn" id="overlay-btn">Build Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);}
+function place(i){if(!running)return;if(grid[i]){statusMsg='That tile is already occupied.';return updateStats();}const def=defs.find(d=>d.id===selected);if(gold<def.cost){statusMsg='Not enough gold for that building.';return updateStats();}grid[i]=selected;gold-=def.cost;if(selected==='house')pop+=1;if(selected==='park')food+=1;advanceTurn();render();updateStats();}
+function updateStats(){document.getElementById('gold').textContent=gold;document.getElementById('food').textContent=food;document.getElementById('pop').textContent=pop;document.getElementById('best').textContent=best;document.getElementById('status').textContent=`${statusMsg} Score: ${score()}. Turns left: ${Math.max(0,19-turn)}.`;buildToolbar();}
+function render(){boardEl.innerHTML='';grid.forEach((cell,i)=>{const btn=document.createElement('button');btn.className='cell'+(cell?' '+cell:'')+(i===cursor?' cursor':'');btn.textContent=cell?defs.find(d=>d.id===cell).emoji:'';btn.addEventListener('click',()=>{cursor=i;place(i);render();});boardEl.appendChild(btn);});}
+function startGame(){running=true;document.getElementById('overlay').style.display='none';setup();}
+document.getElementById('overlay-btn').addEventListener('click',startGame);document.addEventListener('keydown',e=>{const overlay=document.getElementById('overlay');if(overlay.style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}if(/[1-4]/.test(e.key)){e.preventDefault();selected=defs[+e.key-1].id;buildToolbar();}if(e.key==='ArrowLeft'){e.preventDefault();cursor=(cursor%6===0)?cursor+5:cursor-1;render();}if(e.key==='ArrowRight'){e.preventDefault();cursor=(cursor%6===5)?cursor-5:cursor+1;render();}if(e.key==='ArrowUp'){e.preventDefault();cursor=(cursor+30)%36;render();}if(e.key==='ArrowDown'){e.preventDefault();cursor=(cursor+6)%36;render();}if(e.key==='Enter'){e.preventDefault();place(cursor);}});setup();
+</script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+
+.nxDiscoveryLaunch{position:relative;isolation:isolate;overflow:hidden;margin:16px 0 0;padding:19px 20px;border:1px solid #7443b0;border-radius:16px;background:radial-gradient(ellipse at 95% 0%,#8b42d32e,transparent 50%),linear-gradient(130deg,#19112f,#0e1125);box-shadow:0 12px 32px #0003;color:#f4eaff}
+.nxDiscoveryLaunch::before{content:"";position:absolute;right:-65px;top:-100px;width:250px;height:250px;border-radius:50%;border:1px solid #ba70f72a;pointer-events:none}
+.nxDiscoveryHeader{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}
+.nxDiscoveryEyebrow{font-size:9px;letter-spacing:1.8px;font-weight:900;color:#cf87ff}
+.nxDiscoveryHeader h2{font-size:clamp(19px,2vw,26px);line-height:1.15;letter-spacing:-.5px;margin:7px 0}
+.nxDiscoveryHeader p{color:#bcb0d7;font-size:11px;line-height:1.6}
+.nxDiscoverySpark{font-size:35px;color:#b46bff;text-shadow:0 0 25px #b46bff}
+.nxDiscoveryButtons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.nxDiscoveryButtons button{min-width:0;min-height:96px;display:flex;align-items:center;gap:10px;text-align:left;border:1px solid #564078;border-radius:12px;background:linear-gradient(135deg,#2b1b49,#15152e);padding:13px 11px;color:#f8f0ff;cursor:pointer;transition:transform .2s,border-color .2s,box-shadow .2s}
+.nxDiscoveryButtons button:nth-child(2){background:linear-gradient(135deg,#211b4b,#131a34)}
+.nxDiscoveryButtons button:nth-child(3){background:linear-gradient(135deg,#342044,#1b1432)}
+.nxDiscoveryButtons button:hover{transform:translateY(-3px);border-color:#d395ff;box-shadow:0 8px 22px #b84cff26}
+.nxDiscoveryIcon{font-size:24px;flex:none}
+.nxDiscoveryButtons button>span:nth-child(2){flex:1;min-width:0}
+.nxDiscoveryButtons strong{display:block;font-size:10px;letter-spacing:.3px;line-height:1.4}
+.nxDiscoveryButtons small{display:block;color:#b4a5d1;font-size:9px;line-height:1.5;margin-top:5px}
+.nxDiscoveryArrow{align-self:flex-start;color:#d4a3ff;font-size:13px}
+@media(max-width:1200px){.nxDiscoveryButtons{grid-template-columns:1fr}.nxDiscoveryButtons button{min-height:65px}}
+@media(max-width:760px){.nxDiscoveryButtons{grid-template-columns:repeat(3,minmax(0,1fr))}.nxDiscoveryButtons button{flex-direction:column;align-items:flex-start;min-height:112px}}
+@media(max-width:520px){.nxDiscoveryButtons{grid-template-columns:1fr}.nxDiscoveryButtons button{flex-direction:row;min-height:65px}}
+@media(prefers-reduced-motion:reduce){.nxDiscoveryButtons button{transition:none}}
+#featuredSection .nmWorlds{padding:16px 0 26px;max-width:none}
+#featuredSection .nmWorldHeader{display:none}
+#featuredSection .nmWorldGrid{margin-top:10px}

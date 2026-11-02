@@ -1,0 +1,7 @@
+
+.ey-monster-banner{margin:10px auto 14px;padding:11px 18px;max-width:680px;border:2px solid #ff596f;border-radius:10px;background:linear-gradient(90deg,#45101c,#24102f,#45101c);box-shadow:0 0 28px #ff496044,inset 0 0 18px #ff496022;color:#fff;font-weight:1000;letter-spacing:.12em;text-align:center;text-shadow:0 0 10px #ff5a6f}
+.ey-monster-banner.mini{font-size:12px;margin-bottom:12px}
+.ey-new-names span{display:flex!important;flex-direction:column;align-items:center;justify-content:center;min-height:108px}
+.ey-new-names span b{font-size:21px}
+.ey-new-names span em{font-style:normal;font-size:12px;color:#71e7ff;margin-top:7px;letter-spacing:.08em}
+.ey-new-names span small{display:block;margin-top:5px;color:#c9d1e5;font-size:11px;line-height:1.25}

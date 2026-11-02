@@ -1,0 +1,1 @@
+document.addEventListener('DOMContentLoaded',()=>{document.querySelectorAll('button,a,h1,h2,h3').forEach(el=>{if(/mario/i.test(el.textContent||'') && (el.textContent||'').length<120)el.classList.add('mario-font')})});

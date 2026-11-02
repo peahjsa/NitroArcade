@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ASCII Art — Game Portal</title>
+<meta name="description" content="Play ASCII Art free online — Type to generate ASCII art. Convert text and images to ASCII. A Easy Creative &amp; Art game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/ascii-art/"/>
+<meta property="og:title" content="💻 ASCII Art — Free Browser Game"/>
+<meta property="og:description" content="Play ASCII Art free in your browser. Type to generate ASCII art. Convert text and images to ASCII."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/ascii-art/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "ASCII Art",
+  "description": "Type to generate ASCII art. Convert text and images to ASCII.",
+  "url": "https://arcade.sotshau.fun/games/ascii-art/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Creative & Art",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px}.score-bar,.controls{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}.score-bar{margin-bottom:14px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 18px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:96px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.game{position:relative;background:#111827;border-radius:20px;padding:18px;box-shadow:0 12px 28px rgba(0,0,0,.18);width:min(760px,96vw)}.board{display:grid;grid-template-columns:repeat(16,1fr);gap:4px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}.cell{aspect-ratio:1/1;border:none;border-radius:8px;background:#1f2937;color:#e5e7eb;font:700 20px/1 ui-monospace,SFMono-Regular,Menlo,monospace;cursor:pointer}.cell.cursor{outline:3px solid #f59e0b}.cell.filled{background:#334155}.controls{margin-top:14px}.btn{padding:9px 16px;background:#6c63ff;color:#fff;border:none;border-radius:10px;font-weight:700;cursor:pointer}.ghost{background:#374151}.status{min-height:24px;margin-top:12px;text-align:center;color:#e5e7eb;font-weight:700}.overlay{position:absolute;inset:18px;background:rgba(17,24,39,.95);border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center;color:#fff}.overlay p{max-width:360px;color:#cbd5e1;line-height:1.5}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center;padding:0 16px}.export{margin-top:14px;width:100%;min-height:120px;border-radius:12px;border:1px solid #374151;background:#0f172a;color:#e5e7eb;padding:12px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🔠 ASCII Art</h1>
+<p class="sub">Stamp characters onto a text grid and watch your design turn into classic terminal-style art.</p>
+<div class="score-bar"><div class="score-box"><div class="score-label">Ink</div><div class="score-val" id="ink">0</div></div><div class="score-box"><div class="score-label">Glyph</div><div class="score-val" id="glyph">@</div></div><div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">0</div></div></div>
+<div class="game">
+  <div class="board" id="board"></div>
+  <div class="controls"><button class="btn ghost" id="prev">Prev Glyph</button><button class="btn" id="clear">Clear</button><button class="btn ghost" id="next">Next Glyph</button></div>
+  <div class="status" id="status">Press Start to begin stamping.</div>
+  <textarea class="export" id="export" readonly></textarea>
+  <div class="overlay" id="overlay"><h2>🔠 ASCII Art</h2><p>Move the cursor, choose a glyph, and stamp your art. Touch or click any cell to place the current character.</p><button class="btn" id="overlay-btn">Start Drawing</button></div>
+</div>
+<p class="hint">Keyboard: arrows move, [ / ] change glyph, Space stamps, Backspace erases · Touch: tap cells</p>
+<script>
+const WIDTH=16,HEIGHT=10,BEST_KEY='asciiArtBestInk',GLYPHS=['@','#','*','+','=','-','.',':'];
+const boardEl=document.getElementById('board'),overlay=document.getElementById('overlay'),statusEl=document.getElementById('status'),exportEl=document.getElementById('export');
+let cells=Array.from({length:WIDTH*HEIGHT},()=>''),cursor=0,glyphIndex=0,started=false,best=+(localStorage.getItem(BEST_KEY)||0);
+document.getElementById('best').textContent=String(best);
+function inkCount(){return cells.filter(Boolean).length;}
+function updateStats(){const ink=inkCount();document.getElementById('ink').textContent=String(ink);document.getElementById('glyph').textContent=GLYPHS[glyphIndex];if(ink>best){best=ink;localStorage.setItem(BEST_KEY,String(best));document.getElementById('best').textContent=String(best);}exportEl.value=Array.from({length:HEIGHT},(_,row)=>cells.slice(row*WIDTH,row*WIDTH+WIDTH).map(char=>char||' ').join('')).join('\n');}
+function render(){boardEl.innerHTML='';cells.forEach((char,index)=>{const button=document.createElement('button');button.className='cell'+(char?' filled':'')+(cursor===index?' cursor':'');button.textContent=char||' ';button.addEventListener('click',()=>stamp(index));boardEl.appendChild(button);});updateStats();}
+function stamp(index){if(!started)return;cursor=index;cells[index]=GLYPHS[glyphIndex];statusEl.textContent=`Stamped ${GLYPHS[glyphIndex]} at cell ${index+1}.`;render();}
+function erase(){if(!started)return;cells[cursor]='';statusEl.textContent='Erased current cell.';render();}
+function cycle(delta){glyphIndex=(glyphIndex+delta+GLYPHS.length)%GLYPHS.length;statusEl.textContent=`Glyph set to ${GLYPHS[glyphIndex]}.`;updateStats();render();}
+function clearBoard(){cells=Array.from({length:WIDTH*HEIGHT},()=>''),statusEl.textContent='Canvas cleared.',render();}
+function startGame(){started=true;overlay.style.display='none';clearBoard();statusEl.textContent='Start stamping characters.';}
+document.getElementById('overlay-btn').addEventListener('click',startGame);document.getElementById('prev').addEventListener('click',()=>cycle(-1));document.getElementById('next').addEventListener('click',()=>cycle(1));document.getElementById('clear').addEventListener('click',clearBoard);
+document.addEventListener('keydown',event=>{if(overlay.style.display!=='none'&&(event.key==='Enter'||event.key===' ')){event.preventDefault();startGame();return;}const row=Math.floor(cursor/WIDTH),col=cursor%WIDTH;if(event.key==='ArrowLeft'){event.preventDefault();cursor=row*WIDTH+((col+WIDTH-1)%WIDTH);render();}if(event.key==='ArrowRight'){event.preventDefault();cursor=row*WIDTH+((col+1)%WIDTH);render();}if(event.key==='ArrowUp'){event.preventDefault();cursor=((row+HEIGHT-1)%HEIGHT)*WIDTH+col;render();}if(event.key==='ArrowDown'){event.preventDefault();cursor=((row+1)%HEIGHT)*WIDTH+col;render();}if(event.key===' '||event.key==='Enter'){event.preventDefault();stamp(cursor);}if(event.key==='Backspace'){event.preventDefault();erase();}if(event.key==='[')cycle(-1);if(event.key===']')cycle(1);});
+render();
+</script>
+</body>
+</html>

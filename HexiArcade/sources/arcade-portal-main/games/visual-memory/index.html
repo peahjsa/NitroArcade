@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Visual Memory — Game Portal</title>
+<meta name="description" content="Play Visual Memory free online — Memorize which squares light up, then click them all from memory. A Hard Memory &amp; Reflex game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/visual-memory/"/>
+<meta property="og:title" content="👁️ Visual Memory — Free Browser Game"/>
+<meta property="og:description" content="Play Visual Memory free in your browser. Memorize which squares light up, then click them all from memory."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/visual-memory/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Visual Memory",
+  "description": "Memorize which squares light up, then click them all from memory.",
+  "url": "https://arcade.sotshau.fun/games/visual-memory/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Memory & Reflex",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px}.score-bar{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 18px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:96px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;box-shadow:0 8px 20px rgba(0,0,0,.08);padding:24px;width:min(620px,94vw)}.board{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.cell{aspect-ratio:1/1;border:none;border-radius:14px;background:#e5e7eb;cursor:pointer;transition:transform .08s,background .08s,box-shadow .08s}.cell.target{background:#60a5fa}.cell.hit{background:#22c55e}.cell.miss{background:#f87171}.cell.cursor{box-shadow:0 0 0 3px #6c63ff inset}.status{min-height:24px;text-align:center;color:#374151;font-weight:700;margin-top:16px}.overlay{position:absolute;inset:0;background:rgba(245,245,247,.96);border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p{color:#6b7280;max-width:320px;line-height:1.5}.btn{padding:10px 18px;border:none;border-radius:10px;background:#6c63ff;color:#fff;font-weight:700;cursor:pointer}.hint{margin-top:14px;font-size:12px;color:#9ca3af;text-align:center;padding:0 16px}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>👁️ Visual Memory</h1>
+<p class="sub">Memorize the highlighted squares, then find them after they disappear. Each level adds another target.</p>
+<div class="score-bar"><div class="score-box"><div class="score-label">Level</div><div class="score-val" id="level">1</div></div><div class="score-box"><div class="score-label">Lives</div><div class="score-val" id="lives">3</div></div><div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">0</div></div></div>
+<div class="game">
+  <div class="board" id="board"></div>
+  <div class="status" id="status">Press Start to begin.</div>
+  <div class="overlay" id="overlay"><h2>👁️ Visual Memory</h2><p>Watch the blue squares, then click or tap them after they vanish. Keyboard: arrows move, Enter selects.</p><button class="btn" id="overlay-btn">Start Game</button></div>
+</div>
+<p class="hint">Keyboard: arrows + Enter · Touch: tap squares</p>
+<script>
+const SIZE=5,BEST_KEY='visualMemoryBest';
+const boardEl=document.getElementById('board'),statusEl=document.getElementById('status'),overlay=document.getElementById('overlay');
+let level=1,lives=3,targets=new Set(),hits=new Set(),misses=new Set(),showing=false,active=false,cursor=0;
+document.getElementById('best').textContent=localStorage.getItem(BEST_KEY)||'0';
+function randomTargets(count){const set=new Set();while(set.size<count)set.add(Math.floor(Math.random()*(SIZE*SIZE)));return set;}
+function buildBoard(){boardEl.innerHTML='';for(let i=0;i<SIZE*SIZE;i++){const btn=document.createElement('button');btn.className='cell'+(i===cursor?' cursor':'');btn.addEventListener('click',()=>choose(i));boardEl.appendChild(btn);}render();}
+function startGame(){level=1;lives=3;overlay.style.display='none';document.getElementById('lives').textContent='3';beginLevel();}
+function beginLevel(){targets=randomTargets(Math.min(2+level,12));hits=new Set();misses=new Set();showing=true;active=false;document.getElementById('level').textContent=String(level);statusEl.textContent='Memorize the highlighted squares...';render();setTimeout(()=>{showing=false;active=true;statusEl.textContent=`Find ${targets.size} hidden squares.`;render();},1000+level*120);}
+function render(){[...boardEl.children].forEach((cell,i)=>{cell.className='cell'+(showing&&targets.has(i)?' target':'')+(hits.has(i)?' hit':'')+(misses.has(i)?' miss':'')+(i===cursor?' cursor':'');});}
+function choose(index){if(!active)return;cursor=index;if(targets.has(index)){hits.add(index);statusEl.textContent=`Nice! ${targets.size-hits.size} to go.`;if(hits.size===targets.size){const best=Math.max(level,+(localStorage.getItem(BEST_KEY)||0));localStorage.setItem(BEST_KEY,String(best));document.getElementById('best').textContent=String(best);active=false;statusEl.textContent='Level cleared!';level++;setTimeout(beginLevel,700);}}else if(!misses.has(index)){misses.add(index);lives--;document.getElementById('lives').textContent=String(lives);statusEl.textContent=`Miss! ${lives} lives remaining.`;if(lives<=0){finishGame();}}render();}
+function finishGame(){active=false;showing=true;render();statusEl.textContent=`Game over at level ${level}.`;overlay.innerHTML=`<h2>👁️ Pattern Lost</h2><p>You reached <strong>level ${level}</strong>. Try again and beat your best.</p><button class="btn" id="overlay-btn">Play Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);}
+document.getElementById('overlay-btn').addEventListener('click',startGame);document.addEventListener('keydown',e=>{if(overlay.style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}const row=Math.floor(cursor/SIZE),col=cursor%SIZE;if(e.key==='ArrowLeft'){e.preventDefault();cursor=row*SIZE+((col+SIZE-1)%SIZE);render();}if(e.key==='ArrowRight'){e.preventDefault();cursor=row*SIZE+((col+1)%SIZE);render();}if(e.key==='ArrowUp'){e.preventDefault();cursor=((row+SIZE-1)%SIZE)*SIZE+col;render();}if(e.key==='ArrowDown'){e.preventDefault();cursor=((row+1)%SIZE)*SIZE+col;render();}if(e.key==='Enter'||e.key===' '){e.preventDefault();choose(cursor);}});buildBoard();
+</script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Tank Battle — Game Portal</title>
+<meta name="description" content="Play Tank Battle free online — Two tanks, one arena. Dodge bullets and destroy your opponent! A Medium 2-Player Local game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/tank-battle/"/>
+<meta property="og:title" content="🪖 Tank Battle — Free Browser Game"/>
+<meta property="og:description" content="Play Tank Battle free in your browser. Two tanks, one arena. Dodge bullets and destroy your opponent!"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/tank-battle/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Tank Battle",
+  "description": "Two tanks, one arena. Dodge bullets and destroy your opponent!",
+  "url": "https://arcade.sotshau.fun/games/tank-battle/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "2-Player Local",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px}.score-bar{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:14px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 18px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:96px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.game{position:relative;background:#111827;border-radius:20px;padding:18px;box-shadow:0 12px 28px rgba(0,0,0,.18);width:min(760px,96vw)}canvas{display:block;width:100%;height:auto;border-radius:16px;background:#1f2937}.status{min-height:24px;margin-top:12px;text-align:center;color:#e5e7eb;font-weight:700}.controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px}.control-box{background:#0f172a;border-radius:14px;padding:12px;color:#e5e7eb}.control-box h3{font-size:14px;margin-bottom:8px;text-align:center}.pad-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.pad-btn{height:44px;border:none;border-radius:10px;background:#334155;color:#fff;font-weight:700;cursor:pointer}.overlay{position:absolute;inset:18px;background:rgba(17,24,39,.95);border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center;color:#fff}.overlay p{max-width:420px;color:#cbd5e1;line-height:1.5}.btn{padding:9px 16px;background:#6c63ff;color:#fff;border:none;border-radius:10px;font-weight:700;cursor:pointer}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center;padding:0 16px}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🪖 Tank Battle</h1>
+<p class="sub">Two tanks enter the arena. Rotate, move, and fire around barriers to win the round.</p>
+<div class="score-bar"><div class="score-box"><div class="score-label">Green</div><div class="score-val" id="p1">0</div></div><div class="score-box"><div class="score-label">Orange</div><div class="score-val" id="p2">0</div></div><div class="score-box"><div class="score-label">Shots</div><div class="score-val" id="shots">0</div></div></div>
+<div class="game">
+  <canvas id="canvas" width="700" height="420"></canvas>
+  <div class="status" id="status">Press Start to deploy both tanks.</div>
+  <div class="controls">
+    <div class="control-box"><h3>Player 1</h3><div class="pad-grid"><button class="pad-btn" data-key="KeyA">⟲</button><button class="pad-btn" data-key="KeyW">▲</button><button class="pad-btn" data-key="KeyD">⟳</button><button class="pad-btn" data-key="KeyQ">Fire</button><button class="pad-btn" data-key="KeyS">▼</button><button class="pad-btn" data-key="KeyQ">Fire</button></div></div>
+    <div class="control-box"><h3>Player 2</h3><div class="pad-grid"><button class="pad-btn" data-key="ArrowLeft">⟲</button><button class="pad-btn" data-key="ArrowUp">▲</button><button class="pad-btn" data-key="ArrowRight">⟳</button><button class="pad-btn" data-key="Slash">Fire</button><button class="pad-btn" data-key="ArrowDown">▼</button><button class="pad-btn" data-key="Slash">Fire</button></div></div>
+  </div>
+  <div class="overlay" id="overlay"><h2>🪖 Tank Battle</h2><p>Player 1 uses W/S to move, A/D to rotate, Q to fire. Player 2 uses arrow keys and / to fire. Touch controls mirror the same setup.</p><button class="btn" id="overlay-btn">Start Battle</button></div>
+</div>
+<p class="hint">Keyboard: WASD + Q and arrows + / · Touch: hold the on-screen controls</p>
+<script>
+const canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d'),overlay=document.getElementById('overlay'),statusEl=document.getElementById('status');
+if(!ctx) throw new Error('Canvas 2D context unavailable');
+const walls=[{x:240,y:80,w:220,h:20},{x:100,y:190,w:160,h:20},{x:440,y:190,w:160,h:20},{x:240,y:300,w:220,h:20}];
+const keys={};
+let tanks,bullets=[],shots=0,running=false,raf=0;
+function createTanks(score1=0,score2=0){return[{x:90,y:210,angle:0,color:'#22c55e',score:score1,reload:0,label:'Green'},{x:610,y:210,angle:Math.PI,color:'#f59e0b',score:score2,reload:0,label:'Orange'}];}
+function resetRoundState(){bullets=[];shots=0;document.getElementById('shots').textContent='0';}
+function placeRound(score1=0,score2=0){tanks=createTanks(score1,score2);resetRoundState();}
+function startGame(){placeRound();document.getElementById('p1').textContent=String(tanks[0].score);document.getElementById('p2').textContent=String(tanks[1].score);overlay.style.display='none';statusEl.textContent='Battle started.';running=true;cancelAnimationFrame(raf);loop();}
+function collideWall(x,y,r=18){return walls.some(w=>x+r>w.x&&x-r<w.x+w.w&&y+r>w.y&&y-r<w.y+w.h);} 
+function moveTank(tank,forward,turn){tank.angle+=turn*.05;const nx=tank.x+Math.cos(tank.angle)*forward*2.8,ny=tank.y+Math.sin(tank.angle)*forward*2.8;if(nx>26&&nx<674&&ny>26&&ny<394&&!collideWall(nx,ny)){{tank.x=nx;tank.y=ny;}}}
+function fire(tank){if(!tank||tank.reload>0||!running)return;bullets.push({x:tank.x+Math.cos(tank.angle)*24,y:tank.y+Math.sin(tank.angle)*24,vx:Math.cos(tank.angle)*5.6,vy:Math.sin(tank.angle)*5.6,owner:tank});tank.reload=36;shots++;document.getElementById('shots').textContent=String(shots);}
+function circleHit(tank,bullet){return Math.hypot(tank.x-bullet.x,tank.y-bullet.y)<20;}
+function resetRound(winnerIndex){tanks[winnerIndex].score++;document.getElementById(winnerIndex===0?'p1':'p2').textContent=String(tanks[winnerIndex].score);statusEl.textContent=`${tanks[winnerIndex].label} scores a hit!`;if(tanks[winnerIndex].score>=3){running=false;overlay.innerHTML=`<h2>${tanks[winnerIndex].label} Wins! 🏆</h2><p>First to 3 hits takes the arena.</p><button class="btn" id="overlay-btn">Play Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);return;}placeRound(tanks[0].score,tanks[1].score);}
+function update(){const p1=tanks[0],p2=tanks[1];moveTank(p1,(keys.KeyW?1:0)-(keys.KeyS?1:0),(keys.KeyD?1:0)-(keys.KeyA?1:0));moveTank(p2,(keys.ArrowUp?1:0)-(keys.ArrowDown?1:0),(keys.ArrowRight?1:0)-(keys.ArrowLeft?1:0));if(keys.KeyQ)fire(p1);if(keys.Slash)fire(p2);tanks.forEach(t=>{if(t.reload>0)t.reload--;});bullets.forEach(b=>{b.x+=b.vx;b.y+=b.vy;if(collideWall(b.x,b.y,5)){b.vx*=-1;b.vy*=-1;}});bullets=bullets.filter(b=>b.x>0&&b.x<700&&b.y>0&&b.y<420);for(const bullet of bullets){for(let i=0;i<tanks.length;i++){if(tanks[i]!==bullet.owner&&circleHit(tanks[i],bullet)){resetRound(bullet.owner===tanks[0]?0:1);return;}}}}
+function drawTank(tank){ctx.save();ctx.translate(tank.x,tank.y);ctx.rotate(tank.angle);ctx.fillStyle=tank.color;ctx.fillRect(-18,-14,36,28);ctx.fillStyle='#111827';ctx.fillRect(0,-4,24,8);ctx.beginPath();ctx.arc(0,0,10,0,Math.PI*2);ctx.fillStyle='rgba(255,255,255,.2)';ctx.fill();ctx.restore();}
+function draw(){ctx.fillStyle='#1f2937';ctx.fillRect(0,0,700,420);ctx.fillStyle='#334155';walls.forEach(w=>ctx.fillRect(w.x,w.y,w.w,w.h));bullets.forEach(b=>{ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(b.x,b.y,4,0,Math.PI*2);ctx.fill();});if(tanks)tanks.forEach(drawTank);} 
+function loop(){if(!running)return;update();draw();raf=requestAnimationFrame(loop);} 
+document.getElementById('overlay-btn').addEventListener('click',startGame);document.addEventListener('keydown',event=>{keys[event.code]=true;if(overlay.style.display!=='none'&&(event.key==='Enter'||event.key===' ')){event.preventDefault();startGame();}});document.addEventListener('keyup',event=>keys[event.code]=false);document.querySelectorAll('.pad-btn').forEach(button=>{const code=button.dataset.key;button.addEventListener('pointerdown',event=>{event.preventDefault();keys[code]=true;if(code==='KeyQ'||code==='Slash')fire(code==='KeyQ'?tanks?.[0]:tanks?.[1]);});button.addEventListener('pointerup',()=>keys[code]=false);button.addEventListener('pointerleave',()=>keys[code]=false);});draw();
+</script>
+</body>
+</html>

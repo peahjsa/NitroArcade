@@ -1,0 +1,1 @@
+(function(){function finish(){requestAnimationFrame(function(){requestAnimationFrame(function(){document.body.classList.add('nitro-boot-ready');});});}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',finish,{once:true});else finish();window.addEventListener('load',finish,{once:true});})();

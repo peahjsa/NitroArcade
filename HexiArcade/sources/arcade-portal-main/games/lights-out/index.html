@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>💡 Lights Out — Game Portal</title>
+<meta name="description" content="Play Lights Out free online — Toggle lights to turn them all off. Each click affects neighbors too. A Medium Puzzle game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/lights-out/"/>
+<meta property="og:title" content="💡 Lights Out — Free Browser Game"/>
+<meta property="og:description" content="Play Lights Out free in your browser. Toggle lights to turn them all off. Each click affects neighbors too."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/lights-out/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Lights Out",
+  "description": "Toggle lights to turn them all off. Each click affects neighbors too.",
+  "url": "https://arcade.sotshau.fun/games/lights-out/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Puzzle",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}
+nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}nav a:hover{text-decoration:underline}
+h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;text-align:center;margin-bottom:16px;padding:0 16px}
+.score-bar{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 18px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:90px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}
+.game-wrap{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;box-shadow:0 8px 20px rgba(0,0,0,.08);padding:18px}.board{display:grid;grid-template-columns:repeat(5,68px);gap:10px}.cell{width:68px;height:68px;border:none;border-radius:16px;background:#dbe4ff;cursor:pointer;box-shadow:inset 0 -6px 10px rgba(99,102,241,.15),0 4px 10px rgba(0,0,0,.06);transition:transform .12s,background .12s,box-shadow .12s}.cell.on{background:radial-gradient(circle at 35% 35%,#fff7bf,#facc15 55%,#f59e0b)}.cell.focused{outline:3px solid rgba(108,99,255,.35);transform:translateY(-2px)}.status{margin-top:14px;text-align:center;color:#4b5563;min-height:24px;font-weight:600}.controls{margin-top:14px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}.btn{padding:9px 22px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}.btn:hover{background:#574fd6}.btn-outline{background:transparent;border:1.5px solid #6c63ff;color:#6c63ff}.btn-outline:hover{background:#ede9ff}.overlay{position:absolute;inset:0;border-radius:18px;background:rgba(245,245,247,.94);display:flex;flex-direction:column;justify-content:center;align-items:center;gap:10px;padding:24px;text-align:center}.overlay p{color:#6b7280;max-width:280px;line-height:1.5}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center;padding:0 16px}
+@media (max-width:480px){.board{grid-template-columns:repeat(5,54px);gap:8px}.cell{width:54px;height:54px}.game-wrap{padding:14px}}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>💡 Lights Out</h1>
+<p class="sub">Toggle tiles and their neighbors until every light is off.</p>
+<div class="score-bar">
+  <div class="score-box"><div class="score-label">Moves</div><div class="score-val" id="moves">0</div></div>
+  <div class="score-box"><div class="score-label">Lights On</div><div class="score-val" id="lights">0</div></div>
+  <div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">—</div></div>
+</div>
+<div class="game-wrap">
+  <div class="board" id="board"></div>
+  <div class="overlay" id="overlay">
+    <h2>💡 Lights Out</h2>
+    <p>Click or tap tiles to flip them. Arrow keys move focus, and Enter or Space toggles a light.</p>
+    <button class="btn" id="overlay-btn">Start Game</button>
+  </div>
+  <div class="status" id="status">Press Start to begin.</div>
+</div>
+<div class="controls">
+  <button class="btn btn-outline" id="new-puzzle-btn">New Puzzle</button>
+</div>
+<p class="hint">Tap tiles on mobile · Arrow keys move focus · Enter / Space toggles</p>
+<script>
+const SIZE=5,BEST_KEY='lightsOutBest';
+const boardEl=document.getElementById('board');
+const overlay=document.getElementById('overlay');
+const statusEl=document.getElementById('status');
+const movesEl=document.getElementById('moves');
+const lightsEl=document.getElementById('lights');
+const bestEl=document.getElementById('best');
+let board=[],buttons=[],moves=0,best=+(localStorage.getItem(BEST_KEY)||0),active=false,focusIndex=12;
+bestEl.textContent=best?best:'—';
+function makeBoard(){
+  boardEl.innerHTML='';buttons=[];
+  for(let i=0;i<SIZE*SIZE;i++){
+    const btn=document.createElement('button');
+    btn.className='cell';
+    btn.setAttribute('aria-label',`Light ${i+1}`);
+    btn.addEventListener('click',()=>toggleByIndex(i));
+    boardEl.appendChild(btn);buttons.push(btn);
+  }
+}
+function randomizeBoard(){
+  board=Array.from({length:SIZE},()=>Array(SIZE).fill(false));
+  for(let i=0;i<12;i++){
+    const x=Math.floor(Math.random()*SIZE),y=Math.floor(Math.random()*SIZE);
+    flip(x,y,false);
+  }
+  if(countLights()===0)flip(2,2,false);
+}
+function startGame(){
+  randomizeBoard();
+  moves=0;focusIndex=12;active=true;overlay.style.display='none';
+  statusEl.textContent='Turn every light off.';
+  updateStats();render();focusCell();
+}
+function flip(x,y,track){
+  [[0,0],[1,0],[-1,0],[0,1],[0,-1]].forEach(([dx,dy])=>{
+    const nx=x+dx,ny=y+dy;
+    if(nx>=0&&nx<SIZE&&ny>=0&&ny<SIZE)board[ny][nx]=!board[ny][nx];
+  });
+  if(track){moves++;updateStats();}
+}
+function toggleByIndex(index){
+  if(!active)return;
+  flip(index%SIZE,Math.floor(index/SIZE),true);
+  render();checkWin();
+}
+function countLights(){return board.flat().filter(Boolean).length;}
+function updateStats(){movesEl.textContent=moves;lightsEl.textContent=countLights();bestEl.textContent=best?best:'—';}
+function render(){
+  buttons.forEach((btn,i)=>{
+    const x=i%SIZE,y=Math.floor(i/SIZE);
+    btn.classList.toggle('on',board[y][x]);
+    btn.classList.toggle('focused',i===focusIndex&&active);
+  });
+  updateStats();
+}
+function focusCell(){buttons[focusIndex]?.focus();}
+function checkWin(){
+  const remaining=countLights();
+  lightsEl.textContent=remaining;
+  if(!remaining){
+    active=false;
+    if(!best||moves<best){best=moves;localStorage.setItem(BEST_KEY,String(best));}
+    bestEl.textContent=best;
+    statusEl.textContent=`Solved in ${moves} moves!`;
+    overlay.innerHTML=`<h2>✨ Solved!</h2><p>You cleared the board in ${moves} moves. ${!best||moves===best?'That matches your best!':'Try for a lower move count next round.'}</p><button class="btn" id="overlay-btn">Play Again</button>`;
+    overlay.style.display='flex';
+    document.getElementById('overlay-btn').addEventListener('click',startGame);
+  }
+}
+document.addEventListener('keydown',e=>{
+  if(overlay.style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}
+  if(!active)return;
+  const row=Math.floor(focusIndex/SIZE),col=focusIndex%SIZE;
+  if(e.key==='ArrowUp')focusIndex=Math.max(0,row-1)*SIZE+col;
+  else if(e.key==='ArrowDown')focusIndex=Math.min(SIZE-1,row+1)*SIZE+col;
+  else if(e.key==='ArrowLeft')focusIndex=row*SIZE+Math.max(0,col-1);
+  else if(e.key==='ArrowRight')focusIndex=row*SIZE+Math.min(SIZE-1,col+1);
+  else if(e.key==='Enter'||e.key===' '){e.preventDefault();toggleByIndex(focusIndex);return;}
+  else return;
+  e.preventDefault();render();focusCell();
+});
+document.getElementById('overlay-btn').addEventListener('click',startGame);
+document.getElementById('new-puzzle-btn').addEventListener('click',startGame);
+makeBoard();render();
+</script>
+</body>
+</html>

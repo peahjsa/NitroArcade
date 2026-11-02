@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Duck Hunt — Game Portal</title>
+<meta name="description" content="Play Duck Hunt free online — Click to shoot ducks before they fly away. Don't waste shots! A Easy Action &amp; Shooter game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/duck-hunt/"/>
+<meta property="og:title" content="🦆 Duck Hunt — Free Browser Game"/>
+<meta property="og:description" content="Play Duck Hunt free in your browser. Click to shoot ducks before they fly away. Don't waste shots!"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/duck-hunt/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Duck Hunt",
+  "description": "Click to shoot ducks before they fly away. Don't waste shots!",
+  "url": "https://arcade.sotshau.fun/games/duck-hunt/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Action & Shooter",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px;max-width:760px}.score-bar{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:92px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:18px;box-shadow:0 8px 20px rgba(0,0,0,.08)}canvas{display:block;background:linear-gradient(180deg,#7dd3fc,#dbeafe 62%,#bbf7d0 62%,#86efac 100%);border-radius:14px;border:1px solid #bfdbfe;touch-action:none}.overlay{position:absolute;inset:18px;background:rgba(245,245,247,.94);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p{color:#6b7280;line-height:1.5;max-width:360px}.btn{padding:9px 22px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}.status{margin-top:12px;text-align:center;color:#374151;font-weight:700;min-height:24px;max-width:760px}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center;padding:0 16px;max-width:840px}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🦆 Duck Hunt</h1>
+<p class="sub">Track quick ducks, manage your shells, and rack up clean hits before too many birds escape the marsh.</p>
+<div class="score-bar"><div class="score-box"><div class="score-label">Score</div><div class="score-val" id="score">0</div></div><div class="score-box"><div class="score-label">Round</div><div class="score-val" id="round">1</div></div><div class="score-box"><div class="score-label">Shells</div><div class="score-val" id="shells">3</div></div><div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">0</div></div></div>
+<div class="game">
+  <canvas id="game" width="760" height="420"></canvas>
+  <div class="overlay" id="overlay">
+    <h2>🦆 Duck Hunt</h2>
+    <p>Use the arrow keys or WASD to steer the crosshair, press Space to fire, and tap or click directly on ducks on touch screens.</p>
+    <button class="btn" id="overlay-btn">Start Game</button>
+  </div>
+  <div class="status" id="status">Press Start to begin.</div>
+</div>
+<p class="hint">Move crosshair with arrow keys / WASD · Space to fire · Tap or click ducks to shoot</p>
+<script>
+
+const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');
+if(!ctx) throw new Error('Canvas 2D context not available');
+const BEST_KEY='duckHuntBest';
+let ducks=[],crosshair={x:canvas.width/2,y:canvas.height/2},score=0,round=1,shells=3,best=+(localStorage.getItem(BEST_KEY)||0),running=false,last=0,spawn=0,escaped=0,reload=0,keys={},statusMsg='Press Start to begin.',rafId=0;
+document.getElementById('best').textContent=best;
+function updateStats(){document.getElementById('score').textContent=score;document.getElementById('round').textContent=round;document.getElementById('shells').textContent=shells;document.getElementById('best').textContent=best;document.getElementById('status').textContent=statusMsg;}
+function startGame(){ducks=[];crosshair={x:canvas.width/2,y:canvas.height/2};score=0;round=1;shells=3;escaped=0;reload=0;keys={};running=true;last=0;spawn=0;statusMsg='Round 1: steady aim.';document.getElementById('overlay').style.display='none';updateStats();cancelAnimationFrame(rafId);rafId=requestAnimationFrame(loop);}
+function addDuck(){const left=Math.random()>.5;const y=70+Math.random()*180;ducks.push({x:left?-50:canvas.width+50,y,vx:(left?1:-1)*(2.1+round*.22+Math.random()*1.4),vy:(Math.random()-.5)*1.2,wing:0,alive:true});}
+function fireAt(x,y){if(!running)return;if(reload>0){statusMsg='Reloading...';updateStats();return;}if(shells<=0){reload=55;statusMsg='Out of shells!';updateStats();return;}shells--;let hit=false;for(const duck of ducks){if(duck.alive&&Math.hypot(duck.x-x,duck.y-y)<28){duck.alive=false;score+=25;hit=true;statusMsg='Nice shot!';if(score>best){best=score;localStorage.setItem(BEST_KEY,String(best));}}}if(!hit)statusMsg='Splash! Missed shot.';if(shells===0)reload=55;updateStats();}
+function gameOver(text){running=false;statusMsg='Final score: '+score;updateStats();const overlay=document.getElementById('overlay');overlay.innerHTML=`<h2>Marsh Quiet</h2><p>${text}</p><button class="btn" id="overlay-btn">Hunt Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);} 
+function update(dt){const move=4.2;if(keys.ArrowLeft||keys.a||keys.A)crosshair.x-=move;if(keys.ArrowRight||keys.d||keys.D)crosshair.x+=move;if(keys.ArrowUp||keys.w||keys.W)crosshair.y-=move;if(keys.ArrowDown||keys.s||keys.S)crosshair.y+=move;crosshair.x=Math.max(20,Math.min(canvas.width-20,crosshair.x));crosshair.y=Math.max(20,Math.min(canvas.height-20,crosshair.y));spawn+=dt;if(spawn>Math.max(340,1150-round*80)){spawn=0;addDuck();if(Math.random()<.35+round*.03)addDuck();}if(reload>0){reload--;if(reload===0){shells=3;statusMsg='Reloaded. Keep going!';}}ducks.forEach(duck=>{duck.wing+=dt/90;duck.x+=duck.vx;duck.y+=duck.vy+Math.sin(duck.wing)*.6;if(duck.alive&&(duck.x<-70||duck.x>canvas.width+70||duck.y<20||duck.y>canvas.height-30)){duck.alive=false;escaped++;statusMsg='A duck escaped.';if(escaped%5===0)round++;}});ducks=ducks.filter(duck=>duck.x>-110&&duck.x<canvas.width+110&&duck.y<canvas.height+80);if(escaped>=9)gameOver('Too many ducks flew away this round.');updateStats();}
+function drawReeds(){ctx.fillStyle='#16a34a';for(let i=0;i<canvas.width;i+=22){const h=20+((i*17)%35);ctx.fillRect(i,canvas.height-h,8,h);ctx.fillRect(i+6,canvas.height-h-10,4,h+10);}}
+function draw(){const sky=ctx.createLinearGradient(0,0,0,canvas.height);sky.addColorStop(0,'#7dd3fc');sky.addColorStop(.62,'#dbeafe');sky.addColorStop(.62,'#bbf7d0');sky.addColorStop(1,'#86efac');ctx.fillStyle=sky;ctx.fillRect(0,0,canvas.width,canvas.height);ctx.fillStyle='rgba(255,255,255,.8)';for(let i=0;i<5;i++){ctx.beginPath();ctx.arc(80+i*150,60+(i%2)*18,24,0,Math.PI*2);ctx.arc(104+i*150,70+(i%2)*18,18,0,Math.PI*2);ctx.fill();}ducks.forEach(duck=>{if(!duck.alive)return;ctx.save();ctx.translate(duck.x,duck.y);ctx.scale(duck.vx>0?1:-1,1);ctx.fillStyle='#22c55e';ctx.beginPath();ctx.ellipse(0,0,26,16,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#0f172a';ctx.beginPath();ctx.arc(8,-12,10,0,Math.PI*2);ctx.fill();ctx.fillStyle='#f97316';ctx.beginPath();ctx.moveTo(18,-12);ctx.lineTo(34,-8);ctx.lineTo(18,-2);ctx.fill();ctx.fillStyle='#16a34a';ctx.save();ctx.rotate(Math.sin(duck.wing)*.5);ctx.fillRect(-4,-6,28,8);ctx.restore();ctx.restore();});drawReeds();ctx.strokeStyle='#ef4444';ctx.lineWidth=2;ctx.beginPath();ctx.arc(crosshair.x,crosshair.y,20,0,Math.PI*2);ctx.moveTo(crosshair.x-30,crosshair.y);ctx.lineTo(crosshair.x+30,crosshair.y);ctx.moveTo(crosshair.x,crosshair.y-30);ctx.lineTo(crosshair.x,crosshair.y+30);ctx.stroke();}
+function loop(ts){if(!running)return;const dt=ts-last||16;last=ts;update(dt);draw();if(running)rafId=requestAnimationFrame(loop);}
+document.getElementById('overlay-btn').addEventListener('click',startGame);
+document.addEventListener('keydown',e=>{if(document.getElementById('overlay').style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}keys[e.key]=true;if(e.key===' '){e.preventDefault();fireAt(crosshair.x,crosshair.y);}});document.addEventListener('keyup',e=>{keys[e.key]=false;});function setCrosshair(clientX,clientY){const rect=canvas.getBoundingClientRect();crosshair.x=(clientX-rect.left)/rect.width*canvas.width;crosshair.y=(clientY-rect.top)/rect.height*canvas.height;}canvas.addEventListener('pointermove',e=>{setCrosshair(e.clientX,e.clientY);if(running)draw();});canvas.addEventListener('pointerdown',e=>{setCrosshair(e.clientX,e.clientY);fireAt(crosshair.x,crosshair.y);});draw();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,4 @@
+
+.nh-progress{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin:15px 0}.nh-progress span{padding:8px 4px;text-align:center;font-size:11px;border:1px solid var(--line);border-radius:7px;color:var(--muted)}.nh-progress span.done{background:#174e35;color:#a6ffcc}.nh-progress span.now{border-color:var(--accent);color:var(--text)}
+.nh-stage{background:#03080c;border:1px solid var(--line);border-radius:12px;padding:26px;text-align:center;min-height:260px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px}
+.nh-stage input{background:var(--panel-2);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:12px;max-width:300px;width:100%}.nh-stage button{padding:12px 20px;border:0;border-radius:9px;background:var(--accent);color:#051014;font-weight:800;cursor:pointer}.nh-stage p{color:var(--muted);line-height:1.6}

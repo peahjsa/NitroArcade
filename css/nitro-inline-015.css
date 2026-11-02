@@ -1,0 +1,7 @@
+
+#nitroFnafGames{padding:22px 10px 36px;max-width:1160px;margin:auto;color:#f3e8ff}
+#nitroFnafGames .nf-heading{font-size:clamp(24px,4vw,42px);font-weight:900;margin:0 0 10px;color:#f1d7ff}
+#nitroFnafGames .nf-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(195px,1fr));gap:15px;margin-top:24px}
+#nitroFnafGames .nf-card{background:linear-gradient(145deg,#251632,#0e101e);border:1px solid #8050a3;border-radius:16px;color:#fff;padding:22px 14px;min-height:178px;cursor:pointer;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;transition:transform .18s,border-color .18s;font:inherit}
+#nitroFnafGames .nf-card:hover{transform:translateY(-3px);border-color:#df9fff}
+#nitroFnafGames .nf-icon{font-size:42px}#nitroFnafGames .nf-card strong{font-size:16px}#nitroFnafGames .nf-card small{font-size:12px;color:#cdb8dc}

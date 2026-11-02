@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Tic-Tac-Toe 2P — Game Portal</title>
+<meta name="description" content="Play Tic-Tac-Toe 2P free online — Classic Tic-Tac-Toe for two players. Get three in a row to win! A Easy 2-Player Local game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/tic-tac-toe-2p/"/>
+<meta property="og:title" content="⭕ Tic-Tac-Toe 2P — Free Browser Game"/>
+<meta property="og:description" content="Play Tic-Tac-Toe 2P free in your browser. Classic Tic-Tac-Toe for two players. Get three in a row to win!"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/tic-tac-toe-2p/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Tic-Tac-Toe 2P",
+  "description": "Classic Tic-Tac-Toe for two players. Get three in a row to win!",
+  "url": "https://arcade.sotshau.fun/games/tic-tac-toe-2p/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "2-Player Local",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}
+nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}
+nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}
+nav a:hover{text-decoration:underline}
+h1{margin:20px 0 4px;font-size:24px;font-weight:700;text-align:center}
+.sub{color:#6b7280;font-size:14px;line-height:1.5;margin-bottom:16px;text-align:center;padding:0 16px;max-width:620px}
+.score-bar{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:14px;padding:0 16px}
+.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 18px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:100px}
+.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}
+.score-val{font-size:21px;font-weight:700;color:#6c63ff}
+.score-val.x{color:#6c63ff}.score-val.o{color:#ef4444}.score-val.draw{color:#6b7280}.score-val.best{color:#10b981}
+.panel{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:22px;padding:18px;box-shadow:0 10px 28px rgba(0,0,0,.08);width:min(420px,calc(100vw - 24px))}
+.board{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;touch-action:manipulation}
+.cell{aspect-ratio:1;border:none;border-radius:18px;background:#f9fafb;border:1px solid #e5e7eb;box-shadow:0 4px 12px rgba(0,0,0,.06);font-size:clamp(38px,10vw,56px);font-weight:800;cursor:pointer;color:#6c63ff;transition:transform .12s,box-shadow .12s,border-color .12s,background .12s}
+.cell:hover:not(:disabled),.cell.focused{transform:translateY(-2px);border-color:#6c63ff;box-shadow:0 8px 18px rgba(108,99,255,.18)}
+.cell.o{color:#ef4444}
+.cell.win{background:#ede9ff;border-color:#6c63ff}
+.cell.win.o{background:#fee2e2;border-color:#ef4444}
+.cell:disabled{cursor:default}
+.status{margin:14px 0 10px;min-height:48px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:2px}
+.status strong{font-size:17px;color:#111827}
+.status span{font-size:13px;color:#6b7280}
+.controls{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.btn{padding:10px 18px;background:#6c63ff;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;transition:background .15s,transform .15s}
+.btn:hover{background:#574fd6;transform:translateY(-1px)}
+.btn-outline{background:#fff;border:1.5px solid #6c63ff;color:#6c63ff}
+.btn-outline:hover{background:#ede9ff}
+.overlay{position:absolute;inset:18px;background:rgba(245,245,247,.95);border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center;z-index:2}
+.overlay h2{font-size:28px;color:#111827}
+.overlay p{color:#6b7280;line-height:1.55;max-width:290px}
+.hint{margin-top:14px;font-size:12px;color:#9ca3af;text-align:center;padding:0 16px;max-width:560px}
+.badge{display:inline-flex;align-items:center;gap:6px;background:#ede9ff;color:#574fd6;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:700}
+@media (max-width:420px){.panel{padding:14px}.cell{border-radius:15px}.score-box{min-width:92px;padding:8px 14px}}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>⭕ Tic-Tac-Toe 2P</h1>
+<p class="sub">A local head-to-head Tic-Tac-Toe match. Take turns on one device, tap any square on touch screens, or use the keyboard to move the focus and place marks.</p>
+
+<div class="score-bar">
+  <div class="score-box"><div class="score-label">❌ X Rounds</div><div class="score-val x" id="x-score">0</div></div>
+  <div class="score-box"><div class="score-label">Draws</div><div class="score-val draw" id="draw-score">0</div></div>
+  <div class="score-box"><div class="score-label">⭕ O Rounds</div><div class="score-val o" id="o-score">0</div></div>
+  <div class="score-box"><div class="score-label">Fastest Match</div><div class="score-val best" id="best-score">—</div></div>
+</div>
+
+<div class="panel">
+  <div class="overlay" id="overlay">
+    <div class="badge">First to 3 round wins takes the match</div>
+    <h2 id="overlay-title">⭕ Ready for a Rematch?</h2>
+    <p id="overlay-text">Players share the board locally. Use Arrow keys plus Enter/Space, number keys 1–9, or tap squares directly. Swipe on the board to move the focus on touch devices.</p>
+    <button class="btn" id="overlay-btn">Start Match</button>
+  </div>
+
+  <div class="board" id="board" aria-label="Tic-Tac-Toe board"></div>
+
+  <div class="status" id="status" aria-live="polite">
+    <strong>Press Start Match to begin.</strong>
+    <span>Best-of-5 style scoring: first to 3 round wins.</span>
+  </div>
+
+  <div class="controls">
+    <button class="btn btn-outline" id="round-btn">Next Round</button>
+    <button class="btn" id="match-btn">Restart Match</button>
+  </div>
+</div>
+
+<p class="hint">Keyboard: Arrow keys move, Enter/Space place, number keys 1–9 play cells · Touch: tap a square or swipe to move focus</p>
+
+<script>
+const boardEl=document.getElementById('board');
+const overlayEl=document.getElementById('overlay');
+const overlayTitleEl=document.getElementById('overlay-title');
+const overlayTextEl=document.getElementById('overlay-text');
+const overlayBtnEl=document.getElementById('overlay-btn');
+const statusEl=document.getElementById('status');
+const xScoreEl=document.getElementById('x-score');
+const oScoreEl=document.getElementById('o-score');
+const drawScoreEl=document.getElementById('draw-score');
+const bestScoreEl=document.getElementById('best-score');
+const roundBtnEl=document.getElementById('round-btn');
+const matchBtnEl=document.getElementById('match-btn');
+const WIN_LINES=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+const BEST_KEY='ticTacToe2pFastestMatch';
+const MATCH_TARGET=3;
+
+let board=[];
+let cells=[];
+let currentPlayer='X';
+let startingPlayer='X';
+let active=false;
+let matchStarted=false;
+let matchOver=false;
+let focusIndex=4;
+let winningLine=[];
+let roundsPlayed=0;
+let scores={X:0,O:0,draws:0};
+let overlayAction=startMatch;
+let touchStartX=0;
+let touchStartY=0;
+let fastestMatch=Number.parseInt(localStorage.getItem(BEST_KEY)||'',10);
+
+if(!Number.isFinite(fastestMatch))fastestMatch=0;
+
+function createBoard(){
+  boardEl.innerHTML='';
+  cells=[];
+  for(let i=0;i<9;i++){
+    const button=document.createElement('button');
+    button.className='cell';
+    button.type='button';
+    button.dataset.index=String(i);
+    button.setAttribute('aria-label',`Cell ${i+1}`);
+    button.addEventListener('click',()=>playMove(i));
+    boardEl.appendChild(button);
+    cells.push(button);
+  }
+}
+
+function showOverlay(title,text,buttonLabel,action){
+  overlayTitleEl.textContent=title;
+  overlayTextEl.textContent=text;
+  overlayBtnEl.textContent=buttonLabel;
+  overlayAction=action;
+  overlayEl.style.display='flex';
+}
+
+function hideOverlay(){
+  overlayEl.style.display='none';
+}
+
+function updateStats(){
+  xScoreEl.textContent=String(scores.X);
+  oScoreEl.textContent=String(scores.O);
+  drawScoreEl.textContent=String(scores.draws);
+  bestScoreEl.textContent=fastestMatch?String(fastestMatch):'—';
+}
+
+function setStatus(title,detail){
+  statusEl.innerHTML=`<strong>${title}</strong><span>${detail}</span>`;
+}
+
+function render(){
+  cells.forEach((cell,index)=>{
+    const value=board[index];
+    cell.textContent=value;
+    cell.disabled=!active||Boolean(value);
+    cell.classList.toggle('o',value==='O');
+    cell.classList.toggle('focused',active&&index===focusIndex&&!value);
+    cell.classList.toggle('win',winningLine.includes(index));
+    if(value){
+      cell.setAttribute('aria-label',`Cell ${index+1}, ${value}`);
+    }else{
+      cell.setAttribute('aria-label',`Cell ${index+1}, empty`);
+    }
+  });
+}
+
+function focusCell(){
+  const target=cells[focusIndex];
+  if(target)target.focus({preventScroll:true});
+}
+
+function resetBoard(){
+  board=Array(9).fill('');
+  winningLine=[];
+  focusIndex=board[4]?board.findIndex(cell=>!cell):4;
+  currentPlayer=startingPlayer;
+  active=true;
+  matchOver=false;
+  render();
+  focusCell();
+  setStatus(`Round ${roundsPlayed+1} · ${currentPlayer} to move`,`First to ${MATCH_TARGET} round wins takes the match. ${startingPlayer} starts this round.`);
+}
+
+function startMatch(){
+  scores={X:0,O:0,draws:0};
+  roundsPlayed=0;
+  startingPlayer='X';
+  matchStarted=true;
+  matchOver=false;
+  updateStats();
+  hideOverlay();
+  resetBoard();
+}
+
+function startNextRound(){
+  if(!matchStarted||matchOver)return;
+  hideOverlay();
+  startingPlayer=startingPlayer==='X'?'O':'X';
+  resetBoard();
+}
+
+function restartMatch(){
+  startMatch();
+}
+
+function findWinner(state){
+  for(const line of WIN_LINES){
+    const [a,b,c]=line;
+    if(state[a]&&state[a]===state[b]&&state[a]===state[c]){
+      return {winner:state[a],line};
+    }
+  }
+  return state.every(Boolean)?{winner:'draw',line:[]} : null;
+}
+
+function completeMatch(winner){
+  matchOver=true;
+  active=false;
+  if(roundsPlayed&&(fastestMatch===0||roundsPlayed<fastestMatch)){
+    fastestMatch=roundsPlayed;
+    localStorage.setItem(BEST_KEY,String(fastestMatch));
+  }
+  updateStats();
+  setStatus(`${winner} wins the match!`,`Final score ${scores.X}-${scores.O} with ${scores.draws} draw${scores.draws===1?'':'s'}.`);
+  showOverlay(`${winner} takes the match! 🏆`,`The match finished in ${roundsPlayed} round${roundsPlayed===1?'':'s'}. Tap below for a new local showdown.`,'Play New Match',startMatch);
+  render();
+}
+
+function finishRound(result){
+  active=false;
+  roundsPlayed++;
+  if(result.winner==='draw'){
+    scores.draws++;
+    updateStats();
+    setStatus(`Round ${roundsPlayed} is a draw.`,`Score stays X ${scores.X} · O ${scores.O}. Start the next round when ready.`);
+    showOverlay('🤝 Round Draw',`Nobody found three in a row in round ${roundsPlayed}.`,'Next Round',startNextRound);
+    render();
+    return;
+  }
+
+  scores[result.winner]++;
+  winningLine=result.line.slice();
+  updateStats();
+  setStatus(`${result.winner} wins round ${roundsPlayed}!`,`Match score: X ${scores.X} · O ${scores.O}.`);
+  render();
+
+  if(scores[result.winner]>=MATCH_TARGET){
+    completeMatch(result.winner);
+    return;
+  }
+
+  showOverlay(`${result.winner} wins the round!`,`Next round starts with ${startingPlayer==='X'?'O':'X'}. First to ${MATCH_TARGET} round wins takes the match.`,'Next Round',startNextRound);
+}
+
+function playMove(index){
+  if(!active||board[index])return;
+  board[index]=currentPlayer;
+  focusIndex=index;
+  const result=findWinner(board);
+  render();
+  if(result){
+    finishRound(result);
+    return;
+  }
+  currentPlayer=currentPlayer==='X'?'O':'X';
+  const nextEmpty=board.findIndex(cell=>!cell);
+  if(nextEmpty!==-1&&board[focusIndex])focusIndex=nextEmpty;
+  setStatus(`Round ${roundsPlayed+1} · ${currentPlayer} to move`,`Shared board local play. Tap a square or use keyboard controls.`);
+  render();
+  focusCell();
+}
+
+function moveFocus(direction){
+  if(!active)return;
+  const row=Math.floor(focusIndex/3);
+  const col=focusIndex%3;
+  const moves={up:[Math.max(0,row-1),col],down:[Math.min(2,row+1),col],left:[row,Math.max(0,col-1)],right:[row,Math.min(2,col+1)]};
+  const target=moves[direction];
+  if(!target)return;
+  focusIndex=target[0]*3+target[1];
+  render();
+  focusCell();
+}
+
+function handleNumberPlay(key){
+  const index=Number.parseInt(key,10)-1;
+  if(index>=0&&index<9)playMove(index);
+}
+
+overlayBtnEl.addEventListener('click',()=>overlayAction());
+roundBtnEl.addEventListener('click',()=>{
+  if(matchOver||!matchStarted)return;
+  if(active){
+    setStatus(`Round ${roundsPlayed+1} is live.`,`Finish the current board before moving on.`);
+    return;
+  }
+  startNextRound();
+});
+matchBtnEl.addEventListener('click',restartMatch);
+
+document.addEventListener('keydown',event=>{
+  if(overlayEl.style.display!=='none'&&(event.key==='Enter'||event.key===' ')){
+    event.preventDefault();
+    overlayAction();
+    return;
+  }
+  if(!matchStarted||!active)return;
+  if(event.key==='ArrowUp'){event.preventDefault();moveFocus('up');return;}
+  if(event.key==='ArrowDown'){event.preventDefault();moveFocus('down');return;}
+  if(event.key==='ArrowLeft'){event.preventDefault();moveFocus('left');return;}
+  if(event.key==='ArrowRight'){event.preventDefault();moveFocus('right');return;}
+  if(event.key==='Enter'||event.key===' '){event.preventDefault();playMove(focusIndex);return;}
+  if(/^[1-9]$/.test(event.key)){event.preventDefault();handleNumberPlay(event.key);}
+});
+
+boardEl.addEventListener('touchstart',event=>{
+  const touch=event.changedTouches[0];
+  if(!touch)return;
+  touchStartX=touch.clientX;
+  touchStartY=touch.clientY;
+},{passive:true});
+
+boardEl.addEventListener('touchend',event=>{
+  if(!matchStarted||!active)return;
+  const touch=event.changedTouches[0];
+  if(!touch)return;
+  const dx=touch.clientX-touchStartX;
+  const dy=touch.clientY-touchStartY;
+  if(Math.abs(dx)<28&&Math.abs(dy)<28)return;
+  if(Math.abs(dx)>Math.abs(dy))moveFocus(dx>0?'right':'left');
+  else moveFocus(dy>0?'down':'up');
+},{passive:true});
+
+createBoard();
+updateStats();
+render();
+</script>
+</body>
+</html>

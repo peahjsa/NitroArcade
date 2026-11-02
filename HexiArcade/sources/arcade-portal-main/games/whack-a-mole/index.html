@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Whack-a-Mole — Game Portal</title>
+<meta name="description" content="Play Whack-a-Mole free online — Whack moles as they pop up. Faster and faster — don't miss! A Easy Action &amp; Shooter game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/whack-a-mole/"/>
+<meta property="og:title" content="🔨 Whack-a-Mole — Free Browser Game"/>
+<meta property="og:description" content="Play Whack-a-Mole free in your browser. Whack moles as they pop up. Faster and faster — don't miss!"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/whack-a-mole/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Whack-a-Mole",
+  "description": "Whack moles as they pop up. Faster and faster — don't miss!",
+  "url": "https://arcade.sotshau.fun/games/whack-a-mole/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Action & Shooter",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}
+nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}
+nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}
+h1{margin:20px 0 4px;font-size:24px;font-weight:700}
+.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px}
+.score-bar{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}
+.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 18px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:92px}
+.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}
+.score-val{font-size:20px;font-weight:700;color:#6c63ff}
+.game{position:relative;background:linear-gradient(180deg,#d9f99d,#84cc16);border-radius:22px;padding:22px;width:min(440px,92vw);box-shadow:0 12px 28px rgba(0,0,0,.14)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.hole{aspect-ratio:1;border:none;border-radius:50%;background:radial-gradient(circle at 50% 40%,#92400e,#451a03);box-shadow:inset 0 8px 18px rgba(0,0,0,.4);position:relative;cursor:pointer;color:transparent}
+.hole.focused{outline:4px solid rgba(255,255,255,.75);outline-offset:2px}
+.hole.mole::after{content:'��';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:54px;transform:translateY(-8px)}
+.status{margin-top:16px;text-align:center;min-height:24px;color:#365314;font-weight:800}
+.overlay{position:absolute;inset:0;background:rgba(245,245,247,.95);border-radius:22px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:24px;text-align:center}
+.overlay p{color:#6b7280;max-width:300px;line-height:1.5}
+.controls{margin-top:16px;display:flex;justify-content:center}
+.btn{padding:9px 22px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}
+.btn:hover{background:#574fd6}
+.hint{margin-top:14px;font-size:12px;color:#9ca3af;text-align:center;padding:0 16px}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🔨 Whack-a-Mole</h1>
+<p class="sub">Whack moles before they disappear. Use the mouse, touch, or arrow keys + Space.</p>
+
+<div class="score-bar">
+  <div class="score-box"><div class="score-label">Score</div><div class="score-val" id="score">0</div></div>
+  <div class="score-box"><div class="score-label">Time</div><div class="score-val" id="time">30</div></div>
+  <div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">0</div></div>
+</div>
+
+<div class="game">
+  <div class="grid" id="grid"></div>
+  <div class="status" id="status">Press Start to begin.</div>
+  <div class="overlay" id="overlay">
+    <h2>🔨 Whack-a-Mole</h2>
+    <p>You have 30 seconds. Hit every mole you can — they speed up as your score climbs.</p>
+    <button class="btn" id="overlay-btn">Start Game</button>
+  </div>
+</div>
+<div class="controls"><button class="btn" id="restart-btn">Restart</button></div>
+<p class="hint">Arrow keys move focus · Space / Enter whacks · Touch any hole on mobile</p>
+
+<script>
+const BEST_KEY='whackBest';
+const grid=document.getElementById('grid');
+const overlay=document.getElementById('overlay');
+const statusEl=document.getElementById('status');
+let score=0,timeLeft=30,best=+(localStorage.getItem(BEST_KEY)||0),mole=-1,focusIndex=0,running=false,swapTimer,countdown;
+document.getElementById('best').textContent=best;
+
+function buildGrid(){
+  grid.innerHTML='';
+  for(let i=0;i<9;i++){
+    const btn=document.createElement('button');
+    btn.className='hole';
+    btn.setAttribute('aria-label',`Hole ${i+1}`);
+    btn.addEventListener('click',()=>whack(i));
+    grid.appendChild(btn);
+  }
+  render();
+}
+
+function startGame(){
+  clearTimeout(swapTimer);
+  clearInterval(countdown);
+  score=0;timeLeft=30;mole=-1;focusIndex=4;running=true;
+  document.getElementById('score').textContent=score;
+  document.getElementById('time').textContent=timeLeft;
+  statusEl.textContent='Whack the moles!';
+  overlay.style.display='none';
+  render();
+  moveMole();
+  countdown=setInterval(()=>{
+    timeLeft--;
+    document.getElementById('time').textContent=timeLeft;
+    if(timeLeft<=0)finishGame();
+  },1000);
+}
+
+function render(){
+  [...grid.children].forEach((hole,index)=>{
+    hole.classList.toggle('mole',index===mole);
+    hole.classList.toggle('focused',index===focusIndex&&running);
+  });
+  const focusEl=grid.children[focusIndex];
+  if(focusEl)focusEl.focus();
+}
+
+function moveMole(){
+  if(!running)return;
+  let next=Math.floor(Math.random()*9);
+  if(next===mole)next=(next+1)%9;
+  mole=next;
+  render();
+  const speed=Math.max(320,720-score*12);
+  clearTimeout(swapTimer);
+  swapTimer=setTimeout(moveMole,speed);
+}
+
+function whack(index){
+  if(!running)return;
+  focusIndex=index;
+  if(index===mole){
+    score++;
+    document.getElementById('score').textContent=score;
+    statusEl.textContent='Nice hit!';
+    moveMole();
+  }else{
+    statusEl.textContent='Missed!';
+  }
+  render();
+}
+
+function finishGame(){
+  running=false;
+  clearTimeout(swapTimer);
+  clearInterval(countdown);
+  if(score>best){best=score;localStorage.setItem(BEST_KEY,String(best));document.getElementById('best').textContent=best;}
+  statusEl.textContent=`Time's up! Final score: ${score}.`;
+  overlay.innerHTML=`<h2>⏰ Time's Up!</h2><p>You scored <strong>${score}</strong> points. Want another 30-second round?</p><button class="btn" id="overlay-btn">Play Again</button>`;
+  overlay.style.display='flex';
+  document.getElementById('overlay-btn').addEventListener('click',startGame);
+  mole=-1;
+  render();
+}
+
+document.addEventListener('keydown',e=>{
+  if(overlay.style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}
+  if(!running)return;
+  const row=Math.floor(focusIndex/3),col=focusIndex%3;
+  const moveMap={ArrowUp:[Math.max(0,row-1),col],ArrowDown:[Math.min(2,row+1),col],ArrowLeft:[row,Math.max(0,col-1)],ArrowRight:[row,Math.min(2,col+1)]};
+  if(moveMap[e.key]){const [r,c]=moveMap[e.key];focusIndex=r*3+c;render();e.preventDefault();return;}
+  if(e.key==='Enter'||e.key===' '){e.preventDefault();whack(focusIndex);}
+});
+
+document.getElementById('overlay-btn').addEventListener('click',startGame);
+document.getElementById('restart-btn').addEventListener('click',startGame);
+buildGrid();
+</script>
+</body>
+</html>

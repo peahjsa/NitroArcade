@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Rhythm Tap — Game Portal</title>
+<meta name="description" content="Play Rhythm Tap free online — Tap the keys in time with the beat. Stay on rhythm to score! A Medium Memory &amp; Reflex game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/rhythm-tap/"/>
+<meta property="og:title" content="🥁 Rhythm Tap — Free Browser Game"/>
+<meta property="og:description" content="Play Rhythm Tap free in your browser. Tap the keys in time with the beat. Stay on rhythm to score!"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/rhythm-tap/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Rhythm Tap",
+  "description": "Tap the keys in time with the beat. Stay on rhythm to score!",
+  "url": "https://arcade.sotshau.fun/games/rhythm-tap/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Memory & Reflex",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px}.score-bar{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:14px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 18px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:96px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.game{position:relative;background:#0f172a;border-radius:20px;padding:18px;box-shadow:0 12px 28px rgba(0,0,0,.18);width:min(520px,94vw)}canvas{display:block;width:100%;height:auto;border-radius:16px;background:linear-gradient(#111827,#1e293b)}.pads{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}.pad{height:56px;border:none;border-radius:14px;color:#fff;font-weight:800;cursor:pointer}.pad:nth-child(1){background:#ef4444}.pad:nth-child(2){background:#f59e0b}.pad:nth-child(3){background:#22c55e}.pad:nth-child(4){background:#38bdf8}.status{min-height:24px;margin-top:12px;text-align:center;color:#e5e7eb;font-weight:700}.overlay{position:absolute;inset:18px;background:rgba(15,23,42,.95);border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center;color:#fff}.overlay p{max-width:340px;color:#cbd5e1;line-height:1.5}.btn{padding:9px 16px;background:#6c63ff;color:#fff;border:none;border-radius:10px;font-weight:700;cursor:pointer}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center;padding:0 16px}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🎶 Rhythm Tap</h1>
+<p class="sub">Hit notes as they reach the glowing line. Build combos and survive missed beats.</p>
+<div class="score-bar"><div class="score-box"><div class="score-label">Score</div><div class="score-val" id="score">0</div></div><div class="score-box"><div class="score-label">Combo</div><div class="score-val" id="combo">0</div></div><div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">0</div></div></div>
+<div class="game">
+  <canvas id="canvas" width="480" height="520"></canvas>
+  <div class="pads"><button class="pad" data-lane="0">A</button><button class="pad" data-lane="1">S</button><button class="pad" data-lane="2">D</button><button class="pad" data-lane="3">F</button></div>
+  <div class="status" id="status">Press Start when you're ready to tap.</div>
+  <div class="overlay" id="overlay"><h2>🎶 Rhythm Tap</h2><p>Press A, S, D, or F when a note reaches the hit line. Tap the colored buttons on mobile.</p><button class="btn" id="overlay-btn">Start Track</button></div>
+</div>
+<p class="hint">Keyboard: A S D F · Touch: tap the lane buttons</p>
+<script>
+const BEST_KEY='rhythmTapBest';
+const canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
+if(!ctx) throw new Error('Canvas 2d context unavailable');
+const overlay=document.getElementById('overlay'),statusEl=document.getElementById('status');
+const laneColors=['#ef4444','#f59e0b','#22c55e','#38bdf8'];
+let notes=[],score=0,combo=0,best=+(localStorage.getItem(BEST_KEY)||0),running=false,lastTime=0,spawnTimer=0,misses=0,raf=0;
+document.getElementById('best').textContent=String(best);
+function reset(){notes=[];score=0;combo=0;misses=0;spawnTimer=0;lastTime=0;updateStats();}
+function updateStats(){document.getElementById('score').textContent=String(score);document.getElementById('combo').textContent=String(combo);if(score>best){best=score;localStorage.setItem(BEST_KEY,String(best));document.getElementById('best').textContent=String(best);}}
+function startGame(){overlay.style.display='none';running=true;reset();statusEl.textContent='Track live — catch the beat!';cancelAnimationFrame(raf);raf=requestAnimationFrame(loop);} 
+function spawn(){notes.push({lane:(Math.random()*4)|0,y:-30,speed:220+Math.random()*80});}
+function hit(lane){if(!running)return;const hitLine=430;const target=notes.find(note=>note.lane===lane&&Math.abs(note.y-hitLine)<38);if(target){notes.splice(notes.indexOf(target),1);combo++;score+=100+combo*12;statusEl.textContent=combo>1?`Perfect! Combo ${combo}.`:'Perfect hit!';}else{combo=0;score=Math.max(0,score-40);misses++;statusEl.textContent='Missed the beat.';if(misses>=10)finish();}updateStats();}
+function finish(){running=false;statusEl.textContent=`Show over! Final score: ${score}.`;overlay.innerHTML=`<h2>🎤 Encore?</h2><p>You scored <strong>${score}</strong> with a best combo of <strong>${combo}</strong>.</p><button class="btn" id="overlay-btn">Play Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);} 
+function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.fillStyle='#111827';ctx.fillRect(0,0,canvas.width,canvas.height);for(let i=0;i<4;i++){ctx.fillStyle='rgba(255,255,255,.05)';ctx.fillRect(i*120+10,0,100,canvas.height);ctx.fillStyle=laneColors[i];ctx.fillRect(i*120+10,430,100,6);ctx.fillStyle='rgba(255,255,255,.75)';ctx.font='bold 24px system-ui';ctx.textAlign='center';ctx.fillText('ASDF'[i],i*120+60,500);}notes.forEach(note=>{ctx.fillStyle=laneColors[note.lane];ctx.beginPath();ctx.roundRect(note.lane*120+25,note.y,70,22,10);ctx.fill();});ctx.fillStyle='rgba(255,255,255,.5)';ctx.font='12px system-ui';ctx.textAlign='left';ctx.fillText(`Misses: ${misses}/10`,16,20);} 
+function loop(timestamp){if(!running)return;if(!lastTime)lastTime=timestamp;const dt=(timestamp-lastTime)/1000;lastTime=timestamp;spawnTimer+=dt;if(spawnTimer>.62){spawnTimer=0;spawn();}notes.forEach(note=>note.y+=note.speed*dt);const escaped=notes.filter(note=>note.y>470);if(escaped.length){misses+=escaped.length;combo=0;notes=notes.filter(note=>note.y<=470);statusEl.textContent='Too slow — notes slipped by.';updateStats();if(misses>=10){finish();return;}}draw();raf=requestAnimationFrame(loop);} 
+document.getElementById('overlay-btn').addEventListener('click',startGame);document.querySelectorAll('.pad').forEach(button=>{button.addEventListener('pointerdown',()=>hit(Number(button.dataset.lane)));});document.addEventListener('keydown',event=>{if(overlay.style.display!=='none'&&(event.key==='Enter'||event.key===' ')){event.preventDefault();startGame();return;}const map={a:0,A:0,s:1,S:1,d:2,D:2,f:3,F:3};if(map[event.key]!==undefined){event.preventDefault();hit(map[event.key]);}});draw();
+</script>
+</body>
+</html>

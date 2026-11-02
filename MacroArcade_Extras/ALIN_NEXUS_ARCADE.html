@@ -1,0 +1,1806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ALIN // NEXUS ARCADE</title>
+
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;background:#05060d;color:#fff}
+body{overflow-x:hidden}
+
+:root{
+ --cyan:#00eaff;
+ --pink:#ff2bd6;
+ --purple:#8b5cff;
+ --green:#38ff9c;
+ --panel:#0b0e1b;
+ --line:#202642;
+}
+
+body:before{
+ content:"";
+ position:fixed;
+ inset:0;
+ pointer-events:none;
+ background:
+ radial-gradient(circle at 15% 10%,#00eaff12,transparent 30%),
+ radial-gradient(circle at 85% 20%,#ff2bd612,transparent 30%),
+ radial-gradient(circle at 50% 100%,#8b5cff10,transparent 35%);
+ z-index:-1;
+}
+
+header{
+ position:sticky;
+ top:0;
+ z-index:50;
+ height:76px;
+ padding:0 28px;
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ background:#070914dd;
+ border-bottom:1px solid #252b48;
+ backdrop-filter:blur(18px);
+}
+
+.brand{
+ font-size:25px;
+ font-weight:1000;
+ letter-spacing:3px;
+}
+
+.brand span{color:var(--cyan)}
+
+.creator{
+ color:var(--pink);
+ font-size:13px;
+ font-weight:900;
+ letter-spacing:1px;
+}
+
+.hero{
+ max-width:1500px;
+ margin:auto;
+ padding:75px 28px 35px;
+}
+
+.badge{
+ display:inline-block;
+ border:1px solid #27304f;
+ background:#0b1020;
+ color:#8d9ac4;
+ padding:8px 14px;
+ border-radius:30px;
+ font-size:11px;
+ letter-spacing:2px;
+ margin-bottom:18px;
+}
+
+h1{
+ margin:0;
+ font-size:clamp(48px,8vw,108px);
+ line-height:.82;
+ letter-spacing:-5px;
+ font-weight:1000;
+}
+
+h1 .cyan{color:var(--cyan)}
+h1 .pink{color:var(--pink)}
+
+.heroText{
+ max-width:760px;
+ color:#929cbc;
+ font-size:17px;
+ line-height:1.6;
+ margin-top:25px;
+}
+
+.toolbar{
+ max-width:1500px;
+ margin:auto;
+ padding:10px 28px 25px;
+ display:flex;
+ gap:10px;
+ flex-wrap:wrap;
+}
+
+.search{
+ flex:1;
+ min-width:270px;
+}
+
+input,select{
+ border:1px solid #2a3150;
+ background:#0b0f1e;
+ color:#fff;
+ padding:14px 16px;
+ border-radius:12px;
+ outline:none;
+ font-size:14px;
+}
+
+input:focus,select:focus{
+ border-color:var(--cyan);
+ box-shadow:0 0 20px #00eaff15;
+}
+
+.btn{
+ border:1px solid #26304d;
+ background:#11162a;
+ color:#fff;
+ border-radius:12px;
+ padding:13px 17px;
+ font-weight:900;
+ cursor:pointer;
+ transition:.18s;
+}
+
+.btn:hover{
+ transform:translateY(-2px);
+ border-color:var(--cyan);
+ box-shadow:0 8px 30px #00eaff18;
+}
+
+.btn.primary{
+ background:var(--cyan);
+ color:#001015;
+ border-color:var(--cyan);
+}
+
+.stats{
+ max-width:1500px;
+ margin:auto;
+ padding:0 28px 25px;
+ display:flex;
+ gap:12px;
+ flex-wrap:wrap;
+}
+
+.stat{
+ padding:12px 16px;
+ border:1px solid #202642;
+ background:#0a0d19;
+ border-radius:12px;
+ color:#8e98b9;
+ font-size:12px;
+}
+
+.stat b{
+ color:#fff;
+ font-size:16px;
+ margin-right:6px;
+}
+
+.grid{
+ max-width:1500px;
+ margin:auto;
+ padding:10px 28px 80px;
+ display:grid;
+ grid-template-columns:repeat(auto-fill,minmax(245px,1fr));
+ gap:17px;
+}
+
+.card{
+ position:relative;
+ min-height:255px;
+ overflow:hidden;
+ border:1px solid var(--line);
+ background:linear-gradient(145deg,#0b0f1d,#080a13);
+ border-radius:18px;
+ transition:.22s;
+}
+
+.card:after{
+ content:"";
+ position:absolute;
+ inset:0;
+ pointer-events:none;
+ background:linear-gradient(120deg,transparent,#ffffff06,transparent);
+ transform:translateX(-100%);
+ transition:.6s;
+}
+
+.card:hover{
+ transform:translateY(-7px);
+ border-color:#334066;
+ box-shadow:0 18px 50px #0008;
+}
+
+.card:hover:after{
+ transform:translateX(100%);
+}
+
+.art{
+ height:150px;
+ position:relative;
+ padding:15px;
+ overflow:hidden;
+ display:flex;
+ flex-direction:column;
+ justify-content:space-between;
+}
+
+.art:before{
+ content:"";
+ position:absolute;
+ width:170px;
+ height:170px;
+ border-radius:50%;
+ right:-50px;
+ top:-70px;
+ background:#ffffff15;
+ filter:blur(2px);
+}
+
+.number{
+ position:relative;
+ color:#ffffff88;
+ font-size:10px;
+ letter-spacing:2px;
+}
+
+.gameName{
+ position:relative;
+ font-size:21px;
+ font-weight:1000;
+ max-width:85%;
+ line-height:1.05;
+}
+
+.category{
+ position:relative;
+ font-size:10px;
+ color:#ffffffaa;
+ text-transform:uppercase;
+ letter-spacing:1.5px;
+}
+
+.cardBottom{
+ padding:14px;
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ gap:8px;
+}
+
+.description{
+ color:#707a99;
+ font-size:11px;
+ line-height:1.35;
+}
+
+.play{
+ background:#fff;
+ color:#060711;
+ border:0;
+ padding:10px 14px;
+ border-radius:9px;
+ font-weight:1000;
+ cursor:pointer;
+}
+
+.play:hover{
+ background:var(--cyan);
+}
+
+.empty{
+ grid-column:1/-1;
+ text-align:center;
+ padding:80px;
+ color:#69738f;
+}
+
+footer{
+ border-top:1px solid #1e243b;
+ text-align:center;
+ padding:45px;
+ color:#59627e;
+}
+
+/* GAME MODAL */
+
+#modal{
+ display:none;
+ position:fixed;
+ inset:0;
+ z-index:100;
+ background:#000e;
+ backdrop-filter:blur(12px);
+ align-items:center;
+ justify-content:center;
+ padding:14px;
+}
+
+.gamePanel{
+ width:min(1100px,97vw);
+ max-height:96vh;
+ overflow:auto;
+ border:1px solid #303956;
+ background:#080b16;
+ border-radius:22px;
+ box-shadow:0 30px 120px #000;
+ padding:18px;
+}
+
+.gameHeader{
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ gap:10px;
+ margin-bottom:12px;
+}
+
+.gameHeader h2{
+ margin:0;
+ font-size:26px;
+}
+
+.gameHeader small{
+ color:#7580a0;
+}
+
+.close{
+ background:#ff376f;
+ color:white;
+ border:0;
+ border-radius:9px;
+ padding:10px 15px;
+ font-weight:900;
+ cursor:pointer;
+}
+
+.hud{
+ display:flex;
+ justify-content:space-between;
+ color:#8defff;
+ padding:10px 4px;
+ font-weight:900;
+}
+
+#canvas{
+ width:100%;
+ height:auto;
+ max-height:70vh;
+ display:block;
+ border-radius:15px;
+ border:1px solid #202744;
+ background:#03050b;
+ cursor:crosshair;
+}
+
+.instructions{
+ color:#75809f;
+ padding:10px 3px 2px;
+ font-size:13px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+ <div class="brand">ALIN <span>// NEXUS</span></div>
+ <div class="creator">CREATED BY ALIN</div>
+</header>
+
+<section class="hero">
+ <div class="badge">ORIGINAL ARCADE NETWORK</div>
+
+ <h1>
+  PLAY.<br>
+  <span class="cyan">CREATE.</span><br>
+  <span class="pink">DOMINATE.</span>
+ </h1>
+
+ <p class="heroText">
+  Welcome to ALIN NEXUS — a collection of original browser arcade
+  experiences. Every title is designed as an original game concept.
+  No copied game worlds. No fake buttons. Just arcade gameplay.
+ </p>
+</section>
+
+<div class="toolbar">
+ <input class="search" id="search" placeholder="⌕  Search the arcade..." oninput="render()">
+
+ <select id="category" onchange="render()">
+  <option value="ALL">ALL CATEGORIES</option>
+  <option value="ACTION">ACTION</option>
+  <option value="ARCADE">ARCADE</option>
+  <option value="PUZZLE">PUZZLE</option>
+  <option value="RACING">RACING</option>
+  <option value="SPACE">SPACE</option>
+  <option value="SURVIVAL">SURVIVAL</option>
+  <option value="SPORT">SPORT</option>
+  <option value="DEFENSE">DEFENSE</option>
+ </select>
+
+ <button class="btn primary" onclick="randomGame()">⚡ RANDOM GAME</button>
+ <button class="btn" onclick="shuffleGames()">🎲 SHUFFLE</button>
+</div>
+
+<div class="stats">
+ <div class="stat"><b id="total">120</b> ORIGINAL GAMES</div>
+ <div class="stat"><b id="shown">120</b> SHOWING</div>
+ <div class="stat"><b id="high">0</b> BEST SCORE</div>
+ <div class="stat">◆ CREATED BY ALIN</div>
+</div>
+
+<main id="grid" class="grid"></main>
+
+<footer>
+ ALIN NEXUS ARCADE<br><br>
+ 120 ORIGINAL PLAYABLE EXPERIENCES<br>
+ <b>CREATED BY ALIN</b>
+</footer>
+
+
+<div id="modal">
+ <div class="gamePanel">
+
+  <div class="gameHeader">
+   <div>
+    <h2 id="gameTitle">GAME</h2>
+    <small id="gameCategory">ARCADE</small>
+   </div>
+   <button class="close" onclick="closeGame()">CLOSE ×</button>
+  </div>
+
+  <div class="hud">
+   <span id="score">SCORE: 0</span>
+   <span id="level">LEVEL: 1</span>
+  </div>
+
+  <canvas id="canvas" width="1000" height="600"></canvas>
+
+  <div class="instructions" id="instructions">
+   Use the keyboard to play.
+  </div>
+
+ </div>
+</div>
+
+
+<script>
+
+/* =========================================================
+   120 ORIGINAL ALIN GAMES
+========================================================= */
+
+const names=[
+
+"Neon Pulse",
+"Cyber Sprint",
+"Gravity Shift",
+"Quantum Dodge",
+"Plasma Drift",
+"Shadow Circuit",
+"Crystal Breaker",
+"Laser Valley",
+"Void Runner",
+"Thunder Grid",
+"Pixel Storm",
+"Hyper Tunnel",
+"Cosmic Dash",
+"Magnet Mayhem",
+"Prism Rush",
+"Star Hopper",
+"Neon Fortress",
+"Rocket Panic",
+"Dark Orbit",
+"Turbo Grid",
+
+"Firefly Frenzy",
+"Icefall",
+"Solar Strike",
+"Moon Maze",
+"Astro Miner",
+"Galaxy Sweep",
+"Comet Hunter",
+"Orbit Break",
+"Star Cannon",
+"Cosmic Shield",
+"Alien Pulse",
+"Meteor Panic",
+"Planet Hopper",
+"Rocket Rescue",
+"Gravity Pilot",
+"Astro Tunnel",
+"Space Harvest",
+"Nova Defender",
+"Black Hole Run",
+"Solar Escape",
+
+"Cyber Ninja",
+"Mecha Clash",
+"Robot Riot",
+"Neon Samurai",
+"Shadow Duel",
+"Plasma Warrior",
+"Steel Storm",
+"Quantum Fighter",
+"Laser Knight",
+"Chrome Battle",
+"Digital Hunter",
+"Cyber Arena",
+"Mecha Rush",
+"Rogue Circuit",
+"Battle Matrix",
+"Neon Strike",
+"Turbo Fighter",
+"Void Warrior",
+"Electric Clash",
+"Hyper Combat",
+
+"Crystal Quest",
+"Color Cascade",
+"Shape Logic",
+"Prism Puzzle",
+"Light Matrix",
+"Number Nexus",
+"Quantum Blocks",
+"Mirror Maze",
+"Signal Solver",
+"Grid Genius",
+"Pattern Pulse",
+"Crystal Code",
+"Logic Lab",
+"Hexa Shift",
+"Orbit Puzzle",
+"Pixel Cipher",
+"Neon Numbers",
+"Mind Circuit",
+"Laser Logic",
+"Infinity Puzzle",
+
+"Turbo Highway",
+"Neon Drift",
+"Cyber Wheels",
+"Plasma Racer",
+"Hyper Road",
+"Rocket Kart",
+"Skyway Sprint",
+"Velocity X",
+"Night Drive",
+"Quantum Racing",
+"Magnet Racer",
+"Future Circuit",
+"Zero Gravity Race",
+"Neon Speedway",
+"Thunder Road",
+"Pixel Rally",
+"Hyper Drift",
+"Cosmic Racer",
+"Laser Lap",
+"Infinity Drive",
+
+"Lava Survival",
+"Storm Survival",
+"Night Swarm",
+"Monster Rush",
+"Crystal Defense",
+"Robot Siege",
+"Alien Siege",
+"Cyber Defense",
+"Neon Guardians",
+"Void Defense",
+"Plasma Fortress",
+"Quantum Guardians",
+"Final Outpost",
+"Last Reactor",
+"Dark Fortress",
+"Star Guardians",
+"Omega Defense",
+"Infinity Base",
+"Core Defender",
+"ALIN ULTIMATE"
+
+];
+
+
+/* =========================================================
+   GAME CONFIGURATION
+========================================================= */
+
+const categories=[
+"ACTION","ARCADE","SPACE","PUZZLE","RACING","SURVIVAL","DEFENSE","SPORT"
+];
+
+const descriptions=[
+"Fast reflexes and dangerous obstacles.",
+"Classic arcade action with an original twist.",
+"Explore a hostile futuristic universe.",
+"Solve patterns before the system overloads.",
+"Push your machine to maximum velocity.",
+"Survive as long as possible.",
+"Protect the core from incoming enemies.",
+"Precision, timing and competitive skill."
+];
+
+const games=names.map((name,i)=>({
+ name,
+ category:categories[i%categories.length],
+ engine:i%12,
+ description:descriptions[i%descriptions.length]
+}));
+
+
+/* =========================================================
+   CARD DESIGN
+========================================================= */
+
+const gradients=[
+"linear-gradient(135deg,#073b4c,#132b66)",
+"linear-gradient(135deg,#43104f,#162b62)",
+"linear-gradient(135deg,#064d3b,#102d50)",
+"linear-gradient(135deg,#421c08,#33185d)",
+"linear-gradient(135deg,#082d55,#52133f)",
+"linear-gradient(135deg,#1e154f,#074b54)",
+"linear-gradient(135deg,#53152e,#112e53)",
+"linear-gradient(135deg,#103d2a,#4c164f)"
+];
+
+function render(){
+
+ const grid=document.getElementById("grid");
+
+ const q=document.getElementById("search").value.toLowerCase();
+ const cat=document.getElementById("category").value;
+
+ grid.innerHTML="";
+
+ let count=0;
+
+ games.forEach((g,i)=>{
+
+  if(q && !g.name.toLowerCase().includes(q))return;
+  if(cat!=="ALL" && g.category!==cat)return;
+
+  count++;
+
+  const card=document.createElement("article");
+
+  card.className="card";
+
+  card.innerHTML=`
+
+   <div class="art"
+        style="background:${gradients[i%gradients.length]}">
+
+    <div class="number">
+     ALIN GAME ${String(i+1).padStart(3,"0")}
+    </div>
+
+    <div class="gameName">
+     ${g.name}
+    </div>
+
+    <div class="category">
+     ${g.category} • ORIGINAL
+    </div>
+
+   </div>
+
+   <div class="cardBottom">
+
+    <div class="description">
+     ${g.description}
+    </div>
+
+    <button class="play" onclick="launchGame(${i})">
+     PLAY
+    </button>
+
+   </div>
+  `;
+
+  grid.appendChild(card);
+ });
+
+ document.getElementById("shown").textContent=count;
+
+ if(!count){
+  grid.innerHTML=`
+   <div class="empty">
+    <h2>NO GAMES FOUND</h2>
+    Try another search.
+   </div>
+  `;
+ }
+}
+
+render();
+
+
+/* =========================================================
+   GAME SYSTEM
+========================================================= */
+
+const modal=document.getElementById("modal");
+const canvas=document.getElementById("canvas");
+const ctx=canvas.getContext("2d");
+
+let activeGame=null;
+let running=false;
+let frame=0;
+let score=0;
+let level=1;
+let raf=0;
+
+let keys={};
+let mouse={
+ x:0,
+ y:0,
+ down:false,
+ click:false
+};
+
+document.addEventListener("keydown",e=>{
+ keys[e.key.toLowerCase()]=true;
+
+ if(e.key==="Escape")closeGame();
+});
+
+document.addEventListener("keyup",e=>{
+ keys[e.key.toLowerCase()]=false;
+});
+
+canvas.addEventListener("mousemove",e=>{
+ const r=canvas.getBoundingClientRect();
+
+ mouse.x=(e.clientX-r.left)*canvas.width/r.width;
+ mouse.y=(e.clientY-r.top)*canvas.height/r.height;
+});
+
+canvas.addEventListener("mousedown",()=>{
+ mouse.down=true;
+ mouse.click=true;
+});
+
+canvas.addEventListener("mouseup",()=>{
+ mouse.down=false;
+});
+
+
+function launchGame(index){
+
+ activeGame=games[index];
+
+ modal.style.display="flex";
+
+ document.getElementById("gameTitle").textContent=
+  activeGame.name;
+
+ document.getElementById("gameCategory").textContent=
+  activeGame.category+" • ORIGINAL ALIN GAME";
+
+ score=0;
+ level=1;
+ frame=0;
+ running=true;
+
+ initEngine(activeGame.engine);
+
+ cancelAnimationFrame(raf);
+
+ gameLoop();
+}
+
+
+function closeGame(){
+
+ running=false;
+
+ cancelAnimationFrame(raf);
+
+ modal.style.display="none";
+}
+
+
+function updateHUD(){
+
+ document.getElementById("score").textContent=
+  "SCORE: "+Math.floor(score);
+
+ level=1+Math.floor(score/100);
+
+ document.getElementById("level").textContent=
+  "LEVEL: "+level;
+
+ const old=Number(localStorage.getItem("alinBest")||0);
+
+ if(score>old){
+  localStorage.setItem("alinBest",Math.floor(score));
+ }
+
+ document.getElementById("high").textContent=
+  Math.max(old,Math.floor(score));
+}
+
+
+/* =========================================================
+   ENGINE 0 — NEON DODGE
+========================================================= */
+
+let dodger;
+let hazards=[];
+
+function init0(){
+
+ dodger={x:500,y:520};
+
+ hazards=[];
+
+ for(let i=0;i<12;i++){
+  hazards.push({
+   x:Math.random()*1000,
+   y:-Math.random()*800,
+   s:3+Math.random()*5,
+   size:15+Math.random()*25
+  });
+ }
+}
+
+function draw0(){
+
+ clear();
+
+ if(keys.a||keys.arrowleft)dodger.x-=7;
+ if(keys.d||keys.arrowright)dodger.x+=7;
+
+ dodger.x=Math.max(20,Math.min(980,dodger.x));
+
+ hazards.forEach(h=>{
+
+  h.y+=h.s;
+
+  if(h.y>630){
+   h.y=-30;
+   h.x=Math.random()*1000;
+   score++;
+  }
+
+  box(h.x,h.y,h.size,"#ff2bd6");
+
+  if(Math.abs(h.x-dodger.x)<35 &&
+     Math.abs(h.y-dodger.y)<35){
+   score=0;
+   dodger.x=500;
+  }
+ });
+
+ box(dodger.x,dodger.y,40,"#00eaff");
+}
+
+
+/* =========================================================
+   ENGINE 1 — SPACE SHOOTER
+========================================================= */
+
+let ship;
+let bullets=[];
+let enemies=[];
+
+function init1(){
+
+ ship={x:500,y:540};
+
+ bullets=[];
+ enemies=[];
+
+ for(let i=0;i<20;i++)
+  enemies.push({
+   x:50+(i%10)*100,
+   y:50+Math.floor(i/10)*80,
+   alive:true,
+   vx:1
+  });
+}
+
+function draw1(){
+
+ clear();
+
+ if(keys.a||keys.arrowleft)ship.x-=7;
+ if(keys.d||keys.arrowright)ship.x+=7;
+
+ ship.x=Math.max(25,Math.min(975,ship.x));
+
+ if(keys[" "]&&frame%7===0)
+  bullets.push({x:ship.x,y:520});
+
+ bullets.forEach(b=>b.y-=10);
+
+ enemies.forEach(e=>{
+
+  if(!e.alive)return;
+
+  e.x+=e.vx;
+
+  if(e.x>970||e.x<30)e.vx*=-1;
+
+  box(e.x,e.y,34,"#ff2bd6");
+
+  bullets.forEach(b=>{
+   if(Math.hypot(b.x-e.x,b.y-e.y)<25){
+    e.alive=false;
+    score+=10;
+   }
+  });
+ });
+
+ bullets.forEach(b=>{
+  box(b.x,b.y,7,"#00eaff");
+ });
+
+ ctx.fillStyle="#00eaff";
+ ctx.beginPath();
+ ctx.moveTo(ship.x,505);
+ ctx.lineTo(ship.x-25,550);
+ ctx.lineTo(ship.x+25,550);
+ ctx.closePath();
+ ctx.fill();
+}
+
+
+/* =========================================================
+   ENGINE 2 — SNAKE
+========================================================= */
+
+let snake=[];
+let food;
+let snakeDir={x:1,y:0};
+
+function init2(){
+
+ snake=[
+  {x:500,y:300},
+  {x:480,y:300},
+  {x:460,y:300}
+ ];
+
+ snakeDir={x:1,y:0};
+
+ food={
+  x:Math.floor(Math.random()*48)*20+20,
+  y:Math.floor(Math.random()*28)*20+20
+ };
+}
+
+function draw2(){
+
+ clear();
+
+ if(keys.w||keys.arrowup){
+  if(snakeDir.y===0)snakeDir={x:0,y:-1};
+ }
+
+ if(keys.s||keys.arrowdown){
+  if(snakeDir.y===0)snakeDir={x:0,y:1};
+ }
+
+ if(keys.a||keys.arrowleft){
+  if(snakeDir.x===0)snakeDir={x:-1,y:0};
+ }
+
+ if(keys.d||keys.arrowright){
+  if(snakeDir.x===0)snakeDir={x:1,y:0};
+ }
+
+ if(frame%5===0){
+
+  const head={
+   x:snake[0].x+snakeDir.x*20,
+   y:snake[0].y+snakeDir.y*20
+  };
+
+  if(
+   head.x<0||head.x>980||
+   head.y<0||head.y>580||
+   snake.some(s=>s.x===head.x&&s.y===head.y)
+  ){
+   score=0;
+   snake=[
+    {x:500,y:300},
+    {x:480,y:300}
+   ];
+   return;
+  }
+
+  snake.unshift(head);
+
+  if(head.x===food.x&&head.y===food.y){
+
+   score+=10;
+
+   food={
+    x:Math.floor(Math.random()*48)*20+20,
+    y:Math.floor(Math.random()*28)*20+20
+   };
+
+  }else{
+   snake.pop();
+  }
+ }
+
+ box(food.x,food.y,16,"#ff2bd6");
+
+ snake.forEach((s,i)=>
+  box(s.x,s.y,18,i===0?"#00eaff":"#1595a9")
+ );
+}
+
+
+/* =========================================================
+   ENGINE 3 — FLIGHT
+========================================================= */
+
+let flyer;
+let gates=[];
+
+function init3(){
+
+ flyer={
+  x:180,
+  y:300,
+  vy:0
+ };
+
+ gates=[];
+
+ for(let i=0;i<7;i++)
+  gates.push({
+   x:700+i*220,
+   gap:150+Math.random()*250
+  });
+}
+
+function draw3(){
+
+ clear();
+
+ flyer.vy+=.3;
+
+ if(keys[" "]||keys.w||keys.arrowup)
+  flyer.vy=-5;
+
+ flyer.y+=flyer.vy;
+
+ gates.forEach(g=>{
+
+  g.x-=5;
+
+  if(g.x<-80){
+   g.x=1100;
+   g.gap=150+Math.random()*250;
+   score++;
+  }
+
+  ctx.fillStyle="#8b5cff";
+
+  ctx.fillRect(g.x,0,70,g.gap-65);
+  ctx.fillRect(g.x,g.gap+65,70,600);
+
+  if(
+   flyer.x>g.x-20 &&
+   flyer.x<g.x+70 &&
+   (flyer.y<g.gap-65||flyer.y>g.gap+65)
+  ){
+   score=0;
+   flyer.y=300;
+   flyer.vy=0;
+  }
+ });
+
+ if(flyer.y<0||flyer.y>600){
+  flyer.y=300;
+  flyer.vy=0;
+ }
+
+ box(flyer.x,flyer.y,34,"#00eaff");
+}
+
+
+/* =========================================================
+   ENGINE 4 — BREAKER
+========================================================= */
+
+let ball,paddle,blocks;
+
+function init4(){
+
+ paddle={x:500};
+
+ ball={
+  x:500,
+  y:430,
+  vx:4,
+  vy:-5
+ };
+
+ blocks=[];
+
+ for(let y=0;y<5;y++)
+ for(let x=0;x<12;x++)
+  blocks.push({
+   x:55+x*75,
+   y:45+y*30,
+   alive:true
+  });
+}
+
+function draw4(){
+
+ clear();
+
+ if(keys.a||keys.arrowleft)paddle.x-=8;
+ if(keys.d||keys.arrowright)paddle.x+=8;
+
+ paddle.x=Math.max(70,Math.min(930,paddle.x));
+
+ ball.x+=ball.vx;
+ ball.y+=ball.vy;
+
+ if(ball.x<8||ball.x>992)ball.vx*=-1;
+ if(ball.y<8)ball.vy*=-1;
+
+ if(
+  ball.y>520 &&
+  ball.x>paddle.x-75 &&
+  ball.x<paddle.x+75
+ )
+ ball.vy=-Math.abs(ball.vy);
+
+ if(ball.y>610){
+  score=0;
+  ball={x:500,y:430,vx:4,vy:-5};
+ }
+
+ blocks.forEach(b=>{
+
+  if(!b.alive)return;
+
+  ctx.fillStyle="#ff2bd6";
+  ctx.fillRect(b.x,b.y,65,20);
+
+  if(
+   ball.x>b.x&&ball.x<b.x+65&&
+   ball.y>b.y&&ball.y<b.y+20
+  ){
+   b.alive=false;
+   ball.vy*=-1;
+   score+=10;
+  }
+ });
+
+ ctx.fillStyle="#00eaff";
+ ctx.fillRect(paddle.x-75,540,150,15);
+
+ ctx.fillStyle="#fff";
+ ctx.beginPath();
+ ctx.arc(ball.x,ball.y,9,0,Math.PI*2);
+ ctx.fill();
+}
+
+
+/* =========================================================
+   ENGINE 5 — RUNNER
+========================================================= */
+
+let runner;
+let obstacles=[];
+
+function init5(){
+
+ runner={
+  x:180,
+  y:500,
+  vy:0,
+  jump:false
+ };
+
+ obstacles=[];
+
+ for(let i=0;i<10;i++)
+  obstacles.push({
+   x:700+i*180,
+   h:30+Math.random()*70
+  });
+}
+
+function draw5(){
+
+ clear();
+
+ ctx.fillStyle="#11182c";
+ ctx.fillRect(0,540,1000,60);
+
+ if(keys[" "]||keys.w||keys.arrowup){
+  if(!runner.jump){
+   runner.vy=-12;
+   runner.jump=true;
+  }
+ }
+
+ runner.vy+=.55;
+ runner.y+=runner.vy;
+
+ if(runner.y>=500){
+  runner.y=500;
+  runner.vy=0;
+  runner.jump=false;
+ }
+
+ obstacles.forEach(o=>{
+
+  o.x-=7;
+
+  if(o.x<-60){
+   o.x=1100+Math.random()*300;
+   score++;
+  }
+
+  ctx.fillStyle="#ff2bd6";
+  ctx.fillRect(o.x,500-o.h,40,o.h);
+
+  if(
+   runner.x+20>o.x&&
+   runner.x-20<o.x+40&&
+   runner.y+25>500-o.h
+  ){
+   score=0;
+   o.x=1200;
+  }
+ });
+
+ box(runner.x,runner.y,40,"#00eaff");
+}
+
+
+/* =========================================================
+   ENGINE 6 — METEOR FIELD
+========================================================= */
+
+let pilot;
+let meteors=[];
+
+function init6(){
+
+ pilot={
+  x:500,
+  y:300,
+  angle:0
+ };
+
+ meteors=[];
+
+ for(let i=0;i<15;i++)
+  meteors.push({
+   x:Math.random()*1000,
+   y:Math.random()*600,
+   vx:-2+Math.random()*4,
+   vy:-2+Math.random()*4,
+   r:15+Math.random()*30
+  });
+}
+
+function draw6(){
+
+ clear();
+
+ if(keys.a||keys.arrowleft)pilot.angle-=.08;
+ if(keys.d||keys.arrowright)pilot.angle+=.08;
+
+ if(keys.w||keys.arrowup){
+  pilot.x+=Math.cos(pilot.angle)*4;
+  pilot.y+=Math.sin(pilot.angle)*4;
+ }
+
+ pilot.x=(pilot.x+1000)%1000;
+ pilot.y=(pilot.y+600)%600;
+
+ meteors.forEach(m=>{
+
+  m.x=(m.x+m.vx+1000)%1000;
+  m.y=(m.y+m.vy+600)%600;
+
+  ctx.strokeStyle="#ff2bd6";
+  ctx.lineWidth=3;
+  ctx.beginPath();
+  ctx.arc(m.x,m.y,m.r,0,Math.PI*2);
+  ctx.stroke();
+
+  if(Math.hypot(m.x-pilot.x,m.y-pilot.y)<m.r+15){
+   score=0;
+   pilot.x=500;
+   pilot.y=300;
+  }
+ });
+
+ ctx.save();
+ ctx.translate(pilot.x,pilot.y);
+ ctx.rotate(pilot.angle);
+
+ ctx.fillStyle="#00eaff";
+ ctx.beginPath();
+ ctx.moveTo(25,0);
+ ctx.lineTo(-20,-15);
+ ctx.lineTo(-10,0);
+ ctx.lineTo(-20,15);
+ ctx.closePath();
+ ctx.fill();
+
+ ctx.restore();
+}
+
+
+/* =========================================================
+   ENGINE 7 — CLICK TARGETS
+========================================================= */
+
+let target;
+
+function init7(){
+ target=randomTarget();
+}
+
+function randomTarget(){
+
+ return {
+  x:60+Math.random()*880,
+  y:60+Math.random()*480,
+  r:15+Math.random()*25
+ };
+}
+
+function draw7(){
+
+ clear();
+
+ ctx.strokeStyle="#243152";
+ ctx.lineWidth=2;
+
+ for(let x=0;x<1000;x+=50){
+  ctx.beginPath();
+  ctx.moveTo(x,0);
+  ctx.lineTo(x,600);
+  ctx.stroke();
+ }
+
+ for(let y=0;y<600;y+=50){
+  ctx.beginPath();
+  ctx.moveTo(0,y);
+  ctx.lineTo(1000,y);
+  ctx.stroke();
+ }
+
+ ctx.fillStyle="#ff2bd6";
+ ctx.beginPath();
+ ctx.arc(target.x,target.y,target.r,0,Math.PI*2);
+ ctx.fill();
+
+ if(mouse.click){
+
+  if(Math.hypot(
+   mouse.x-target.x,
+   mouse.y-target.y
+  )<target.r+10){
+   score+=10;
+   target=randomTarget();
+  }
+
+  mouse.click=false;
+ }
+}
+
+
+/* =========================================================
+   ENGINE 8 — MAZE
+========================================================= */
+
+let maze;
+
+function init8(){
+
+ maze={
+  x:60,
+  y:60
+ };
+}
+
+function draw8(){
+
+ clear();
+
+ ctx.strokeStyle="#263657";
+ ctx.lineWidth=10;
+
+ for(let i=0;i<10;i++){
+
+  ctx.beginPath();
+
+  if(i%2===0){
+   ctx.moveTo(100+i*90,40);
+   ctx.lineTo(100+i*90,460);
+  }else{
+   ctx.moveTo(40,80+i*45);
+   ctx.lineTo(900,80+i*45);
+  }
+
+  ctx.stroke();
+ }
+
+ if(keys.w||keys.arrowup)maze.y-=4;
+ if(keys.s||keys.arrowdown)maze.y+=4;
+ if(keys.a||keys.arrowleft)maze.x-=4;
+ if(keys.d||keys.arrowright)maze.x+=4;
+
+ maze.x=Math.max(25,Math.min(975,maze.x));
+ maze.y=Math.max(25,Math.min(575,maze.y));
+
+ ctx.fillStyle="#38ff9c";
+ ctx.beginPath();
+ ctx.arc(920,520,22,0,Math.PI*2);
+ ctx.fill();
+
+ if(Math.hypot(maze.x-920,maze.y-520)<30){
+  score+=100;
+  maze.x=60;
+  maze.y=60;
+ }
+
+ box(maze.x,maze.y,30,"#00eaff");
+}
+
+
+/* =========================================================
+   ENGINE 9 — SURVIVAL
+========================================================= */
+
+let survivor;
+let enemies9=[];
+
+function init9(){
+
+ survivor={
+  x:500,
+  y:300
+ };
+
+ enemies9=[];
+
+ for(let i=0;i<18;i++)
+  enemies9.push({
+   x:Math.random()*1000,
+   y:Math.random()*600,
+   hp:2
+  });
+}
+
+function draw9(){
+
+ clear();
+
+ if(keys.w)survivor.y-=5;
+ if(keys.s)survivor.y+=5;
+ if(keys.a)survivor.x-=5;
+ if(keys.d)survivor.x+=5;
+
+ enemies9.forEach(e=>{
+
+  let dx=survivor.x-e.x;
+  let dy=survivor.y-e.y;
+  let d=Math.hypot(dx,dy)||1;
+
+  e.x+=dx/d;
+  e.y+=dy/d;
+
+  box(e.x,e.y,28,"#ff376f");
+
+  if(Math.hypot(e.x-survivor.x,e.y-survivor.y)<28){
+   score=0;
+   survivor.x=500;
+   survivor.y=300;
+  }
+
+  if(mouse.down &&
+     Math.hypot(mouse.x-e.x,mouse.y-e.y)<45){
+   e.hp--;
+
+   if(e.hp<=0){
+    e.x=Math.random()*1000;
+    e.y=Math.random()*600;
+    score+=10;
+   }
+  }
+ });
+
+ box(survivor.x,survivor.y,38,"#00eaff");
+}
+
+
+/* =========================================================
+   ENGINE 10 — RACER
+========================================================= */
+
+let car;
+let traffic=[];
+
+function init10(){
+
+ car={x:500,y:500};
+
+ traffic=[];
+
+ for(let i=0;i<10;i++)
+  traffic.push({
+   x:250+Math.random()*500,
+   y:-i*100
+  });
+}
+
+function draw10(){
+
+ clear();
+
+ ctx.fillStyle="#111629";
+ ctx.fillRect(200,0,600,600);
+
+ ctx.strokeStyle="#ffffff88";
+ ctx.lineWidth=5;
+ ctx.setLineDash([35,35]);
+
+ ctx.beginPath();
+ ctx.moveTo(500,0);
+ ctx.lineTo(500,600);
+ ctx.stroke();
+
+ ctx.setLineDash([]);
+
+ if(keys.a||keys.arrowleft)car.x-=8;
+ if(keys.d||keys.arrowright)car.x+=8;
+
+ car.x=Math.max(235,Math.min(765,car.x));
+
+ traffic.forEach(t=>{
+
+  t.y+=6;
+
+  if(t.y>650){
+   t.y=-100;
+   t.x=240+Math.random()*520;
+   score++;
+  }
+
+  box(t.x,t.y,45,"#ff2bd6");
+
+  if(
+   Math.abs(t.x-car.x)<45&&
+   Math.abs(t.y-car.y)<65
+  ){
+   score=0;
+   t.y=-100;
+  }
+ });
+
+ box(car.x,car.y,50,"#00eaff");
+}
+
+
+/* =========================================================
+   ENGINE 11 — REACTOR
+========================================================= */
+
+let reactor;
+let cores=[];
+
+function init11(){
+
+ reactor={
+  x:500,
+  y:300
+ };
+
+ cores=[];
+
+ for(let i=0;i<25;i++)
+  cores.push({
+   x:Math.random()*1000,
+   y:Math.random()*600,
+   life:1
+  });
+}
+
+function draw11(){
+
+ clear();
+
+ if(keys.w)reactor.y-=5;
+ if(keys.s)reactor.y+=5;
+ if(keys.a)reactor.x-=5;
+ if(keys.d)reactor.x+=5;
+
+ cores.forEach(c=>{
+
+  if(c.life<=0)return;
+
+  let d=Math.hypot(
+   reactor.x-c.x,
+   reactor.y-c.y
+  );
+
+  c.life-=.002;
+
+  ctx.globalAlpha=Math.max(0,c.life);
+
+  box(c.x,c.y,25,"#38ff9c");
+
+  ctx.globalAlpha=1;
+
+  if(d<35){
+   c.life=0;
+   score+=15;
+  }
+ });
+
+ box(reactor.x,reactor.y,42,"#8b5cff");
+}
+
+
+/* =========================================================
+   ENGINE DISPATCH
+========================================================= */
+
+function initEngine(e){
+
+ switch(e){
+
+  case 0:init0();break;
+  case 1:init1();break;
+  case 2:init2();break;
+  case 3:init3();break;
+  case 4:init4();break;
+  case 5:init5();break;
+  case 6:init6();break;
+  case 7:init7();break;
+  case 8:init8();break;
+  case 9:init9();break;
+  case 10:init10();break;
+  case 11:init11();break;
+
+ }
+
+ const instructions=[
+  "WASD / ARROWS — move. Survive the falling hazards.",
+  "ARROWS / A-D — move. SPACE — fire.",
+  "WASD / ARROWS — control the snake.",
+  "SPACE / W / UP — fly through the gates.",
+  "A-D / ARROWS — move. SPACE — jump.",
+  "A-D — rotate. W / UP — thrust.",
+  "Click the glowing target before it moves.",
+  "WASD / ARROWS — reach the green extraction point.",
+  "WASD — move. Hold the mouse button to attack.",
+  "A-D / ARROWS — steer through traffic.",
+  "WASD — collect unstable reactor cores.",
+  "WASD — move through the reactor field."
+ ];
+
+ document.getElementById("instructions").textContent=
+  instructions[e];
+}
+
+
+/* =========================================================
+   DRAW HELPERS
+========================================================= */
+
+function clear(){
+
+ ctx.fillStyle="#03050b";
+ ctx.fillRect(0,0,1000,600);
+
+ ctx.strokeStyle="#10182c";
+ ctx.lineWidth=1;
+
+ for(let x=0;x<1000;x+=50){
+  ctx.beginPath();
+  ctx.moveTo(x,0);
+  ctx.lineTo(x,600);
+  ctx.stroke();
+ }
+
+ for(let y=0;y<600;y+=50){
+  ctx.beginPath();
+  ctx.moveTo(0,y);
+  ctx.lineTo(1000,y);
+  ctx.stroke();
+ }
+}
+
+function box(x,y,size,color){
+
+ ctx.fillStyle=color;
+
+ ctx.shadowBlur=20;
+ ctx.shadowColor=color;
+
+ ctx.fillRect(
+  x-size/2,
+  y-size/2,
+  size,
+  size
+ );
+
+ ctx.shadowBlur=0;
+}
+
+
+/* =========================================================
+   LOOP
+========================================================= */
+
+function gameLoop(){
+
+ if(!running)return;
+
+ frame++;
+
+ switch(activeGame.engine){
+
+  case 0:draw0();break;
+  case 1:draw1();break;
+  case 2:draw2();break;
+  case 3:draw3();break;
+  case 4:draw4();break;
+  case 5:draw5();break;
+  case 6:draw6();break;
+  case 7:draw7();break;
+  case 8:draw8();break;
+  case 9:draw9();break;
+  case 10:draw10();break;
+  case 11:draw11();break;
+
+ }
+
+ updateHUD();
+
+ raf=requestAnimationFrame(gameLoop);
+}
+
+
+/* =========================================================
+   RANDOM GAME
+========================================================= */
+
+function randomGame(){
+
+ const index=Math.floor(Math.random()*games.length);
+
+ launchGame(index);
+}
+
+
+/* =========================================================
+   SHUFFLE
+========================================================= */
+
+function shuffleGames(){
+
+ for(let i=games.length-1;i>0;i--){
+
+  const j=Math.floor(Math.random()*(i+1));
+
+  [games[i],games[j]]=[games[j],games[i]];
+ }
+
+ render();
+}
+
+
+// NitroArcade deep-link: launch an individual MacroArcade game directly.
+window.addEventListener('load',()=>{const n=new URLSearchParams(location.search).get('game');if(n!==null && /^\d+$/.test(n)){const i=Number(n);if(i>=0&&i<games.length)launchGame(i);}});
+</script>
+
+</body>
+</html>

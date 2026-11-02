@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Text Adventure — Game Portal</title>
+<meta name="description" content="Play Text Adventure free online — A classic interactive fiction adventure. Your choices shape the story. A Easy Platform &amp; Adventure game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/text-adventure/"/>
+<meta property="og:title" content="📖 Text Adventure — Free Browser Game"/>
+<meta property="og:description" content="Play Text Adventure free in your browser. A classic interactive fiction adventure. Your choices shape the story."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/text-adventure/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Text Adventure",
+  "description": "A classic interactive fiction adventure. Your choices shape the story.",
+  "url": "https://arcade.sotshau.fun/games/text-adventure/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Platform & Adventure",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px;max-width:760px}.score-bar{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 18px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:96px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;box-shadow:0 8px 20px rgba(0,0,0,.08);padding:24px;width:min(760px,94vw)}.story{background:#0f172a;color:#e2e8f0;border-radius:16px;padding:18px;min-height:200px;line-height:1.6;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}.story p+p{margin-top:10px}.choices{display:grid;gap:10px;margin-top:16px}.choice{padding:13px 14px;border:1px solid #cbd5e1;border-radius:12px;background:#fff;color:#1f2937;text-align:left;font-weight:700;cursor:pointer}.inventory{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}.pill{background:#ede9fe;color:#5b21b6;border-radius:999px;padding:8px 12px;font-weight:700;font-size:13px}.status{min-height:24px;text-align:center;color:#374151;font-weight:700;margin-top:16px}.overlay{position:absolute;inset:0;background:rgba(245,245,247,.96);border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p{color:#6b7280;max-width:360px;line-height:1.5}.btn{padding:10px 18px;border:none;border-radius:10px;background:#6c63ff;color:#fff;font-weight:700;cursor:pointer}.hint{margin-top:14px;font-size:12px;color:#9ca3af;text-align:center;padding:0 16px}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>📜 Text Adventure</h1>
+<p class="sub">Guide an airship courier through a midnight city, collect clues, and unlock multiple endings with your choices.</p>
+<div class="score-bar"><div class="score-box"><div class="score-label">Scene</div><div class="score-val" id="scene">0</div></div><div class="score-box"><div class="score-label">Clues</div><div class="score-val" id="clues">0</div></div><div class="score-box"><div class="score-label">Courage</div><div class="score-val" id="courage">0</div></div><div class="score-box"><div class="score-label">Endings</div><div class="score-val" id="best">0 / 3</div></div></div>
+<div class="game"><div class="story" id="story"><p>Press Start to begin.</p></div><div class="choices" id="choices"></div><div class="inventory" id="inventory"></div><div class="status" id="status">Press Start to begin.</div><div class="overlay" id="overlay"><h2>📜 Text Adventure</h2><p>Pick choices with number keys 1–4 or by tapping. Different paths reveal different endings and add to your best record.</p><button class="btn" id="overlay-btn">Start Story</button></div></div>
+<p class="hint">Keyboard: 1–4 to choose · Enter to replay when the overlay is open · Touch: tap any choice</p>
+<script>
+const ENDINGS_KEY='textAdventureEndings';
+const storyEl=document.getElementById('story'),choicesEl=document.getElementById('choices'),inventoryEl=document.getElementById('inventory'),overlay=document.getElementById('overlay'),statusEl=document.getElementById('status');
+const scenes={start:{text:['Rain needles the windows of your airship as a silver package hums in your satchel. The delivery card reads only: "To the lantern at the city\'s edge."'],choices:[{label:'1. Land at the clocktower market',next:'market',add:{courage:1}},{label:'2. Glide straight to the quiet canal',next:'canal',add:{clue:'Map Fragment'}}]},market:{text:['Market stalls glow under canvas awnings. A tea seller whispers that wardens are searching every courier tonight.'],choices:[{label:'1. Buy a steaming tea and listen closely',next:'tea',add:{clue:'Password'}},{label:'2. Climb the tower to scout the district',next:'tower',add:{courage:1}}]},canal:{text:['You drift beside the moonlit canal. Beneath a bridge, a mechanic repairs a skiff and eyes your satchel.'],choices:[{label:'1. Offer to help with the repairs',next:'mechanic',add:{clue:'Gear Sigil'}},{label:'2. Slip into the reeds and observe the patrol route',next:'reeds',add:{courage:1}}]},tea:{text:['The tea seller murmurs, "The lantern keeper asks for the phrase: dawn owes the city a favor."'],choices:[{label:'1. Head for the lantern gate',next:'gate'},{label:'2. Stop by the abandoned observatory first',next:'observatory',add:{clue:'Star Lens'}}]},tower:{text:['From the clocktower you spot wardens guarding the boulevard and a shortcut across rooftop gardens.'],choices:[{label:'1. Take the rooftop gardens',next:'gate',add:{courage:1}},{label:'2. Drop into the observatory courtyard',next:'observatory'}]},mechanic:{text:['The mechanic thanks you and presses a brass sigil into your hand. "Show that to the keeper," she says.'],choices:[{label:'1. Cross the ferry toward the lantern gate',next:'gate'},{label:'2. Ask about the package',next:'truth',add:{courage:1}}]},reeds:{text:['Hidden among the reeds, you overhear wardens say the package can restart the city\'s dim lighthouse.'],choices:[{label:'1. Hurry to the lantern gate',next:'gate',add:{clue:'Lighthouse Secret'}},{label:'2. Visit the observatory for answers',next:'observatory'}]},observatory:{text:['Dusty star charts cover the observatory floor. A cracked telescope still points to the northern sea.'],choices:[{label:'1. Search the charts for a route',next:'truth',add:{clue:'Sea Route'}},{label:'2. Pocket the star lens and leave for the gate',next:'gate',add:{clue:'Star Lens'}}]},truth:{text:['At last you realize the package contains a tiny dawn engine. The city can keep hiding it, or light the outer districts again.'],choices:[{label:'1. Deliver it quietly to the keeper',next:'final'},{label:'2. Call the citizens to witness the handoff',next:'final',add:{courage:1}}]},gate:{text:['The lantern gate waits beyond a bronze arch. A keeper steps from the glow and asks why the engine should be trusted to you.'],choices:[{label:'1. Offer the password and your gathered clues',next:'final',need:'Password'},{label:'2. Show what you found and trust your nerve',next:'final',add:{courage:1}}]},final:{text:['The keeper studies the humming engine while the city holds its breath. This is where your choices decide the night.'],choices:[{label:'1. Resolve the ending',next:'ending'}]}};
+let state,best=new Set(JSON.parse(localStorage.getItem(ENDINGS_KEY)||'[]')),current='start';
+function reset(){state={scene:0,clues:0,courage:0,items:new Set()};current='start';render();statusEl.textContent='Choose your first path.';overlay.style.display='none';}
+function updateStats(){document.getElementById('scene').textContent=String(state.scene);document.getElementById('clues').textContent=String(state.clues);document.getElementById('courage').textContent=String(state.courage);document.getElementById('best').textContent=`${best.size} / 3`;}
+function applyAdd(add={}){if(add.courage)state.courage+=add.courage;if(add.clue&&!state.items.has(add.clue)){state.items.add(add.clue);state.clues=state.items.size;}}
+function makeEnding(){let ending='Harbor Dawn',text='With hard-won clues, you help the keeper relight the outer harbor. Boats answer with bells as dawn finally reaches the water.';if(state.courage>=3&&state.items.has('Lighthouse Secret')){ending='People\'s Beacon';text='You summon the citizens, reveal the hidden engine, and the lighthouse blazes for every district at once.';}else if(state.items.has('Sea Route')&&state.items.has('Star Lens')){ending='Sky Cartographer';text='Using the observatory charts, you chart a new trade route and turn one delivery into a citywide rescue.';}best.add(ending);localStorage.setItem(ENDINGS_KEY,JSON.stringify([...best]));statusEl.textContent=`Ending unlocked: ${ending}.`;overlay.innerHTML=`<h2>✨ ${ending}</h2><p>${text}</p><button class="btn" id="overlay-btn">Play Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',reset);updateStats();}
+function choose(index){const scene=scenes[current];const choice=scene.choices[index];if(!choice)return;if(choice.need&&!state.items.has(choice.need)){statusEl.textContent=`You need the ${choice.need} clue for that choice.`;return;}applyAdd(choice.add);state.scene++;if(choice.next==='ending'){makeEnding();return;}current=choice.next;render();}
+function render(){const scene=scenes[current];storyEl.innerHTML=scene.text.map(line=>`<p>${line}</p>`).join('');choicesEl.innerHTML='';scene.choices.forEach((choice,i)=>{const btn=document.createElement('button');btn.className='choice';btn.textContent=choice.label;btn.addEventListener('click',()=>choose(i));choicesEl.appendChild(btn);});inventoryEl.innerHTML='';if(state.items.size){[...state.items].forEach(item=>{const pill=document.createElement('div');pill.className='pill';pill.textContent=item;inventoryEl.appendChild(pill);});}else inventoryEl.innerHTML='<div class="pill">No clues yet</div>';statusEl.textContent=current==='start'?'Pick a route through the city.':'Choose carefully — the city remembers.';updateStats();}
+document.getElementById('overlay-btn').addEventListener('click',reset);document.addEventListener('keydown',e=>{if(overlay.style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}if(['1','2','3','4'].includes(e.key)){e.preventDefault();choose(Number(e.key)-1);}});state={scene:0,clues:0,courage:0,items:new Set()};updateStats();
+</script>
+</body>
+</html>

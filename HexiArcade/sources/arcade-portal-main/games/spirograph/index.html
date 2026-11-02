@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Spirograph — Game Portal</title>
+<meta name="description" content="Play Spirograph free online — Create mesmerizing geometric patterns with virtual gears. A Easy Creative &amp; Art game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/spirograph/"/>
+<meta property="og:title" content="⭕ Spirograph — Free Browser Game"/>
+<meta property="og:description" content="Play Spirograph free in your browser. Create mesmerizing geometric patterns with virtual gears."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/spirograph/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Spirograph",
+  "description": "Create mesmerizing geometric patterns with virtual gears.",
+  "url": "https://arcade.sotshau.fun/games/spirograph/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Creative & Art",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px}.score-bar,.controls{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}.score-bar{margin-bottom:14px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 18px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:96px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:20px;padding:18px;box-shadow:0 8px 20px rgba(0,0,0,.08);width:min(700px,94vw)}canvas{display:block;width:min(560px,90vw);height:auto;margin:0 auto;background:#0f172a;border-radius:18px;border:1px solid #111827}.controls{margin-top:14px}.btn{padding:9px 16px;background:#6c63ff;color:#fff;border:none;border-radius:10px;font-weight:700;cursor:pointer}.ghost{background:#374151}.status{min-height:24px;margin-top:12px;text-align:center;color:#374151;font-weight:700}.overlay{position:absolute;inset:18px;background:rgba(245,245,247,.95);border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p{max-width:340px;color:#6b7280;line-height:1.5}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center;padding:0 16px}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🌀 Spirograph</h1>
+<p class="sub">Spin nested circles to trace glowing curves. Tweak the radii and offset to reveal new designs.</p>
+<div class="score-bar"><div class="score-box"><div class="score-label">Outer</div><div class="score-val" id="outer">140</div></div><div class="score-box"><div class="score-label">Inner</div><div class="score-val" id="inner">63</div></div><div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">203</div></div></div>
+<div class="game">
+  <canvas id="canvas" width="560" height="420"></canvas>
+  <div class="controls"><button class="btn ghost" id="outer-down">Outer -</button><button class="btn ghost" id="inner-down">Inner -</button><button class="btn ghost" id="offset-up">Offset +</button><button class="btn" id="random-btn">Randomize</button></div>
+  <div class="status" id="status">Press Start to spin the pattern.</div>
+  <div class="overlay" id="overlay"><h2>🌀 Spirograph</h2><p>Watch the pen trace a full loop. Use arrow keys to change circle sizes, + to increase pen offset, and R to randomize.</p><button class="btn" id="overlay-btn">Start Spinning</button></div>
+</div>
+<p class="hint">Keyboard: ←/→ outer radius, ↑/↓ inner radius, + offset, R randomize · Touch: use buttons</p>
+<script>
+const BEST_KEY='spirographBestComplexity';
+const canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
+if(!ctx) throw new Error('Canvas 2d context unavailable');
+const overlay=document.getElementById('overlay'),statusEl=document.getElementById('status');
+let outer=140,inner=63,offset=74,t=0,lastPoint=null,started=false,best=+(localStorage.getItem(BEST_KEY)||203),rafId=0;
+document.getElementById('best').textContent=String(best);
+function gcd(a,b){while(b){[a,b]=[b,a%b];}return Math.abs(a);} 
+function complexity(){return outer+inner+offset;}
+function updateStats(){document.getElementById('outer').textContent=String(outer);document.getElementById('inner').textContent=String(inner);if(complexity()>best){best=complexity();localStorage.setItem(BEST_KEY,String(best));document.getElementById('best').textContent=String(best);}}
+function resetPath(){ctx.fillStyle='#0f172a';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.strokeStyle='rgba(255,255,255,.08)';ctx.beginPath();ctx.arc(280,210,outer,0,Math.PI*2);ctx.stroke();t=0;lastPoint=null;}
+function step(){ctx.fillStyle='rgba(15,23,42,.025)';ctx.fillRect(0,0,canvas.width,canvas.height);const x=(outer-inner)*Math.cos(t)+offset*Math.cos(((outer-inner)/inner)*t);const y=(outer-inner)*Math.sin(t)-offset*Math.sin(((outer-inner)/inner)*t);const point={x:280+x,y:210+y};if(lastPoint){ctx.strokeStyle=`hsl(${(t*28)%360},90%,70%)`;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(lastPoint.x,lastPoint.y);ctx.lineTo(point.x,point.y);ctx.stroke();}lastPoint=point;t+=0.03;const loops=(inner/gcd(outer,inner))*Math.PI*2;if(t>loops){t=0;lastPoint=null;statusEl.textContent='Loop complete — tweak the radii for a new figure.';}rafId=requestAnimationFrame(step);}
+function startGame(){started=true;overlay.style.display='none';statusEl.textContent='Pattern in motion.';updateStats();resetPath();}
+function adjust(type,delta){if(type==='outer')outer=Math.max(90,Math.min(180,outer+delta));if(type==='inner')inner=Math.max(24,Math.min(110,inner+delta));offset=Math.max(20,Math.min(120,offset));updateStats();resetPath();statusEl.textContent='Parameters updated.';}
+function randomize(){outer=100+((Math.random()*70)|0);inner=30+((Math.random()*50)|0);offset=40+((Math.random()*60)|0);updateStats();resetPath();statusEl.textContent='Random pattern loaded.';}
+document.getElementById('overlay-btn').addEventListener('click',startGame);document.getElementById('outer-down').addEventListener('click',()=>adjust('outer',-8));document.getElementById('inner-down').addEventListener('click',()=>adjust('inner',-5));document.getElementById('offset-up').addEventListener('click',()=>{offset=Math.min(120,offset+6);updateStats();resetPath();statusEl.textContent=`Offset set to ${offset}.`;});document.getElementById('random-btn').addEventListener('click',randomize);
+document.addEventListener('keydown',event=>{if(overlay.style.display!=='none'&&(event.key==='Enter'||event.key===' ')){event.preventDefault();startGame();return;}if(event.key==='ArrowLeft'){event.preventDefault();adjust('outer',-8);}if(event.key==='ArrowRight'){event.preventDefault();adjust('outer',8);}if(event.key==='ArrowDown'){event.preventDefault();adjust('inner',-5);}if(event.key==='ArrowUp'){event.preventDefault();adjust('inner',5);}if(event.key==='+'||event.key==='='){offset=Math.min(120,offset+6);updateStats();resetPath();}if(event.key==='r'||event.key==='R')randomize();});
+updateStats();resetPath();step();
+</script>
+</body>
+</html>

@@ -1,0 +1,2 @@
+// Browser utility: report external dependencies and missing relative assets.
+window.nitroAuditAssets=async function(){const nodes=[...document.querySelectorAll('[src],[href]')];const items=nodes.map(n=>n.getAttribute('src')||n.getAttribute('href')).filter(Boolean);const remote=items.filter(s=>/^https?:\/\//i.test(s));const local=items.filter(s=>!(/^(https?:|data:|#|javascript:|mailto:|\/\/)/i.test(s)));return {external:remote,localReferences:local,counts:{external:remote.length,local:local.length}}};

@@ -1,0 +1,19 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Dev notes (not for repo)
+#CLAUDE.md
+#PROGRESS.md
+#ANALYSIS_INDEX.md
+#GAME_PATTERNS.md
+#GAME_PATTERNS_QUICK_REF.md
+#README_ANALYSIS.md
+#TARGET_GAMES_REFERENCE.md

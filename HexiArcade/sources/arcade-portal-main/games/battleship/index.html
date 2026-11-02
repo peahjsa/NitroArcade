@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Battleship — Game Portal</title>
+<meta name="description" content="Play Battleship free online — Place your fleet and sink the enemy's ships before they sink yours. A Medium Strategy game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/battleship/"/>
+<meta property="og:title" content="🚢 Battleship — Free Browser Game"/>
+<meta property="og:description" content="Play Battleship free in your browser. Place your fleet and sink the enemy's ships before they sink yours."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/battleship/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Battleship",
+  "description": "Place your fleet and sink the enemy's ships before they sink yours.",
+  "url": "https://arcade.sotshau.fun/games/battleship/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Strategy",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px}.score-bar{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:92px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:18px;box-shadow:0 8px 20px rgba(0,0,0,.08);width:min(920px,96vw)}.boards{display:flex;gap:18px;flex-wrap:wrap;justify-content:center}.panel h3{text-align:center;margin-bottom:8px;color:#374151}.board{display:grid;grid-template-columns:repeat(10,34px);gap:3px}.cell{width:34px;height:34px;border:none;border-radius:8px;background:#dbeafe;cursor:pointer;font-weight:700}.cell.ship{background:#93c5fd}.cell.hit{background:#ef4444;color:#fff}.cell.miss{background:#e5e7eb;color:#6b7280}.cell.cursor{outline:3px solid #6c63ff;outline-offset:1px}.controls{display:flex;gap:10px;justify-content:center;margin-top:14px;flex-wrap:wrap}.btn{padding:9px 18px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}.overlay{position:absolute;inset:18px;background:rgba(245,245,247,.95);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p{color:#6b7280;max-width:340px;line-height:1.5}.status{margin-top:12px;text-align:center;color:#374151;font-weight:700;min-height:24px}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🚢 Battleship</h1>
+<p class="sub">Your fleet is auto-deployed each round. Hunt the hidden enemy ships before the AI sinks yours.</p>
+<div class="score-bar">
+  <div class="score-box"><div class="score-label">Enemy Ships</div><div class="score-val" id="enemy-ships">5</div></div>
+  <div class="score-box"><div class="score-label">Your Ships</div><div class="score-val" id="player-ships">5</div></div>
+  <div class="score-box"><div class="score-label">Shots</div><div class="score-val" id="shots">0</div></div>
+  <div class="score-box"><div class="score-label">Wins</div><div class="score-val" id="wins">0</div></div>
+</div>
+<div class="game">
+  <div class="boards">
+    <div class="panel"><h3>Your Fleet</h3><div class="board" id="player-board"></div></div>
+    <div class="panel"><h3>Enemy Waters</h3><div class="board" id="enemy-board"></div></div>
+  </div>
+  <div class="controls"><button class="btn" id="new-battle-btn">New Battle</button></div>
+  <div class="overlay" id="overlay">
+    <h2>🚢 Battleship</h2>
+    <p>Use arrow keys to move the targeting cursor across the enemy grid and press Enter to fire. Tap enemy cells on touch devices.</p>
+    <button class="btn" id="overlay-btn">Start Battle</button>
+  </div>
+  <div class="status" id="status">Press Start to begin.</div>
+</div>
+<p class="hint">Arrow keys + Enter on enemy grid · Tap enemy squares to fire</p>
+<script>
+const SIZE=10,SHIP_SIZES=[5,4,3,3,2],WINS_KEY='battleshipWins';
+const playerBoardEl=document.getElementById('player-board'),enemyBoardEl=document.getElementById('enemy-board'),overlay=document.getElementById('overlay'),statusEl=document.getElementById('status');
+let playerState=placeFleet(),enemyState=placeFleet(),cursor={r:0,c:0},playerTurn=true,shots=0,aiTargets=[],wins=+(localStorage.getItem(WINS_KEY)||0);document.getElementById('wins').textContent=wins;
+updateStats();
+function emptyGrid(){return Array.from({length:SIZE},()=>Array.from({length:SIZE},()=>({ship:null,hit:false,miss:false})));}
+function placeFleet(){const grid=emptyGrid(),ships=[];SHIP_SIZES.forEach((len,index)=>{let placed=false;while(!placed){const vertical=Math.random()<.5;const r=Math.floor(Math.random()*(vertical?SIZE-len+1:SIZE));const c=Math.floor(Math.random()*(vertical?SIZE:SIZE-len+1));let ok=true;for(let i=0;i<len;i++){const rr=r+(vertical?i:0),cc=c+(vertical?0:i);if(grid[rr][cc].ship!==null)ok=false;}if(!ok)continue;const ship={id:index,len,hits:0};ships.push(ship);for(let i=0;i<len;i++){const rr=r+(vertical?i:0),cc=c+(vertical?0:i);grid[rr][cc].ship=ship;}placed=true;}});return{grid,ships};}
+function startGame(){playerState=placeFleet();enemyState=placeFleet();cursor={r:0,c:0};playerTurn=true;shots=0;aiTargets=[];statusEl.textContent='Battle stations: choose a target.';overlay.style.display='none';updateStats();render();}
+function shipsLeft(state){return state.ships.filter(s=>s.hits<s.len).length;}
+function updateStats(){document.getElementById('enemy-ships').textContent=String(shipsLeft(enemyState));document.getElementById('player-ships').textContent=String(shipsLeft(playerState));document.getElementById('shots').textContent=String(shots);document.getElementById('wins').textContent=String(wins);}
+function cellText(cell,hideShips){if(cell.hit)return'💥';if(cell.miss)return'•';if(cell.ship&&!hideShips)return'■';return'';}
+function render(){playerBoardEl.innerHTML='';enemyBoardEl.innerHTML='';for(let r=0;r<SIZE;r++)for(let c=0;c<SIZE;c++){const pCell=playerState.grid[r][c],pBtn=document.createElement('button');pBtn.className='cell'+(pCell.ship?' ship':'')+(pCell.hit?' hit':'')+(pCell.miss?' miss':'');pBtn.textContent=cellText(pCell,false);playerBoardEl.appendChild(pBtn);const eCell=enemyState.grid[r][c],eBtn=document.createElement('button');eBtn.className='cell'+(eCell.hit?' hit':'')+(eCell.miss?' miss':'')+(cursor.r===r&&cursor.c===c?' cursor':'');eBtn.textContent=cellText(eCell,true);eBtn.onclick=()=>fireAtEnemy(r,c);enemyBoardEl.appendChild(eBtn);}updateStats();}
+function markShot(state,r,c){const cell=state.grid[r][c];if(cell.hit||cell.miss)return null;if(cell.ship){cell.hit=true;cell.ship.hits++;return{hit:true,sunk:cell.ship.hits===cell.ship.len};}cell.miss=true;return{hit:false,sunk:false};}
+function neighbors(r,c){return[[r+1,c],[r-1,c],[r,c+1],[r,c-1]].filter(([nr,nc])=>nr>=0&&nr<SIZE&&nc>=0&&nc<SIZE);} 
+function fireAtEnemy(r,c){if(!playerTurn)return;const result=markShot(enemyState,r,c);if(!result)return;cursor={r,c};shots++;if(result.hit){statusEl.textContent=result.sunk?'Enemy ship sunk!':'Direct hit!';}else{statusEl.textContent='Miss. Enemy turn.';playerTurn=false;setTimeout(aiTurn,260);}if(shipsLeft(enemyState)===0){wins++;localStorage.setItem(WINS_KEY,String(wins));finish(true,'You sank the full enemy fleet.');return;}render();}
+function aiTurn(){let target=aiTargets.shift();while(target&&(playerState.grid[target[0]][target[1]].hit||playerState.grid[target[0]][target[1]].miss))target=aiTargets.shift();if(!target){do{target=[Math.floor(Math.random()*SIZE),Math.floor(Math.random()*SIZE)];}while(playerState.grid[target[0]][target[1]].hit||playerState.grid[target[0]][target[1]].miss);}const result=markShot(playerState,target[0],target[1]);if(result.hit){statusEl.textContent=result.sunk?'Enemy sank one of your ships!':'Enemy scored a hit!';neighbors(target[0],target[1]).forEach(n=>aiTargets.push(n));if(shipsLeft(playerState)===0){finish(false,'The AI sank your fleet before you could finish the job.');return;}setTimeout(aiTurn,260);}else{statusEl.textContent='Enemy missed. Your turn again.';playerTurn=true;}render();}
+function finish(win,text){playerTurn=false;render();overlay.innerHTML=`<h2>${win?'Victory!':'Defeat'}</h2><p>${text}</p><button class="btn" id="overlay-btn">Play Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);updateStats();statusEl.textContent=text;}
+document.addEventListener('keydown',e=>{if(overlay.style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}const arrows={ArrowLeft:[0,-1],ArrowRight:[0,1],ArrowUp:[-1,0],ArrowDown:[1,0]};if(arrows[e.key]){e.preventDefault();cursor={r:(cursor.r+arrows[e.key][0]+SIZE)%SIZE,c:(cursor.c+arrows[e.key][1]+SIZE)%SIZE};render();return;}if(e.key==='Enter'){e.preventDefault();fireAtEnemy(cursor.r,cursor.c);}});
+document.getElementById('new-battle-btn').addEventListener('click', startGame);
+document.getElementById('overlay-btn').addEventListener('click', startGame);
+render();
+</script>
+</body>
+</html>

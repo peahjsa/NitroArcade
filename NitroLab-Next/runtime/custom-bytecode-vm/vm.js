@@ -1,0 +1,2 @@
+// Tiny stack-based VM: PUSH number, ADD, MUL, SUB, PRINT. Demonstration only.
+export function execute(program){const stack=[],output=[];for(const [op,arg] of program){if(op==='PUSH')stack.push(Number(arg));else if(op==='ADD')stack.push(stack.pop()+stack.pop());else if(op==='MUL')stack.push(stack.pop()*stack.pop());else if(op==='SUB'){const b=stack.pop(),a=stack.pop();stack.push(a-b)}else if(op==='PRINT')output.push(stack.at(-1));else throw Error('Unknown opcode '+op)}return {stack,output}}

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Bullet Hell — Game Portal</title>
+<meta name="description" content="Play Bullet Hell free online — Dodge waves of enemy bullets in this intense shoot-'em-up. A Hard Action &amp; Shooter game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/bullet-hell/"/>
+<meta property="og:title" content="💥 Bullet Hell — Free Browser Game"/>
+<meta property="og:description" content="Play Bullet Hell free in your browser. Dodge waves of enemy bullets in this intense shoot-'em-up."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/bullet-hell/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Bullet Hell",
+  "description": "Dodge waves of enemy bullets in this intense shoot-'em-up.",
+  "url": "https://arcade.sotshau.fun/games/bullet-hell/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Action & Shooter",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px;max-width:760px}.score-bar{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:92px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:18px;box-shadow:0 8px 20px rgba(0,0,0,.08)}canvas{display:block;background:linear-gradient(180deg,#020617,#111827);border-radius:14px;border:1px solid #0f172a;touch-action:none}.overlay{position:absolute;inset:18px;background:rgba(245,245,247,.94);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p{color:#6b7280;line-height:1.5;max-width:360px}.btn{padding:9px 22px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}.status{margin-top:12px;text-align:center;color:#374151;font-weight:700;min-height:24px;max-width:520px}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center;padding:0 16px;max-width:600px}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>💠 Bullet Hell</h1>
+<p class="sub">Dodge dense bullet patterns, strafe between gaps, and blast orbiting emitters before your lives run out.</p>
+<div class="score-bar"><div class="score-box"><div class="score-label">Score</div><div class="score-val" id="score">0</div></div><div class="score-box"><div class="score-label">Lives</div><div class="score-val" id="lives">3</div></div><div class="score-box"><div class="score-label">Wave</div><div class="score-val" id="wave">1</div></div><div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">0</div></div></div>
+<div class="game">
+  <canvas id="game" width="520" height="620"></canvas>
+  <div class="overlay" id="overlay">
+    <h2>💠 Bullet Hell</h2>
+    <p>Steer with the arrow keys or WASD, fire with Space, and drag on touch screens to weave through the barrage.</p>
+    <button class="btn" id="overlay-btn">Start Game</button>
+  </div>
+  <div class="status" id="status">Press Start to begin.</div>
+</div>
+<p class="hint">Arrow keys / WASD to move · Space to fire · Drag or tap on touch screens</p>
+<script>
+
+const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');
+const BEST_KEY='bulletHellBest';
+let player,shots=[],enemyBullets=[],emitters=[],score=0,lives=3,wave=1,best=+(localStorage.getItem(BEST_KEY)||0),running=false,last=0,keys={},statusMsg='Press Start to begin.',dragging=false,rafId=0;
+document.getElementById('best').textContent=best;
+function resetPlayer(){player={x:canvas.width/2,y:canvas.height-70,r:12,speed:4.8,cooldown:0,flash:0};}
+function spawnWave(){emitters=[];const count=Math.min(5,2+wave);for(let i=0;i<count;i++)emitters.push({x:70+i*((canvas.width-140)/Math.max(1,count-1)),y:92+(i%2)*30,baseX:70+i*((canvas.width-140)/Math.max(1,count-1)),hp:4+wave,phase:i*1.4,timer:50-i*5});statusMsg='Wave '+wave+': stay calm and thread the gaps.';updateStats();}
+function updateStats(){document.getElementById('score').textContent=score;document.getElementById('lives').textContent=lives;document.getElementById('wave').textContent=wave;document.getElementById('best').textContent=best;document.getElementById('status').textContent=statusMsg;}
+function startGame(){score=0;lives=3;wave=1;shots=[];enemyBullets=[];keys={};resetPlayer();spawnWave();running=true;last=0;document.getElementById('overlay').style.display='none';updateStats();cancelAnimationFrame(rafId);rafId=requestAnimationFrame(loop);}
+function shoot(){if(!running||player.cooldown>0)return;player.cooldown=10;shots.push({x:player.x,y:player.y-18,vy:-8});}
+function hit(a,b){return Math.hypot(a.x-b.x,a.y-b.y)<a.r+b.r;}
+function loseLife(){if(player.flash>0)return;lives--;player.flash=40;statusMsg='You clipped the barrage!';if(lives<=0){endGame('The bullet curtain closed in.');return;}enemyBullets=[];resetPlayer();updateStats();}
+function endGame(text){running=false;statusMsg='Final score: '+score;updateStats();const overlay=document.getElementById('overlay');overlay.innerHTML=`<h2>Pattern Break</h2><p>${text}</p><button class="btn" id="overlay-btn">Play Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);} 
+function update(dt){const speed=player.speed*(keys.Shift?0.55:1);if(keys.ArrowLeft||keys.a||keys.A)player.x-=speed;if(keys.ArrowRight||keys.d||keys.D)player.x+=speed;if(keys.ArrowUp||keys.w||keys.W)player.y-=speed;if(keys.ArrowDown||keys.s||keys.S)player.y+=speed;player.x=Math.max(20,Math.min(canvas.width-20,player.x));player.y=Math.max(200,Math.min(canvas.height-20,player.y));player.cooldown=Math.max(0,player.cooldown-1);player.flash=Math.max(0,player.flash-1);if((keys[' ']||keys.Spacebar)&&player.cooldown===0)shoot();shots.forEach(s=>s.y+=s.vy);shots=shots.filter(s=>s.y>-20);enemyBullets.forEach(b=>{b.x+=b.vx;b.y+=b.vy;});enemyBullets=enemyBullets.filter(b=>b.x>-40&&b.x<canvas.width+40&&b.y<canvas.height+50);emitters.forEach((e,i)=>{e.phase+=dt/800;e.x=e.baseX+Math.sin(e.phase)*42;e.timer-=dt/16;if(e.timer<=0){e.timer=Math.max(18,56-wave*3);const sp=2.1+wave*.16;const count=3+Math.min(4,Math.floor(wave/2));for(let j=0;j<count;j++){const angle=Math.PI/2+(-0.7+1.4*(count===1?0:j/(count-1)))+Math.sin(e.phase+j)*0.12;enemyBullets.push({x:e.x,y:e.y+18,vx:Math.cos(angle)*sp,vy:Math.sin(angle)*sp,r:5});}if(wave>2&&i%2===0)enemyBullets.push({x:e.x,y:e.y+18,vx:0,vy:3.6+wave*.08,r:6});}});for(const s of shots){for(const e of emitters){if(e.hp<=0)continue;if(Math.hypot(s.x-e.x,s.y-e.y)<24){s.y=-99;e.hp--;score+=6;if(e.hp<=0){score+=35;statusMsg='Emitter down!';if(score>best){best=score;localStorage.setItem(BEST_KEY,String(best));}}}}}emitters=emitters.filter(e=>e.hp>0);for(const b of enemyBullets){if(hit({x:b.x,y:b.y,r:b.r},{x:player.x,y:player.y,r:player.r}))loseLife();}if(emitters.length===0){wave++;score+=50;if(score>best){best=score;localStorage.setItem(BEST_KEY,String(best));}spawnWave();}updateStats();}
+function draw(){const bg=ctx.createLinearGradient(0,0,0,canvas.height);bg.addColorStop(0,'#020617');bg.addColorStop(1,'#111827');ctx.fillStyle=bg;ctx.fillRect(0,0,canvas.width,canvas.height);ctx.fillStyle='rgba(148,163,184,.35)';for(let i=0;i<80;i++)ctx.fillRect((i*61)%canvas.width,(i*113)%canvas.height,2,2);emitters.forEach(e=>{ctx.fillStyle='#fb7185';ctx.beginPath();ctx.arc(e.x,e.y,16,0,Math.PI*2);ctx.fill();ctx.fillStyle='#111827';ctx.beginPath();ctx.arc(e.x-5,e.y-2,3,0,Math.PI*2);ctx.arc(e.x+5,e.y-2,3,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#fda4af';ctx.lineWidth=3;ctx.beginPath();ctx.arc(e.x,e.y,22,0,Math.PI*2);ctx.stroke();ctx.fillStyle='#fef3c7';ctx.fillRect(e.x-16,e.y-28,32,4);ctx.fillStyle='#ef4444';ctx.fillRect(e.x-16,e.y-28,32*(e.hp/(4+wave)),4);});ctx.fillStyle='#a78bfa';shots.forEach(s=>ctx.fillRect(s.x-2,s.y-12,4,14));ctx.fillStyle='#f59e0b';enemyBullets.forEach(b=>{ctx.beginPath();ctx.arc(b.x,b.y,b.r,0,Math.PI*2);ctx.fill();});ctx.save();ctx.translate(player.x,player.y);ctx.globalAlpha=player.flash?0.35+((player.flash%8)/8):1;ctx.fillStyle='#22d3ee';ctx.beginPath();ctx.moveTo(0,-18);ctx.lineTo(14,14);ctx.lineTo(0,8);ctx.lineTo(-14,14);ctx.closePath();ctx.fill();ctx.fillStyle='#f8fafc';ctx.fillRect(-3,-4,6,18);ctx.restore();}
+function loop(ts){if(!running)return;const dt=ts-last||16;last=ts;update(dt);draw();if(running)rafId=requestAnimationFrame(loop);}
+document.addEventListener('keydown',e=>{if(document.getElementById('overlay').style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}keys[e.key]=true;if(e.key===' '){e.preventDefault();shoot();}});document.addEventListener('keyup',e=>{keys[e.key]=false;});
+function movePointer(clientX,clientY){const rect=canvas.getBoundingClientRect();player.x=Math.max(20,Math.min(canvas.width-20,(clientX-rect.left)/rect.width*canvas.width));player.y=Math.max(200,Math.min(canvas.height-20,(clientY-rect.top)/rect.height*canvas.height));}
+canvas.addEventListener('pointerdown',e=>{if(!running)return;dragging=true;movePointer(e.clientX,e.clientY);shoot();});canvas.addEventListener('pointermove',e=>{if(running&&dragging)movePointer(e.clientX,e.clientY);});window.addEventListener('pointerup',()=>dragging=false);document.getElementById('overlay-btn').addEventListener('click',startGame);resetPlayer();spawnWave();draw();
+
+</script>
+</body>
+</html>

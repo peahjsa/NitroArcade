@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>🟡 Pac-Man — Game Portal</title>
+<meta name="description" content="Play Pac-Man free online — Eat all dots while avoiding ghosts. Power-ups let you fight back! A Medium Classic Arcade game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/pacman/"/>
+<meta property="og:title" content="🟡 Pac-Man — Free Browser Game"/>
+<meta property="og:description" content="Play Pac-Man free in your browser. Eat all dots while avoiding ghosts. Power-ups let you fight back!"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/pacman/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Pac-Man",
+  "description": "Eat all dots while avoiding ghosts. Power-ups let you fight back!",
+  "url": "https://arcade.sotshau.fun/games/pacman/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Classic Arcade",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}nav a:hover{text-decoration:underline}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{font-size:14px;color:#6b7280;text-align:center;margin-bottom:16px;padding:0 16px}.score-bar{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 18px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:90px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.wrap{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;box-shadow:0 8px 20px rgba(0,0,0,.08);padding:18px}.canvas{background:#020617;border-radius:14px;border:1px solid #0f172a;display:block}.controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px}.btn{padding:9px 22px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}.btn:hover{background:#574fd6}.btn-outline{background:transparent;border:1.5px solid #6c63ff;color:#6c63ff}.btn-outline:hover{background:#ede9ff}.touch-pad{display:grid;grid-template-columns:repeat(3,52px);gap:8px;justify-content:center;margin-top:14px}.touch-btn{padding:14px 0;background:#6c63ff;color:#fff;border:none;border-radius:12px;font-size:20px;font-weight:700}.touch-btn.blank{visibility:hidden}.status{margin-top:14px;text-align:center;min-height:24px;color:#4b5563;font-weight:600}.overlay{position:absolute;inset:0;background:rgba(245,245,247,.94);border-radius:18px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:10px;padding:24px;text-align:center}.overlay p{color:#6b7280;max-width:320px;line-height:1.5}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center;padding:0 16px}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🟡 Pac-Man</h1>
+<p class="sub">Gobble every pellet, dodge the ghosts, and survive long enough to clear the maze.</p>
+<div class="score-bar">
+  <div class="score-box"><div class="score-label">Score</div><div class="score-val" id="score">0</div></div>
+  <div class="score-box"><div class="score-label">Lives</div><div class="score-val" id="lives">3</div></div>
+  <div class="score-box"><div class="score-label">Level</div><div class="score-val" id="level">1</div></div>
+  <div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">0</div></div>
+</div>
+<div class="wrap">
+  <canvas id="c" class="canvas" width="420" height="420"></canvas>
+  <div class="controls"><button class="btn btn-outline" id="restart-btn">Restart</button></div>
+  <div class="touch-pad">
+    <button class="touch-btn blank" aria-hidden="true"></button>
+    <button class="touch-btn" id="dir-up">↑</button>
+    <button class="touch-btn blank" aria-hidden="true"></button>
+    <button class="touch-btn" id="dir-left">←</button>
+    <button class="touch-btn" id="dir-down">↓</button>
+    <button class="touch-btn" id="dir-right">→</button>
+  </div>
+  <div class="status" id="status">Press Start to begin.</div>
+  <div class="overlay" id="overlay">
+    <h2>🟡 Pac-Man</h2>
+    <p>Use arrow keys or swipe to move. Clear all pellets while staying away from the ghosts.</p>
+    <button class="btn" id="overlay-btn">Start Game</button>
+  </div>
+</div>
+<p class="hint">Arrow keys / WASD move · Swipe or use the on-screen pad on mobile</p>
+<script>
+const MAP_TEMPLATE=[
+  '###############',
+  '#.............#',
+  '#.###.###.###.#',
+  '#o#.......#...#',
+  '#.###.#.#.###.#',
+  '#.....#.#.....#',
+  '###.#.###.#.###',
+  '#...#.....#...#',
+  '#.###.###.###.#',
+  '#.....#.#.....#',
+  '#.###.#.#.###.#',
+  '#...#.....#...#',
+  '#.###.###.###.#',
+  '#.............#',
+  '###############'
+];
+const DIRS={left:{x:-1,y:0},right:{x:1,y:0},up:{x:0,y:-1},down:{x:0,y:1}};
+const ORDER=['left','up','right','down'];
+const BEST_KEY='pacmanBest';
+const canvas=document.getElementById('c');
+const ctx=canvas.getContext('2d');
+const overlay=document.getElementById('overlay');
+const statusEl=document.getElementById('status');
+const scoreEl=document.getElementById('score');
+const livesEl=document.getElementById('lives');
+const levelEl=document.getElementById('level');
+const bestEl=document.getElementById('best');
+const CELL=28;
+let board=[],pacman,ghosts=[],score=0,lives=3,level=1,best=+(localStorage.getItem(BEST_KEY)||0),running=false,rafId=0,lastTime=0,stepTimer=0,stepDelay=220,touchStart=null;
+bestEl.textContent=best;
+function cloneBoard(){return MAP_TEMPLATE.map(row=>row.split(''));}
+function pelletCount(){return board.flat().filter(ch=>ch==='.'||ch==='o').length;}
+function setStartPositions(){pacman={x:1,y:1,dir:'right',next:'right',mouth:0};ghosts=[{x:13,y:1,dir:'left',color:'#ef4444'},{x:13,y:13,dir:'up',color:'#06b6d4'},{x:1,y:13,dir:'right',color:'#ec4899'}];board[pacman.y][pacman.x]=' ';ghosts.forEach(g=>board[g.y][g.x]=' ');}
+function startGame(){score=0;lives=3;level=1;beginLevel(true);overlay.style.display='none';}
+function beginLevel(resetScore=false){if(!resetScore)score+=100;board=cloneBoard();setStartPositions();running=true;stepDelay=Math.max(130,220-(level-1)*10);statusEl.textContent=`Level ${level}: clear the maze.`;updateStats();draw();if(!lastTime){cancelAnimationFrame(rafId);rafId=requestAnimationFrame(loop);}}
+function updateStats(){scoreEl.textContent=score;livesEl.textContent=lives;levelEl.textContent=level;bestEl.textContent=best;}
+function queueDir(dir){pacman.next=dir;}
+function openTile(x,y){return board[y]?.[x] && board[y][x]!=='#';}
+function tryMove(entity){const desired=DIRS[entity.next||entity.dir];if(desired&&openTile(entity.x+desired.x,entity.y+desired.y))entity.dir=entity.next||entity.dir;const move=DIRS[entity.dir];if(move&&openTile(entity.x+move.x,entity.y+move.y)){entity.x+=move.x;entity.y+=move.y;return true;}return false;}
+function moveGhost(ghost){const reverse={left:'right',right:'left',up:'down',down:'up'};const choices=ORDER.filter(dir=>openTile(ghost.x+DIRS[dir].x,ghost.y+DIRS[dir].y));const filtered=choices.length>1?choices.filter(dir=>dir!==reverse[ghost.dir]):choices;filtered.sort((a,b)=>{const da=Math.abs((ghost.x+DIRS[a].x)-pacman.x)+Math.abs((ghost.y+DIRS[a].y)-pacman.y)+Math.random()*0.8;const db=Math.abs((ghost.x+DIRS[b].x)-pacman.x)+Math.abs((ghost.y+DIRS[b].y)-pacman.y)+Math.random()*0.8;return da-db;});ghost.dir=filtered[0]||ghost.dir;ghost.x+=DIRS[ghost.dir].x;ghost.y+=DIRS[ghost.dir].y;}
+function eatPellet(){const cell=board[pacman.y][pacman.x];if(cell==='.'||cell==='o'){score+=cell==='o'?50:10;board[pacman.y][pacman.x]=' ';if(score>best){best=score;localStorage.setItem(BEST_KEY,String(best));}updateStats();if(!pelletCount()){level++;beginLevel(false);}}
+}
+function checkGhostHit(){if(ghosts.some(g=>g.x===pacman.x&&g.y===pacman.y)){lives--;updateStats();if(lives<=0){gameOver();return;}statusEl.textContent='Caught! Resetting positions...';setStartPositions();draw();}return false;}
+function step(){tryMove(pacman);eatPellet();ghosts.forEach(moveGhost);if(checkGhostHit())return;pacman.mouth=(pacman.mouth+1)%20;draw();}
+function gameOver(){running=false;statusEl.textContent=`Game over at ${score} points.`;overlay.innerHTML=`<h2>👻 Game Over</h2><p>You reached level ${level} and scored ${score} points. Try again for a new high score.</p><button class="btn" id="overlay-btn">Play Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);}
+function draw(){ctx.fillStyle='#020617';ctx.fillRect(0,0,canvas.width,canvas.height);for(let y=0;y<board.length;y++)for(let x=0;x<board[y].length;x++){const tile=board[y][x];if(tile==='#'){ctx.fillStyle='#2563eb';ctx.fillRect(x*CELL+2,y*CELL+2,CELL-4,CELL-4);}else if(tile==='.'||tile==='o'){ctx.fillStyle=tile==='o'?'#fbbf24':'#fde68a';ctx.beginPath();ctx.arc(x*CELL+CELL/2,y*CELL+CELL/2,tile==='o'?5:2.5,0,Math.PI*2);ctx.fill();}}
+  const centerX=pacman.x*CELL+CELL/2,centerY=pacman.y*CELL+CELL/2;const facing={right:0,down:Math.PI/2,left:Math.PI,up:-Math.PI/2}[pacman.dir];const mouth=Math.abs(Math.sin(pacman.mouth/3))*0.6;ctx.fillStyle='#facc15';ctx.beginPath();ctx.moveTo(centerX,centerY);ctx.arc(centerX,centerY,11,facing+mouth,facing+Math.PI*2-mouth);ctx.closePath();ctx.fill();ghosts.forEach(g=>{const x=g.x*CELL+CELL/2,y=g.y*CELL+CELL/2;ctx.fillStyle=g.color;ctx.beginPath();ctx.arc(x,y-3,10,Math.PI,0);ctx.rect(x-10,y-3,20,12);ctx.fill();ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(x-4,y-3,3,0,Math.PI*2);ctx.arc(x+4,y-3,3,0,Math.PI*2);ctx.fill();ctx.fillStyle='#111827';ctx.beginPath();ctx.arc(x-4,y-3,1.4,0,Math.PI*2);ctx.arc(x+4,y-3,1.4,0,Math.PI*2);ctx.fill();});}
+function loop(time){if(running){const delta=time-lastTime;stepTimer+=delta;if(stepTimer>=stepDelay){stepTimer=0;step();}}lastTime=time;rafId=requestAnimationFrame(loop);}
+document.addEventListener('keydown',e=>{if(overlay.style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}const map={ArrowLeft:'left',ArrowRight:'right',ArrowUp:'up',ArrowDown:'down',a:'left',d:'right',w:'up',s:'down',A:'left',D:'right',W:'up',S:'down'};if(map[e.key]){e.preventDefault();queueDir(map[e.key]);}});
+canvas.addEventListener('touchstart',e=>{const t=e.touches[0];touchStart={x:t.clientX,y:t.clientY};},{passive:true});canvas.addEventListener('touchend',e=>{if(!touchStart)return;const t=e.changedTouches[0];const dx=t.clientX-touchStart.x,dy=t.clientY-touchStart.y;if(Math.abs(dx)>Math.abs(dy)){if(dx>20)queueDir('right');else if(dx<-20)queueDir('left');}else{if(dy>20)queueDir('down');else if(dy<-20)queueDir('up');}touchStart=null;},{passive:true});
+document.getElementById('restart-btn').addEventListener('click',startGame);
+document.getElementById('overlay-btn').addEventListener('click',startGame);
+document.getElementById('dir-up').addEventListener('click',()=>queueDir('up'));
+document.getElementById('dir-left').addEventListener('click',()=>queueDir('left'));
+document.getElementById('dir-down').addEventListener('click',()=>queueDir('down'));
+document.getElementById('dir-right').addEventListener('click',()=>queueDir('right'));
+board=cloneBoard();setStartPositions();draw();
+</script>
+</body>
+</html>

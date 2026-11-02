@@ -1,0 +1,8 @@
+
+#nitroDevOverlay{position:fixed;inset:0;background:#02040bdc;z-index:999999;display:none;align-items:center;justify-content:center;padding:20px;overflow:auto}
+#nitroDevOverlay .devbox{width:min(560px,100%);background:#101329;border:1px solid #9455f9;border-radius:18px;padding:25px;color:#f3eaff;box-shadow:0 0 60px #8c43f933;font:14px system-ui}
+#nitroDevOverlay label{display:block;margin:12px 0 4px;font-weight:700}
+#nitroDevOverlay input,#nitroDevOverlay textarea{display:block;width:100%;padding:11px;background:#080d1b;color:#fff;border:1px solid #64548e;border-radius:8px;font:inherit}
+#nitroDevOverlay .devactions{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}
+#nitroDevOverlay button{background:#7538c9;border:1px solid #ad7df5;border-radius:9px;color:#fff;padding:10px 13px;cursor:pointer}
+#nitroDevOverlay small{color:#c5b8da;display:block;margin-top:8px;line-height:1.5}

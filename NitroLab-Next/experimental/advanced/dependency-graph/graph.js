@@ -1,0 +1,1 @@
+export function topologicalSort(dependencies){const out=[],state=new Map();function visit(node){if(state.get(node)===1)throw Error('Cycle at '+node);if(state.get(node)===2)return;state.set(node,1);for(const dep of dependencies[node]||[])visit(dep);state.set(node,2);out.push(node)}for(const key of Object.keys(dependencies))visit(key);return out}

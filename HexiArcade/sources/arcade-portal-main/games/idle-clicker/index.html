@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Idle Clicker — Game Portal</title>
+<meta name="description" content="Play Idle Clicker free online — Click to earn, buy upgrades, and watch your empire grow automatically. A Easy Strategy game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/idle-clicker/"/>
+<meta property="og:title" content="👆 Idle Clicker — Free Browser Game"/>
+<meta property="og:description" content="Play Idle Clicker free in your browser. Click to earn, buy upgrades, and watch your empire grow automatically."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/idle-clicker/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Idle Clicker",
+  "description": "Click to earn, buy upgrades, and watch your empire grow automatically.",
+  "url": "https://arcade.sotshau.fun/games/idle-clicker/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Strategy",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px}.score-bar{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:94px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;box-shadow:0 8px 20px rgba(0,0,0,.08);padding:22px;width:min(760px,94vw)}.layout{display:grid;grid-template-columns:minmax(220px,1fr) minmax(240px,320px);gap:18px}.core{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px}.orb{width:min(220px,52vw);height:min(220px,52vw);border:none;border-radius:50%;background:radial-gradient(circle at 30% 30%,#e9d5ff,#6c63ff 65%,#4338ca);color:#fff;font-size:44px;box-shadow:0 18px 28px rgba(108,99,255,.28),inset 0 10px 16px rgba(255,255,255,.35);cursor:pointer;transition:transform .08s}.orb:active{transform:scale(.97)}.status{min-height:24px;text-align:center;font-weight:700;color:#374151}.shop{display:grid;gap:10px}.card{border:1px solid #e5e7eb;border-radius:14px;padding:14px;background:#fafafa}.card h3{font-size:16px;margin-bottom:4px}.card p{font-size:13px;color:#6b7280;line-height:1.45;margin-bottom:10px}.buy-row{display:flex;justify-content:space-between;gap:8px;align-items:center}.mini{font-size:12px;color:#6b7280}.btn{padding:9px 14px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer}.btn:disabled{opacity:.45;cursor:default}.overlay{position:absolute;inset:0;background:rgba(245,245,247,.96);border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p,.hint{color:#6b7280}.hint{margin-top:12px;font-size:12px;text-align:center;padding:0 16px}@media (max-width:720px){.layout{grid-template-columns:1fr}}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>💰 Idle Clicker</h1>
+<p class="sub">Tap the glowing core for coins, then buy helpers that earn even while you relax.</p>
+<div class="score-bar">
+  <div class="score-box"><div class="score-label">Coins</div><div class="score-val" id="coins">0</div></div>
+  <div class="score-box"><div class="score-label">Per Tap</div><div class="score-val" id="tap">1</div></div>
+  <div class="score-box"><div class="score-label">Per Sec</div><div class="score-val" id="cps">0</div></div>
+  <div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">0</div></div>
+</div>
+<div class="game">
+  <div class="layout">
+    <div class="core">
+      <button class="orb" id="orb">🪙</button>
+      <div class="status" id="status">Press Start to power up your coin core.</div>
+      <button class="btn" id="burst">Collect Burst (+5 clicks)</button>
+    </div>
+    <div class="shop" id="shop"></div>
+  </div>
+  <div class="overlay" id="overlay">
+    <h2>💰 Idle Clicker</h2>
+    <p>Press Space or Enter to click. Use keys 1–3 to buy upgrades, or tap the shop cards on touch devices.</p>
+    <button class="btn" id="overlay-btn">Start Game</button>
+  </div>
+</div>
+<p class="hint">Keyboard: Space/Enter to click · 1/2/3 buy upgrades · Touch: tap the orb and shop buttons</p>
+<script>
+const BEST_KEY='idleClickerBest';
+const upgrades=[
+  {id:'cursor',name:'Cursor Crew',cost:15,growth:1.55,owned:0,cps:.4,tap:0,desc:'Little helpers that add steady passive income.'},
+  {id:'drill',name:'Crystal Drill',cost:60,growth:1.7,owned:0,cps:2.2,tap:1,desc:'Boosts coin flow and strengthens every tap.'},
+  {id:'factory',name:'Mint Factory',cost:180,growth:1.9,owned:0,cps:7.5,tap:2,desc:'Heavy automation for serious idle profits.'}
+];
+let coins=0,total=0,best=+(localStorage.getItem(BEST_KEY)||0),running=false,last=0,rafId=0,statusMsg='Press Start to power up your coin core.';
+document.getElementById('best').textContent=best;
+const shopEl=document.getElementById('shop');
+function tapValue(){return 1+upgrades.reduce((sum,u)=>sum+u.owned*u.tap,0);} 
+function cpsValue(){return upgrades.reduce((sum,u)=>sum+u.owned*u.cps,0);} 
+function format(n){return n>=1000?`${(n/1000).toFixed(1)}k`:Math.floor(n).toString();}
+function syncBest(){if(total>best){best=Math.floor(total);localStorage.setItem(BEST_KEY,String(best));}}
+function renderShop(){shopEl.innerHTML='';upgrades.forEach((u,index)=>{const card=document.createElement('div');card.className='card';card.innerHTML=`<h3>${index+1}. ${u.name}</h3><p>${u.desc}</p><div class="buy-row"><span class="mini">Owned: <strong>${u.owned}</strong><br>Cost: <strong>${format(costFor(u))}</strong></span><button class="btn" ${coins<costFor(u)?'disabled':''} data-id="${u.id}">Buy</button></div>`;card.querySelector('button').addEventListener('click',()=>buy(u.id));shopEl.appendChild(card);});}
+function costFor(u){return Math.floor(u.cost*Math.pow(u.growth,u.owned));}
+function updateStats(){syncBest();document.getElementById('coins').textContent=format(coins);document.getElementById('tap').textContent=format(tapValue());document.getElementById('cps').textContent=cpsValue().toFixed(1);document.getElementById('best').textContent=format(best);document.getElementById('status').textContent=statusMsg;renderShop();}
+function clickCore(mult=1){if(!running)return;const gain=tapValue()*mult;coins+=gain;total+=gain;statusMsg=`Collected ${format(gain)} shiny coins!`;updateStats();}
+function buy(id){if(!running)return;const up=upgrades.find(u=>u.id===id);const cost=costFor(up);if(coins<cost){statusMsg='Need more coins for that upgrade.';return updateStats();}coins-=cost;up.owned++;statusMsg=`Bought ${up.name}. Passive income is rising.`;updateStats();}
+function startGame(){coins=0;total=0;last=0;running=true;statusMsg='Tap the core and build your minting empire.';upgrades.forEach(u=>u.owned=0);document.getElementById('overlay').style.display='none';updateStats();cancelAnimationFrame(rafId);rafId=requestAnimationFrame(loop);}
+function loop(ts){if(!running)return;const dt=(ts-last||16)/1000;last=ts;const gain=cpsValue()*dt;coins+=gain;total+=gain;if(Math.random()<dt*.3)statusMsg=`Minting at ${cpsValue().toFixed(1)} coins per second.`;updateStats();rafId=requestAnimationFrame(loop);}
+function keyBuy(key){const index=+key-1;if(index>=0&&index<upgrades.length)buy(upgrades[index].id);} 
+document.getElementById('overlay-btn').addEventListener('click',startGame);document.getElementById('orb').addEventListener('click',()=>clickCore(1));document.getElementById('burst').addEventListener('click',()=>clickCore(5));document.addEventListener('keydown',e=>{const overlay=document.getElementById('overlay');if(overlay.style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}if(e.key===' '||e.key==='Enter'){e.preventDefault();clickCore(1);}if(/[123]/.test(e.key)){e.preventDefault();keyBuy(e.key);}});updateStats();
+</script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+
+
+.nxMainColumn>.stats{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:14px 0 0!important;width:100%;max-width:none}
+.nxMainColumn>.stats .stat{min-width:0;padding:15px 12px!important;border-radius:12px}
+.nxMainColumn>.stats .stat strong{font-size:13px!important;line-height:1.35}
+.nxMainColumn>.stats .stat span{font-size:11px!important;line-height:1.5}
+.nxDashboardGrid{align-items:start!important}
+.nxRightColumn{align-content:start!important}
+@media(max-width:1150px){.nxMainColumn>.stats{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:650px){.nxMainColumn>.stats{grid-template-columns:1fr!important}}

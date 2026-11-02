@@ -1,0 +1,19 @@
+{
+  "arcade": "NitroArcade",
+  "sections": [
+    "MacroArcade",
+    "HexiArcade"
+  ],
+  "offlineFirst": true,
+  "engineSupport": [
+    "JavaScript",
+    "CSS",
+    "HTML",
+    "WebGL",
+    "WebAssembly where supplied"
+  ],
+  "optionalServerFeatures": [
+    "PHP",
+    "WebSockets"
+  ]
+}

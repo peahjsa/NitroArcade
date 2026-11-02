@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Reaction Time — Game Portal</title>
+<meta name="description" content="Play Reaction Time free online — F1 start lights experience. Wait for the 5 red lights to go out, then react as fast as you can. Test your reflexes!"/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/reaction-time/"/>
+<meta property="og:title" content="🏎️ Reaction Time — F1 Start Lights"/>
+<meta property="og:description" content="F1 start lights reaction test. 5 red lights illuminate one by one — react the instant they go out. False starts penalised!"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/reaction-time/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Reaction Time",
+  "description": "F1 start lights reaction test. Wait for 5 red lights to go out, then react as fast as you can. False starts penalised!",
+  "url": "https://arcade.sotshau.fun/games/reaction-time/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Memory & Reflex",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0d0d0f;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px;color:#fff}
+nav{width:100%;background:#111;border-bottom:1px solid #1e1e1e;padding:0 24px;height:50px;display:flex;align-items:center}
+nav a{color:#e10600;text-decoration:none;font-size:14px;font-weight:600;letter-spacing:.02em}
+nav a:hover{color:#ff2010}
+h1{margin:20px 0 4px;font-size:24px;font-weight:900;letter-spacing:.04em}
+.sub{color:#888;font-size:13px;margin-bottom:18px;text-align:center;padding:0 16px}
+
+/* Timing board */
+.score-bar{display:flex;gap:1px;margin-bottom:20px;background:#1e1e1e;border:1px solid #252525;border-radius:10px;overflow:hidden}
+.score-box{padding:10px 20px;text-align:center;min-width:104px;background:#111}
+.score-box+.score-box{border-left:1px solid #1e1e1e}
+.score-label{font-size:10px;color:#777;text-transform:uppercase;letter-spacing:.12em;font-weight:600}
+.score-val{font-size:22px;font-weight:900;color:#e10600;font-variant-numeric:tabular-nums;margin-top:3px;letter-spacing:.02em}
+
+/* Arena */
+.arena{position:relative;width:min(540px,94vw);background:#111;border:1px solid #1e1e1e;border-radius:18px;overflow:hidden;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent}
+.arena::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 48px,rgba(255,255,255,.018) 48px,rgba(255,255,255,.018) 49px),repeating-linear-gradient(0deg,transparent,transparent 48px,rgba(255,255,255,.018) 48px,rgba(255,255,255,.018) 49px);pointer-events:none;border-radius:18px}
+.arena-inner{padding:36px 24px 28px;display:flex;flex-direction:column;align-items:center;gap:22px;min-height:330px;justify-content:center}
+
+/* Gantry panel */
+.gantry{background:#161616;border:1px solid #252525;border-radius:14px;padding:22px 32px;display:flex;flex-direction:column;align-items:center;gap:18px;width:100%;max-width:420px;box-shadow:0 6px 30px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.04)}
+.gantry-label{font-size:10px;color:#666;text-transform:uppercase;letter-spacing:.18em;font-weight:700}
+
+/* Lights */
+.lights-row{display:flex;gap:16px;align-items:center;justify-content:center}
+.light{width:60px;height:60px;border-radius:50%;background:#1a0000;border:3px solid #220000;box-shadow:0 2px 8px rgba(0,0,0,.7),inset 0 -3px 8px rgba(0,0,0,.5);transition:background .07s,border-color .07s,box-shadow .07s;position:relative;flex-shrink:0}
+.light::after{content:'';position:absolute;top:9px;left:13px;width:14px;height:7px;border-radius:50%;background:rgba(255,255,255,.1)}
+.light.on{background:#dc2626;border-color:#ef4444;box-shadow:0 0 18px rgba(220,38,38,.95),0 0 48px rgba(220,38,38,.55),0 0 90px rgba(220,38,38,.2),inset 0 2px 10px rgba(255,120,120,.3)}
+.light.on::after{background:rgba(255,255,255,.25)}
+
+/* Phase text */
+.phase-text{font-size:32px;font-weight:900;letter-spacing:.08em;text-align:center;min-height:44px;text-transform:uppercase;color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.5)}
+.phase-text.false{color:#ef4444;text-shadow:0 0 20px rgba(239,68,68,.6)}
+.phase-text.go{color:#22c55e;text-shadow:0 0 24px rgba(34,197,94,.7)}
+.phase-text.time{color:#facc15;text-shadow:0 0 20px rgba(250,204,21,.5)}
+
+/* Round progress dots */
+.round-dots{display:flex;gap:8px}
+.dot{width:9px;height:9px;border-radius:50%;background:#1e1e1e;border:1px solid #2a2a2a;transition:background .2s,border-color .2s}
+.dot.done{background:#22c55e;border-color:#22c55e}
+.dot.active{background:#e10600;border-color:#ef4444;box-shadow:0 0 6px rgba(225,6,0,.7)}
+
+/* Overlay */
+.overlay{position:absolute;inset:0;background:rgba(8,8,10,.96);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:28px;text-align:center;border-radius:18px}
+.overlay h2{font-size:22px;font-weight:900;letter-spacing:.04em}
+.overlay p{color:#999;font-size:14px;max-width:310px;line-height:1.65}
+
+/* F1 red button */
+.btn{padding:12px 30px;border:none;border-radius:8px;background:#e10600;color:#fff;font-size:15px;font-weight:900;cursor:pointer;letter-spacing:.06em;text-transform:uppercase;transition:background .15s,transform .1s}
+.btn:hover{background:#c00;transform:translateY(-1px)}
+.btn:active{transform:translateY(0)}
+
+.ghost-btn{padding:9px 20px;border:1px solid #333;border-radius:8px;background:#1a1a1a;color:#888;font-size:13px;font-weight:600;cursor:pointer;transition:background .15s,color .15s;text-transform:uppercase;letter-spacing:.04em}
+.ghost-btn:hover{background:#1e1e1e;color:#888}
+
+.tap-cue{font-size:12px;color:#555;text-align:center;letter-spacing:.06em;text-transform:uppercase}
+.hint{margin-top:12px;font-size:12px;color:#555;text-align:center;letter-spacing:.04em}
+.status{margin-top:14px;text-align:center;min-height:20px;font-size:13px;color:#777;letter-spacing:.03em}
+.controls{margin-top:10px;display:flex;justify-content:center}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🏎️ Reaction Time</h1>
+<p class="sub">Wait for the lights to go out — then react. 5 rounds, average time recorded.</p>
+
+<div class="score-bar">
+  <div class="score-box"><div class="score-label">Last</div><div class="score-val" id="last">—</div></div>
+  <div class="score-box"><div class="score-label">Round</div><div class="score-val" id="rounds">0 / 5</div></div>
+  <div class="score-box"><div class="score-label">Best Avg</div><div class="score-val" id="best">—</div></div>
+</div>
+
+<div class="arena" id="arena">
+  <div class="arena-inner">
+    <div class="gantry">
+      <div class="gantry-label">Starting Lights</div>
+      <div class="lights-row">
+        <div class="light" id="l0"></div>
+        <div class="light" id="l1"></div>
+        <div class="light" id="l2"></div>
+        <div class="light" id="l3"></div>
+        <div class="light" id="l4"></div>
+      </div>
+    </div>
+    <div class="phase-text" id="phase-text">STAND BY</div>
+    <div class="round-dots" id="round-dots">
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    </div>
+    <div class="tap-cue" id="tap-cue">TAP ANYWHERE TO REACT</div>
+  </div>
+  <div class="overlay" id="overlay">
+    <h2>🏎️ F1 Start Lights</h2>
+    <p>Lights will illuminate one by one. When they all go out — react as fast as you can. False starts add a penalty.</p>
+    <button class="btn" id="overlay-btn">LIGHTS OUT</button>
+  </div>
+</div>
+
+<div class="status" id="status">5 rounds · average time recorded</div>
+<div class="controls"><button class="ghost-btn" id="restart-btn">RESTART</button></div>
+<p class="hint">Keyboard: Space · Touch: tap anywhere in the arena</p>
+
+<script>
+const BEST_KEY='reactionBestAverage';
+const lights=[0,1,2,3,4].map(i=>document.getElementById('l'+i));
+const phaseEl=document.getElementById('phase-text');
+const overlay=document.getElementById('overlay');
+const lastEl=document.getElementById('last');
+const roundsEl=document.getElementById('rounds');
+const bestEl=document.getElementById('best');
+const statusEl=document.getElementById('status');
+const dotsEl=document.getElementById('round-dots');
+const tapCue=document.getElementById('tap-cue');
+
+let state='idle',results=[],timers=[],startTime=0;
+const saved=+(localStorage.getItem(BEST_KEY)||0);
+if(saved)bestEl.textContent=`${saved}ms`;
+
+function clearTimers(){timers.forEach(clearTimeout);timers=[];}
+
+function setLights(count){lights.forEach((l,i)=>l.classList.toggle('on',i<count));}
+
+function updateDots(){
+  [...dotsEl.children].forEach((d,i)=>{
+    d.className='dot'+(i<results.length?' done':i===results.length?' active':'');
+  });
+}
+
+function startGame(){
+  results=[];
+  overlay.style.display='none';
+  roundsEl.textContent='0 / 5';
+  lastEl.textContent='—';
+  updateDots();
+  prepareRound();
+}
+
+function prepareRound(){
+  clearTimers();
+  state='countdown';
+  setLights(0);
+  phaseEl.textContent='GET READY';
+  phaseEl.className='phase-text';
+  tapCue.style.opacity='0';
+  statusEl.textContent='';
+  updateDots();
+
+  // Light up one by one
+  for(let i=1;i<=5;i++){
+    timers.push(setTimeout(()=>{setLights(i);},i*900));
+  }
+  // After last light on, mark armed
+  timers.push(setTimeout(()=>{
+    if(state==='countdown')state='armed';
+  },5*900+50));
+  // Lights out — random delay after all lit
+  const goDelay=5*900+700+Math.random()*2500;
+  timers.push(setTimeout(()=>{
+    state='go';
+    setLights(0);
+    startTime=performance.now();
+    phaseEl.textContent='GO!';
+    phaseEl.className='phase-text go';
+    tapCue.style.opacity='1';
+  },goDelay));
+}
+
+function pressAction(){
+  if(overlay.style.display!=='none')return;
+  if(state==='idle')return;
+
+  if(state==='countdown'||state==='armed'){
+    clearTimers();
+    state='false';
+    setLights(0);
+    phaseEl.textContent='FALSE START';
+    phaseEl.className='phase-text false';
+    tapCue.style.opacity='0';
+    statusEl.textContent='Too early — penalty restart.';
+    timers.push(setTimeout(prepareRound,1600));
+    return;
+  }
+
+  if(state==='go'){
+    const ms=Math.round(performance.now()-startTime);
+    results.push(ms);
+    state='result';
+    phaseEl.textContent=`${ms} ms`;
+    phaseEl.className='phase-text time';
+    tapCue.style.opacity='0';
+    lastEl.textContent=`${ms}ms`;
+    roundsEl.textContent=`${results.length} / 5`;
+    const rating=ms<180?'🔥 Incredible!':ms<220?'⚡ Superb!':ms<270?'✅ Good!':ms<320?'👍 Decent.':'🔁 Keep training.';
+    statusEl.textContent=`${rating} (${ms}ms)`;
+    if(results.length===5){timers.push(setTimeout(finishGame,1100));return;}
+    updateDots();
+    timers.push(setTimeout(prepareRound,1300));
+    return;
+  }
+
+  if(state==='result'||state==='false'){
+    clearTimers();
+    prepareRound();
+  }
+}
+
+function finishGame(){
+  state='done';
+  const avg=Math.round(results.reduce((s,v)=>s+v,0)/results.length);
+  let best=+(localStorage.getItem(BEST_KEY)||0);
+  if(!best||avg<best){best=avg;localStorage.setItem(BEST_KEY,String(best));}
+  bestEl.textContent=`${best}ms`;
+  const rating=avg<180?'Champion reflexes 🏆':avg<220?'Race-ready pace 🏎️':avg<270?'Solid lap time 🏁':avg<320?'Keep pushing 💪':'More practice needed 🔧';
+  overlay.innerHTML=`<h2>🏁 Chequered Flag!</h2><p>Your average: <strong style="color:#facc15;font-size:20px">${avg}ms</strong><br><span style="color:#999">${rating}</span></p><button class="btn" id="overlay-btn">RACE AGAIN</button>`;
+  overlay.style.display='flex';
+  document.getElementById('overlay-btn').addEventListener('click',startGame);
+}
+
+document.getElementById('arena').addEventListener('click',pressAction);
+document.getElementById('overlay-btn').addEventListener('click',startGame);
+document.getElementById('restart-btn').addEventListener('click',()=>{clearTimers();setLights(0);state='idle';results=[];overlay.innerHTML=`<h2>🏎️ F1 Start Lights</h2><p>Lights will illuminate one by one. When they all go out — react as fast as you can. False starts add a penalty.</p><button class="btn" id="overlay-btn">LIGHTS OUT</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);});
+document.addEventListener('keydown',e=>{
+  if(e.key!==' '&&e.key!=='Enter')return;
+  e.preventDefault();
+  if(overlay.style.display!=='none'){document.getElementById('overlay-btn').click();return;}
+  pressAction();
+});
+</script>
+</body>
+</html>

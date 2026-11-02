@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Anagram — Game Portal</title>
+<meta name="description" content="Play Anagram free online — Unscramble the letters to form a valid word. Beat the clock! A Medium Word &amp; Trivia game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/anagram/"/>
+<meta property="og:title" content="🔀 Anagram — Free Browser Game"/>
+<meta property="og:description" content="Play Anagram free in your browser. Unscramble the letters to form a valid word. Beat the clock!"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/anagram/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Anagram",
+  "description": "Unscramble the letters to form a valid word. Beat the clock!",
+  "url": "https://arcade.sotshau.fun/games/anagram/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Word & Trivia",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px}.score-bar{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 18px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:96px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;box-shadow:0 8px 20px rgba(0,0,0,.08);padding:24px;width:min(640px,94vw)}.scramble{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:12px}.chip{min-width:44px;height:44px;padding:0 12px;border-radius:12px;background:#ede9fe;color:#4c1d95;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800}.hint-box{margin:10px auto 14px;background:#f8fafc;border:1px solid #e5e7eb;border-radius:12px;padding:12px 14px;max-width:420px;text-align:center;color:#475569}.input-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}.guess{padding:12px 14px;border:1px solid #cbd5e1;border-radius:12px;font-size:18px;text-transform:uppercase;width:min(280px,70vw);text-align:center}.btn{padding:10px 18px;border:none;border-radius:10px;background:#6c63ff;color:#fff;font-weight:700;cursor:pointer}.btn.alt{background:#fff;color:#6c63ff;border:1px solid #6c63ff}.status{margin-top:16px;text-align:center;min-height:24px;color:#374151;font-weight:700}.history{margin-top:18px;display:grid;gap:8px}.history-item{background:#f8fafc;border:1px solid #e5e7eb;border-radius:10px;padding:10px 12px;color:#475569;display:flex;justify-content:space-between;gap:12px}.overlay{position:absolute;inset:0;background:rgba(245,245,247,.96);border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p{color:#6b7280;max-width:320px;line-height:1.5}.hint{margin-top:14px;font-size:12px;color:#9ca3af;text-align:center;padding:0 16px}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🔀 Anagram</h1>
+<p class="sub">Unscramble each word before the round timer expires. Every correct answer adds time and points.</p>
+<div class="score-bar">
+  <div class="score-box"><div class="score-label">Score</div><div class="score-val" id="score">0</div></div>
+  <div class="score-box"><div class="score-label">Time</div><div class="score-val" id="time">75</div></div>
+  <div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">0</div></div>
+</div>
+<div class="game">
+  <div class="scramble" id="scramble"></div>
+  <div class="hint-box" id="hint-box">Hint: Press Start to begin.</div>
+  <div class="input-row">
+    <input id="guess" class="guess" type="text" maxlength="18" autocomplete="off" spellcheck="false" placeholder="Type the answer"/>
+    <button class="btn" id="submit-btn">Submit</button>
+    <button class="btn alt" id="shuffle-btn">Shuffle</button>
+  </div>
+  <div class="status" id="status">Press Start to begin.</div>
+  <div class="history" id="history"></div>
+  <div class="overlay" id="overlay">
+    <h2>🔀 Anagram</h2>
+    <p>Type the unscrambled word and press Enter. Use Shuffle if you want a fresh arrangement of the same letters.</p>
+    <button class="btn" id="overlay-btn">Start Game</button>
+  </div>
+</div>
+<p class="hint">Keyboard: type + Enter · Shuffle with Escape · Mobile: tap the input and buttons</p>
+<script>
+const PUZZLES=[{word:'PLANET',hint:'A large body orbiting a star'},{word:'CANDLE',hint:'Wax with a wick'},{word:'BREEZE',hint:'A gentle wind'},{word:'ROCKET',hint:'Launches into space'},{word:'STREAM',hint:'A small flowing river'},{word:'CASTLE',hint:'A fortified royal home'},{word:'MARKET',hint:'A place to buy and sell'},{word:'BUTTON',hint:'You press or click this'},{word:'FOREST',hint:'A large area full of trees'},{word:'THRONE',hint:'A ceremonial royal seat'},{word:'DRAGON',hint:'A mythical fire-breathing creature'},{word:'PUZZLE',hint:'A challenge to solve'}];
+const BEST_KEY='anagramBestScore';
+const scrambleEl=document.getElementById('scramble'),hintBox=document.getElementById('hint-box'),guessEl=document.getElementById('guess'),statusEl=document.getElementById('status'),historyEl=document.getElementById('history'),overlay=document.getElementById('overlay');
+let score=0,timeLeft=75,timer=null,active=false,current=null,used=[];
+document.getElementById('best').textContent=localStorage.getItem(BEST_KEY)||'0';
+function shuffleWord(word){let letters=word.split('');do{for(let i=letters.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[letters[i],letters[j]]=[letters[j],letters[i]];}}while(letters.join('')===word);return letters;}
+function pickPuzzle(){if(used.length===PUZZLES.length)used=[];let puzzle;do{puzzle=PUZZLES[Math.floor(Math.random()*PUZZLES.length)];}while(used.includes(puzzle.word)&&used.length<PUZZLES.length);used.push(puzzle.word);current={...puzzle,letters:shuffleWord(puzzle.word)};renderPuzzle();}
+function renderPuzzle(){scrambleEl.innerHTML='';current.letters.forEach(letter=>{const div=document.createElement('div');div.className='chip';div.textContent=letter;scrambleEl.appendChild(div);});hintBox.textContent=`Hint: ${current.hint}`;guessEl.value='';guessEl.focus();}
+function updateScoreboard(){document.getElementById('score').textContent=String(score);document.getElementById('time').textContent=String(timeLeft);}
+function startGame(){score=0;timeLeft=75;used=[];active=true;historyEl.innerHTML='';overlay.style.display='none';statusEl.textContent='Unscramble the letters!';updateScoreboard();pickPuzzle();clearInterval(timer);timer=setInterval(()=>{timeLeft--;updateScoreboard();if(timeLeft<=0)finishGame();},1000);}
+function submitGuess(){if(!active||!current)return;const guess=guessEl.value.trim().toUpperCase();if(!guess){statusEl.textContent='Type a word first.';return;}if(guess===current.word){const gained=Math.max(5,current.word.length*2);score+=gained;timeLeft=Math.min(99,timeLeft+6);statusEl.textContent=`Correct! +${gained} points.`;const item=document.createElement('div');item.className='history-item';item.innerHTML=`<span>${current.word}</span><strong>+${gained}</strong>`;historyEl.prepend(item);pickPuzzle();updateScoreboard();}else{statusEl.textContent='Not quite — try again or reshuffle.';guessEl.select();}}
+function reshuffle(){if(!active||!current)return;current.letters=shuffleWord(current.word);renderPuzzle();statusEl.textContent='Letters reshuffled.';}
+function finishGame(){active=false;clearInterval(timer);const best=Math.max(score,+(localStorage.getItem(BEST_KEY)||0));localStorage.setItem(BEST_KEY,String(best));document.getElementById('best').textContent=String(best);statusEl.textContent=`Time! Final score: ${score}.`;overlay.innerHTML=`<h2>⏰ Round Over</h2><p>You scored <strong>${score}</strong> points. Ready for another scramble?</p><button class="btn" id="overlay-btn">Play Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);}
+document.getElementById('submit-btn').addEventListener('click',submitGuess);document.getElementById('shuffle-btn').addEventListener('click',reshuffle);guessEl.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();submitGuess();}});document.addEventListener('keydown',e=>{if(overlay.style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}if(e.key==='Escape'){reshuffle();}});document.getElementById('overlay-btn').addEventListener('click',startGame);
+</script>
+</body>
+</html>

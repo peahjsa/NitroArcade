@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>🃏 FreeCell — Game Portal</title>
+<meta name="description" content="Play FreeCell free online — Move all cards to foundations using four free cell spaces. A Hard Card &amp; Board game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/freecell/"/>
+<meta property="og:title" content="🂠 FreeCell — Free Browser Game"/>
+<meta property="og:description" content="Play FreeCell free in your browser. Move all cards to foundations using four free cell spaces."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/freecell/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "FreeCell",
+  "description": "Move all cards to foundations using four free cell spaces.",
+  "url": "https://arcade.sotshau.fun/games/freecell/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Card & Board",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px;color:#111827}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 18px}.score-bar{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:14px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:94px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.game{position:relative;background:#0f6f3e;border:1px solid #0a5a31;border-radius:18px;padding:18px;box-shadow:0 8px 20px rgba(0,0,0,.12);width:min(980px,98vw)}.top-row,.cascades{display:grid;gap:12px}.top-row{grid-template-columns:repeat(8,minmax(82px,1fr));margin-bottom:16px}.cascades{grid-template-columns:repeat(8,minmax(82px,1fr));align-items:start}.slot,.cascade{background:rgba(255,255,255,.12);border:2px dashed rgba(255,255,255,.16);border-radius:12px;min-height:118px;position:relative}.cascade{min-height:420px}.slot.cursor,.cascade.cursor{outline:3px solid #6c63ff;outline-offset:2px}.slot.selected,.cascade.selected{box-shadow:inset 0 0 0 4px rgba(245,158,11,.75)}.card{position:absolute;left:8px;right:8px;height:104px;border:none;border-radius:12px;background:#fff;border:1px solid #cbd5e1;box-shadow:0 8px 16px rgba(0,0,0,.18);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:800;cursor:pointer;color:#111827}.card.red{color:#dc2626}.card.seq-highlight{outline:3px solid rgba(245,158,11,.9);outline-offset:-3px;z-index:1}.card .small{position:absolute;font-size:13px;top:8px;left:10px}.card .suit{position:absolute;font-size:16px;right:10px;bottom:8px}.label-row{display:grid;grid-template-columns:repeat(8,minmax(82px,1fr));gap:12px;margin-bottom:6px;color:rgba(255,255,255,.8);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em}.controls{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:14px}.btn{padding:9px 18px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer}.btn:hover{background:#574fd6}.status{margin-top:12px;font-weight:700;text-align:center;color:#fff;min-height:24px}.overlay{position:absolute;inset:18px;background:rgba(15,23,42,.92);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center;color:#fff}.overlay p{color:#cbd5e1;max-width:360px;line-height:1.5}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center;padding:0 18px}@media (max-width:900px){.game{overflow:auto}.top-row,.cascades,.label-row{min-width:760px}}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🃏 FreeCell</h1>
+<p class="sub">Use the four free cells to untangle the full deck and build every suit into the foundations.</p>
+<div class="score-bar">
+  <div class="score-box"><div class="score-label">Moves</div><div class="score-val" id="moves">0</div></div>
+  <div class="score-box"><div class="score-label">Home</div><div class="score-val" id="home">0/52</div></div>
+  <div class="score-box"><div class="score-label">Wins</div><div class="score-val" id="wins">0</div></div>
+  <div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">—</div></div>
+</div>
+<div class="game">
+  <div class="label-row"><div>Cell 1</div><div>Cell 2</div><div>Cell 3</div><div>Cell 4</div><div>Home ♠</div><div>Home ♥</div><div>Home ♦</div><div>Home ♣</div></div>
+  <div class="top-row" id="top-row"></div>
+  <div class="label-row"><div>Col 1</div><div>Col 2</div><div>Col 3</div><div>Col 4</div><div>Col 5</div><div>Col 6</div><div>Col 7</div><div>Col 8</div></div>
+  <div class="cascades" id="cascades"></div>
+  <div class="controls"><button class="btn" id="new-deal-btn">New Deal</button></div>
+  <div class="overlay" id="overlay">
+    <h2>🃏 FreeCell</h2>
+    <p>Click a card (or the bottom of a valid sequence) to select it, then click the destination. Sequences move if you have enough free cells &amp; empty columns. Arrow keys + Enter for keyboard control.</p>
+    <button class="btn" id="overlay-btn">Start Deal</button>
+  </div>
+  <div class="status" id="status">Press Start to begin.</div>
+</div>
+<p class="hint">Click any card in a sequence to move the whole group · Free cells &amp; empty columns determine how many cards you can move</p>
+<script>
+const SUITS=['♠','♥','♦','♣'],RANKS=['A','2','3','4','5','6','7','8','9','10','J','Q','K'],RED=new Set(['♥','♦']);
+const topRow=document.getElementById('top-row'),cascadesEl=document.getElementById('cascades'),overlay=document.getElementById('overlay'),statusEl=document.getElementById('status');
+const WINS_KEY='freecellWins',BEST_KEY='freecellBestTime';
+let freeCells=[null,null,null,null],foundations=[[],[],[],[]],cascades=[[],[],[],[],[],[],[],[]],selected=null,moves=0,running=false,startTime=0,timer=null,cursor={row:0,index:0},wins=+(localStorage.getItem(WINS_KEY)||0),best=+(localStorage.getItem(BEST_KEY)||0);
+function shuffle(arr){for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}return arr;}
+function makeDeck(){return shuffle(SUITS.flatMap(s=>RANKS.map((r,i)=>({s,r,v:i+1,id:s+r}))))}
+function color(card){return RED.has(card.s)?'red':'black';}
+function canToFoundation(card,foundation){return !card?false:(!foundation.length?card.v===1:foundation[foundation.length-1].s===card.s&&card.v===foundation[foundation.length-1].v+1);}
+function canToCascade(card,cascade){return !card?false:(!cascade.length?true:(color(card)!==color(cascade[cascade.length-1])&&card.v===cascade[cascade.length-1].v-1));}
+
+/* Returns true if cascade[from..end] forms a valid alternating-colour descending sequence */
+function isValidSequence(col,from){
+  for(let i=from;i<col.length-1;i++){
+    const a=col[i],b=col[i+1];
+    if(color(a)===color(b)||b.v!==a.v-1)return false;
+  }
+  return true;
+}
+
+/* Max cards movable via virtual supermove: (emptyCells+1)*2^emptyCols
+   If destination is currently empty, subtract 1 from emptyCols */
+function maxMovable(destIsEmpty){
+  const ec=freeCells.filter(c=>c===null).length;
+  const cols=cascades.filter(c=>c.length===0).length;
+  return(ec+1)*Math.pow(2,destIsEmpty?Math.max(0,cols-1):cols);
+}
+
+/* Number of cards in the selected group */
+function selLen(src){
+  if(!src||src.type!=='cascade')return 1;
+  const col=cascades[src.index];
+  const from=src.from!==undefined?src.from:col.length-1;
+  return col.length-from;
+}
+
+function formatTime(sec){return sec?sec+'s':'—';}
+function updateStats(){document.getElementById('moves').textContent=String(moves);document.getElementById('home').textContent=`${foundations.reduce((sum,f)=>sum+f.length,0)}/52`;document.getElementById('wins').textContent=String(wins);document.getElementById('best').textContent=formatTime(best);}
+function clearSelection(){selected=null;}
+
+function getSourceCard(source){
+  if(!source)return null;
+  if(source.type==='free')return freeCells[source.index];
+  if(source.type==='foundation')return foundations[source.index][foundations[source.index].length-1]||null;
+  const col=cascades[source.index];
+  const from=source.from!==undefined?source.from:col.length-1;
+  return col[from]||null;
+}
+
+/* Fix: always return the removed card(s) as an array */
+function removeFromSource(source){
+  if(source.type==='free'){const c=freeCells[source.index];freeCells[source.index]=null;return[c];}
+  if(source.type==='foundation')return[foundations[source.index].pop()];
+  const col=cascades[source.index];
+  const from=source.from!==undefined?source.from:col.length-1;
+  return col.splice(from);
+}
+
+function zoneSelected(type,index){return selected&&selected.type===type&&selected.index===index;}
+function checkWin(){if(foundations.reduce((sum,f)=>sum+f.length,0)!==52)return;running=false;clearInterval(timer);wins++;localStorage.setItem(WINS_KEY,String(wins));const elapsed=Math.floor((Date.now()-startTime)/1000);if(!best||elapsed<best){best=elapsed;localStorage.setItem(BEST_KEY,String(best));}overlay.innerHTML=`<h2>🏆 FreeCell Cleared</h2><p>You solved the deal in ${elapsed}s and ${moves} moves.</p><button class="btn" id="overlay-btn">Play Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);statusEl.textContent=`Deal cleared in ${elapsed}s.`;updateStats();render();}
+
+function performMove(dest){
+  if(!selected)return false;
+  const card=getSourceCard(selected);
+  if(!card)return false;
+  const len=selLen(selected);
+  let moved=false;
+  if(dest.type==='free'){
+    if(len===1&&!freeCells[dest.index]){const cards=removeFromSource(selected);freeCells[dest.index]=cards[0];moved=true;}
+  }else if(dest.type==='foundation'){
+    if(len===1&&canToFoundation(card,foundations[dest.index])){removeFromSource(selected);foundations[dest.index].push(card);moved=true;}
+  }else if(dest.type==='cascade'){
+    const target=cascades[dest.index];
+    if(canToCascade(card,target)&&len<=maxMovable(target.length===0)){const cards=removeFromSource(selected);target.push(...cards);moved=true;}
+  }
+  if(moved){moves++;clearSelection();statusEl.textContent='Move made.';updateStats();render();checkWin();return true;}
+  statusEl.textContent='That move is not legal.';return false;
+}
+
+function onTopSlot(type,index){
+  if(!running)return;
+  if(selected){
+    if(zoneSelected(type,index)){clearSelection();statusEl.textContent='Selection cleared.';render();return;}
+    performMove({type,index});return;
+  }
+  if(type==='foundation')return; /* cannot take cards from foundation */
+  const card=freeCells[index];
+  if(card){selected={type:'free',index};statusEl.textContent='Card selected.';}
+  else statusEl.textContent='Free cell is empty.';
+  render();
+}
+
+function onCascade(index,cardIndex){
+  if(!running)return;
+  if(selected){
+    if(zoneSelected('cascade',index)){
+      /* Same cascade: if user clicks a specific card, try to re-select from that card
+         so they can expand or shrink the selection (e.g. click J then click K to get K-Q-J) */
+      if(cardIndex!==undefined){
+        const col=cascades[index];
+        if(isValidSequence(col,cardIndex)){
+          selected={type:'cascade',index,from:cardIndex};
+          const n=col.length-cardIndex;
+          statusEl.textContent=n>1?`${n} cards selected.`:'Card selected.';
+          render();return;
+        }
+      }
+      clearSelection();statusEl.textContent='Selection cleared.';render();return;
+    }
+    performMove({type:'cascade',index});return;
+  }
+  const col=cascades[index];
+  if(!col.length){render();return;}
+  const topIndex=col.length-1;
+  const from=cardIndex!==undefined?cardIndex:topIndex;
+  if(!isValidSequence(col,from)){statusEl.textContent='Not a movable sequence — select a single card or a valid alternating sequence.';return;}
+  selected={type:'cascade',index,from};
+  statusEl.textContent=from<topIndex?`${col.length-from} cards selected.`:'Card selected.';
+  render();
+}
+
+function render(){
+  topRow.innerHTML='';cascadesEl.innerHTML='';
+  /* update foundation labels dynamically */
+  const topLabels=document.querySelectorAll('.label-row')[0].children;
+  for(let i=4;i<8;i++){const f=foundations[i-4];topLabels[i].textContent=f.length?'Home '+f[0].s:'Home';}
+  for(let i=0;i<8;i++){
+    const slot=document.createElement('div');
+    slot.className='slot'+(cursor.row===0&&cursor.index===i?' cursor':'')+(i<4&&zoneSelected('free',i)?' selected':'');
+    slot.onclick=()=>i<4?onTopSlot('free',i):onTopSlot('foundation',i-4);
+    if(i<4&&freeCells[i])slot.appendChild(cardNode(freeCells[i],0,()=>onTopSlot('free',i)));
+    if(i>=4&&foundations[i-4].length)slot.appendChild(cardNode(foundations[i-4][foundations[i-4].length-1],0,()=>onTopSlot('foundation',i-4)));
+    topRow.appendChild(slot);
+  }
+  for(let i=0;i<8;i++){
+    const col=document.createElement('div');
+    col.className='cascade'+(cursor.row===1&&cursor.index===i?' cursor':'')+(zoneSelected('cascade',i)?' selected':'');
+    col.onclick=()=>onCascade(i);
+    const selFrom=selected&&selected.type==='cascade'&&selected.index===i?( selected.from!==undefined?selected.from:cascades[i].length-1):null;
+    cascades[i].forEach((card,idx)=>col.appendChild(cardNode(card,idx*28,()=>onCascade(i,idx),selFrom!==null&&idx>=selFrom)));
+    cascadesEl.appendChild(col);
+  }
+  updateStats();
+}
+
+/* ── Double-click → send card home ── */
+const clickTimes=new Map();
+
+function findSourceForCard(card){
+  for(let i=0;i<4;i++){if(freeCells[i]&&freeCells[i].id===card.id)return{type:'free',index:i};}
+  for(let i=0;i<8;i++){const col=cascades[i];if(col.length&&col[col.length-1].id===card.id)return{type:'cascade',index:i,from:col.length-1};}
+  return null;
+}
+function findFoundationDest(card){
+  for(let i=0;i<4;i++){if(canToFoundation(card,foundations[i]))return i;}
+  return -1;
+}
+function onCardDblClick(card,cardEl){
+  if(!running)return;
+  const source=findSourceForCard(card);
+  if(!source){statusEl.textContent='Cannot send home yet.';return;}
+  const fi=findFoundationDest(card);
+  if(fi===-1){statusEl.textContent='Cannot send home yet.';return;}
+
+  /* Capture positions before DOM is rebuilt by render() */
+  const cr=cardEl.getBoundingClientRect();
+  const destSlot=topRow.querySelectorAll('.slot')[4+fi];
+  const dr=destSlot.getBoundingClientRect();
+
+  /* Flying clone — position:fixed, viewport-relative */
+  const fly=document.createElement('div');
+  fly.className='card '+color(card);
+  fly.innerHTML=cardEl.innerHTML;
+  Object.assign(fly.style,{
+    position:'fixed',left:cr.left+'px',top:cr.top+'px',
+    width:cr.width+'px',height:cr.height+'px',right:'auto',
+    zIndex:'9999',pointerEvents:'none',margin:'0',transition:'none',
+  });
+  document.body.appendChild(fly);
+
+  /* Apply move to game state then re-render */
+  removeFromSource(source);
+  foundations[fi].push(card);
+  moves++;
+  clearSelection();
+  statusEl.textContent=card.r+card.s+' sent home!';
+  updateStats();
+  render();
+
+  /* Start CSS animation in the next paint frame */
+  requestAnimationFrame(()=>{
+    fly.style.transition='left .28s cubic-bezier(.4,0,.2,1),top .28s cubic-bezier(.4,0,.2,1),width .28s,height .28s';
+    fly.style.left=dr.left+'px';
+    fly.style.top=dr.top+'px';
+    fly.style.width=dr.width+'px';
+    fly.style.height=dr.height+'px';
+  });
+
+  /* Clean up and check win after animation */
+  fly.addEventListener('transitionend',()=>{fly.remove();checkWin();},{once:true});
+}
+
+function cardNode(card,top,handler,highlight){
+  const el=document.createElement('button');
+  el.className='card '+color(card)+(highlight?' seq-highlight':'');
+  el.style.top=top+'px';
+  el.innerHTML=`<span class="small">${card.r}</span>${card.s}<span class="suit">${card.s}</span>`;
+  el.addEventListener('click',e=>{
+    e.stopPropagation();
+    const now=Date.now();
+    const last=clickTimes.get(card.id)||0;
+    clickTimes.set(card.id,now);
+    if(now-last<350){clickTimes.delete(card.id);onCardDblClick(card,el);}
+    else{handler();}
+  });
+  return el;
+}
+
+function startGame(){const deck=makeDeck();freeCells=[null,null,null,null];foundations=[[],[],[],[]];cascades=[[],[],[],[],[],[],[],[]];deck.forEach((card,i)=>cascades[i%8].push(card));selected=null;moves=0;cursor={row:0,index:0};running=true;startTime=Date.now();overlay.style.display='none';statusEl.textContent='Move all cards home to the foundations.';clearInterval(timer);timer=setInterval(()=>{if(running)updateStats();},1000);updateStats();render();}
+document.addEventListener('keydown',e=>{if(overlay.style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}if(!running)return;if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key)){e.preventDefault();if(e.key==='ArrowLeft')cursor.index=(cursor.index+7)%8;else if(e.key==='ArrowRight')cursor.index=(cursor.index+1)%8;else cursor.row=1-cursor.row;render();return;}if(e.key==='Enter'||e.key===' '){e.preventDefault();if(cursor.row===0){cursor.index<4?onTopSlot('free',cursor.index):onTopSlot('foundation',cursor.index-4);}else onCascade(cursor.index);}});
+document.getElementById('new-deal-btn').addEventListener('click',startGame);
+document.getElementById('overlay-btn').addEventListener('click',startGame);
+updateStats();render();
+</script>
+</body>
+</html>

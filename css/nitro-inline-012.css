@@ -1,0 +1,15 @@
+
+
+.nxFillPanel{margin-top:14px;border:1px solid #4e327d;border-radius:14px;padding:16px;background:radial-gradient(circle at 96% 0%,#7239ae33,transparent 38%),linear-gradient(120deg,#19132d,#111226);display:flex;align-items:center;gap:18px;justify-content:space-between;min-width:0}
+.nxFillHeading{min-width:160px;flex:1}
+.nxFillHeading>span{display:block;font-size:9px;letter-spacing:1.5px;font-weight:900;color:#c28dff;margin-bottom:7px}
+.nxFillHeading>strong{display:block;font-size:13px;color:#f4eaff;line-height:1.35}
+.nxFillHeading>small{display:block;font-size:10px;color:#a9a1c6;line-height:1.4;margin-top:5px}
+.nxFillActions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;flex:1.45}
+.nxFillActions button{border:1px solid #504078;border-radius:10px;background:#211a3b;color:white;cursor:pointer;padding:12px 7px;min-width:0;transition:transform .2s,border-color .2s,background .2s}
+.nxFillActions button:hover{transform:translateY(-3px);border-color:#be75ff;background:#3b225e}
+.nxFillActions button span{display:block;font-size:20px;margin-bottom:7px}
+.nxFillActions button strong{display:block;font-size:10px;white-space:normal}
+.nxFillActions button small{display:block;color:#c79df8;font-size:8px;margin-top:6px}
+@media(max-width:1350px){.nxFillPanel{flex-direction:column;align-items:stretch}.nxFillHeading{min-width:0}}
+@media(max-width:600px){.nxFillActions{grid-template-columns:1fr 1fr 1fr}.nxFillActions button{padding:9px 4px}}

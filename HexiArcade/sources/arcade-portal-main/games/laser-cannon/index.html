@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Laser Cannon — Game Portal</title>
+<meta name="description" content="Play Laser Cannon free online — Fire your laser to destroy all targets using ricochet and physics. A Easy Action &amp; Shooter game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/laser-cannon/"/>
+<meta property="og:title" content="⚡ Laser Cannon — Free Browser Game"/>
+<meta property="og:description" content="Play Laser Cannon free in your browser. Fire your laser to destroy all targets using ricochet and physics."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/laser-cannon/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Laser Cannon",
+  "description": "Fire your laser to destroy all targets using ricochet and physics.",
+  "url": "https://arcade.sotshau.fun/games/laser-cannon/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Action & Shooter",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px;max-width:760px}.score-bar{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:92px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:18px;box-shadow:0 8px 20px rgba(0,0,0,.08)}canvas{display:block;background:linear-gradient(180deg,#111827,#1f2937);border-radius:14px;border:1px solid #374151;touch-action:none}.overlay{position:absolute;inset:18px;background:rgba(245,245,247,.94);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p{color:#6b7280;line-height:1.5;max-width:360px}.btn{padding:9px 22px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}.status{margin-top:12px;text-align:center;color:#374151;font-weight:700;min-height:24px;max-width:760px}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center;padding:0 16px;max-width:840px}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🔴 Laser Cannon</h1>
+<p class="sub">Bank laser shots off the walls, line up impossible angles, and clear every moving target with careful aim.</p>
+<div class="score-bar"><div class="score-box"><div class="score-label">Score</div><div class="score-val" id="score">0</div></div><div class="score-box"><div class="score-label">Shots</div><div class="score-val" id="shots">0</div></div><div class="score-box"><div class="score-label">Stage</div><div class="score-val" id="stage">1</div></div><div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">0</div></div></div>
+<div class="game">
+  <canvas id="game" width="760" height="460"></canvas>
+  <div class="overlay" id="overlay">
+    <h2>🔴 Laser Cannon</h2>
+    <p>Adjust the cannon angle with the arrow keys, press Space to fire, and drag on touch screens to set your shot before tapping the arena.</p>
+    <button class="btn" id="overlay-btn">Start Game</button>
+  </div>
+  <div class="status" id="status">Press Start to begin.</div>
+</div>
+<p class="hint">← → adjust angle · Space fires · Drag to aim on touch screens and tap to shoot</p>
+<script>
+
+const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');
+if(!ctx) throw new Error('canvas 2d context unavailable');
+const BEST_KEY='laserCannonBest';
+let angle=-Math.PI/2,beam=[],targets=[],score=0,shots=0,stage=1,best=+(localStorage.getItem(BEST_KEY)||0),running=false,last=0,beamTimer=0,keys={},rafId=0,statusMsg='Press Start to begin.';
+document.getElementById('best').textContent=best;
+function makeTargets(){targets=[];for(let i=0;i<3+stage;i++)targets.push({x:120+(i*110)%520,y:70+(i%3)*90,w:44,h:26,vx:(i%2?1:-1)*(1+stage*.08)});}
+function updateStats(){document.getElementById('score').textContent=score;document.getElementById('shots').textContent=shots;document.getElementById('stage').textContent=stage;document.getElementById('best').textContent=best;document.getElementById('status').textContent=statusMsg;}
+function startGame(){angle=-Math.PI/2;beam=[];score=0;shots=0;stage=1;beamTimer=0;keys={};makeTargets();running=true;last=0;statusMsg='Stage 1: try the bank shots.';document.getElementById('overlay').style.display='none';updateStats();cancelAnimationFrame(rafId);rafId=requestAnimationFrame(loop);}
+function pointInRect(x,y,r){return x>=r.x&&x<=r.x+r.w&&y>=r.y&&y<=r.y+r.h;}
+function fire(){if(!running)return;shots++;beam=[];beamTimer=18;let x=380,y=420,dx=Math.cos(angle)*10,dy=Math.sin(angle)*10;for(let bounce=0;bounce<4;bounce++){let stop=false;for(let step=0;step<120;step++){x+=dx;y+=dy;beam.push({x,y});for(const t of targets){if(!t.dead&&pointInRect(x,y,t)){t.dead=true;score+=25;statusMsg='Target vaporized!';if(score>best){best=score;localStorage.setItem(BEST_KEY,String(best));}}}if(y<10){dy=Math.abs(dy);break;}if(x<10||x>canvas.width-10){dx*=-1;break;}if(y>canvas.height-10){stop=true;break;}}if(stop)break;}targets=targets.filter(t=>!t.dead);if(!targets.length){stage++;makeTargets();statusMsg='Stage '+stage+': tougher angles ahead.';}updateStats();}
+function finish(){running=false;statusMsg='Final score: '+score;updateStats();const overlay=document.getElementById('overlay');overlay.innerHTML=`<h2>Range Closed</h2><p>You scored ${score} points in ${shots} shots.</p><button class="btn" id="overlay-btn">Play Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);} 
+function update(dt){if(keys.ArrowLeft||keys.a||keys.A)angle-=.03;if(keys.ArrowRight||keys.d||keys.D)angle+=.03;angle=Math.max(-Math.PI+.25,Math.min(-.15,angle));targets.forEach(t=>{t.x+=t.vx;if(t.x<40||t.x+t.w>canvas.width-40)t.vx*=-1;});beamTimer=Math.max(0,beamTimer-1);if(stage>5&&score>=250)finish();updateStats();}
+function draw(){const g=ctx.createLinearGradient(0,0,0,canvas.height);g.addColorStop(0,'#111827');g.addColorStop(1,'#1f2937');ctx.fillStyle=g;ctx.fillRect(0,0,canvas.width,canvas.height);ctx.strokeStyle='rgba(148,163,184,.2)';for(let i=0;i<canvas.width;i+=38){ctx.beginPath();ctx.moveTo(i,0);ctx.lineTo(i,canvas.height);ctx.stroke();}ctx.fillStyle='#334155';ctx.fillRect(0,430,canvas.width,30);ctx.save();ctx.translate(380,420);ctx.rotate(angle);ctx.fillStyle='#ef4444';ctx.fillRect(-12,-12,24,24);ctx.fillStyle='#fca5a5';ctx.fillRect(0,-4,120,8);ctx.restore();targets.forEach(t=>{ctx.fillStyle='#22d3ee';ctx.fillRect(t.x,t.y,t.w,t.h);ctx.fillStyle='#ecfeff';ctx.fillRect(t.x+8,t.y+6,t.w-16,6);});if(beamTimer>0&&beam.length>1){ctx.strokeStyle='rgba(248,113,113,.9)';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(380,420);beam.forEach(p=>ctx.lineTo(p.x,p.y));ctx.stroke();}ctx.strokeStyle='#fef2f2';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(380,420);ctx.lineTo(380+Math.cos(angle)*90,420+Math.sin(angle)*90);ctx.stroke();}
+function loop(ts){if(!running)return;const dt=ts-last||16;last=ts;update(dt);draw();if(running)rafId=requestAnimationFrame(loop);}
+document.getElementById('overlay-btn').addEventListener('click',startGame);
+document.addEventListener('keydown',e=>{if(document.getElementById('overlay').style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}keys[e.key]=true;if(e.key===' '){e.preventDefault();fire();}});document.addEventListener('keyup',e=>{keys[e.key]=false;});function setAngle(clientX,clientY){const rect=canvas.getBoundingClientRect();const x=(clientX-rect.left)/rect.width*canvas.width,y=(clientY-rect.top)/rect.height*canvas.height;angle=Math.atan2(y-420,x-380);angle=Math.max(-Math.PI+.25,Math.min(-.15,angle));}canvas.addEventListener('pointermove',e=>{if(running){setAngle(e.clientX,e.clientY);draw();}});canvas.addEventListener('pointerdown',e=>{setAngle(e.clientX,e.clientY);fire();});makeTargets();draw();
+
+</script>
+</body>
+</html>

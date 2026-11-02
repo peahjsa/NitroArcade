@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Card Battle — Game Portal</title>
+<meta name="description" content="Play Card Battle free online — Build a deck and battle the AI. Play cards, cast spells, win! A Medium Strategy game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/card-battle/"/>
+<meta property="og:title" content="🃏 Card Battle — Free Browser Game"/>
+<meta property="og:description" content="Play Card Battle free in your browser. Build a deck and battle the AI. Play cards, cast spells, win!"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/card-battle/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Card Battle",
+  "description": "Build a deck and battle the AI. Play cards, cast spells, win!",
+  "url": "https://arcade.sotshau.fun/games/card-battle/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Strategy",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px}.score-bar{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:12px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:92px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.game{position:relative;background:#111827;color:#fff;border-radius:20px;padding:22px;width:min(860px,95vw);box-shadow:0 10px 28px rgba(0,0,0,.2)}.row{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;flex-wrap:wrap}.panel{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:16px;flex:1;min-width:240px}.panel h3{font-size:18px;margin-bottom:6px}.hp{font-size:30px;font-weight:800}.shield{font-size:13px;color:#93c5fd}.hand{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:18px}.card{background:linear-gradient(160deg,#1f2937,#374151);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:14px;cursor:pointer;min-height:132px;display:flex;flex-direction:column;justify-content:space-between}.card small{color:#cbd5e1}.mana{display:inline-block;padding:4px 8px;background:#6c63ff;border-radius:999px;font-size:12px;font-weight:700}.controls{display:flex;gap:10px;justify-content:center;margin-top:16px;flex-wrap:wrap}.btn{padding:10px 16px;border:none;border-radius:10px;background:#6c63ff;color:#fff;font-weight:700;cursor:pointer}.status{min-height:24px;text-align:center;font-weight:700;margin-top:14px;color:#e5e7eb}.overlay{position:absolute;inset:0;background:rgba(17,24,39,.95);border-radius:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p,.hint{color:#cbd5e1}.hint{margin-top:12px;font-size:12px;text-align:center;padding:0 16px}.enemy-bar{height:14px;background:#374151;border-radius:999px;overflow:hidden;margin-top:8px}.enemy-fill{height:100%;background:linear-gradient(90deg,#f97316,#ef4444)}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🃏 Card Battle</h1>
+<p class="sub">Play attack, guard, and utility cards to outlast the enemy champion.</p>
+<div class="score-bar">
+  <div class="score-box"><div class="score-label">Hero HP</div><div class="score-val" id="hero-hp">30</div></div>
+  <div class="score-box"><div class="score-label">Mana</div><div class="score-val" id="mana">3</div></div>
+  <div class="score-box"><div class="score-label">Enemy HP</div><div class="score-val" id="enemy-hp">34</div></div>
+  <div class="score-box"><div class="score-label">Wins</div><div class="score-val" id="wins">0</div></div>
+</div>
+<div class="game">
+  <div class="row">
+    <div class="panel">
+      <h3>⚔️ Hero</h3>
+      <div class="hp" id="hero-hp-large">30</div>
+      <div class="shield" id="block">Block: 0</div>
+    </div>
+    <div class="panel">
+      <h3>👹 Enemy</h3>
+      <div class="hp" id="enemy-hp-large">34</div>
+      <div class="enemy-bar"><div class="enemy-fill" id="enemy-fill" style="width:100%"></div></div>
+    </div>
+  </div>
+  <div class="hand" id="hand"></div>
+  <div class="controls">
+    <button class="btn" id="draw-btn">Redraw Hand</button>
+    <button class="btn" id="end-btn">End Turn</button>
+  </div>
+  <div class="status" id="status">Prepare your deck.</div>
+  <div class="overlay" id="overlay">
+    <h2>🃏 Card Battle</h2>
+    <p>Press 1–5 to play cards, R to redraw once per turn, and Space to end the turn. Tap cards on touch screens.</p>
+    <button class="btn" id="overlay-btn">Start Battle</button>
+  </div>
+</div>
+<p class="hint">Keyboard: 1–5 cards · R redraw · Space end turn · Touch: tap cards and buttons</p>
+<script>
+const WINS_KEY='cardBattleWins';
+const library=[
+  {name:'Strike',cost:1,text:'Deal 6 damage.',play:s=>{s.enemyHp-=6;s.status='Strike hits for 6.';}},
+  {name:'Guard',cost:1,text:'Gain 5 block.',play:s=>{s.block+=5;s.status='A shimmering guard absorbs damage.';}},
+  {name:'Fireball',cost:2,text:'Deal 11 damage.',play:s=>{s.enemyHp-=11;s.status='Fireball scorches the enemy!';}},
+  {name:'Heal',cost:2,text:'Restore 6 HP.',play:s=>{s.heroHp=Math.min(30,s.heroHp+6);s.status='You restore 6 HP.';}},
+  {name:'Charge',cost:0,text:'Gain 1 mana and draw 1 card.',play:s=>{s.mana+=1;drawCards(1);s.status='Charge refills your focus.';}}
+];
+let deck=[],discard=[],hand=[],heroHp=30,enemyHp=34,enemyMax=34,mana=3,block=0,wins=+(localStorage.getItem(WINS_KEY)||0),running=false,redrawUsed=false,statusMsg='Prepare your deck.';
+document.getElementById('wins').textContent=wins;
+function shuffle(arr){for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}return arr;}
+function buildDeck(){deck=shuffle([...library,...library,...library.map(c=>({...c}))]);discard=[];hand=[];}
+function drawCards(count){for(let i=0;i<count;i++){if(!deck.length){deck=shuffle(discard.splice(0));if(!deck.length)break;}hand.push(deck.pop());}}
+function startTurn(){mana=3;block=0;redrawUsed=false;hand=[];drawCards(5);statusMsg='Choose cards to shape your turn.';render();}
+function startGame(){heroHp=30;enemyHp=34;enemyMax=34;buildDeck();running=true;document.getElementById('overlay').style.display='none';startTurn();}
+function render(){document.getElementById('hero-hp').textContent=heroHp;document.getElementById('mana').textContent=mana;document.getElementById('enemy-hp').textContent=Math.max(0,enemyHp);document.getElementById('wins').textContent=wins;document.getElementById('hero-hp-large').textContent=heroHp;document.getElementById('enemy-hp-large').textContent=Math.max(0,enemyHp);document.getElementById('block').textContent=`Block: ${block}`;document.getElementById('status').textContent=statusMsg;document.getElementById('enemy-fill').style.width=`${Math.max(0,enemyHp)/enemyMax*100}%`;document.getElementById('draw-btn').disabled=redrawUsed||!running;const handEl=document.getElementById('hand');handEl.innerHTML='';hand.forEach((card,i)=>{const el=document.createElement('button');el.className='card';el.disabled=!running;el.innerHTML=`<div><div class="mana">${i+1} · ${card.cost} mana</div><h3 style="margin-top:10px">${card.name}</h3></div><small>${card.text}</small>`;el.addEventListener('click',()=>playCard(i));handEl.appendChild(el);});}
+function checkEnd(){if(enemyHp<=0){wins++;localStorage.setItem(WINS_KEY,String(wins));running=false;render();const overlay=document.getElementById('overlay');overlay.innerHTML=`<h2>🏆 Victory</h2><p>You defeated the enemy champion with <strong>${heroHp}</strong> HP left.</p><button class="btn" id="overlay-btn">Battle Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);return true;}if(heroHp<=0){running=false;render();const overlay=document.getElementById('overlay');overlay.innerHTML=`<h2>💀 Defeat</h2><p>The enemy outlasted you. Shuffle up and try again.</p><button class="btn" id="overlay-btn">Try Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);return true;}return false;}
+function playCard(i){if(!running||!hand[i])return;const card=hand[i];if(card.cost>mana){statusMsg='Not enough mana for that card.';return render();}mana-=card.cost;card.play({get heroHp(){return heroHp;},set heroHp(v){heroHp=v;},get enemyHp(){return enemyHp;},set enemyHp(v){enemyHp=v;},get mana(){return mana;},set mana(v){mana=v;},get block(){return block;},set block(v){block=v;},get status(){return statusMsg;},set status(v){statusMsg=v;}});discard.push(...hand.splice(i,1));render();checkEnd();}
+function redraw(){if(!running||redrawUsed)return;discard.push(...hand.splice(0));drawCards(5);redrawUsed=true;statusMsg='You redrew your hand.';render();}
+function enemyTurn(){const attack=6+Math.floor(Math.random()*5);const dealt=Math.max(0,attack-block);heroHp-=dealt;statusMsg=`Enemy attacks for ${attack}; you take ${dealt}.`;block=0;render();if(checkEnd())return;setTimeout(startTurn,500);} 
+function endTurn(){if(!running)return;discard.push(...hand.splice(0));statusMsg='Enemy is taking a turn...';render();setTimeout(enemyTurn,450);} 
+document.getElementById('overlay-btn').addEventListener('click',startGame);document.getElementById('draw-btn').addEventListener('click',redraw);document.getElementById('end-btn').addEventListener('click',endTurn);document.addEventListener('keydown',e=>{const overlay=document.getElementById('overlay');if(overlay.style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}if(/[1-5]/.test(e.key)){e.preventDefault();playCard(+e.key-1);}if(e.key==='r'||e.key==='R'){e.preventDefault();redraw();}if(e.key===' '){e.preventDefault();endTurn();}});render();
+</script>
+</body>
+</html>

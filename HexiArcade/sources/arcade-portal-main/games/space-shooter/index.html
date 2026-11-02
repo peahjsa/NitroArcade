@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Space Shooter — Game Portal</title>
+<meta name="description" content="Play Space Shooter free online — Pilot your ship and blast enemy waves in outer space. A Medium Action &amp; Shooter game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/space-shooter/"/>
+<meta property="og:title" content="🛸 Space Shooter — Free Browser Game"/>
+<meta property="og:description" content="Play Space Shooter free in your browser. Pilot your ship and blast enemy waves in outer space."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/space-shooter/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Space Shooter",
+  "description": "Pilot your ship and blast enemy waves in outer space.",
+  "url": "https://arcade.sotshau.fun/games/space-shooter/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Action & Shooter",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px;max-width:760px}.score-bar{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:92px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:18px;box-shadow:0 8px 20px rgba(0,0,0,.08)}canvas{display:block;background:linear-gradient(180deg,#020617,#0f172a);border-radius:14px;border:1px solid #1e293b;touch-action:none}.overlay{position:absolute;inset:18px;background:rgba(245,245,247,.94);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p{color:#6b7280;line-height:1.5;max-width:360px}.btn{padding:9px 22px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}.status{margin-top:12px;text-align:center;color:#374151;font-weight:700;min-height:24px;max-width:520px}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center;padding:0 16px;max-width:600px}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🚀 Space Shooter</h1>
+<p class="sub">Fly a nimble starfighter through enemy formations, dodge return fire, and push into tougher waves.</p>
+<div class="score-bar"><div class="score-box"><div class="score-label">Score</div><div class="score-val" id="score">0</div></div><div class="score-box"><div class="score-label">Lives</div><div class="score-val" id="lives">3</div></div><div class="score-box"><div class="score-label">Wave</div><div class="score-val" id="wave">1</div></div><div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">0</div></div></div>
+<div class="game">
+  <canvas id="game" width="520" height="620"></canvas>
+  <div class="overlay" id="overlay">
+    <h2>🚀 Space Shooter</h2>
+    <p>Move with the arrow keys or WASD, hold Space to fire, and drag your ship on touch devices while tapping to launch shots.</p>
+    <button class="btn" id="overlay-btn">Start Game</button>
+  </div>
+  <div class="status" id="status">Press Start to begin.</div>
+</div>
+<p class="hint">Arrow keys / WASD to move · Hold Space to fire · Drag to move and tap to shoot</p>
+<script>
+
+const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');
+if(!ctx) throw new Error('Canvas 2d context unavailable');
+const BEST_KEY='spaceShooterBest';
+let player,enemies=[],shots=[],enemyShots=[],score=0,lives=3,wave=1,best=+(localStorage.getItem(BEST_KEY)||0),running=false,last=0,spawn=0,spawned=0,targetCount=0,keys={},statusMsg='Press Start to begin.',dragging=false,rafId=0;
+document.getElementById('best').textContent=best;
+function resetPlayer(){player={x:canvas.width/2,y:canvas.height-70,w:28,h:34,cooldown:0};}
+function updateStats(){document.getElementById('score').textContent=score;document.getElementById('lives').textContent=lives;document.getElementById('wave').textContent=wave;document.getElementById('best').textContent=best;document.getElementById('status').textContent=statusMsg;}
+function startGame(){score=0;lives=3;wave=1;enemies=[];shots=[];enemyShots=[];spawn=0;spawned=0;keys={};resetPlayer();targetCount=8+wave*3;running=true;last=0;statusMsg='Wave 1: protect the lane.';document.getElementById('overlay').style.display='none';updateStats();cancelAnimationFrame(rafId);rafId=requestAnimationFrame(loop);}
+function shoot(){if(!running||player.cooldown>0)return;player.cooldown=8;shots.push({x:player.x,y:player.y-22,vy:-9});}
+function rectHit(a,b){return Math.abs(a.x-b.x)*2<(a.w+b.w)&&Math.abs(a.y-b.y)*2<(a.h+b.h);} 
+function addEnemy(){spawned++;const lane=60+Math.random()*(canvas.width-120);enemies.push({x:lane,y:-30,w:28,h:26,vx:(Math.random()>.5?1:-1)*(1.4+wave*.08),vy:1.8+wave*.14,hp:1+Math.floor(wave/4),cool:30+Math.random()*70});}
+function loseLife(reason){lives--;statusMsg=reason;if(lives<=0)return gameOver('Your starfighter was lost in the sector.');enemyShots=[];player.x=canvas.width/2;player.y=canvas.height-70;updateStats();}
+function gameOver(text){running=false;statusMsg='Final score: '+score;updateStats();const overlay=document.getElementById('overlay');overlay.innerHTML=`<h2>Mission Failed</h2><p>${text}</p><button class="btn" id="overlay-btn">Fly Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);} 
+function nextWave(){wave++;targetCount=8+wave*3;spawned=0;statusMsg='Wave '+wave+': more fighters inbound.';updateStats();}
+function update(dt){const move=5.2;if(keys.ArrowLeft||keys.a||keys.A)player.x-=move;if(keys.ArrowRight||keys.d||keys.D)player.x+=move;if(keys.ArrowUp||keys.w||keys.W)player.y-=move;if(keys.ArrowDown||keys.s||keys.S)player.y+=move;player.x=Math.max(24,Math.min(canvas.width-24,player.x));player.y=Math.max(80,Math.min(canvas.height-24,player.y));player.cooldown=Math.max(0,player.cooldown-1);if(keys[' ']||keys.Spacebar)shoot();spawn+=dt;if(spawned<targetCount&&spawn>Math.max(260,900-wave*45)){spawn=0;addEnemy();if(Math.random()<.28+wave*.03)addEnemy();}shots.forEach(s=>s.y+=s.vy);enemyShots.forEach(s=>{s.x+=s.vx;s.y+=s.vy;});shots=shots.filter(s=>s.y>-20);enemyShots=enemyShots.filter(s=>s.y<canvas.height+20&&s.x>-30&&s.x<canvas.width+30);enemies.forEach(e=>{e.x+=e.vx;e.y+=e.vy;e.cool-=dt/16;if(e.x<24||e.x>canvas.width-24)e.vx*=-1;if(e.cool<=0){e.cool=44+Math.random()*60-Math.min(18,wave*2);enemyShots.push({x:e.x,y:e.y+14,vx:(player.x-e.x)/150,vy:4+wave*.1,w:6,h:10});}});for(const s of shots){for(const e of enemies){if(e.hp>0&&rectHit({x:s.x,y:s.y,w:6,h:14},e)){s.y=-99;e.hp--;if(e.hp<=0){score+=20;statusMsg='Enemy destroyed!';if(score>best){best=score;localStorage.setItem(BEST_KEY,String(best));}}}}}enemies=enemies.filter(e=>e.hp>0&&e.y<canvas.height+40);for(const s of enemyShots){if(rectHit({x:s.x,y:s.y,w:6,h:10},{x:player.x,y:player.y,w:player.w,h:player.h}))loseLife('Your ship took a hit!');}if(enemies.some(e=>rectHit(e,{x:player.x,y:player.y,w:player.w,h:player.h})))loseLife('An enemy rammed your cockpit.');if(enemies.some(e=>e.y>canvas.height-40))loseLife('A fighter slipped past your defense line.');if(spawned>=targetCount&&!enemies.length)nextWave();updateStats();}
+function draw(){const g=ctx.createLinearGradient(0,0,0,canvas.height);g.addColorStop(0,'#020617');g.addColorStop(1,'#0f172a');ctx.fillStyle=g;ctx.fillRect(0,0,canvas.width,canvas.height);ctx.fillStyle='rgba(255,255,255,.65)';for(let i=0;i<90;i++)ctx.fillRect((i*43)%canvas.width,(i*91+(last/16))%canvas.height,2,2);ctx.fillStyle='#22d3ee';ctx.beginPath();ctx.moveTo(player.x,player.y-18);ctx.lineTo(player.x+16,player.y+16);ctx.lineTo(player.x,player.y+8);ctx.lineTo(player.x-16,player.y+16);ctx.closePath();ctx.fill();ctx.fillStyle='#f8fafc';ctx.fillRect(player.x-4,player.y-4,8,20);enemies.forEach(e=>{ctx.fillStyle='#fb7185';ctx.fillRect(e.x-e.w/2,e.y-e.h/2,e.w,e.h);ctx.fillStyle='#111827';ctx.fillRect(e.x-10,e.y-2,6,6);ctx.fillRect(e.x+4,e.y-2,6,6);ctx.fillStyle='#f59e0b';ctx.fillRect(e.x-18,e.y+4,10,4);ctx.fillRect(e.x+8,e.y+4,10,4);});ctx.fillStyle='#93c5fd';shots.forEach(s=>ctx.fillRect(s.x-2,s.y-8,4,14));ctx.fillStyle='#f97316';enemyShots.forEach(s=>ctx.fillRect(s.x-2,s.y-4,4,10));}
+function loop(ts){if(!running)return;const dt=ts-last||16;last=ts;update(dt);draw();if(running)rafId=requestAnimationFrame(loop);}
+document.getElementById('overlay-btn').addEventListener('click',startGame);
+document.addEventListener('keydown',e=>{if(document.getElementById('overlay').style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}keys[e.key]=true;if(e.key===' '){e.preventDefault();shoot();}});document.addEventListener('keyup',e=>{keys[e.key]=false;});function setShip(clientX,clientY){const rect=canvas.getBoundingClientRect();player.x=Math.max(24,Math.min(canvas.width-24,(clientX-rect.left)/rect.width*canvas.width));player.y=Math.max(80,Math.min(canvas.height-24,(clientY-rect.top)/rect.height*canvas.height));}canvas.addEventListener('pointerdown',e=>{if(!running)return;dragging=true;setShip(e.clientX,e.clientY);shoot();});canvas.addEventListener('pointermove',e=>{if(running&&dragging)setShip(e.clientX,e.clientY);});window.addEventListener('pointerup',()=>dragging=false);resetPlayer();draw();
+
+</script>
+</body>
+</html>

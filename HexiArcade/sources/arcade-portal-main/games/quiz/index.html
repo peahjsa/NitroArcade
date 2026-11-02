@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Quiz Trivia — Game Portal</title>
+<meta name="description" content="Play Quiz Trivia free online — Answer 10 trivia questions across various topics. How many can you get? A Easy Word &amp; Trivia game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/quiz/"/>
+<meta property="og:title" content="❓ Quiz Trivia — Free Browser Game"/>
+<meta property="og:description" content="Play Quiz Trivia free in your browser. Answer 10 trivia questions across various topics. How many can you get?"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/quiz/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Quiz Trivia",
+  "description": "Answer 10 trivia questions across various topics. How many can you get?",
+  "url": "https://arcade.sotshau.fun/games/quiz/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Word & Trivia",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px}.score-bar{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 18px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:96px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;box-shadow:0 8px 20px rgba(0,0,0,.08);padding:24px;width:min(720px,94vw)}.card{background:#f8fafc;border:1px solid #e5e7eb;border-radius:16px;padding:18px;margin-bottom:16px}.meta{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:#64748b;font-size:14px;margin-bottom:12px}.question{font-size:24px;font-weight:800;color:#111827;line-height:1.35}.choices{display:grid;gap:12px}.choice{padding:14px 16px;border:1px solid #cbd5e1;border-radius:12px;background:#fff;text-align:left;font-size:16px;font-weight:700;color:#1f2937;cursor:pointer}.choice.selected{border-color:#6c63ff;box-shadow:0 0 0 3px rgba(108,99,255,.12)}.choice.correct{background:#dcfce7;border-color:#22c55e}.choice.wrong{background:#fee2e2;border-color:#ef4444}.status{min-height:24px;text-align:center;color:#374151;font-weight:700;margin-top:16px}.controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px}.btn{padding:10px 18px;border:none;border-radius:10px;background:#6c63ff;color:#fff;font-weight:700;cursor:pointer}.btn.alt{background:#fff;color:#6c63ff;border:1px solid #6c63ff}.overlay{position:absolute;inset:0;background:rgba(245,245,247,.96);border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p{color:#6b7280;max-width:320px;line-height:1.5}.hint{margin-top:14px;font-size:12px;color:#9ca3af;text-align:center;padding:0 16px}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>❓ Quiz Trivia</h1>
+<p class="sub">Answer ten quick trivia questions. Use number keys 1–4 or tap a choice, then submit your answer.</p>
+<div class="score-bar">
+  <div class="score-box"><div class="score-label">Question</div><div class="score-val" id="question-count">0 / 10</div></div>
+  <div class="score-box"><div class="score-label">Score</div><div class="score-val" id="score">0</div></div>
+  <div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">0</div></div>
+</div>
+<div class="game">
+  <div class="card"><div class="meta"><span id="topic">Topic: —</span><span id="streak">Streak: 0</span></div><div class="question" id="question">Press Start to begin.</div></div>
+  <div class="choices" id="choices"></div>
+  <div class="controls"><button class="btn" id="submit-btn">Submit Answer</button><button class="btn alt" id="skip-btn">Skip</button></div>
+  <div class="status" id="status">Press Start to begin.</div>
+  <div class="overlay" id="overlay"><h2>❓ Quiz Trivia</h2><p>Choose the answer with number keys 1–4, arrow keys + Enter, or by tapping the choices on screen.</p><button class="btn" id="overlay-btn">Start Quiz</button></div>
+</div>
+<p class="hint">Keyboard: 1–4 or arrow keys + Enter · Touch: tap a choice, then submit</p>
+<script>
+const QUESTIONS=[{topic:'Science',question:'Which planet is known as the Red Planet?',choices:['Mars','Venus','Jupiter','Mercury'],answer:0},{topic:'History',question:'Which civilization built Machu Picchu?',choices:['Romans','Inca','Mayans','Vikings'],answer:1},{topic:'Geography',question:'What is the longest river in the world?',choices:['Amazon','Nile','Yangtze','Mississippi'],answer:1},{topic:'Books',question:'Who wrote "Charlotte\'s Web"?',choices:['E. B. White','Roald Dahl','C. S. Lewis','Beatrix Potter'],answer:0},{topic:'Music',question:'How many keys are on a standard piano?',choices:['72','76','88','96'],answer:2},{topic:'Sports',question:'How many players are on a soccer team on the field?',choices:['9','10','11','12'],answer:2},{topic:'Nature',question:'What do bees collect to make honey?',choices:['Pollen and nectar','Tree sap','Rainwater','Seeds'],answer:0},{topic:'Technology',question:'What does CPU stand for?',choices:['Central Process Unit','Central Processing Unit','Computer Power Unit','Core Processing Utility'],answer:1},{topic:'Art',question:'Which painter created the Mona Lisa?',choices:['Van Gogh','Picasso','Da Vinci','Monet'],answer:2},{topic:'Movies',question:'Which movie features a talking snowman named Olaf?',choices:['Moana','Frozen','Tangled','Encanto'],answer:1},{topic:'Space',question:'What galaxy contains our solar system?',choices:['Andromeda','Triangulum','Whirlpool','Milky Way'],answer:3},{topic:'Food',question:'Which fruit is dried to make a raisin?',choices:['Plum','Grape','Cherry','Apricot'],answer:1},{topic:'Math',question:'What is 9 × 7?',choices:['56','63','72','49'],answer:1},{topic:'Animals',question:'Which mammal can truly fly?',choices:['Flying squirrel','Bat','Penguin','Ostrich'],answer:1}];
+const TOTAL=10,BEST_KEY='quizBestScore';
+const questionEl=document.getElementById('question'),choicesEl=document.getElementById('choices'),statusEl=document.getElementById('status'),overlay=document.getElementById('overlay');
+let deck=[],index=0,score=0,streak=0,selected=0,active=false,locked=false,current=null;
+document.getElementById('best').textContent=localStorage.getItem(BEST_KEY)||'0';
+function shuffle(items){const copy=[...items];for(let i=copy.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[copy[i],copy[j]]=[copy[j],copy[i]];}return copy;}
+function startGame(){deck=shuffle(QUESTIONS).slice(0,TOTAL);index=0;score=0;streak=0;selected=0;active=true;locked=false;overlay.style.display='none';document.getElementById('score').textContent='0';document.getElementById('streak').textContent='Streak: 0';loadQuestion();}
+function loadQuestion(){current=deck[index];locked=false;selected=0;document.getElementById('question-count').textContent=`${index+1} / ${TOTAL}`;document.getElementById('topic').textContent=`Topic: ${current.topic}`;questionEl.textContent=current.question;statusEl.textContent='Choose an answer.';choicesEl.innerHTML='';current.choices.forEach((choice,i)=>{const btn=document.createElement('button');btn.className='choice'+(i===selected?' selected':'');btn.innerHTML=`<strong>${i+1}.</strong> ${choice}`;btn.addEventListener('click',()=>{if(!active||locked)return;selected=i;renderSelection();});choicesEl.appendChild(btn);});}
+function renderSelection(){[...choicesEl.children].forEach((btn,i)=>btn.classList.toggle('selected',i===selected));}
+function submitAnswer(skip=false){if(!active||locked)return;locked=true;const answerIndex=skip?-1:selected;[...choicesEl.children].forEach((btn,i)=>{if(i===current.answer)btn.classList.add('correct');if(answerIndex===i&&i!==current.answer)btn.classList.add('wrong');});if(answerIndex===current.answer){score++;streak++;statusEl.textContent='Correct!';}else{streak=0;statusEl.textContent=skip?`Skipped. Correct answer: ${current.choices[current.answer]}.`:`Not this time. Correct answer: ${current.choices[current.answer]}.`;}document.getElementById('score').textContent=String(score);document.getElementById('streak').textContent=`Streak: ${streak}`;setTimeout(()=>{index++;if(index>=TOTAL){finishGame();}else{loadQuestion();}},900);}
+function finishGame(){active=false;const best=Math.max(score,+(localStorage.getItem(BEST_KEY)||0));localStorage.setItem(BEST_KEY,String(best));document.getElementById('best').textContent=String(best);statusEl.textContent=`Quiz complete! Score: ${score}/${TOTAL}.`;overlay.innerHTML=`<h2>🏁 Quiz Complete</h2><p>You answered <strong>${score}</strong> out of <strong>${TOTAL}</strong> correctly.</p><button class="btn" id="overlay-btn">Play Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);}
+document.getElementById('submit-btn').addEventListener('click',()=>submitAnswer(false));document.getElementById('skip-btn').addEventListener('click',()=>submitAnswer(true));document.getElementById('overlay-btn').addEventListener('click',startGame);document.addEventListener('keydown',e=>{if(overlay.style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}if(!active||locked)return;if(['1','2','3','4'].includes(e.key)){selected=Number(e.key)-1;renderSelection();return;}if(e.key==='ArrowDown'||e.key==='ArrowRight'){e.preventDefault();selected=(selected+1)%4;renderSelection();return;}if(e.key==='ArrowUp'||e.key==='ArrowLeft'){e.preventDefault();selected=(selected+3)%4;renderSelection();return;}if(e.key==='Enter'){e.preventDefault();submitAnswer(false);}if(e.key==='s'||e.key==='S'){submitAnswer(true);}});
+</script>
+</body>
+</html>

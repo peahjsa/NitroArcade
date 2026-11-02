@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Visual Novel — Game Portal</title>
+<meta name="description" content="Play Visual Novel free online — An interactive story with branching choices. Multiple endings await. A Easy Platform &amp; Adventure game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/visual-novel/"/>
+<meta property="og:title" content="📚 Visual Novel — Free Browser Game"/>
+<meta property="og:description" content="Play Visual Novel free in your browser. An interactive story with branching choices. Multiple endings await."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/visual-novel/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Visual Novel",
+  "description": "An interactive story with branching choices. Multiple endings await.",
+  "url": "https://arcade.sotshau.fun/games/visual-novel/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Platform & Adventure",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px;max-width:760px}.score-bar{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 18px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:96px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;box-shadow:0 8px 20px rgba(0,0,0,.08);padding:24px;width:min(860px,94vw)}.scene{background:linear-gradient(135deg,#dbeafe,#ede9fe);border-radius:18px;padding:24px;min-height:260px;display:grid;grid-template-columns:180px 1fr;gap:18px;align-items:end}.portrait{background:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.75);border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:84px;min-height:220px}.dialogue{background:rgba(255,255,255,.8);border-radius:18px;padding:18px}.speaker{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#6b7280;font-weight:800}.line{margin-top:8px;color:#111827;font-size:21px;line-height:1.45;font-weight:700}.choices{display:grid;gap:10px;margin-top:16px}.choice{padding:13px 14px;border:1px solid #cbd5e1;border-radius:12px;background:#fff;color:#1f2937;text-align:left;font-weight:700;cursor:pointer}.status{min-height:24px;text-align:center;color:#374151;font-weight:700;margin-top:16px}.overlay{position:absolute;inset:0;background:rgba(245,245,247,.96);border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p{color:#6b7280;max-width:360px;line-height:1.5}.btn{padding:10px 18px;border:none;border-radius:10px;background:#6c63ff;color:#fff;font-weight:700;cursor:pointer}.hint{margin-top:14px;font-size:12px;color:#9ca3af;text-align:center;padding:0 16px}@media(max-width:700px){.scene{grid-template-columns:1fr}.portrait{min-height:120px;font-size:60px}}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🎭 Visual Novel</h1>
+<p class="sub">Spend one evening at the Starfall Festival, build trust with your companion, and unlock multiple endings through dialogue choices.</p>
+<div class="score-bar"><div class="score-box"><div class="score-label">Chapter</div><div class="score-val" id="chapter">0</div></div><div class="score-box"><div class="score-label">Trust</div><div class="score-val" id="trust">0</div></div><div class="score-box"><div class="score-label">Spark</div><div class="score-val" id="spark">0</div></div><div class="score-box"><div class="score-label">Endings</div><div class="score-val" id="best">0 / 3</div></div></div>
+<div class="game"><div class="scene"><div class="portrait" id="portrait">🌌</div><div class="dialogue"><div class="speaker" id="speaker">Festival Lights</div><div class="line" id="line">Press Start to begin.</div></div></div><div class="choices" id="choices"></div><div class="status" id="status">Press Start to begin.</div><div class="overlay" id="overlay"><h2>🎭 Visual Novel</h2><p>Choose with number keys 1–3 or tap the dialogue options. Your trust and spark scores decide which ending you unlock.</p><button class="btn" id="overlay-btn">Start Episode</button></div></div>
+<p class="hint">Keyboard: 1–3 to choose · Enter to replay from the overlay · Touch: tap an option</p>
+<script>
+const ENDING_KEY='visualNovelEndings';
+const scenes={intro:{speaker:'Ari',portrait:'🎆',line:'You made it before the lantern launch. Want to chase the parade or sneak up to the observatory ridge?',choices:[{label:'1. Chase the parade',next:'parade',add:{spark:1}},{label:'2. Visit the observatory ridge',next:'ridge',add:{trust:1}},{label:'3. Ask Ari what they really wanted tonight',next:'honest',add:{trust:1,spark:1}}]},parade:{speaker:'Ari',portrait:'🥁',line:'Music rattles the bridge as dancers spin by. Ari laughs and offers you a glowing paper charm.',choices:[{label:'1. Take the charm and dance anyway',next:'midway',add:{spark:2}},{label:'2. Save the charm for later and keep talking',next:'midway',add:{trust:1}}]},ridge:{speaker:'Ari',portrait:'🔭',line:'The ridge is quiet above the city. Ari points out constellations and confesses they almost stayed home tonight.',choices:[{label:'1. Promise you would have found them anyway',next:'midway',add:{trust:2}},{label:'2. Joke that the stars needed an audience',next:'midway',add:{spark:1}}]},honest:{speaker:'Ari',portrait:'💫',line:'Ari exhales. "I wanted one night that felt honest." The lanterns drift high enough to paint their eyes gold.',choices:[{label:'1. Tell Ari you feel the same',next:'midway',add:{trust:1,spark:2}},{label:'2. Suggest making the night memorable together',next:'midway',add:{spark:1,trust:1}}]},midway:{speaker:'Narrator',portrait:'🌠',line:'The festival thins into a quiet glow. One choice remains before the final lantern rises.',choices:[{label:'1. Share the last lantern wish',next:'ending'},{label:'2. Offer Ari the paper charm',next:'ending',add:{spark:1}},{label:'3. Ask Ari to meet again after tonight',next:'ending',add:{trust:1}}]}};
+let state,sceneKey='intro',endings=new Set(JSON.parse(localStorage.getItem(ENDING_KEY)||'[]'));
+const overlay=document.getElementById('overlay');
+function reset(){state={chapter:1,trust:0,spark:0};sceneKey='intro';overlay.style.display='none';render();}
+function updateStats(){document.getElementById('chapter').textContent=String(state.chapter);document.getElementById('trust').textContent=String(state.trust);document.getElementById('spark').textContent=String(state.spark);document.getElementById('best').textContent=`${endings.size} / 3`;}
+function render(){const scene=scenes[sceneKey];document.getElementById('speaker').textContent=scene.speaker;document.getElementById('portrait').textContent=scene.portrait;document.getElementById('line').textContent=scene.line;const choicesEl=document.getElementById('choices');choicesEl.innerHTML='';scene.choices.forEach((choice,i)=>{const btn=document.createElement('button');btn.className='choice';btn.textContent=choice.label;btn.addEventListener('click',()=>choose(i));choicesEl.appendChild(btn);});document.getElementById('status').textContent='Choose the next scene.';updateStats();}
+function choose(index){const scene=scenes[sceneKey],choice=scene.choices[index];if(!choice)return;if(choice.add){state.trust+=choice.add.trust||0;state.spark+=choice.add.spark||0;}state.chapter++;if(choice.next==='ending'){finish();return;}sceneKey=choice.next;render();}
+function finish(){let ending='Lantern Promise',text='You and Ari release the final lantern together and promise to meet again under a calmer sky.';if(state.spark>=4&&state.trust>=3){ending='Starfall Confession';text='Under the final burst of fireworks, Ari takes your hand and the festival becomes the start of something brighter.';}else if(state.trust>=4){ending='Observatory Pact';text='You and Ari skip the crowds, trade quiet truths, and plan to map constellations together all winter.';}endings.add(ending);localStorage.setItem(ENDING_KEY,JSON.stringify([...endings]));updateStats();document.getElementById('status').textContent=`Ending unlocked: ${ending}.`;overlay.innerHTML=`<h2>💖 ${ending}</h2><p>${text}</p><button class="btn" id="overlay-btn">Play Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',reset);}
+document.getElementById('overlay-btn').addEventListener('click',reset);document.addEventListener('keydown',e=>{if(overlay.style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}if(['1','2','3'].includes(e.key)){e.preventDefault();choose(Number(e.key)-1);}});state={chapter:0,trust:0,spark:0};updateStats();
+</script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Escape Room — Game Portal</title>
+<meta name="description" content="Play Escape Room free online — Solve puzzles and find hidden clues to escape before time runs out. A Medium Platform &amp; Adventure game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/escape-room/"/>
+<meta property="og:title" content="🔑 Escape Room — Free Browser Game"/>
+<meta property="og:description" content="Play Escape Room free in your browser. Solve puzzles and find hidden clues to escape before time runs out."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/escape-room/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Escape Room",
+  "description": "Solve puzzles and find hidden clues to escape before time runs out.",
+  "url": "https://arcade.sotshau.fun/games/escape-room/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Platform & Adventure",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px;max-width:760px}.score-bar{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 18px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:96px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;box-shadow:0 8px 20px rgba(0,0,0,.08);padding:24px;width:min(820px,94vw)}.room{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.spot{padding:18px;border:1px solid #e5e7eb;border-radius:16px;background:#f8fafc;cursor:pointer;text-align:left}.spot h3{margin-bottom:6px;color:#111827}.spot p{color:#64748b;line-height:1.5}.spot.active{border-color:#6c63ff;box-shadow:0 0 0 3px rgba(108,99,255,.12)}.panel{display:grid;grid-template-columns:1.2fr .8fr;gap:16px;margin-top:16px}.console,.inventory{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:16px}.console input{width:100%;padding:12px 14px;border:1px solid #cbd5e1;border-radius:12px;font-size:18px;letter-spacing:.2em;text-align:center;margin:10px 0}.inventory-list{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.pill{background:#ede9fe;color:#5b21b6;border-radius:999px;padding:8px 12px;font-weight:700;font-size:13px}.status{min-height:24px;text-align:center;color:#374151;font-weight:700;margin-top:16px}.controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}.btn{padding:10px 18px;border:none;border-radius:10px;background:#6c63ff;color:#fff;font-weight:700;cursor:pointer}.btn.alt{background:#fff;color:#6c63ff;border:1px solid #6c63ff}.overlay{position:absolute;inset:0;background:rgba(245,245,247,.96);border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p{color:#6b7280;max-width:360px;line-height:1.5}.hint{margin-top:14px;font-size:12px;color:#9ca3af;text-align:center;padding:0 16px}@media(max-width:720px){.room,.panel{grid-template-columns:1fr}}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🚪 Escape Room</h1>
+<p class="sub">Search the study, gather clues, unlock the lockbox, and open the final door before the room outsmarts you.</p>
+<div class="score-bar"><div class="score-box"><div class="score-label">Clues</div><div class="score-val" id="clues">0</div></div><div class="score-box"><div class="score-label">Locks</div><div class="score-val" id="locks">0 / 2</div></div><div class="score-box"><div class="score-label">Time</div><div class="score-val" id="time">0:00</div></div><div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">—</div></div></div>
+<div class="game">
+  <div class="room" id="room"></div>
+  <div class="panel">
+    <div class="console"><h3 id="spot-title">Choose a hotspot</h3><p id="spot-text">Press Start to begin.</p><input id="code" maxlength="3" inputmode="numeric" placeholder="314"/><div class="controls"><button class="btn" id="inspect-btn">Inspect</button><button class="btn alt" id="unlock-btn">Unlock / Use</button></div></div>
+    <div class="inventory"><h3>Inventory</h3><div class="inventory-list" id="inventory"></div></div>
+  </div>
+  <div class="status" id="status">Press Start to begin.</div>
+  <div class="overlay" id="overlay"><h2>🚪 Escape Room</h2><p>Select hotspots with number keys 1–4 or taps. Inspect for clues, enter the 3-digit code, then use everything you found to escape.</p><button class="btn" id="overlay-btn">Start Escape</button></div>
+</div>
+<p class="hint">Keyboard: 1–4 select hotspot · I inspect · U unlock / use · Type the code directly · Touch: tap hotspots and buttons</p>
+<script>
+const BEST_KEY='escapeRoomBestTime';
+const roomEl=document.getElementById('room'),inventoryEl=document.getElementById('inventory'),titleEl=document.getElementById('spot-title'),textEl=document.getElementById('spot-text'),statusEl=document.getElementById('status'),overlay=document.getElementById('overlay'),codeInput=document.getElementById('code');
+const baseSpots=[{id:'desk',name:'1. Desk Drawer',desc:'A locked drawer hums beside a blank journal.',inspect(s){if(!s.flags.note){s.flags.note=true;s.items.add('Clue Note');s.clues=s.items.size;statusEl.textContent='You found a note: "Stars, clock, books = 3-1-4."';}else statusEl.textContent='The desk is already empty.';},use(s){if(!s.flags.boxOpen){statusEl.textContent='The drawer contains only the clue note.';}else if(!s.items.has('Brass Key')){s.items.add('Brass Key');statusEl.textContent='With the lockbox open, you recover a brass key from the false bottom.';}else statusEl.textContent='The false bottom is open already.';}},{id:'bookshelf',name:'2. Bookshelf',desc:'Four dusty books lean beside a bronze clock.',inspect(s){if(!s.flags.book){s.flags.book=true;s.items.add('Moon Book');s.clues=s.items.size;statusEl.textContent='A marked page mentions the observatory\'s 3 bright stars.';}else statusEl.textContent='The shelf clue already points toward the code.';},use(){statusEl.textContent='Nothing else on the shelf moves.';}},{id:'painting',name:'3. Painting',desc:'A crooked painting hangs over a narrow wall safe.',inspect(s){if(!s.flags.safe){s.flags.safe=true;s.items.add('Safe Diagram');s.clues=s.items.size;statusEl.textContent='Behind the painting is a tiny keypad lockbox.';}else statusEl.textContent='The lockbox still waits for its code.';},use(s){if(codeInput.value==='314'&&!s.flags.boxOpen){s.flags.boxOpen=true;s.locks=1;statusEl.textContent='Click! The lockbox opens and reveals a brass key hidden inside the desk.';}else if(!s.flags.boxOpen){statusEl.textContent='The keypad flashes red. The note must point to the right code.';}else statusEl.textContent='The lockbox is already open.';}},{id:'door',name:'4. Exit Door',desc:'A heavy door with a brass lock and a card slot leads out.',inspect(s){if(!s.flags.card){s.flags.card=true;s.items.add('Keycard');s.clues=s.items.size;statusEl.textContent='You find a keycard tucked in the door frame.';}else statusEl.textContent='The exit still needs both the brass key and keycard.';},use(s){if(s.items.has('Brass Key')&&s.items.has('Keycard')){s.locks=2;finish();}else statusEl.textContent='The door needs a brass key and the hidden keycard.';}}];
+let state,selected=0,startTime=0,best=localStorage.getItem(BEST_KEY)||'';
+document.getElementById('best').textContent=best?best:'—';
+function renderRoom(){roomEl.innerHTML='';baseSpots.forEach((spot,i)=>{const btn=document.createElement('button');btn.className='spot'+(i===selected?' active':'');btn.innerHTML=`<h3>${spot.name}</h3><p>${spot.desc}</p>`;btn.addEventListener('click',()=>{selected=i;showSpot();});roomEl.appendChild(btn);});}
+function showSpot(){renderRoom();const spot=baseSpots[selected];titleEl.textContent=spot.name;textEl.textContent=spot.desc;updateStats();}
+function updateStats(){document.getElementById('clues').textContent=String(state.clues);document.getElementById('locks').textContent=`${state.locks} / 2`;const secs=startTime?Math.floor((Date.now()-startTime)/1000):0;document.getElementById('time').textContent=`${Math.floor(secs/60)}:${String(secs%60).padStart(2,'0')}`;document.getElementById('best').textContent=best||'—';inventoryEl.innerHTML='';if(state.items.size)[...state.items].forEach(item=>{const pill=document.createElement('div');pill.className='pill';pill.textContent=item;inventoryEl.appendChild(pill);});else inventoryEl.innerHTML='<div class="pill">No items yet</div>';}
+function startGame(){state={clues:0,locks:0,items:new Set(),flags:{}};selected=0;startTime=Date.now();overlay.style.display='none';statusEl.textContent='Search the room for a 3-digit code.';codeInput.value='';showSpot();clearInterval(window.escapeTimer);window.escapeTimer=setInterval(()=>overlay.style.display==='none'&&updateStats(),1000);}
+function inspectSpot(){baseSpots[selected].inspect(state);showSpot();}
+function useSpot(){baseSpots[selected].use(state);showSpot();}
+function finish(){clearInterval(window.escapeTimer);const secs=Math.floor((Date.now()-startTime)/1000),label=`${Math.floor(secs/60)}:${String(secs%60).padStart(2,'0')}`;if(!best||secs<best.split(':')[0]*60+Number(best.split(':')[1])){best=label;localStorage.setItem(BEST_KEY,best);}updateStats();overlay.innerHTML=`<h2>🔓 Escaped!</h2><p>You solved the study in <strong>${label}</strong>. The brass key and hidden keycard opened the final door.</p><button class="btn" id="overlay-btn">Play Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);statusEl.textContent='The study door swings open.';}
+codeInput.addEventListener('input',()=>codeInput.value=codeInput.value.replace(/\D/g,'').slice(0,3));document.getElementById('inspect-btn').addEventListener('click',inspectSpot);document.getElementById('unlock-btn').addEventListener('click',useSpot);document.getElementById('overlay-btn').addEventListener('click',startGame);document.addEventListener('keydown',e=>{if(overlay.style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}if(['1','2','3','4'].includes(e.key)){selected=Number(e.key)-1;showSpot();}if(e.key==='i'||e.key==='I')inspectSpot();if(e.key==='u'||e.key==='U')useSpot();});state={clues:0,locks:0,items:new Set(),flags:{}};renderRoom();showSpot();
+</script>
+</body>
+</html>

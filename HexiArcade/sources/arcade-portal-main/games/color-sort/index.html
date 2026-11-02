@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Color Sort — Game Portal</title>
+<meta name="description" content="Play Color Sort free online — Sort colored liquids so each tube contains one color only. A Easy Puzzle game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/color-sort/"/>
+<meta property="og:title" content="🎨 Color Sort — Free Browser Game"/>
+<meta property="og:description" content="Play Color Sort free in your browser. Sort colored liquids so each tube contains one color only."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/color-sort/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Color Sort",
+  "description": "Sort colored liquids so each tube contains one color only.",
+  "url": "https://arcade.sotshau.fun/games/color-sort/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Puzzle",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}
+nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}
+nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}
+h1{margin:20px 0 4px;font-size:24px;font-weight:700}
+.sub{color:#6b7280;font-size:14px;margin-bottom:16px}
+.score-bar{display:flex;gap:16px;margin-bottom:16px}
+.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 20px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:90px}
+.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}
+.score-val{font-size:20px;font-weight:700;color:#6c63ff}
+.game-area{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;max-width:500px}
+.tube-wrap{display:flex;flex-direction:column;align-items:center;cursor:pointer}
+.tube{width:44px;height:176px;border:2.5px solid #d1d5db;border-radius:0 0 22px 22px;border-top:none;background:#f9fafb;display:flex;flex-direction:column-reverse;overflow:hidden;position:relative;transition:border-color .15s,transform .15s}
+.tube.selected{border-color:#6c63ff;transform:translateY(-6px)}
+.tube.done{border-color:#10b981}
+.tube-cap{width:50px;height:6px;background:#d1d5db;border-radius:3px 3px 0 0;margin-bottom:2px}
+.segment{width:100%;flex:1;transition:background .2s}
+.controls{margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.btn{padding:9px 22px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}
+.btn:hover{background:#574fd6}
+.btn-outline{background:transparent;border:1.5px solid #6c63ff;color:#6c63ff}
+.btn-outline:hover{background:#ede9ff}
+.msg{margin-top:12px;font-size:16px;font-weight:600;min-height:24px;color:#6c63ff}
+select{padding:8px 12px;border:1.5px solid #e5e7eb;border-radius:8px;font-size:14px;background:#fff;color:#1a1a2e}
+.hint{margin-top:10px;font-size:12px;color:#9ca3af}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🎨 Color Sort</h1>
+<p class="sub">Sort colored liquids so each tube contains only one color.</p>
+
+<div class="score-bar">
+  <div class="score-box"><div class="score-label">Moves</div><div class="score-val" id="moves">0</div></div>
+  <div class="score-box"><div class="score-label">Level</div><div class="score-val" id="level">1</div></div>
+</div>
+
+<div class="game-area" id="game"></div>
+<div class="msg" id="msg"></div>
+
+<div class="controls">
+  <select id="diff">
+    <option value="4">4 Colors (Easy)</option>
+    <option value="5">5 Colors</option>
+    <option value="6">6 Colors</option>
+    <option value="7">7 Colors (Hard)</option>
+  </select>
+  <button class="btn btn-outline" id="new-game-btn">New Game</button>
+</div>
+<p class="hint">Click a tube to pick up top color, click another tube to pour</p>
+
+<script>
+const COLORS=['#ef4444','#f97316','#f59e0b','#84cc16','#22d3ee','#6c63ff','#ec4899','#14b8a6'];
+const TUBE_SIZE=4;
+
+let tubes,selected,moves,level;
+
+function newGame(){
+  const n=+document.getElementById('diff').value;
+  level=1;moves=0;
+  document.getElementById('level').textContent=1;
+  document.getElementById('moves').textContent=0;
+  document.getElementById('msg').textContent='';
+  selected=null;
+
+  // Create shuffled tubes: n colors * TUBE_SIZE segments + 2 empty tubes
+  const pool=[];
+  for(let i=0;i<n;i++)for(let j=0;j<TUBE_SIZE;j++)pool.push(i);
+  shuffle(pool);
+  tubes=[];
+  for(let i=0;i<n;i++)tubes.push(pool.slice(i*TUBE_SIZE,(i+1)*TUBE_SIZE));
+  // Add 2 empty tubes
+  tubes.push([],[]);
+  render();
+}
+
+function shuffle(arr){for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}}
+
+function topColor(tube){return tube.length>0?tube[tube.length-1]:null;}
+
+function canPour(from,to){
+  if(from===to||!from.length)return false;
+  if(to.length===TUBE_SIZE)return false;
+  if(!to.length)return true;
+  return topColor(from)===topColor(to);
+}
+
+function pour(fi,ti){
+  const color=topColor(tubes[fi]);
+  // Pour all consecutive same-color top segments
+  while(tubes[fi].length&&topColor(tubes[fi])===color&&tubes[ti].length<TUBE_SIZE){
+    tubes[ti].push(tubes[fi].pop());
+  }
+  moves++;
+  document.getElementById('moves').textContent=moves;
+}
+
+function isSolved(){
+  return tubes.every(t=>t.length===0||(t.length===TUBE_SIZE&&t.every(c=>c===t[0])));
+}
+
+function render(){
+  const game=document.getElementById('game');
+  game.innerHTML='';
+  const n=+document.getElementById('diff').value;
+  tubes.forEach((tube,i)=>{
+    const wrap=document.createElement('div');
+    wrap.className='tube-wrap';
+    const cap=document.createElement('div');
+    cap.className='tube-cap';
+    const el=document.createElement('div');
+    const done=tube.length===TUBE_SIZE&&tube.every(c=>c===tube[0]);
+    el.className='tube'+(selected===i?' selected':'')+(done?' done':'');
+    // Fill segments bottom to top
+    for(let s=0;s<TUBE_SIZE;s++){
+      const seg=document.createElement('div');
+      seg.className='segment';
+      seg.style.background=s<tube.length?COLORS[tube[s]]:'transparent';
+      el.appendChild(seg);
+    }
+    wrap.appendChild(cap);
+    wrap.appendChild(el);
+    wrap.addEventListener('click',()=>clickTube(i));
+    game.appendChild(wrap);
+  });
+}
+
+function clickTube(i){
+  if(selected===null){
+    if(tubes[i].length>0){selected=i;render();}
+  }else{
+    if(i===selected){selected=null;render();return;}
+    if(canPour(tubes[selected],tubes[i])){
+      pour(selected,i);selected=null;render();
+      if(isSolved()){
+        document.getElementById('msg').textContent='🎉 Solved! Well done!';
+      }
+    }else{
+      selected=null;render();
+    }
+  }
+}
+
+document.getElementById('new-game-btn').addEventListener('click',newGame);
+newGame();
+</script>
+</body>
+</html>

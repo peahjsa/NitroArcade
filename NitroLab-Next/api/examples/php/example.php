@@ -1,0 +1,1 @@
+<?php $data=json_decode(file_get_contents(__DIR__.'/../../games.json'),true); print_r($data);

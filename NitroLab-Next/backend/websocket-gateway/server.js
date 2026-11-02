@@ -1,0 +1,3 @@
+// Optional local WebSocket broadcast server; npm install ws in this folder.
+// NOT needed for offline pen-drive games.
+const {WebSocketServer}=require('ws');const wss=new WebSocketServer({host:'127.0.0.1',port:8788});wss.on('connection',ws=>{ws.send(JSON.stringify({type:'hello',message:'NitroArcade local dev gateway'}));ws.on('message',raw=>{if(raw.length>2048)return;for(const client of wss.clients)if(client.readyState===1)client.send(raw.toString())})});console.log('Local dev gateway on ws://127.0.0.1:8788');

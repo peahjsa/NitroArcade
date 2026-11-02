@@ -1,0 +1,1 @@
+html{scroll-behavior:auto!important;overflow-anchor:none!important}body:not(.nitro-boot-ready){overflow:hidden!important}body.nitro-boot-ready{overflow-y:auto}#nitroBootScreen{position:fixed!important;inset:0!important;z-index:2147483646!important}

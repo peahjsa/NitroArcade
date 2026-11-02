@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>🔎 Word Search — Game Portal</title>
+<meta name="description" content="Play Word Search free online — Find all hidden words in the letter grid. A Easy Word &amp; Trivia game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/word-search/"/>
+<meta property="og:title" content="🔍 Word Search — Free Browser Game"/>
+<meta property="og:description" content="Play Word Search free in your browser. Find all hidden words in the letter grid."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/word-search/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Word Search",
+  "description": "Find all hidden words in the letter grid.",
+  "url": "https://arcade.sotshau.fun/games/word-search/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Word & Trivia",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}nav a:hover{text-decoration:underline}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{font-size:14px;color:#6b7280;text-align:center;margin-bottom:16px;padding:0 16px}.score-bar{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 18px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:90px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.wrap{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;box-shadow:0 8px 20px rgba(0,0,0,.08);padding:18px;display:grid;gap:16px}.grid{display:grid;grid-template-columns:repeat(10,34px);gap:4px}.cell{width:34px;height:34px;border:none;border-radius:10px;background:#f8fafc;border:1px solid #d1d5db;font-weight:700;cursor:pointer;color:#111827}.cell.active{outline:3px solid rgba(108,99,255,.25)}.cell.path{background:#ddd6fe}.cell.found{background:#10b981;color:#fff;border-color:#10b981}.words{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;max-width:420px}.word-chip{padding:6px 10px;border-radius:999px;background:#eef2ff;color:#6c63ff;font-size:13px;font-weight:700}.word-chip.done{background:#dcfce7;color:#15803d;text-decoration:line-through}.status{min-height:24px;text-align:center;color:#4b5563;font-weight:600}.controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}.btn{padding:9px 22px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}.btn:hover{background:#574fd6}.btn-outline{background:transparent;border:1.5px solid #6c63ff;color:#6c63ff}.btn-outline:hover{background:#ede9ff}.overlay{position:absolute;inset:0;background:rgba(245,245,247,.94);border-radius:18px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:10px;padding:24px;text-align:center}.overlay p{color:#6b7280;max-width:320px;line-height:1.5}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center;padding:0 16px}@media (max-width:520px){.grid{grid-template-columns:repeat(10,30px)}.cell{width:30px;height:30px;font-size:12px}}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🔎 Word Search</h1>
+<p class="sub">Find all hidden words by selecting straight lines across the grid.</p>
+<div class="score-bar">
+  <div class="score-box"><div class="score-label">Found</div><div class="score-val" id="found">0/6</div></div>
+  <div class="score-box"><div class="score-label">Time</div><div class="score-val" id="time">0s</div></div>
+  <div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">—</div></div>
+</div>
+<div class="wrap">
+  <div class="grid" id="grid"></div>
+  <div class="words" id="words"></div>
+  <div class="status" id="status">Press Start to begin.</div>
+  <div class="controls"><button class="btn btn-outline" id="new-grid-btn">New Grid</button></div>
+  <div class="overlay" id="overlay">
+    <h2>🔎 Word Search</h2>
+    <p>Tap a start letter and an end letter to select a straight line. Use arrows to move focus and Space twice to mark a word on desktop.</p>
+    <button class="btn" id="overlay-btn">Start Game</button>
+  </div>
+</div>
+<p class="hint">Tap start and end cells · Arrow keys move focus · Space selects start/end</p>
+<script>
+const WORDS=['JAVASCRIPT','PUZZLE','CANVAS','PORTAL','HTML','GAME'];
+const GRID=[
+  'JAVASCRIPT',
+  'OQWERTYUIO',
+  'RHTMLZXCVB',
+  'TASDFGHJKL',
+  'APORTALQWE',
+  'LZXCANVASR',
+  'GAMENMOPQR',
+  'PUZZLETYUI',
+  'NBVCXASDFG',
+  'QWERTYUIOP'
+].map(row=>row.split(''));
+const BEST_KEY='wordSearchBest';
+const gridEl=document.getElementById('grid');
+const wordsEl=document.getElementById('words');
+const overlay=document.getElementById('overlay');
+const statusEl=document.getElementById('status');
+const foundEl=document.getElementById('found');
+const timeEl=document.getElementById('time');
+const bestEl=document.getElementById('best');
+let foundWords=new Set(),startCell=null,focusIndex=0,seconds=0,timer=0,active=false,best=+(localStorage.getItem(BEST_KEY)||0),buttons=[];
+bestEl.textContent=best?`${best}s`:'—';
+function buildGrid(){gridEl.innerHTML='';buttons=[];for(let y=0;y<10;y++)for(let x=0;x<10;x++){const btn=document.createElement('button');btn.className='cell';btn.textContent=GRID[y][x];btn.addEventListener('click',()=>pickCell(x,y));gridEl.appendChild(btn);buttons.push(btn);}renderWords();}
+function renderWords(){wordsEl.innerHTML='';WORDS.forEach(word=>{const chip=document.createElement('div');chip.className='word-chip'+(foundWords.has(word)?' done':'');chip.textContent=word;wordsEl.appendChild(chip);});}
+function startGame(){foundWords=new Set();startCell=null;focusIndex=0;seconds=0;active=true;buttons.forEach(btn=>delete btn.dataset.found);overlay.style.display='none';statusEl.textContent='Find all six words.';clearInterval(timer);timer=setInterval(()=>{if(active){seconds++;timeEl.textContent=`${seconds}s`;}} ,1000);renderWords();render();}
+function getPath(a,b){const dx=Math.sign(b.x-a.x),dy=Math.sign(b.y-a.y);if(dx===0&&dy===0)return[a];if(dx!==0&&dy!==0&&Math.abs(b.x-a.x)!==Math.abs(b.y-a.y))return null;const len=Math.max(Math.abs(b.x-a.x),Math.abs(b.y-a.y));if(dx===0||dy===0||Math.abs(b.x-a.x)===Math.abs(b.y-a.y)){const path=[];for(let i=0;i<=len;i++)path.push({x:a.x+dx*i,y:a.y+dy*i});return path;}return null;}
+function pickCell(x,y){if(!active)return;const point={x,y};if(!startCell){startCell=point;statusEl.textContent='Choose the end of the word.';render();return;}const path=getPath(startCell,point);if(!path){statusEl.textContent='Selections must form a straight line.';startCell=null;render();return;}const letters=path.map(p=>GRID[p.y][p.x]).join('');const reversed=[...letters].reverse().join('');const match=WORDS.find(word=>!foundWords.has(word)&&(word===letters||word===reversed));if(match){foundWords.add(match);statusEl.textContent=`Found ${match}!`;path.forEach(p=>buttons[p.y*10+p.x].dataset.found='true');renderWords();if(foundWords.size===WORDS.length)finish();}else{statusEl.textContent='That line is not one of the target words.';}startCell=null;render();}
+function render(){buttons.forEach((btn,i)=>{const x=i%10,y=Math.floor(i/10);const point={x,y};btn.className='cell';if(i===focusIndex&&active)btn.classList.add('active');if(btn.dataset.found==='true')btn.classList.add('found');if(startCell){const path=getPath(startCell,point);if(path&&path.some(p=>p.x===x&&p.y===y)&&!btn.dataset.found)btn.classList.add('path');}});foundEl.textContent=`${foundWords.size}/${WORDS.length}`;timeEl.textContent=`${seconds}s`;bestEl.textContent=best?`${best}s`:'—';buttons[focusIndex]?.focus();}
+function finish(){active=false;clearInterval(timer);if(!best||seconds<best){best=seconds;localStorage.setItem(BEST_KEY,String(best));}bestEl.textContent=`${best}s`;statusEl.textContent=`All words found in ${seconds}s!`;overlay.innerHTML=`<h2>🎉 Word Hunter</h2><p>You found all ${WORDS.length} words in ${seconds} seconds.</p><button class="btn" id="overlay-btn">Play Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',()=>{buttons.forEach(btn=>delete btn.dataset.found);startGame();});}
+document.addEventListener('keydown',e=>{if(overlay.style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}if(!active)return;const row=Math.floor(focusIndex/10),col=focusIndex%10;if(e.key==='ArrowUp')focusIndex=Math.max(0,row-1)*10+col;else if(e.key==='ArrowDown')focusIndex=Math.min(9,row+1)*10+col;else if(e.key==='ArrowLeft')focusIndex=row*10+Math.max(0,col-1);else if(e.key==='ArrowRight')focusIndex=row*10+Math.min(9,col+1);else if(e.key===' '||e.key==='Enter'){pickCell(col,row);e.preventDefault();return;}else return;e.preventDefault();render();});
+document.getElementById('overlay-btn').addEventListener('click',startGame);
+document.getElementById('new-grid-btn').addEventListener('click',startGame);
+buildGrid();render();
+</script>
+</body>
+</html>

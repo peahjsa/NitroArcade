@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Ninja Sprint — Game Portal</title>
+<meta name="description" content="Play Ninja Platformer free online — Wall-jump, dash, and deflect projectiles in fast-paced ninja action. A Hard Platform &amp; Adventure game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/ninja/"/>
+<meta property="og:title" content="🥷 Ninja Platformer — Free Browser Game"/>
+<meta property="og:description" content="Play Ninja Platformer free in your browser. Wall-jump, dash, and deflect projectiles in fast-paced ninja action."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/ninja/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Ninja Platformer",
+  "description": "Wall-jump, dash, and deflect projectiles in fast-paced ninja action.",
+  "url": "https://arcade.sotshau.fun/games/ninja/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Platform & Adventure",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px;max-width:760px}.score-bar{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:96px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:18px;box-shadow:0 8px 20px rgba(0,0,0,.08)}canvas{display:block;background:linear-gradient(#0f172a,#111827 55%,#1f2937 55%,#111827);border-radius:14px;border:1px solid #1f2937;touch-action:none}.overlay{position:absolute;inset:18px;background:rgba(245,245,247,.95);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p{color:#6b7280;line-height:1.5;max-width:360px}.btn{padding:9px 22px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}.touch-row{display:flex;gap:10px;justify-content:center;margin-top:12px;flex-wrap:wrap}.touch-btn{padding:12px 14px;border:none;border-radius:12px;background:#fff;color:#6c63ff;font-weight:800;box-shadow:0 4px 10px rgba(0,0,0,.08);min-width:74px}.status{margin-top:12px;text-align:center;color:#374151;font-weight:700;min-height:24px}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center;padding:0 16px}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🥷 Ninja Sprint</h1>
+<p class="sub">Dash across moonlit rooftops, jump traps, slide under lanterns, and throw shuriken at spirits to keep your combo alive.</p>
+<div class="score-bar"><div class="score-box"><div class="score-label">Score</div><div class="score-val" id="score">0</div></div><div class="score-box"><div class="score-label">Scrolls</div><div class="score-val" id="scrolls">0</div></div><div class="score-box"><div class="score-label">Combo</div><div class="score-val" id="combo">1x</div></div><div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">0</div></div></div>
+<div class="game"><canvas id="game" width="760" height="300"></canvas><div class="overlay" id="overlay"><h2>🥷 Ninja Sprint</h2><p>Jump with Space or ↑, slide with ↓, and throw a shuriken with F. Touch controls are available below the rooftops.</p><button class="btn" id="overlay-btn">Start Sprint</button></div><div class="status" id="status">Press Start to begin.</div></div>
+<div class="touch-row"><button class="touch-btn" data-act="jump">Jump</button><button class="touch-btn" data-act="slide">Slide</button><button class="touch-btn" data-act="throw">Throw</button></div>
+<p class="hint">Space / ↑ jump · ↓ slide · F throw · Tap the touch buttons on mobile</p>
+<script>
+const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');
+const BEST_KEY='ninjaSprintBest';
+let ninja,obstacles,projectiles,score=0,scrolls=0,combo=1,best=+(localStorage.getItem(BEST_KEY)||0),running=false,rafId=0,last=0,spawn=0,statusMsg='Press Start to begin.',slideTimer=0;
+document.getElementById('best').textContent=String(best);
+function reset(){ninja={x:90,y:206,w:28,h:52,vy:0,onGround:true,sliding:false};obstacles=[];projectiles=[];score=0;scrolls=0;combo=1;spawn=0;slideTimer=0;statusMsg='Run silently and react quickly.';updateStats();}
+function updateStats(){document.getElementById('score').textContent=String(score);document.getElementById('scrolls').textContent=String(scrolls);document.getElementById('combo').textContent=combo+'x';document.getElementById('best').textContent=String(best);document.getElementById('status').textContent=statusMsg;}
+function startGame(){reset();running=true;last=0;document.getElementById('overlay').style.display='none';cancelAnimationFrame(rafId);rafId=requestAnimationFrame(loop);}
+function jump(){if(running&&ninja.onGround){ninja.vy=-12.5;ninja.onGround=false;statusMsg='Roof leap!';}}
+function slide(){if(running&&ninja.onGround){ninja.sliding=true;ninja.h=30;ninja.y=228;slideTimer=420;statusMsg='Slide under the lantern.';}}
+function throwStar(){if(!running)return;projectiles.push({x:ninja.x+26,y:ninja.y+18,w:14,h:4,vx:8});statusMsg='Shuriken thrown.';}
+function rectHit(a,b){return a.x<b.x+b.w&&a.x+a.w>b.x&&a.y<b.y+b.h&&a.y+a.h>b.y;}
+function spawnObstacle(){const roll=Math.random();if(roll<.35)obstacles.push({type:'scroll',x:canvas.width+30,y:188,w:18,h:18,vx:6});else if(roll<.68)obstacles.push({type:'spirit',x:canvas.width+30,y:170,w:30,h:28,vx:7});else if(roll<.84)obstacles.push({type:'lantern',x:canvas.width+30,y:168,w:28,h:54,vx:6});else obstacles.push({type:'trap',x:canvas.width+30,y:230,w:32,h:18,vx:6});}
+function finish(text){running=false;if(score>best){best=score;localStorage.setItem(BEST_KEY,String(best));}updateStats();const overlay=document.getElementById('overlay');overlay.innerHTML=`<h2>Night Over</h2><p>${text}</p><button class="btn" id="overlay-btn">Try Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);}
+function update(dt){spawn+=dt;if(spawn>980){spawn=0;spawnObstacle();}score+=Math.floor(dt/120);ninja.vy+=0.62;ninja.y+=ninja.vy;if(ninja.y>=206&&!ninja.sliding){ninja.y=206;ninja.vy=0;ninja.onGround=true;}if(slideTimer>0){slideTimer-=dt;if(slideTimer<=0){ninja.sliding=false;ninja.h=52;ninja.y=206;}}projectiles.forEach(p=>p.x+=p.vx);projectiles=projectiles.filter(p=>p.x<canvas.width+20);obstacles.forEach(o=>{o.x-=o.vx;if(o.type==='scroll'&&rectHit(ninja,o)){scrolls++;score+=25;combo++;o.hit=true;statusMsg='Ancient scroll secured.';}if((o.type==='trap'||o.type==='lantern'||o.type==='spirit')&&rectHit(ninja,o)){finish('The rooftop defenses caught you.');}projectiles.forEach(p=>{if(o.type==='spirit'&&!o.hit&&rectHit(p,o)){o.hit=true;p.hit=true;score+=40*combo;combo=Math.min(9,combo+1);statusMsg='Spirit dispelled!';}});});projectiles=projectiles.filter(p=>!p.hit);obstacles=obstacles.filter(o=>!o.hit&&o.x+o.w>-20);if(score>best){best=score;localStorage.setItem(BEST_KEY,String(best));}updateStats();}
+function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.fillStyle='#fde68a';ctx.beginPath();ctx.arc(640,54,26,0,Math.PI*2);ctx.fill();ctx.fillStyle='#1f2937';for(let i=0;i<9;i++)ctx.fillRect(i*90,120+(i%3)*12,68,110);ctx.fillStyle='#111827';ctx.fillRect(0,258,canvas.width,42);ctx.strokeStyle='#374151';ctx.setLineDash([14,12]);ctx.beginPath();ctx.moveTo(0,258);ctx.lineTo(canvas.width,258);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle='#e5e7eb';ctx.fillRect(ninja.x,ninja.y,ninja.w,ninja.h);ctx.fillStyle='#6c63ff';ctx.fillRect(ninja.x+4,ninja.y+6,ninja.w-8,ninja.h-10);ctx.fillStyle='#111827';ctx.fillRect(ninja.x+18,ninja.y+14,6,6);obstacles.forEach(o=>{if(o.type==='scroll'){ctx.fillStyle='#facc15';ctx.fillRect(o.x,o.y,o.w,o.h);}if(o.type==='spirit'){ctx.fillStyle='#38bdf8';ctx.beginPath();ctx.arc(o.x+15,o.y+14,14,0,Math.PI*2);ctx.fill();}if(o.type==='lantern'){ctx.fillStyle='#f97316';ctx.fillRect(o.x,o.y,o.w,o.h);}if(o.type==='trap'){ctx.fillStyle='#ef4444';for(let i=0;i<3;i++){ctx.beginPath();ctx.moveTo(o.x+i*10,o.y+o.h);ctx.lineTo(o.x+i*10+5,o.y);ctx.lineTo(o.x+i*10+10,o.y+o.h);ctx.closePath();ctx.fill();}}});ctx.fillStyle='#93c5fd';projectiles.forEach(p=>ctx.fillRect(p.x,p.y,p.w,p.h));}
+function loop(ts){if(!running)return;const dt=ts-last||16;last=ts;update(dt);draw();if(running)rafId=requestAnimationFrame(loop);}
+document.getElementById('overlay-btn').addEventListener('click',startGame);document.addEventListener('keydown',e=>{if(document.getElementById('overlay').style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}if([' ','ArrowUp','w','W'].includes(e.key)){e.preventDefault();jump();}if(['ArrowDown','s','S'].includes(e.key)){e.preventDefault();slide();}if(['f','F'].includes(e.key)){e.preventDefault();throwStar();}});document.querySelectorAll('.touch-btn').forEach(btn=>btn.addEventListener('touchstart',e=>{e.preventDefault();({jump,slide,throw:throwStar}[btn.dataset.act])();},{passive:false}));reset();draw();
+</script>
+</body>
+</html>

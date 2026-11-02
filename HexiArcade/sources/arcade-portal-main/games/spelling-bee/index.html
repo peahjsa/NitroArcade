@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Spelling Bee — Game Portal</title>
+<meta name="description" content="Play Spelling Bee free online — Make words using only the 7 given letters. Must include the center letter! A Medium Word &amp; Trivia game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/spelling-bee/"/>
+<meta property="og:title" content="🐝 Spelling Bee — Free Browser Game"/>
+<meta property="og:description" content="Play Spelling Bee free in your browser. Make words using only the 7 given letters. Must include the center letter!"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/spelling-bee/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Spelling Bee",
+  "description": "Make words using only the 7 given letters. Must include the center letter!",
+  "url": "https://arcade.sotshau.fun/games/spelling-bee/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Word & Trivia",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px}.score-bar{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 18px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:96px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;box-shadow:0 8px 20px rgba(0,0,0,.08);padding:24px;width:min(720px,94vw)}.hive{display:grid;grid-template-columns:repeat(5,70px);grid-template-rows:repeat(3,62px);justify-content:center;align-items:center;margin-bottom:16px}.hex{width:68px;height:60px;clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%);background:#ede9fe;color:#4c1d95;border:none;font-size:28px;font-weight:800;cursor:pointer}.hex.center{background:#facc15;color:#713f12}.input-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:14px}.guess{padding:12px 14px;border:1px solid #cbd5e1;border-radius:12px;font-size:18px;text-transform:uppercase;width:min(260px,70vw);text-align:center}.btn{padding:10px 18px;border:none;border-radius:10px;background:#6c63ff;color:#fff;font-weight:700;cursor:pointer}.btn.alt{background:#fff;color:#6c63ff;border:1px solid #6c63ff}.status{min-height:24px;text-align:center;color:#374151;font-weight:700;margin-bottom:14px}.found{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px}.found-item{background:#f8fafc;border:1px solid #e5e7eb;border-radius:10px;padding:10px 12px;color:#334155;font-weight:700}.overlay{position:absolute;inset:0;background:rgba(245,245,247,.96);border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p{color:#6b7280;max-width:320px;line-height:1.5}.hint{margin-top:14px;font-size:12px;color:#9ca3af;text-align:center;padding:0 16px}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🐝 Spelling Bee</h1>
+<p class="sub">Build words with the hive letters. Every word must use the center letter, and longer finds score more.</p>
+<div class="score-bar">
+  <div class="score-box"><div class="score-label">Words</div><div class="score-val" id="words-count">0</div></div>
+  <div class="score-box"><div class="score-label">Score</div><div class="score-val" id="score">0</div></div>
+  <div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">0</div></div>
+</div>
+<div class="game">
+  <div class="hive" id="hive"></div>
+  <div class="input-row"><input id="guess" class="guess" type="text" autocomplete="off" spellcheck="false" placeholder="Make a word"/><button class="btn" id="submit-btn">Submit</button><button class="btn alt" id="shuffle-btn">Shuffle</button><button class="btn alt" id="delete-btn">Delete</button></div>
+  <div class="status" id="status">Press Start to begin.</div>
+  <div class="found" id="found"></div>
+  <div class="overlay" id="overlay"><h2>🐝 Spelling Bee</h2><p>Tap letters to build a word, type on your keyboard, then press Enter. Every word must include the yellow center letter.</p><button class="btn" id="overlay-btn">Start Hive</button></div>
+</div>
+<p class="hint">Keyboard typing works · Tap hive letters on touch screens · Enter submits</p>
+<script>
+const PUZZLES=[{letters:['P','L','N','E','T','S'],center:'A',words:['APPLE','APPEAL','PALE','PALES','PANE','PANES','PANEL','PANELS','PLANE','PLANES','PLANT','PLANTS','PLATE','PLATES','PETAL','PETALS','SEAL','SALE','TALE','TALES','LEAP','LEAPS']},{letters:['B','R','O','K','N','E'],center:'A',words:['ABROAD','ABRADE','BAKER','BARON','BARK','BARN','BEAR','BOARD','BRAKE','BREAK','KNEAD','NEAR','RANK','ROBE','ROAN']},{letters:['G','L','D','N','I','R'],center:'A',words:['ALIGN','AIRING','GRAIN','GRAIL','LAIR','LAND','LARD','LIAR','RAIN','RAIL','RANG']}];
+const BEST_KEY='spellingBeeBestScore';
+const hiveEl=document.getElementById('hive'),guessEl=document.getElementById('guess'),statusEl=document.getElementById('status'),foundEl=document.getElementById('found'),overlay=document.getElementById('overlay');
+let puzzle=null,found=new Set(),score=0,active=false;
+document.getElementById('best').textContent=localStorage.getItem(BEST_KEY)||'0';
+function shuffleLetters(list){const copy=[...list];for(let i=copy.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[copy[i],copy[j]]=[copy[j],copy[i]];}return copy;}
+function buildHive(order){const positions=[{r:0,c:2,letter:order[0]},{r:1,c:1,letter:order[1]},{r:1,c:2,letter:puzzle.center,center:true},{r:1,c:3,letter:order[2]},{r:2,c:2,letter:order[3]},{r:2,c:1,letter:order[4]},{r:2,c:3,letter:order[5]}];hiveEl.innerHTML='';positions.forEach(pos=>{const btn=document.createElement('button');btn.className='hex'+(pos.center?' center':'');btn.textContent=pos.letter;btn.style.gridRow=String(pos.r+1);btn.style.gridColumn=String(pos.c+1);btn.addEventListener('click',()=>appendLetter(pos.letter));hiveEl.appendChild(btn);});}
+function startGame(){puzzle=PUZZLES[Math.floor(Math.random()*PUZZLES.length)];found=new Set();score=0;active=true;overlay.style.display='none';document.getElementById('score').textContent='0';document.getElementById('words-count').textContent='0';foundEl.innerHTML='';statusEl.textContent='Find as many words as you can.';buildHive(shuffleLetters(puzzle.letters));guessEl.value='';guessEl.focus();}
+function appendLetter(letter){if(!active)return;guessEl.value=(guessEl.value+letter).toUpperCase();guessEl.focus();}
+function deleteLetter(){guessEl.value=guessEl.value.slice(0,-1);guessEl.focus();}
+function reshuffle(){if(!active||!puzzle)return;buildHive(shuffleLetters(puzzle.letters));statusEl.textContent='Hive reshuffled.';}
+function validWithLetters(word){const allowed=new Set([...puzzle.letters,puzzle.center]);return word.split('').every(letter=>allowed.has(letter));}
+function scoreWord(word){return word.length===4?1:word.length;}
+function submitWord(){if(!active||!puzzle)return;const word=guessEl.value.trim().toUpperCase();if(word.length<4){statusEl.textContent='Words need at least 4 letters.';return;}if(!word.includes(puzzle.center)){statusEl.textContent=`Every word must include ${puzzle.center}.`;return;}if(!validWithLetters(word)){statusEl.textContent='Use only hive letters.';return;}if(found.has(word)){statusEl.textContent='Already found that one.';return;}if(!puzzle.words.includes(word)){statusEl.textContent='Not in this hive list. Try another word.';return;}found.add(word);const gained=scoreWord(word);score+=gained;document.getElementById('score').textContent=String(score);document.getElementById('words-count').textContent=String(found.size);const best=Math.max(score,+(localStorage.getItem(BEST_KEY)||0));localStorage.setItem(BEST_KEY,String(best));document.getElementById('best').textContent=String(best);const item=document.createElement('div');item.className='found-item';item.textContent=word;foundEl.prepend(item);guessEl.value='';statusEl.textContent=`Nice! ${word} is worth ${gained}.`;if(found.size===puzzle.words.length){finishGame();}}
+function finishGame(){active=false;overlay.innerHTML=`<h2>🐝 Hive Complete</h2><p>You found <strong>${found.size}</strong> words for <strong>${score}</strong> points.</p><button class="btn" id="overlay-btn">Play Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);}
+document.getElementById('submit-btn').addEventListener('click',submitWord);document.getElementById('shuffle-btn').addEventListener('click',reshuffle);document.getElementById('delete-btn').addEventListener('click',deleteLetter);document.getElementById('overlay-btn').addEventListener('click',startGame);guessEl.addEventListener('input',()=>{guessEl.value=guessEl.value.toUpperCase().replace(/[^A-Z]/g,'');});guessEl.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();submitWord();}});document.addEventListener('keydown',e=>{if(overlay.style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();}});
+</script>
+</body>
+</html>

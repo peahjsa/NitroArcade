@@ -1,0 +1,29 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "NitroArcade Local API",
+    "version": "0.2.0"
+  },
+  "paths": {
+    "/api/games": {
+      "get": {
+        "summary": "List games",
+        "responses": {
+          "200": {
+            "description": "JSON game list"
+          }
+        }
+      }
+    },
+    "/api/mascots": {
+      "get": {
+        "summary": "Mascot catalog",
+        "responses": {
+          "200": {
+            "description": "JSON mascot list"
+          }
+        }
+      }
+    }
+  }
+}

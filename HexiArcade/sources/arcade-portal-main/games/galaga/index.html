@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>🚀 Galaga — Game Portal</title>
+<meta name="description" content="Play Galaga free online — Defend against increasingly difficult alien formations. A Hard Classic Arcade game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/galaga/"/>
+<meta property="og:title" content="🚀 Galaga — Free Browser Game"/>
+<meta property="og:description" content="Play Galaga free in your browser. Defend against increasingly difficult alien formations."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/galaga/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Galaga",
+  "description": "Defend against increasingly difficult alien formations.",
+  "url": "https://arcade.sotshau.fun/games/galaga/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Classic Arcade",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}nav a:hover{text-decoration:underline}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{font-size:14px;color:#6b7280;text-align:center;margin-bottom:16px;padding:0 16px}.score-bar{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 18px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:90px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.wrap{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;box-shadow:0 8px 20px rgba(0,0,0,.08);padding:18px}.canvas{background:linear-gradient(180deg,#0f172a,#020617);border-radius:14px;border:1px solid #0f172a;display:block}.controls{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}.touch-btn,.btn{padding:12px 16px;background:#6c63ff;color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer}.btn{font-size:14px;padding:9px 22px}.status{margin-top:14px;text-align:center;min-height:24px;color:#4b5563;font-weight:600}.overlay{position:absolute;inset:0;background:rgba(245,245,247,.94);border-radius:18px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:10px;padding:24px;text-align:center}.overlay p{color:#6b7280;max-width:320px;line-height:1.5}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center;padding:0 16px}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🚀 Galaga</h1>
+<p class="sub">Hold the line against swooping alien waves and chase a new high score.</p>
+<div class="score-bar">
+  <div class="score-box"><div class="score-label">Score</div><div class="score-val" id="score">0</div></div>
+  <div class="score-box"><div class="score-label">Lives</div><div class="score-val" id="lives">3</div></div>
+  <div class="score-box"><div class="score-label">Wave</div><div class="score-val" id="wave">1</div></div>
+  <div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">0</div></div>
+</div>
+<div class="wrap">
+  <canvas id="c" class="canvas" width="440" height="560"></canvas>
+  <div class="controls">
+    <button class="touch-btn" data-action="left">←</button>
+    <button class="touch-btn" data-action="fire">●</button>
+    <button class="touch-btn" data-action="right">→</button>
+  </div>
+  <div class="status" id="status">Press Start to begin.</div>
+  <div style="margin-top:10px;text-align:center"><button class="btn" id="restart-btn">Restart</button></div>
+  <div class="overlay" id="overlay">
+    <h2>🚀 Galaga</h2>
+    <p>Move with the arrow keys, fire with Space, and survive each wave of enemy ships.</p>
+    <button class="btn" id="overlay-btn">Start Game</button>
+  </div>
+</div>
+<p class="hint">Arrow keys move · Space fires · Hold touch buttons on mobile</p>
+<script>
+const canvas=document.getElementById('c'),ctx=canvas.getContext('2d');
+if(!ctx) throw new Error('canvas 2d context unavailable');
+const overlay=document.getElementById('overlay'),statusEl=document.getElementById('status');
+const scoreEl=document.getElementById('score'),livesEl=document.getElementById('lives'),waveEl=document.getElementById('wave'),bestEl=document.getElementById('best');
+const BEST_KEY='galagaBest';
+const controls={left:false,right:false,fire:false};
+let player,enemies=[],playerBullets=[],enemyBullets=[],score=0,lives=3,wave=1,best=+(localStorage.getItem(BEST_KEY)||0),running=false,last=0,fireCd=0,formation={x:70,y:70,dir:1};
+bestEl.textContent=best;
+function setupPlayer(){player={x:canvas.width/2,y:canvas.height-40,width:26,height:20,inv:0};}
+function spawnWave(){enemies=[];for(let r=0;r<4;r++)for(let c=0;c<7;c++)enemies.push({baseX:c*46,baseY:r*40,x:0,y:0,row:r,col:c,alive:true,diving:false,offset:Math.random()*Math.PI*2});formation={x:60,y:70,dir:1};statusEl.textContent=`Wave ${wave} incoming.`;}
+function startGame(){score=0;lives=3;wave=1;playerBullets=[];enemyBullets=[];setupPlayer();spawnWave();running=true;overlay.style.display='none';updateStats();if(!last)requestAnimationFrame(loop);}
+function updateStats(){scoreEl.textContent=score;livesEl.textContent=lives;waveEl.textContent=wave;bestEl.textContent=best;}
+function update(dt){player.inv=Math.max(0,player.inv-dt);if(controls.left)player.x-=220*dt;if(controls.right)player.x+=220*dt;player.x=Math.max(18,Math.min(canvas.width-18,player.x));fireCd=Math.max(0,fireCd-dt);if(controls.fire&&fireCd<=0){playerBullets.push({x:player.x,y:player.y-18,vy:-380});fireCd=.22;}formation.x+=formation.dir*55*dt;const alive=enemies.filter(e=>e.alive&&!e.diving);const right=Math.max(...alive.map(e=>formation.x+e.baseX),0),left=Math.min(...alive.map(e=>formation.x+e.baseX),canvas.width);if(right>canvas.width-30||left<30){formation.dir*=-1;formation.y+=16;}enemies.forEach(enemy=>{if(!enemy.alive)return;if(!enemy.diving&&Math.random()<0.0015+wave*0.00035)enemy.diving=true;if(enemy.diving){enemy.y+=(100+wave*10)*dt;enemy.x+=(Math.sin((enemy.y+enemy.offset)/24))*80*dt; if(enemy.y>canvas.height+30){enemy.diving=false;enemy.y=formation.y+enemy.baseY;enemy.x=formation.x+enemy.baseX;}}else{enemy.x=formation.x+enemy.baseX;enemy.y=formation.y+enemy.baseY;}if(Math.random()<0.0014+wave*0.0002)enemyBullets.push({x:enemy.x,y:enemy.y+12,vy:180+wave*12});if(player.inv<=0&&Math.abs(enemy.x-player.x)<18&&Math.abs(enemy.y-player.y)<18){hitPlayer();}});playerBullets=playerBullets.filter(b=>{b.y+=b.vy*dt;return b.y>-12;});enemyBullets=enemyBullets.filter(b=>{b.y+=b.vy*dt;return b.y<canvas.height+12;});for(let i=playerBullets.length-1;i>=0;i--)for(const enemy of enemies){if(enemy.alive&&Math.abs(playerBullets[i].x-enemy.x)<16&&Math.abs(playerBullets[i].y-enemy.y)<16){enemy.alive=false;playerBullets.splice(i,1);score+=enemy.diving?150:80;if(score>best){best=score;localStorage.setItem(BEST_KEY,String(best));}updateStats();break;}}for(let i=enemyBullets.length-1;i>=0;i--){const b=enemyBullets[i];if(player.inv<=0&&Math.abs(b.x-player.x)<14&&Math.abs(b.y-player.y)<16){enemyBullets.splice(i,1);hitPlayer();}}
+  if(enemies.every(e=>!e.alive)){wave++;spawnWave();updateStats();}}
+function hitPlayer(){lives--;setupPlayer();player.inv=2;updateStats();if(lives<=0){running=false;statusEl.textContent=`Game over at ${score} points.`;overlay.innerHTML=`<h2>👾 Wave Overrun</h2><p>You reached wave ${wave} and scored ${score} points. Ready for another defense run?</p><button class="btn" id="overlay-btn">Play Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);}else statusEl.textContent='Ship hit! Keep fighting.';}
+function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.fillStyle='rgba(255,255,255,.06)';for(let i=0;i<80;i++)ctx.fillRect((i*37)%canvas.width,(i*73)%canvas.height,2,2);if(player.inv<=0||Math.floor(player.inv*10)%2===0){ctx.fillStyle='#38bdf8';ctx.beginPath();ctx.moveTo(player.x,player.y-14);ctx.lineTo(player.x+16,player.y+10);ctx.lineTo(player.x,player.y+4);ctx.lineTo(player.x-16,player.y+10);ctx.closePath();ctx.fill();}enemies.forEach(enemy=>{if(!enemy.alive)return;ctx.fillStyle=enemy.row%2?'#f472b6':'#f59e0b';ctx.beginPath();ctx.moveTo(enemy.x,enemy.y-12);ctx.lineTo(enemy.x+14,enemy.y);ctx.lineTo(enemy.x+8,enemy.y+12);ctx.lineTo(enemy.x-8,enemy.y+12);ctx.lineTo(enemy.x-14,enemy.y);ctx.closePath();ctx.fill();ctx.fillStyle='#111827';ctx.fillRect(enemy.x-6,enemy.y-2,4,4);ctx.fillRect(enemy.x+2,enemy.y-2,4,4);});ctx.fillStyle='#fef08a';playerBullets.forEach(b=>ctx.fillRect(b.x-2,b.y-8,4,12));ctx.fillStyle='#f87171';enemyBullets.forEach(b=>ctx.fillRect(b.x-2,b.y,4,10));}
+function loop(ts){const dt=Math.min(0.033,(ts-last||16)/1000);last=ts;if(running)update(dt);draw();requestAnimationFrame(loop);}
+document.getElementById('overlay-btn').addEventListener('click',startGame);
+document.getElementById('restart-btn').addEventListener('click',startGame);
+document.addEventListener('keydown',e=>{if(overlay.style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}if(e.key==='ArrowLeft'){controls.left=true;e.preventDefault();}if(e.key==='ArrowRight'){controls.right=true;e.preventDefault();}if(e.key===' '){controls.fire=true;e.preventDefault();}});
+document.addEventListener('keyup',e=>{if(e.key==='ArrowLeft')controls.left=false;if(e.key==='ArrowRight')controls.right=false;if(e.key===' ')controls.fire=false;});
+document.querySelectorAll('[data-action]').forEach(btn=>{const action=btn.dataset.action;const on=()=>controls[action]=true;const off=()=>controls[action]=false;btn.addEventListener('pointerdown',on);btn.addEventListener('pointerup',off);btn.addEventListener('pointerleave',off);btn.addEventListener('pointercancel',off);});
+draw();
+</script>
+</body>
+</html>

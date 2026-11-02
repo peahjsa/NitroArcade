@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Endless Runner — Game Portal</title>
+<meta name="description" content="Play Endless Runner free online — Run forever, jump obstacles, collect coins. Beat your high score! A Medium Action &amp; Shooter game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/endless-runner/"/>
+<meta property="og:title" content="🏃 Endless Runner — Free Browser Game"/>
+<meta property="og:description" content="Play Endless Runner free in your browser. Run forever, jump obstacles, collect coins. Beat your high score!"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/endless-runner/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Endless Runner",
+  "description": "Run forever, jump obstacles, collect coins. Beat your high score!",
+  "url": "https://arcade.sotshau.fun/games/endless-runner/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Action & Shooter",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px;max-width:760px}.score-bar{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:92px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:18px;box-shadow:0 8px 20px rgba(0,0,0,.08)}canvas{display:block;background:linear-gradient(180deg,#111827,#1f2937);border-radius:14px;border:1px solid #374151;touch-action:none}.overlay{position:absolute;inset:18px;background:rgba(245,245,247,.94);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p{color:#6b7280;line-height:1.5;max-width:360px}.btn{padding:9px 22px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}.status{margin-top:12px;text-align:center;color:#374151;font-weight:700;min-height:24px;max-width:760px}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center;padding:0 16px;max-width:840px}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🏃 Endless Runner</h1>
+<p class="sub">Sprint through a three-lane neon run, jump barriers, slide under signs, and scoop up coins to extend your score.</p>
+<div class="score-bar"><div class="score-box"><div class="score-label">Distance</div><div class="score-val" id="score">0</div></div><div class="score-box"><div class="score-label">Coins</div><div class="score-val" id="coins">0</div></div><div class="score-box"><div class="score-label">Speed</div><div class="score-val" id="speed">1.0x</div></div><div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">0</div></div></div>
+<div class="game">
+  <canvas id="game" width="760" height="360"></canvas>
+  <div class="overlay" id="overlay">
+    <h2>🏃 Endless Runner</h2>
+    <p>Switch lanes with the arrow keys or A/D, jump with Space or Arrow Up, duck with Arrow Down, and swipe on touch screens to react quickly.</p>
+    <button class="btn" id="overlay-btn">Start Game</button>
+  </div>
+  <div class="status" id="status">Press Start to begin.</div>
+</div>
+<p class="hint">← → switch lanes · Space / ↑ jump · ↓ slide · Swipe left/right/up/down on touch</p>
+<script>
+
+const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');
+if(!ctx) throw new Error('Canvas 2D context not available');
+const BEST_KEY='endlessRunnerBest';
+const lanes=[230,380,530];
+let runner,obstacles=[],coinsArr=[],distance=0,coins=0,best=+(localStorage.getItem(BEST_KEY)||0),running=false,last=0,spawn=0,coinSpawn=0,speed=7,keys={},statusMsg='Press Start to begin.',rafId=0;
+document.getElementById('best').textContent=best;
+function resetRunner(){runner={lane:1,x:lanes[1],y:282,vy:0,onGround:true,slide:0};}
+function updateStats(){document.getElementById('score').textContent=Math.floor(distance);document.getElementById('coins').textContent=coins;document.getElementById('speed').textContent=(speed/7).toFixed(1)+'x';document.getElementById('best').textContent=best;document.getElementById('status').textContent=statusMsg;}
+function startGame(){resetRunner();obstacles=[];coinsArr=[];distance=0;coins=0;speed=7;spawn=0;coinSpawn=0;keys={};running=true;last=0;statusMsg='Stay centered and watch the signs.';document.getElementById('overlay').style.display='none';updateStats();cancelAnimationFrame(rafId);rafId=requestAnimationFrame(loop);}
+function moveLane(dir){if(!running)return;runner.lane=Math.max(0,Math.min(2,runner.lane+dir));runner.x=lanes[runner.lane];}
+function jump(){if(running&&runner.onGround){runner.vy=-12;runner.onGround=false;statusMsg='Leap!';updateStats();}}
+function slide(state){runner.slide=state?14:0;}
+function rectHit(a,b){return a.x<b.x+b.w&&a.x+a.w>b.x&&a.y<b.y+b.h&&a.y+a.h>b.y;}
+function addObstacle(){const lane=Math.floor(Math.random()*3);const low=Math.random()<.45;obstacles.push({x:canvas.width+40,lane,w:42,h:low?38:82,y:low?274:230,type:low?'crate':'sign'});}
+function addCoin(){const lane=Math.floor(Math.random()*3);coinsArr.push({x:canvas.width+30,lane,y:230-Math.random()*70,r:12});}
+function gameOver(text){running=false;statusMsg='Final distance: '+Math.floor(distance);updateStats();const overlay=document.getElementById('overlay');overlay.innerHTML=`<h2>Run Ended</h2><p>${text}</p><button class="btn" id="overlay-btn">Run Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);} 
+function update(dt){distance+=dt/90;speed=Math.min(15,7+distance/50);runner.vy+=.62;runner.y+=runner.vy;if(runner.y>=282){runner.y=282;runner.vy=0;runner.onGround=true;}if(!(keys.ArrowDown||keys.s||keys.S))slide(false);spawn+=dt;coinSpawn+=dt;if(spawn>Math.max(420,1100-distance*3)){spawn=0;addObstacle();if(Math.random()<.28&&distance>40)addObstacle();}if(coinSpawn>480){coinSpawn=0;addCoin();}obstacles.forEach(o=>o.x-=speed);coinsArr.forEach(c=>c.x-=speed);obstacles=obstacles.filter(o=>o.x+o.w>-30);coinsArr=coinsArr.filter(c=>c.x+c.r>-20);const hero={x:runner.x-22,y:runner.y-(runner.slide?22:44),w:44,h:runner.slide?28:56};for(const o of obstacles){const box={x:o.x,y:o.y,w:o.w,h:o.h};if(o.lane===runner.lane&&rectHit(hero,box))return gameOver('You clipped an obstacle on the track.');}coinsArr=coinsArr.filter(c=>{const collected=Math.abs(c.x-runner.x)<26&&Math.abs(c.y-runner.y)<58&&c.lane===runner.lane;if(collected){coins++;distance+=8;statusMsg='Coin collected!';if(Math.floor(distance)>best){best=Math.floor(distance);localStorage.setItem(BEST_KEY,String(best));}}return !collected;});if(Math.floor(distance)>best){best=Math.floor(distance);localStorage.setItem(BEST_KEY,String(best));}updateStats();}
+function drawLane(x){ctx.strokeStyle='rgba(148,163,184,.35)';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,canvas.height);ctx.stroke();}
+function draw(){const bg=ctx.createLinearGradient(0,0,0,canvas.height);bg.addColorStop(0,'#111827');bg.addColorStop(1,'#1f2937');ctx.fillStyle=bg;ctx.fillRect(0,0,canvas.width,canvas.height);ctx.fillStyle='#6c63ff';for(let i=0;i<24;i++)ctx.fillRect(0,40+i*12,canvas.width,1);[155,305,455,605].forEach(drawLane);ctx.fillStyle='#0f172a';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.fillStyle='rgba(255,255,255,.04)';for(let i=0;i<30;i++)ctx.fillRect((i*33)%canvas.width,(i*71+(last/10))%canvas.height,14,4);ctx.fillStyle='#1f2937';ctx.fillRect(0,300,canvas.width,60);ctx.fillStyle='#94a3b8';for(let i=0;i<canvas.width;i+=40)ctx.fillRect(i,298,20,6);obstacles.forEach(o=>{ctx.fillStyle=o.type==='crate'?'#f97316':'#22c55e';ctx.fillRect(o.x,o.y,o.w,o.h);ctx.fillStyle='rgba(255,255,255,.24)';ctx.fillRect(o.x+6,o.y+6,o.w-12,10);});coinsArr.forEach(c=>{ctx.fillStyle='#facc15';ctx.beginPath();ctx.arc(c.x,c.y,c.r,0,Math.PI*2);ctx.fill();ctx.fillStyle='#fef3c7';ctx.fillRect(c.x-3,c.y-8,6,16);});ctx.fillStyle='#38bdf8';ctx.beginPath();ctx.arc(runner.x,runner.y-(runner.slide?34:52),14,0,Math.PI*2);ctx.fill();ctx.fillStyle='#e0f2fe';ctx.fillRect(runner.x-16,runner.y-(runner.slide?22:44),32,runner.slide?24:50);ctx.fillStyle='#0f172a';ctx.fillRect(runner.x-8,runner.y-(runner.slide?14:34),5,5);ctx.fillRect(runner.x+3,runner.y-(runner.slide?14:34),5,5);}
+function loop(ts){if(!running)return;const dt=ts-last||16;last=ts;update(dt);draw();if(running)rafId=requestAnimationFrame(loop);}
+document.getElementById('overlay-btn').addEventListener('click',startGame);
+document.addEventListener('keydown',e=>{if(document.getElementById('overlay').style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}keys[e.key]=true;if(['ArrowLeft','a','A'].includes(e.key))moveLane(-1);if(['ArrowRight','d','D'].includes(e.key))moveLane(1);if([' ','ArrowUp','w','W'].includes(e.key)){e.preventDefault();jump();}if(['ArrowDown','s','S'].includes(e.key)){e.preventDefault();slide(true);}});document.addEventListener('keyup',e=>{keys[e.key]=false;if(['ArrowDown','s','S'].includes(e.key))slide(false);});let touchStart=null;canvas.addEventListener('touchstart',e=>{const t=e.touches[0];touchStart={x:t.clientX,y:t.clientY};},{passive:true});canvas.addEventListener('touchend',e=>{if(!touchStart)return;const t=e.changedTouches[0],dx=t.clientX-touchStart.x,dy=t.clientY-touchStart.y;if(Math.abs(dx)>Math.abs(dy)){if(dx>24)moveLane(1);else if(dx<-24)moveLane(-1);}else{if(dy<-18)jump();else if(dy>18){slide(true);setTimeout(()=>slide(false),240);}}touchStart=null;},{passive:true});resetRunner();draw();
+
+</script>
+</body>
+</html>

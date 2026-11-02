@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>🧮 Nonogram — Game Portal</title>
+<meta name="description" content="Play Nonogram free online — Use number clues to reveal a hidden pixel picture. A Hard Puzzle game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/nonogram/"/>
+<meta property="og:title" content="🖼️ Nonogram — Free Browser Game"/>
+<meta property="og:description" content="Play Nonogram free in your browser. Use number clues to reveal a hidden pixel picture."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/nonogram/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Nonogram",
+  "description": "Use number clues to reveal a hidden pixel picture.",
+  "url": "https://arcade.sotshau.fun/games/nonogram/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Puzzle",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}nav a:hover{text-decoration:underline}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{font-size:14px;color:#6b7280;text-align:center;margin-bottom:16px;padding:0 16px}.score-bar{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 18px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:90px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.wrap{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;box-shadow:0 8px 20px rgba(0,0,0,.08);padding:18px}.board-wrap{display:grid;grid-template-columns:70px repeat(5,54px);grid-template-rows:54px repeat(5,54px);gap:6px;align-items:center}.clue{display:flex;justify-content:center;align-items:center;font-size:13px;font-weight:700;color:#6b7280;background:#f8fafc;border-radius:10px;height:54px}.cell{width:54px;height:54px;border:none;border-radius:12px;background:#fff;border:1px solid #d1d5db;cursor:pointer;font-size:28px;font-weight:700;color:#ef4444}.cell.filled{background:#6c63ff;border-color:#6c63ff}.cell.marked{background:#fef2f2}.cell.focused{outline:3px solid rgba(108,99,255,.28)}.controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px}.btn{padding:9px 22px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}.btn:hover{background:#574fd6}.btn-outline{background:transparent;border:1.5px solid #6c63ff;color:#6c63ff}.btn-outline:hover{background:#ede9ff}.btn.active{box-shadow:0 0 0 3px rgba(108,99,255,.18)}.status{margin-top:14px;text-align:center;min-height:24px;color:#4b5563;font-weight:600}.overlay{position:absolute;inset:0;background:rgba(245,245,247,.94);border-radius:18px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:10px;padding:24px;text-align:center}.overlay p{color:#6b7280;max-width:320px;line-height:1.5}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center;padding:0 16px}@media (max-width:520px){.board-wrap{grid-template-columns:58px repeat(5,44px);grid-template-rows:44px repeat(5,44px)}.clue{height:44px;font-size:12px}.cell{width:44px;height:44px;font-size:22px}}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🧮 Nonogram</h1>
+<p class="sub">Use the clues to reveal the hidden picture one square at a time.</p>
+<div class="score-bar">
+  <div class="score-box"><div class="score-label">Filled</div><div class="score-val" id="filled">0/13</div></div>
+  <div class="score-box"><div class="score-label">Mistakes</div><div class="score-val" id="mistakes">0</div></div>
+  <div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">—</div></div>
+</div>
+<div class="wrap">
+  <div class="board-wrap" id="board-wrap"></div>
+  <div class="controls">
+    <button class="btn active" id="fill-btn" >Fill Mode</button>
+    <button class="btn btn-outline" id="mark-btn" >Mark Mode</button>
+    <button class="btn btn-outline" id="new-puzzle-btn">New Puzzle</button>
+  </div>
+  <div class="status" id="status">Press Start to begin.</div>
+  <div class="overlay" id="overlay">
+    <h2>🧮 Nonogram</h2>
+    <p>Read the row and column clues, then fill the hidden pattern. Tap to play on mobile, or use arrows plus F / X on desktop.</p>
+    <button class="btn" id="overlay-btn">Start Game</button>
+  </div>
+</div>
+<p class="hint">Arrow keys move focus · F fills · X marks empty · Space toggles selected mode</p>
+<script>
+const SOLUTION=[[1,1,1,0,1],[1,0,1,0,1],[1,1,1,1,1],[1,0,1,0,1],[1,0,1,0,1]];
+const BEST_KEY='nonogramBest';
+const wrapEl=document.getElementById('board-wrap');
+const overlay=document.getElementById('overlay');
+const statusEl=document.getElementById('status');
+const filledEl=document.getElementById('filled');
+const mistakesEl=document.getElementById('mistakes');
+const bestEl=document.getElementById('best');
+const fillBtn=document.getElementById('fill-btn');
+const markBtn=document.getElementById('mark-btn');
+let state=[],buttons=[],mode='fill',mistakes=0,seconds=0,timer=0,active=false,focusIndex=0,best=+(localStorage.getItem(BEST_KEY)||0);
+const totalFilled=SOLUTION.flat().filter(Boolean).length;
+bestEl.textContent=best?`${best}s`:'—';
+function cluesFor(line){const clues=[];let run=0;line.forEach(v=>{if(v)run++;else if(run){clues.push(run);run=0;}});if(run)clues.push(run);return clues.length?clues:[0];}
+const rowClues=SOLUTION.map(cluesFor);
+const colClues=Array.from({length:5},(_,x)=>cluesFor(SOLUTION.map(row=>row[x])));
+function setMode(next){mode=next;fillBtn.classList.toggle('active',mode==='fill');markBtn.classList.toggle('active',mode==='mark');fillBtn.classList.toggle('btn-outline',mode!=='fill');markBtn.classList.toggle('btn-outline',mode!=='mark');}
+function build(){wrapEl.innerHTML='';buttons=[];const corner=document.createElement('div');corner.className='clue';corner.textContent='Clues';wrapEl.appendChild(corner);for(let x=0;x<5;x++){const clue=document.createElement('div');clue.className='clue';clue.innerHTML=colClues[x].join('<br>');wrapEl.appendChild(clue);}for(let y=0;y<5;y++){const clue=document.createElement('div');clue.className='clue';clue.textContent=rowClues[y].join(' ');wrapEl.appendChild(clue);for(let x=0;x<5;x++){const btn=document.createElement('button');btn.className='cell';btn.addEventListener('click',()=>applyMove(x,y));btn.addEventListener('contextmenu',e=>{e.preventDefault();applyMove(x,y,'mark');});wrapEl.appendChild(btn);buttons.push(btn);}}}
+function startGame(){state=Array.from({length:5},()=>Array(5).fill(0));mistakes=0;seconds=0;focusIndex=0;active=true;overlay.style.display='none';statusEl.textContent='Reveal the hidden pixel picture.';clearInterval(timer);timer=setInterval(()=>{if(active)seconds++;},1000);render();}
+function applyMove(x,y,forcedMode){if(!active)return;const nextMode=forcedMode||mode;if(nextMode==='fill'){if(state[y][x]===1)state[y][x]=0;else{state[y][x]=1;if(!SOLUTION[y][x])mistakes++;}}else{state[y][x]=state[y][x]===-1?0:-1;}render();checkWin();}
+function render(){let correct=0;buttons.forEach((btn,i)=>{const x=i%5,y=Math.floor(i/5),value=state[y][x];btn.className='cell'+(value===1?' filled':'')+(value===-1?' marked':'')+(i===focusIndex&&active?' focused':'');btn.textContent=value===-1?'×':'';if(value===1&&SOLUTION[y][x])correct++;});filledEl.textContent=`${correct}/${totalFilled}`;mistakesEl.textContent=mistakes;bestEl.textContent=best?`${best}s`:'—';buttons[focusIndex]?.focus();}
+function checkWin(){const solved=SOLUTION.every((row,y)=>row.every((cell,x)=>cell?state[y][x]===1:state[y][x]!==1));if(!solved)return;active=false;clearInterval(timer);if(!best||seconds<best){best=seconds;localStorage.setItem(BEST_KEY,String(best));}bestEl.textContent=`${best}s`;statusEl.textContent=`Puzzle solved in ${seconds}s with ${mistakes} mistakes.`;overlay.innerHTML=`<h2>✨ Picture Complete</h2><p>You solved the nonogram in ${seconds} seconds with ${mistakes} mistakes.</p><button class="btn" id="overlay-btn">Play Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);}
+document.addEventListener('keydown',e=>{if(overlay.style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}if(!active)return;const row=Math.floor(focusIndex/5),col=focusIndex%5;if(e.key==='ArrowUp')focusIndex=Math.max(0,row-1)*5+col;else if(e.key==='ArrowDown')focusIndex=Math.min(4,row+1)*5+col;else if(e.key==='ArrowLeft')focusIndex=row*5+Math.max(0,col-1);else if(e.key==='ArrowRight')focusIndex=row*5+Math.min(4,col+1);else if(e.key==='f'||e.key==='F'){setMode('fill');applyMove(col,row,'fill');e.preventDefault();return;}else if(e.key==='x'||e.key==='X'){setMode('mark');applyMove(col,row,'mark');e.preventDefault();return;}else if(e.key===' '||e.key==='Enter'){applyMove(col,row);e.preventDefault();return;}else return;e.preventDefault();render();});
+document.getElementById('fill-btn').addEventListener('click',()=>setMode('fill'));
+document.getElementById('mark-btn').addEventListener('click',()=>setMode('mark'));
+document.getElementById('new-puzzle-btn').addEventListener('click',startGame);
+document.getElementById('overlay-btn').addEventListener('click',startGame);
+build();render();
+</script>
+</body>
+</html>

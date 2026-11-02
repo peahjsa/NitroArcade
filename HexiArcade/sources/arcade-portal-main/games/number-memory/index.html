@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Number Memory — Game Portal</title>
+<meta name="description" content="Play Number Memory free online — Memorize increasingly long number sequences. How far can you go? A Medium Memory &amp; Reflex game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/number-memory/"/>
+<meta property="og:title" content="🔢 Number Memory — Free Browser Game"/>
+<meta property="og:description" content="Play Number Memory free in your browser. Memorize increasingly long number sequences. How far can you go?"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/number-memory/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Number Memory",
+  "description": "Memorize increasingly long number sequences. How far can you go?",
+  "url": "https://arcade.sotshau.fun/games/number-memory/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Memory & Reflex",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px}.score-bar{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 18px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:96px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;box-shadow:0 8px 20px rgba(0,0,0,.08);padding:24px;width:min(620px,94vw);text-align:center}.display{background:#111827;color:#fff;border-radius:18px;padding:28px 16px;font-size:42px;font-weight:800;letter-spacing:.18em;margin-bottom:18px;min-height:100px;display:flex;align-items:center;justify-content:center}.input-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}.guess{padding:12px 14px;border:1px solid #cbd5e1;border-radius:12px;font-size:22px;letter-spacing:.16em;text-align:center;width:min(320px,70vw)}.btn{padding:10px 18px;border:none;border-radius:10px;background:#6c63ff;color:#fff;font-weight:700;cursor:pointer}.status{min-height:24px;color:#374151;font-weight:700;margin:16px 0 6px}.overlay{position:absolute;inset:0;background:rgba(245,245,247,.96);border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p{color:#6b7280;max-width:320px;line-height:1.5}.hint{margin-top:14px;font-size:12px;color:#9ca3af;text-align:center;padding:0 16px}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🔢 Number Memory</h1>
+<p class="sub">Memorize the number, then type it back exactly. Each round gets one digit longer.</p>
+<div class="score-bar"><div class="score-box"><div class="score-label">Digits</div><div class="score-val" id="digits">3</div></div><div class="score-box"><div class="score-label">Round</div><div class="score-val" id="round">0</div></div><div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">0</div></div></div>
+<div class="game">
+  <div class="display" id="display">---</div>
+  <div class="input-row"><input id="guess" class="guess" type="text" inputmode="numeric" autocomplete="off" spellcheck="false" placeholder="Type the number"/><button class="btn" id="submit-btn">Submit</button></div>
+  <div class="status" id="status">Press Start to begin.</div>
+  <div class="overlay" id="overlay"><h2>🔢 Number Memory</h2><p>Watch the number while it is visible, then type it from memory and press Enter.</p><button class="btn" id="overlay-btn">Start Game</button></div>
+</div>
+<p class="hint">Keyboard digits + Enter · Touch: use the device number keypad</p>
+<script>
+const BEST_KEY='numberMemoryBest';
+const displayEl=document.getElementById('display'),guessEl=document.getElementById('guess'),statusEl=document.getElementById('status'),overlay=document.getElementById('overlay');
+let length=3,round=0,current='',accepting=false;
+document.getElementById('best').textContent=localStorage.getItem(BEST_KEY)||'0';
+function randomDigits(count){let out='';for(let i=0;i<count;i++)out+=Math.floor(Math.random()*10);return out;}
+function showNumber(){accepting=false;guessEl.value='';current=randomDigits(length);displayEl.textContent=current;statusEl.textContent='Memorize it...';setTimeout(()=>{displayEl.textContent='•'.repeat(length);accepting=true;statusEl.textContent='Now type the number.';guessEl.focus();},Math.max(1400,700+length*350));}
+function startGame(){length=3;round=0;overlay.style.display='none';document.getElementById('digits').textContent='3';document.getElementById('round').textContent='0';showNumber();}
+function submitGuess(){if(!accepting)return;const guess=guessEl.value.trim();if(guess===current){round++;length++;document.getElementById('round').textContent=String(round);document.getElementById('digits').textContent=String(length);const best=Math.max(round,+(localStorage.getItem(BEST_KEY)||0));localStorage.setItem(BEST_KEY,String(best));document.getElementById('best').textContent=String(best);statusEl.textContent='Correct! Next number...';setTimeout(showNumber,700);}else{finishGame();}}
+function finishGame(){accepting=false;displayEl.textContent=current;statusEl.textContent=`Game over. The number was ${current}.`;overlay.innerHTML=`<h2>🧠 Memory Slip</h2><p>You cleared <strong>${round}</strong> rounds and reached <strong>${length}</strong> digits.</p><button class="btn" id="overlay-btn">Play Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);}
+document.getElementById('submit-btn').addEventListener('click',submitGuess);document.getElementById('overlay-btn').addEventListener('click',startGame);guessEl.addEventListener('input',()=>{guessEl.value=guessEl.value.replace(/\D/g,'');});guessEl.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();submitGuess();}});document.addEventListener('keydown',e=>{if(overlay.style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();}});
+</script>
+</body>
+</html>

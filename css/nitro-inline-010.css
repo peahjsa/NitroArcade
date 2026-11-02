@@ -1,0 +1,11 @@
+
+
+.nxRightColumn>.nxDiscoveryLaunch{width:100%;min-width:0;box-sizing:border-box;margin:0!important;padding:18px!important;grid-column:auto;background:linear-gradient(145deg,#24143d,#121026)!important}
+.nxRightColumn .nxDiscoveryHeader{gap:10px;align-items:flex-start}
+.nxRightColumn .nxDiscoveryHeader h2{font-size:clamp(18px,1.8vw,24px)!important;line-height:1.2}
+.nxRightColumn .nxDiscoveryHeader p{font-size:11px;line-height:1.5}
+.nxRightColumn .nxDiscoveryButtons{display:grid!important;grid-template-columns:1fr!important;gap:9px!important}
+.nxRightColumn .nxDiscoveryButtons button{min-height:65px!important;padding:12px!important;width:100%;box-sizing:border-box}
+.nxRightColumn .nxDiscoveryButtons small{white-space:normal}
+@media(max-width:1150px){.nxRightColumn>.nxDiscoveryLaunch{grid-column:1/-1}.nxRightColumn .nxDiscoveryButtons{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
+@media(max-width:760px){.nxRightColumn .nxDiscoveryButtons{grid-template-columns:1fr!important}}

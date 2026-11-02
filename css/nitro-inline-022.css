@@ -1,0 +1,10 @@
+
+.eayu{position:relative;width:100%;min-height:620px;background:#060912;border:1px solid #273958;border-radius:15px;overflow:hidden;color:#fff;font-family:Arial,sans-serif}
+.eayu-top,.eayu-bottom{height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;background:#080d18;border-bottom:1px solid #273958;letter-spacing:.05em}.eayu-bottom{height:38px;border-top:1px solid #273958;border-bottom:0;font-size:11px;color:#b9c9db}
+.eayu-top b{font-size:18px}.eayu-top small{font-size:9px;color:#67ddff}.eayu canvas{display:block;width:100%;aspect-ratio:16/9;background:#080914}
+.eayu-overlay{position:absolute;inset:52px 0 38px;display:grid;place-items:center;background:rgba(3,6,13,.72);backdrop-filter:blur(5px);z-index:5}
+.eayu-card{width:min(680px,88%);padding:28px;border-radius:18px;background:linear-gradient(145deg,#101a30,#080c17);border:1px solid #4a6b9b;box-shadow:0 25px 80px #000b;text-align:center}
+.eayu-card h2{font-size:34px;margin:8px 0}.eayu-card p{color:#b9c9dc;line-height:1.55}.ey-features{margin:18px 0;color:#70e4ff;font-weight:900;font-size:12px;letter-spacing:.12em}
+.eayu-card button,.ey-upgrades button{border:1px solid #63ddff;background:linear-gradient(135deg,#1678a5,#5d49bf);color:white;border-radius:12px;padding:13px 18px;font-weight:900;cursor:pointer}
+.ey-upgrades{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0}.ey-upgrades button{display:flex;min-height:100px;flex-direction:column;justify-content:center;gap:8px}.ey-upgrades small{opacity:.75}
+@media(max-width:700px){.ey-upgrades{grid-template-columns:1fr}.eayu-top{font-size:10px}.eayu-top b{font-size:14px}}

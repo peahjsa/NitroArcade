@@ -1,0 +1,9 @@
+
+.nxSidebar .nxSideActive,.nxSidebar button:hover{border-color:var(--nxAccent)!important}
+.nxSideBrand>span,.nxPurple{color:var(--nxAccent)!important}
+.nxFeatureBanner{border-color:var(--nxAccent)!important}
+.nxFeatureBanner button{background:linear-gradient(120deg,var(--nxAccent),var(--nxAccent2))!important}
+.nxPanel,.ntCommandDeck,.game-card{background-color:var(--nxPanel)!important}
+body.nxXCompact .game-grid{grid-template-columns:repeat(auto-fill,minmax(190px,1fr))!important;gap:10px!important}
+body.nxXCompact .game-card .thumb{height:135px!important}
+body.nxXNoMotion *,body.nxXNoMotion *::before,body.nxXNoMotion *::after{animation-duration:.001ms!important;transition-duration:.001ms!important;scroll-behavior:auto!important}

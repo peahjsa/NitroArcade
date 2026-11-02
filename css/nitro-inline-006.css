@@ -1,0 +1,40 @@
+
+
+
+:root{--nitro-electric:#4de8ff;--nitro-violet:#a56cff;--nitro-hot:#ff5fc6}
+body:not(.theme-light){
+ background-image:radial-gradient(ellipse at 82% 12%,rgba(105,65,221,.14),transparent 37%),
+ radial-gradient(ellipse at 12% 48%,rgba(23,179,224,.10),transparent 37%),
+ linear-gradient(180deg,rgba(2,7,23,.88),rgba(2,5,16,.98))!important;
+}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.22;background-image:linear-gradient(rgba(78,188,255,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(78,188,255,.06) 1px,transparent 1px);background-size:56px 56px;mask-image:linear-gradient(180deg,transparent 3%,black 48%,transparent)}
+.navbar{border-bottom:1px solid rgba(79,215,255,.25)!important;box-shadow:0 9px 35px rgba(0,0,0,.38),0 1px 20px rgba(42,169,244,.08)!important}
+.brand-dot{animation:nitroPulse 2s ease-in-out infinite}
+@keyframes nitroPulse{50%{box-shadow:0 0 22px 5px var(--accent);transform:scale(1.3)}}
+.hero{border-color:rgba(86,181,255,.38)!important;box-shadow:0 18px 85px rgba(0,0,0,.42),inset 0 0 80px rgba(44,84,184,.08)!important}
+.hero::before{animation:nitroRing 18s linear infinite}
+.hero::after{animation:nitroRing 13s linear infinite reverse}
+@keyframes nitroRing{to{transform:rotate(360deg)}}
+.hero h1,.about-title{filter:drop-shadow(0 5px 0 rgba(33,110,217,.25));text-shadow:0 0 45px rgba(94,174,255,.12)}
+.hero-art .shape{animation:nitroFloat 5s ease-in-out infinite alternate}
+.hero-art .shape.b{animation-delay:-1.4s}.hero-art .shape.c{animation-delay:-2.8s}.hero-art .shape.d{animation-delay:-4s}
+@keyframes nitroFloat{to{translate:0 -22px;filter:brightness(1.35)}}
+.btn,.hero-play,.hero-secondary,.filter-chip,.game-card,.stat,.feature-fab{transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease,filter .22s ease}
+.btn:hover,.hero-play:hover,.hero-secondary:hover,.filter-chip:hover{transform:translateY(-3px);box-shadow:0 6px 24px rgba(72,180,255,.18)}
+.game-card{border-color:rgba(99,143,199,.26)!important;box-shadow:0 10px 34px rgba(0,0,0,.27)!important}
+.game-card:hover{transform:translateY(-6px) scale(1.008);border-color:var(--accent)!important;box-shadow:0 18px 48px rgba(0,0,0,.44),0 0 24px rgba(66,199,255,.17)!important}
+.game-card .thumb::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.09) 50%,transparent 68%);transform:translateX(-150%);transition:transform .55s ease}
+.game-card:hover .thumb::after{transform:translateX(150%)}
+.stat{background:linear-gradient(145deg,rgba(24,41,73,.6),rgba(10,17,31,.7));border-color:rgba(83,167,245,.23)}
+.section-head h2{letter-spacing:-.5px;text-shadow:0 0 24px rgba(103,189,255,.13)}
+.game-card.hacker-featured{border:1px solid rgba(71,255,147,.55)!important;box-shadow:0 0 32px rgba(28,190,102,.09)!important}
+.windosill-quick-access{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:15px 18px;border-top:1px solid rgba(70,239,151,.28);background:linear-gradient(100deg,rgba(8,49,33,.8),rgba(9,22,32,.9));font-size:12px;font-weight:900;color:#a8ffd0}
+.windosill-quick-access small{display:block;margin-top:4px;color:#8ba7a2;font-size:10px;font-weight:600}
+.windosill-play{padding:11px 17px;background:linear-gradient(120deg,#21a67b,#4de8ff);color:#021c22;border:0;border-radius:10px;font-weight:900;cursor:pointer;box-shadow:0 4px 20px rgba(30,226,158,.25)}
+.windosill-play:hover{filter:brightness(1.16);transform:translateY(-2px)}
+.windosill-locked{border:1px solid rgba(105,231,157,.28);border-radius:8px;padding:8px 12px;font-size:10px}
+body.theme-light .windosill-quick-access{background:#e7f8f1;color:#185e48}
+body.theme-light .windosill-quick-access small{color:#4b7366}
+@media(prefers-reduced-motion:reduce){.brand-dot,.hero::before,.hero::after,.hero-art .shape{animation:none!important}.game-card .thumb::after{display:none}}
+@media(max-width:650px){.windosill-quick-access{align-items:stretch;flex-direction:column}.windosill-play{width:100%}}
+

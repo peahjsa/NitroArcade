@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Fruit Ninja — Game Portal</title>
+<meta name="description" content="Play Fruit Ninja free online — Swipe to slice flying fruit. Avoid bombs! A Medium Action &amp; Shooter game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/fruit-ninja/"/>
+<meta property="og:title" content="🍉 Fruit Ninja — Free Browser Game"/>
+<meta property="og:description" content="Play Fruit Ninja free in your browser. Swipe to slice flying fruit. Avoid bombs!"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/fruit-ninja/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Fruit Ninja",
+  "description": "Swipe to slice flying fruit. Avoid bombs!",
+  "url": "https://arcade.sotshau.fun/games/fruit-ninja/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Action & Shooter",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px;max-width:760px}.score-bar{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:92px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:18px;box-shadow:0 8px 20px rgba(0,0,0,.08)}canvas{display:block;background:linear-gradient(180deg,#fef3c7,#fed7aa);border-radius:14px;border:1px solid #fdba74;touch-action:none}.overlay{position:absolute;inset:18px;background:rgba(245,245,247,.94);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p{color:#6b7280;line-height:1.5;max-width:360px}.btn{padding:9px 22px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}.status{margin-top:12px;text-align:center;color:#374151;font-weight:700;min-height:24px;max-width:760px}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center;padding:0 16px;max-width:840px}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🍉 Fruit Ninja</h1>
+<p class="sub">Slice rising fruit with fast swipes, build combos, and avoid letting three pieces drop off the board.</p>
+<div class="score-bar"><div class="score-box"><div class="score-label">Score</div><div class="score-val" id="score">0</div></div><div class="score-box"><div class="score-label">Misses</div><div class="score-val" id="misses">0</div></div><div class="score-box"><div class="score-label">Combo</div><div class="score-val" id="combo">0</div></div><div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">0</div></div></div>
+<div class="game">
+  <canvas id="game" width="760" height="420"></canvas>
+  <div class="overlay" id="overlay">
+    <h2>🍉 Fruit Ninja</h2>
+    <p>Swipe or drag across the board to cut fruit. On keyboards, move the blade cursor with arrows or WASD and press Space to slash.</p>
+    <button class="btn" id="overlay-btn">Start Game</button>
+  </div>
+  <div class="status" id="status">Press Start to begin.</div>
+</div>
+<p class="hint">Swipe or drag to slice · Arrow keys move blade cursor · Space slashes nearby fruit</p>
+<script>
+
+const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');
+if(!ctx) throw new Error('canvas 2d context unavailable');
+const BEST_KEY='fruitNinjaBest';
+const fruitColors=['#ef4444','#f97316','#facc15','#22c55e','#38bdf8','#a855f7'];
+let fruits=[],trail=[],cursor={x:canvas.width/2,y:canvas.height/2},score=0,misses=0,combo=0,best=+(localStorage.getItem(BEST_KEY)||0),running=false,last=0,spawn=0,keys={},rafId=0,statusMsg='Press Start to begin.';
+document.getElementById('best').textContent=best;
+function updateStats(){document.getElementById('score').textContent=score;document.getElementById('misses').textContent=misses;document.getElementById('combo').textContent=combo;document.getElementById('best').textContent=best;document.getElementById('status').textContent=statusMsg;}
+function startGame(){fruits=[];trail=[];cursor={x:canvas.width/2,y:canvas.height/2};score=0;misses=0;combo=0;spawn=0;keys={};running=true;last=0;statusMsg='Slice through clusters for combos.';document.getElementById('overlay').style.display='none';updateStats();cancelAnimationFrame(rafId);rafId=requestAnimationFrame(loop);}
+function addFruit(){const r=18+Math.random()*12;fruits.push({x:80+Math.random()*(canvas.width-160),y:canvas.height+20,vx:-3+Math.random()*6,vy:-(10+Math.random()*4),r,color:fruitColors[Math.floor(Math.random()*fruitColors.length)],sliced:false,rot:Math.random()*Math.PI});}
+function addTrailPoint(x,y){trail.push({x,y,life:16});if(trail.length>12)trail.shift();sliceAt(x,y);}
+function sliceAt(x,y){let cut=0;for(const fruit of fruits){if(!fruit.sliced&&Math.hypot(fruit.x-x,fruit.y-y)<fruit.r+18){fruit.sliced=true;fruit.vx*=1.4;fruit.vy=-2;cut++;score+=10;}}if(cut){combo+=cut;score+=Math.max(0,cut-1)*5;statusMsg=cut>1?'Combo slice!':'Clean cut!';if(score>best){best=score;localStorage.setItem(BEST_KEY,String(best));}}}
+function keyboardSlash(){sliceAt(cursor.x,cursor.y);addTrailPoint(cursor.x,cursor.y);}
+function gameOver(text){running=false;statusMsg='Final score: '+score;updateStats();const overlay=document.getElementById('overlay');overlay.innerHTML=`<h2>Kitchen Mess</h2><p>${text}</p><button class="btn" id="overlay-btn">Slice Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);} 
+function update(dt){const move=5;if(keys.ArrowLeft||keys.a||keys.A)cursor.x-=move;if(keys.ArrowRight||keys.d||keys.D)cursor.x+=move;if(keys.ArrowUp||keys.w||keys.W)cursor.y-=move;if(keys.ArrowDown||keys.s||keys.S)cursor.y+=move;cursor.x=Math.max(20,Math.min(canvas.width-20,cursor.x));cursor.y=Math.max(20,Math.min(canvas.height-20,cursor.y));spawn+=dt;if(spawn>Math.max(240,680-score*3)){spawn=0;addFruit();if(Math.random()<.4)addFruit();}fruits.forEach(fruit=>{fruit.x+=fruit.vx;fruit.y+=fruit.vy;fruit.vy+=.24;fruit.rot+=.08;if(fruit.sliced)fruit.vx*=.995;if(fruit.y-fruit.r>canvas.height+24){if(!fruit.sliced){misses++;combo=0;statusMsg='A fruit fell untouched.';}fruit.dead=true;}});fruits=fruits.filter(f=>!f.dead);trail.forEach(p=>p.life--);trail=trail.filter(p=>p.life>0);if(misses>=3)gameOver('Three fruits splashed past your blade.');updateStats();}
+function draw(){const g=ctx.createLinearGradient(0,0,0,canvas.height);g.addColorStop(0,'#fef3c7');g.addColorStop(1,'#fed7aa');ctx.fillStyle=g;ctx.fillRect(0,0,canvas.width,canvas.height);ctx.fillStyle='rgba(120,53,15,.14)';for(let i=0;i<canvas.height;i+=32)ctx.fillRect(0,i,canvas.width,2);ctx.lineCap='round';for(let i=1;i<trail.length;i++){ctx.strokeStyle=`rgba(99,102,241,${trail[i].life/16})`;ctx.lineWidth=10*(trail[i].life/16);ctx.beginPath();ctx.moveTo(trail[i-1].x,trail[i-1].y);ctx.lineTo(trail[i].x,trail[i].y);ctx.stroke();}fruits.forEach(fruit=>{ctx.save();ctx.translate(fruit.x,fruit.y);ctx.rotate(fruit.rot);ctx.fillStyle=fruit.color;ctx.beginPath();ctx.arc(0,0,fruit.r,0,Math.PI*2);ctx.fill();ctx.fillStyle='rgba(255,255,255,.35)';ctx.beginPath();ctx.arc(-fruit.r/3,-fruit.r/3,fruit.r/3,0,Math.PI*2);ctx.fill();if(fruit.sliced){ctx.strokeStyle='#fff';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(-fruit.r,0);ctx.lineTo(fruit.r,0);ctx.stroke();}ctx.restore();});ctx.strokeStyle='#111827';ctx.lineWidth=2;ctx.beginPath();ctx.arc(cursor.x,cursor.y,14,0,Math.PI*2);ctx.stroke();ctx.beginPath();ctx.moveTo(cursor.x-20,cursor.y);ctx.lineTo(cursor.x+20,cursor.y);ctx.moveTo(cursor.x,cursor.y-20);ctx.lineTo(cursor.x,cursor.y+20);ctx.stroke();}
+function loop(ts){if(!running)return;const dt=ts-last||16;last=ts;update(dt);draw();if(running)rafId=requestAnimationFrame(loop);}
+document.getElementById('overlay-btn').addEventListener('click',startGame);
+document.addEventListener('keydown',e=>{if(document.getElementById('overlay').style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}keys[e.key]=true;if(e.key===' '){e.preventDefault();keyboardSlash();}});document.addEventListener('keyup',e=>{keys[e.key]=false;});let slicing=false;function pointerPos(e){const rect=canvas.getBoundingClientRect();return{x:(e.clientX-rect.left)/rect.width*canvas.width,y:(e.clientY-rect.top)/rect.height*canvas.height};}canvas.addEventListener('pointerdown',e=>{if(!running)return;slicing=true;const p=pointerPos(e);cursor=p;addTrailPoint(p.x,p.y);});canvas.addEventListener('pointermove',e=>{const p=pointerPos(e);cursor=p;if(slicing&&running)addTrailPoint(p.x,p.y);else draw();});window.addEventListener('pointerup',()=>slicing=false);draw();
+
+</script>
+</body>
+</html>

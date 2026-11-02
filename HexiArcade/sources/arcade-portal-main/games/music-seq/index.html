@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Music Seq — Game Portal</title>
+<meta name="description" content="Play Music Sequencer free online — Click grid cells to compose a looping 8-bit melody. A Easy Creative &amp; Art game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/music-seq/"/>
+<meta property="og:title" content="🎵 Music Sequencer — Free Browser Game"/>
+<meta property="og:description" content="Play Music Sequencer free in your browser. Click grid cells to compose a looping 8-bit melody."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/music-seq/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Music Sequencer",
+  "description": "Click grid cells to compose a looping 8-bit melody.",
+  "url": "https://arcade.sotshau.fun/games/music-seq/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Creative & Art",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px}.score-bar,.controls{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}.score-bar{margin-bottom:14px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 18px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:96px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.game{position:relative;background:#111827;border-radius:20px;padding:18px;box-shadow:0 12px 28px rgba(0,0,0,.18);width:min(720px,94vw)}.grid{display:grid;grid-template-columns:repeat(8,1fr);gap:8px}.cell{height:54px;border:none;border-radius:12px;background:#1f2937;color:#9ca3af;font-weight:700;cursor:pointer;transition:transform .08s,background .08s,box-shadow .08s}.cell.active{background:linear-gradient(135deg,#8b5cf6,#38bdf8);color:#fff}.cell.playhead{box-shadow:0 0 0 3px rgba(255,255,255,.38)}.cell.cursor{outline:3px solid #f59e0b;outline-offset:0}.controls{margin-top:14px}.btn{padding:9px 16px;background:#6c63ff;color:#fff;border:none;border-radius:10px;font-weight:700;cursor:pointer}.ghost{background:#374151}.status{min-height:24px;text-align:center;color:#e5e7eb;font-weight:700;margin-top:12px}.overlay{position:absolute;inset:18px;background:rgba(17,24,39,.96);border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center;color:#fff}.overlay p{max-width:360px;color:#cbd5e1;line-height:1.5}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center;padding:0 16px}.legend{display:flex;justify-content:space-between;color:#94a3b8;font-size:12px;margin-bottom:10px}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🎵 Music Seq</h1>
+<p class="sub">Build an 8-step melody. Toggle pads, adjust tempo, and let the loop play.</p>
+<div class="score-bar"><div class="score-box"><div class="score-label">Tempo</div><div class="score-val" id="tempo">110</div></div><div class="score-box"><div class="score-label">Loop</div><div class="score-val" id="loops">0</div></div><div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">0</div></div></div>
+<div class="game">
+  <div class="legend"><span>High notes ↑</span><span>Low notes ↓</span></div>
+  <div class="grid" id="grid"></div>
+  <div class="controls"><button class="btn" id="play-btn">Start Loop</button><button class="btn ghost" id="random-btn">Randomize</button><button class="btn ghost" id="tempo-down">Tempo -</button><button class="btn ghost" id="tempo-up">Tempo +</button></div>
+  <div class="status" id="status">Press Start to hear your first loop.</div>
+  <div class="overlay" id="overlay"><h2>🎵 Music Seq</h2><p>Use arrows to move, Space to toggle a note, and P to play or pause. Tap cells on mobile to build a beat.</p><button class="btn" id="overlay-btn">Start Sequencer</button></div>
+</div>
+<p class="hint">Keyboard: arrows, space, P, +/- · Touch: tap pads and buttons</p>
+<script>
+const ROWS=5,COLS=8,BEST_KEY='musicSeqBestLoops',FREQS=[659.25,523.25,440,392,329.63];
+const gridEl=document.getElementById('grid'),overlay=document.getElementById('overlay'),statusEl=document.getElementById('status');
+let pattern=Array.from({length:ROWS},()=>Array(COLS).fill(false)),cursor={row:2,col:0},playing=false,step=0,loops=0,tempo=110,audioCtx=null,timer=0,best=+(localStorage.getItem(BEST_KEY)||0);
+document.getElementById('best').textContent=String(best);
+function ensureAudio(){if(!audioCtx)audioCtx=new (window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==='suspended')audioCtx.resume();}
+function playNote(freq){ensureAudio();const now=audioCtx.currentTime,osc=audioCtx.createOscillator(),gain=audioCtx.createGain();osc.type='triangle';osc.frequency.value=freq;gain.gain.setValueAtTime(.0001,now);gain.gain.exponentialRampToValueAtTime(.18,now+.01);gain.gain.exponentialRampToValueAtTime(.0001,now+.26);osc.connect(gain).connect(audioCtx.destination);osc.start(now);osc.stop(now+.28);}
+function buildGrid(){gridEl.innerHTML='';for(let row=0;row<ROWS;row++){for(let col=0;col<COLS;col++){const button=document.createElement('button');button.className='cell';button.addEventListener('click',()=>toggleCell(row,col));button.textContent='♪';gridEl.appendChild(button);}}render();}
+function render(){[...gridEl.children].forEach((cell,index)=>{const row=Math.floor(index/COLS),col=index%COLS;cell.className='cell'+(pattern[row][col]?' active':'')+(playing&&col===step?' playhead':'')+(cursor.row===row&&cursor.col===col?' cursor':'');});document.getElementById('tempo').textContent=String(tempo);document.getElementById('loops').textContent=String(loops);} 
+function toggleCell(row,col){pattern[row][col]=!pattern[row][col];cursor={row,col};statusEl.textContent=pattern[row][col]?`Added note on step ${col+1}.`:`Muted step ${col+1}.`;render();}
+function randomize(){pattern=pattern.map(row=>row.map(()=>Math.random()>.62));statusEl.textContent='Random groove loaded.';render();}
+function advance(){for(let row=0;row<ROWS;row++)if(pattern[row][step])playNote(FREQS[row]);step=(step+1)%COLS;if(step===0){loops++;if(loops>best){best=loops;localStorage.setItem(BEST_KEY,String(best));document.getElementById('best').textContent=String(best);}}statusEl.textContent=playing?`Looping step ${step+1}.`:'Paused.';render();if(playing)timer=window.setTimeout(advance,60000/tempo);} 
+function setPlaying(next){ensureAudio();playing=next;document.getElementById('play-btn').textContent=playing?'Pause Loop':'Start Loop';clearTimeout(timer);if(playing){overlay.style.display='none';statusEl.textContent='Loop is live.';advance();}else{statusEl.textContent='Loop paused.';render();}}
+function startGame(){loops=0;step=0;overlay.style.display='none';setPlaying(true);} 
+function adjustTempo(delta){tempo=Math.max(70,Math.min(180,tempo+delta));statusEl.textContent=`Tempo set to ${tempo} BPM.`;render();if(playing){clearTimeout(timer);timer=window.setTimeout(advance,60000/tempo);}}
+document.getElementById('overlay-btn').addEventListener('click',startGame);document.getElementById('play-btn').addEventListener('click',()=>setPlaying(!playing));document.getElementById('random-btn').addEventListener('click',randomize);document.getElementById('tempo-down').addEventListener('click',()=>adjustTempo(-10));document.getElementById('tempo-up').addEventListener('click',()=>adjustTempo(10));
+document.addEventListener('keydown',event=>{if(overlay.style.display!=='none'&&(event.key==='Enter'||event.key===' ')){event.preventDefault();startGame();return;}const move={ArrowLeft:[0,-1],ArrowRight:[0,1],ArrowUp:[-1,0],ArrowDown:[1,0]};if(move[event.key]){event.preventDefault();cursor.row=(cursor.row+move[event.key][0]+ROWS)%ROWS;cursor.col=(cursor.col+move[event.key][1]+COLS)%COLS;render();}if(event.key===' '||event.key==='Enter'){event.preventDefault();toggleCell(cursor.row,cursor.col);}if(event.key==='p'||event.key==='P')setPlaying(!playing);if(event.key==='+'||event.key==='=')adjustTempo(10);if(event.key==='-')adjustTempo(-10);});
+randomize();buildGrid();
+</script>
+</body>
+</html>

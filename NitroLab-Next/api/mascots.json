@@ -1,0 +1,14 @@
+{
+  "mascots": [
+    {
+      "name": "Pixie",
+      "art": "../assets/mascots/pixie.svg",
+      "role": "Arcade guide"
+    },
+    {
+      "name": "OmetoByte",
+      "art": "../assets/mascots/ometobyte.svg",
+      "role": "Offline helper"
+    }
+  ]
+}

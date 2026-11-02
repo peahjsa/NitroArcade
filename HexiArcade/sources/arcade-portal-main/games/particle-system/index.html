@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Particle System — Game Portal</title>
+<meta name="description" content="Play Particle System free online — Create dazzling particle effects with your mouse. Pure eye candy. A Easy Physics &amp; Simulation game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/particle-system/"/>
+<meta property="og:title" content="✨ Particle System — Free Browser Game"/>
+<meta property="og:description" content="Play Particle System free in your browser. Create dazzling particle effects with your mouse. Pure eye candy."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/particle-system/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Particle System",
+  "description": "Create dazzling particle effects with your mouse. Pure eye candy.",
+  "url": "https://arcade.sotshau.fun/games/particle-system/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Physics & Simulation",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:38px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px}.score-bar{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:12px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:92px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.toolbar{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:12px}.tool{padding:8px 12px;border:1px solid #d1d5db;background:#fff;border-radius:999px;font-size:13px;font-weight:700;cursor:pointer}.tool.active{background:#6c63ff;color:#fff;border-color:#6c63ff}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:18px;box-shadow:0 8px 20px rgba(0,0,0,.08)}canvas{display:block;background:#030712;border-radius:14px;border:1px solid #111827;touch-action:none}.status{min-height:24px;text-align:center;font-weight:700;color:#374151;margin-top:12px}.overlay{position:absolute;inset:18px;background:rgba(245,245,247,.95);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p{color:#6b7280;line-height:1.5;max-width:360px}.btn{padding:9px 18px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center;padding:0 18px}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>✨ Particle System</h1>
+<p class="sub">Steer the emitter, swap particle modes, and energize drifting nodes with sparkling bursts.</p>
+<div class="score-bar">
+  <div class="score-box"><div class="score-label">Score</div><div class="score-val" id="score">0</div></div>
+  <div class="score-box"><div class="score-label">Particles</div><div class="score-val" id="particles">0</div></div>
+  <div class="score-box"><div class="score-label">Mode</div><div class="score-val" id="mode">Spark</div></div>
+  <div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">0</div></div>
+</div>
+<div class="toolbar" id="toolbar"></div>
+<div class="game">
+  <canvas id="field" width="620" height="420"></canvas>
+  <div class="overlay" id="overlay">
+    <h2>✨ Particle System</h2>
+    <p>Use arrow keys to move the emitter, number keys 1–3 to switch particle modes, and Space to release a burst. Touch to drag the emitter and tap to burst.</p>
+    <button class="btn" id="overlay-btn">Start Emitting</button>
+  </div>
+  <div class="status" id="status">Charge every node with colorful particles.</div>
+</div>
+<p class="hint">Keyboard: arrows + 1/2/3 + Space · Touch: drag emitter, tap burst</p>
+<script>
+const canvas=document.getElementById('field'),ctx=canvas.getContext('2d');
+const BEST_KEY='particleSystemBest';
+const modes=[
+  {id:'spark',label:'Spark',spread:.55,speed:220,color:'#f59e0b'},
+  {id:'mist',label:'Mist',spread:1.1,speed:140,color:'#38bdf8'},
+  {id:'nova',label:'Nova',spread:2.7,speed:190,color:'#a855f7'}
+];
+let emitter={x:310,y:360},particles=[],nodes=[],mode='spark',score=0,best=+(localStorage.getItem(BEST_KEY)||0),running=false,rafId=0,last=0,statusMsg='Charge every node with colorful particles.';
+function setupNodes(){nodes=[];for(let i=0;i<5;i++)nodes.push({x:100+i*105,y:90+Math.random()*150,vx:(Math.random()-.5)*45,vy:(Math.random()-.5)*45,charge:0});}
+function buildToolbar(){const bar=document.getElementById('toolbar');bar.innerHTML='';modes.forEach((m,i)=>{const b=document.createElement('button');b.className='tool'+(mode===m.id?' active':'');b.textContent=`${i+1}. ${m.label}`;b.addEventListener('click',()=>{mode=m.id;buildToolbar();renderStats();});bar.appendChild(b);});}
+function startGame(){particles=[];score=0;mode='spark';setupNodes();running=true;last=0;statusMsg='Charge every node with colorful particles.';document.getElementById('overlay').style.display='none';buildToolbar();renderStats();draw();cancelAnimationFrame(rafId);rafId=requestAnimationFrame(loop);} 
+function currentMode(){return modes.find(m=>m.id===mode);} 
+function burst(){if(!running)return;const m=currentMode();for(let i=0;i<28;i++){const angle=-Math.PI/2+(Math.random()-.5)*m.spread;const speed=m.speed*(.6+Math.random()*.8);particles.push({x:emitter.x,y:emitter.y,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed,life:1,color:m.color});}statusMsg=`${m.label} burst released.`;renderStats();}
+function renderStats(){if(score>best){best=score;localStorage.setItem(BEST_KEY,String(best));}document.getElementById('score').textContent=score;document.getElementById('particles').textContent=particles.length;document.getElementById('mode').textContent=currentMode().label;document.getElementById('best').textContent=best;document.getElementById('status').textContent=statusMsg;buildToolbar();}
+function finish(){running=false;const overlay=document.getElementById('overlay');overlay.innerHTML=`<h2>🌟 Show Complete</h2><p>You energized the field for <strong>${score}</strong> points.</p><button class="btn" id="overlay-btn">Play Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);} 
+function update(dt){particles.forEach(p=>{p.vy+=90*dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=dt*.9;});particles=particles.filter(p=>p.life>0&&p.x>-20&&p.x<640&&p.y>-20&&p.y<440);nodes.forEach(node=>{node.x+=node.vx*dt;node.y+=node.vy*dt;if(node.x<24||node.x>596)node.vx*=-1;if(node.y<24||node.y>250)node.vy*=-1;particles.forEach(p=>{if(Math.hypot(node.x-p.x,node.y-p.y)<22){node.charge=Math.min(100,node.charge+30*dt);}});node.charge=Math.max(0,node.charge-8*dt);if(node.charge>=100){score+=25;node.charge=30;statusMsg='Node energized!';}});if(score>=300)return finish();renderStats();}
+function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.fillStyle='rgba(255,255,255,.05)';for(let i=0;i<canvas.width;i+=40)ctx.fillRect(i,0,1,canvas.height);nodes.forEach(node=>{ctx.fillStyle=`rgba(255,255,255,${.2+node.charge/130})`;ctx.beginPath();ctx.arc(node.x,node.y,16+node.charge*.05,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#94a3b8';ctx.stroke();});particles.forEach(p=>{ctx.fillStyle=p.color;ctx.globalAlpha=Math.max(.15,p.life);ctx.beginPath();ctx.arc(p.x,p.y,3,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;});ctx.fillStyle='#6c63ff';ctx.beginPath();ctx.arc(emitter.x,emitter.y,12,0,Math.PI*2);ctx.fill();ctx.fillStyle='#c4b5fd';ctx.beginPath();ctx.arc(emitter.x,emitter.y,24,0,Math.PI*2);ctx.fill();}
+function loop(ts){if(!running)return;const dt=(ts-last||16)/1000;last=ts;update(dt);draw();rafId=requestAnimationFrame(loop);} 
+function moveEmitter(clientX,clientY){const r=canvas.getBoundingClientRect();emitter.x=Math.max(20,Math.min(canvas.width-20,(clientX-r.left)*(canvas.width/r.width)));emitter.y=Math.max(240,Math.min(canvas.height-20,(clientY-r.top)*(canvas.height/r.height)));draw();}
+let touchMoved=false;canvas.addEventListener('mousedown',e=>moveEmitter(e.clientX,e.clientY));canvas.addEventListener('click',e=>{moveEmitter(e.clientX,e.clientY);burst();});canvas.addEventListener('touchstart',e=>{touchMoved=false;moveEmitter(e.touches[0].clientX,e.touches[0].clientY);},{passive:true});canvas.addEventListener('touchmove',e=>{touchMoved=true;moveEmitter(e.touches[0].clientX,e.touches[0].clientY);},{passive:true});canvas.addEventListener('touchend',()=>{if(!touchMoved)burst();},{passive:true});
+document.getElementById('overlay-btn').addEventListener('click',startGame);document.addEventListener('keydown',e=>{const overlay=document.getElementById('overlay');if(overlay.style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}if(e.key==='ArrowLeft'){e.preventDefault();emitter.x=Math.max(20,emitter.x-18);draw();}if(e.key==='ArrowRight'){e.preventDefault();emitter.x=Math.min(canvas.width-20,emitter.x+18);draw();}if(e.key==='ArrowUp'){e.preventDefault();emitter.y=Math.max(240,emitter.y-18);draw();}if(e.key==='ArrowDown'){e.preventDefault();emitter.y=Math.min(canvas.height-20,emitter.y+18);draw();}if(/[123]/.test(e.key)){e.preventDefault();mode=modes[+e.key-1].id;renderStats();}if(e.key===' '){e.preventDefault();burst();}});buildToolbar();renderStats();draw();
+</script>
+</body>
+</html>

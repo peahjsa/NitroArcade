@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Pattern Memory — Game Portal</title>
+<meta name="description" content="Play Pattern Memory free online — Watch the grid light up, then recreate the exact pattern. A Medium Memory &amp; Reflex game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/pattern-memory/"/>
+<meta property="og:title" content="🔲 Pattern Memory — Free Browser Game"/>
+<meta property="og:description" content="Play Pattern Memory free in your browser. Watch the grid light up, then recreate the exact pattern."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/pattern-memory/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Pattern Memory",
+  "description": "Watch the grid light up, then recreate the exact pattern.",
+  "url": "https://arcade.sotshau.fun/games/pattern-memory/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Memory & Reflex",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px}.score-bar{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 18px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:96px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;box-shadow:0 8px 20px rgba(0,0,0,.08);padding:24px;width:min(620px,94vw)}.board{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.cell{aspect-ratio:1/1;border:none;border-radius:14px;background:#e5e7eb;cursor:pointer;transition:transform .08s,background .08s,box-shadow .08s}.cell.shown{background:#8b5cf6}.cell.selected{background:#c4b5fd}.cell.cursor{box-shadow:0 0 0 3px #6c63ff inset}.controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px}.btn{padding:10px 18px;border:none;border-radius:10px;background:#6c63ff;color:#fff;font-weight:700;cursor:pointer}.btn.alt{background:#fff;color:#6c63ff;border:1px solid #6c63ff}.status{min-height:24px;text-align:center;color:#374151;font-weight:700;margin-top:16px}.overlay{position:absolute;inset:0;background:rgba(245,245,247,.96);border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p{color:#6b7280;max-width:320px;line-height:1.5}.hint{margin-top:14px;font-size:12px;color:#9ca3af;text-align:center;padding:0 16px}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🔲 Pattern Memory</h1>
+<p class="sub">Watch the grid pattern, then recreate it exactly. Use mouse, touch, or arrow keys with Enter to toggle cells.</p>
+<div class="score-bar"><div class="score-box"><div class="score-label">Level</div><div class="score-val" id="level">1</div></div><div class="score-box"><div class="score-label">Cells</div><div class="score-val" id="cells-count">4</div></div><div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">0</div></div></div>
+<div class="game">
+  <div class="board" id="board"></div>
+  <div class="controls"><button class="btn" id="submit-btn">Submit Pattern</button><button class="btn alt" id="clear-btn">Clear</button></div>
+  <div class="status" id="status">Press Start to begin.</div>
+  <div class="overlay" id="overlay"><h2>🔲 Pattern Memory</h2><p>Remember which squares light up, then rebuild the same pattern. Keyboard: arrows move, Enter toggles, S submits.</p><button class="btn" id="overlay-btn">Start Game</button></div>
+</div>
+<p class="hint">Keyboard: arrows + Enter + S · Touch: tap cells, then Submit</p>
+<script>
+const SIZE=4,BEST_KEY='patternMemoryBest';
+const boardEl=document.getElementById('board'),statusEl=document.getElementById('status'),overlay=document.getElementById('overlay');
+let target=new Set(),selected=new Set(),level=1,active=false,cursor=0;
+document.getElementById('best').textContent=localStorage.getItem(BEST_KEY)||'0';
+function buildBoard(){boardEl.innerHTML='';for(let i=0;i<SIZE*SIZE;i++){const btn=document.createElement('button');btn.className='cell'+(i===cursor?' cursor':'');btn.addEventListener('click',()=>toggleCell(i));boardEl.appendChild(btn);}render();}
+function randomPattern(count){const set=new Set();while(set.size<count)set.add(Math.floor(Math.random()*(SIZE*SIZE)));return set;}
+function startGame(){level=1;overlay.style.display='none';beginLevel();}
+function beginLevel(){active=false;selected=new Set();target=randomPattern(Math.min(3+level,8));document.getElementById('level').textContent=String(level);document.getElementById('cells-count').textContent=String(target.size);statusEl.textContent='Memorize the pattern...';render(true);setTimeout(()=>{active=true;statusEl.textContent='Recreate the pattern.';render();},1100+level*150);}
+function toggleCell(index){if(!active)return;const key=String(index);if(selected.has(key))selected.delete(key);else selected.add(key);cursor=index;render();}
+function render(showTarget=false){[...boardEl.children].forEach((cell,i)=>{const key=String(i);cell.className='cell'+(showTarget&&target.has(i)?' shown':'')+(selected.has(key)?' selected':'')+(i===cursor?' cursor':'');});}
+function submitPattern(){if(!active)return;const correct=selected.size===target.size&&[...selected].every(k=>target.has(Number(k)));if(correct){const best=Math.max(level,+(localStorage.getItem(BEST_KEY)||0));localStorage.setItem(BEST_KEY,String(best));document.getElementById('best').textContent=String(best);statusEl.textContent='Perfect! Next level...';level++;active=false;setTimeout(beginLevel,700);}else{finishGame();}}
+function finishGame(){active=false;render(true);statusEl.textContent=`Pattern missed at level ${level}.`;overlay.innerHTML=`<h2>❌ Pattern Missed</h2><p>You reached <strong>level ${level}</strong>. Try another board?</p><button class="btn" id="overlay-btn">Play Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);}
+document.getElementById('submit-btn').addEventListener('click',submitPattern);document.getElementById('clear-btn').addEventListener('click',()=>{selected.clear();render();});document.getElementById('overlay-btn').addEventListener('click',startGame);document.addEventListener('keydown',e=>{if(overlay.style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}if(!boardEl.children.length)return;const row=Math.floor(cursor/SIZE),col=cursor%SIZE;if(e.key==='ArrowLeft'){e.preventDefault();cursor=row*SIZE+((col+SIZE-1)%SIZE);render();}if(e.key==='ArrowRight'){e.preventDefault();cursor=row*SIZE+((col+1)%SIZE);render();}if(e.key==='ArrowUp'){e.preventDefault();cursor=((row+SIZE-1)%SIZE)*SIZE+col;render();}if(e.key==='ArrowDown'){e.preventDefault();cursor=((row+1)%SIZE)*SIZE+col;render();}if(e.key==='Enter'||e.key===' '){e.preventDefault();toggleCell(cursor);}if(e.key==='s'||e.key==='S'){submitPattern();}if(e.key==='c'||e.key==='C'){selected.clear();render();}});buildBoard();
+</script>
+</body>
+</html>

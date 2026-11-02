@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Ant Colony — Game Portal</title>
+<meta name="description" content="Play Ant Colony free online — Simulate an ant colony. Direct workers to gather food and expand. A Medium Strategy game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/ant-colony/"/>
+<meta property="og:title" content="🐜 Ant Colony — Free Browser Game"/>
+<meta property="og:description" content="Play Ant Colony free in your browser. Simulate an ant colony. Direct workers to gather food and expand."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/ant-colony/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Ant Colony",
+  "description": "Simulate an ant colony. Direct workers to gather food and expand.",
+  "url": "https://arcade.sotshau.fun/games/ant-colony/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Strategy",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:38px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px}.score-bar{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:12px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:92px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.toolbar{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:12px}.btn{padding:9px 18px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer}.pill{background:#fff;border:1px solid #e5e7eb;border-radius:999px;padding:8px 14px;font-size:13px;color:#4b5563}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:18px;box-shadow:0 8px 20px rgba(0,0,0,.08)}canvas{display:block;background:linear-gradient(#d9f99d,#fde68a);border-radius:14px;border:1px solid #d1d5db;touch-action:none}.status{min-height:22px;text-align:center;margin-top:12px;font-weight:700;color:#374151}.overlay{position:absolute;inset:18px;background:rgba(245,245,247,.95);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p{color:#6b7280;line-height:1.5}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center;padding:0 18px}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🐜 Ant Colony</h1>
+<p class="sub">Guide worker ants with pheromone beacons so they can find food and carry it back to the nest.</p>
+<div class="score-bar">
+  <div class="score-box"><div class="score-label">Stored</div><div class="score-val" id="stored">0</div></div>
+  <div class="score-box"><div class="score-label">Ants</div><div class="score-val" id="ants">0</div></div>
+  <div class="score-box"><div class="score-label">Time</div><div class="score-val" id="time">60</div></div>
+  <div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">0</div></div>
+</div>
+<div class="toolbar">
+  <button class="btn" id="boost-btn">Spawn Scout</button>
+  <div class="pill">Enter/tap to drop pheromone beacons</div>
+</div>
+<div class="game">
+  <canvas id="field" width="560" height="380"></canvas>
+  <div class="overlay" id="overlay">
+    <h2>🐜 Ant Colony</h2>
+    <p>Arrow keys move the beacon cursor and Enter drops a temporary pheromone marker. Ants automatically chase food, markers, and the nest.</p>
+    <button class="btn" id="overlay-btn">Start Game</button>
+  </div>
+  <div class="status" id="status">Lead your colony to the food piles.</div>
+</div>
+<p class="hint">Keyboard: arrows + Enter · Space spawns a scout · Touch: tap the field to place beacons</p>
+<script>
+const canvas=document.getElementById('field'),ctx=canvas.getContext('2d');
+const BEST_KEY='antColonyBest';
+const nest={x:280,y:320,r:28};
+let ants=[],foods=[],markers=[],cursor={x:280,y:160},stored=0,timeLeft=60,best=+(localStorage.getItem(BEST_KEY)||0),running=false,last=0,statusMsg='Lead your colony to the food piles.',rafId=0;
+document.getElementById('best').textContent=best;
+function makeAnt(x=nest.x,y=nest.y){return{x,y,vx:(Math.random()-.5)*35,vy:(Math.random()-.5)*35,carrying:false};}
+function resetFoods(){foods=[];for(let i=0;i<5;i++)foods.push({x:70+i*100+Math.random()*20,y:70+Math.random()*90,amount:14});}
+function startGame(){ants=Array.from({length:18},()=>makeAnt());markers=[];cursor={x:280,y:160};stored=0;timeLeft=60;last=0;running=true;statusMsg='Drop beacons near food to pull ants into line.';resetFoods();document.getElementById('overlay').style.display='none';updateStats();draw();cancelAnimationFrame(rafId);rafId=requestAnimationFrame(loop);}
+function updateStats(){if(stored>best){best=stored;localStorage.setItem(BEST_KEY,String(best));}document.getElementById('stored').textContent=stored;document.getElementById('ants').textContent=ants.length;document.getElementById('time').textContent=Math.ceil(timeLeft);document.getElementById('best').textContent=best;document.getElementById('status').textContent=statusMsg;}
+function dropMarker(x,y){if(!running)return;markers.push({x,y,life:12});statusMsg='Pheromone beacon placed.';updateStats();}
+function spawnScout(){if(!running)return;ants.push(makeAnt(nest.x+Math.random()*10-5,nest.y));statusMsg='A speedy scout joined the colony.';updateStats();}
+function foodLeft(){return foods.reduce((sum,f)=>sum+f.amount,0);}
+function finishGame(){running=false;const overlay=document.getElementById('overlay');overlay.innerHTML=`<h2>🌿 Forage Complete</h2><p>Your ants stored <strong>${stored}</strong> food before dusk.</p><button class="btn" id="overlay-btn">Forage Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);} 
+function steer(ant,tx,ty,scale){const dx=tx-ant.x,dy=ty-ant.y,d=Math.hypot(dx,dy)||1;ant.vx+=(dx/d)*scale;ant.vy+=(dy/d)*scale;}
+function update(dt){timeLeft-=dt/1000;if(timeLeft<=0||foodLeft()===0)return finishGame();markers.forEach(m=>m.life-=dt/1000);markers=markers.filter(m=>m.life>0);for(const ant of ants){if(ant.carrying){steer(ant,nest.x,nest.y,40*dt/1000);if(Math.hypot(ant.x-nest.x,ant.y-nest.y)<nest.r){ant.carrying=false;stored++;statusMsg='Food delivered to the nest!';}}else{const food=foods.find(f=>f.amount>0&&Math.hypot(ant.x-f.x,ant.y-f.y)<60);const marker=markers.slice().sort((a,b)=>Math.hypot(a.x-ant.x,a.y-ant.y)-Math.hypot(b.x-ant.x,b.y-ant.y))[0];if(food)steer(ant,food.x,food.y,55*dt/1000);else if(marker)steer(ant,marker.x,marker.y,25*dt/1000);ant.vx+=(Math.random()-.5)*15*dt/1000;ant.vy+=(Math.random()-.5)*15*dt/1000;const near=foods.find(f=>f.amount>0&&Math.hypot(ant.x-f.x,ant.y-f.y)<12);if(near){near.amount--;ant.carrying=true;statusMsg='An ant picked up food.';}}const speed=Math.hypot(ant.vx,ant.vy);if(speed>50){ant.vx*=50/speed;ant.vy*=50/speed;}ant.x+=ant.vx*dt/1000;ant.y+=ant.vy*dt/1000;if(ant.x<10||ant.x>550)ant.vx*=-1;if(ant.y<10||ant.y>370)ant.vy*=-1;ant.x=Math.max(10,Math.min(550,ant.x));ant.y=Math.max(10,Math.min(370,ant.y));}updateStats();}
+function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.fillStyle='#78350f';ctx.beginPath();ctx.arc(nest.x,nest.y,nest.r,0,Math.PI*2);ctx.fill();ctx.fillStyle='rgba(255,255,255,.3)';ctx.beginPath();ctx.arc(nest.x-8,nest.y-6,10,0,Math.PI*2);ctx.fill();foods.forEach(f=>{if(f.amount<=0)return;ctx.fillStyle='#22c55e';ctx.beginPath();ctx.arc(f.x,f.y,12+f.amount*.35,0,Math.PI*2);ctx.fill();ctx.fillStyle='#14532d';ctx.fillText(f.amount,f.x-6,f.y+4);});markers.forEach(m=>{ctx.fillStyle='rgba(108,99,255,.2)';ctx.beginPath();ctx.arc(m.x,m.y,18,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#6c63ff';ctx.stroke();});ants.forEach(a=>{ctx.fillStyle=a.carrying?'#ef4444':'#111827';ctx.beginPath();ctx.ellipse(a.x,a.y,6,4,Math.atan2(a.vy,a.vx),0,Math.PI*2);ctx.fill();if(a.carrying){ctx.fillStyle='#fde047';ctx.beginPath();ctx.arc(a.x+4,a.y-4,3,0,Math.PI*2);ctx.fill();}});ctx.strokeStyle='#6c63ff';ctx.lineWidth=2;ctx.strokeRect(cursor.x-10,cursor.y-10,20,20);} 
+function loop(ts){if(!running)return;const dt=ts-last||16;last=ts;update(dt);draw();rafId=requestAnimationFrame(loop);}
+canvas.addEventListener('click',e=>{const r=canvas.getBoundingClientRect();cursor={x:(e.clientX-r.left)*(canvas.width/r.width),y:(e.clientY-r.top)*(canvas.height/r.height)};dropMarker(cursor.x,cursor.y);draw();});
+document.getElementById('overlay-btn').addEventListener('click',startGame);document.getElementById('boost-btn').addEventListener('click',spawnScout);document.addEventListener('keydown',e=>{const overlay=document.getElementById('overlay');if(overlay.style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}if(e.key==='ArrowLeft'){e.preventDefault();cursor.x=Math.max(15,cursor.x-15);draw();}if(e.key==='ArrowRight'){e.preventDefault();cursor.x=Math.min(545,cursor.x+15);draw();}if(e.key==='ArrowUp'){e.preventDefault();cursor.y=Math.max(15,cursor.y-15);draw();}if(e.key==='ArrowDown'){e.preventDefault();cursor.y=Math.min(365,cursor.y+15);draw();}if(e.key==='Enter'){e.preventDefault();dropMarker(cursor.x,cursor.y);draw();}if(e.key===' '){e.preventDefault();spawnScout();}});draw();updateStats();
+</script>
+</body>
+</html>

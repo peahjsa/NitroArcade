@@ -1,0 +1,1 @@
+export function createStore(initial){let value=initial;const subs=new Set();return {get:()=>value,set(next){value=typeof next==='function'?next(value):next;for(const cb of subs)cb(value)},subscribe(cb){subs.add(cb);cb(value);return()=>subs.delete(cb)}}}

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Pong 2P — Game Portal</title>
+<meta name="description" content="Play Pong 2-Player free online — Classic Pong for two players on one keyboard. First to 7 wins! A Easy 2-Player Local game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/pong-2p/"/>
+<meta property="og:title" content="🏓 Pong 2-Player — Free Browser Game"/>
+<meta property="og:description" content="Play Pong 2-Player free in your browser. Classic Pong for two players on one keyboard. First to 7 wins!"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/pong-2p/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Pong 2-Player",
+  "description": "Classic Pong for two players on one keyboard. First to 7 wins!",
+  "url": "https://arcade.sotshau.fun/games/pong-2p/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "2-Player Local",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px}.score-bar{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:14px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 18px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:96px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.game{position:relative;background:#111827;border-radius:20px;padding:18px;box-shadow:0 12px 28px rgba(0,0,0,.18);width:min(560px,94vw)}canvas{display:block;width:100%;height:auto;border-radius:16px;background:#111827;touch-action:none}.status{min-height:24px;margin-top:12px;text-align:center;color:#e5e7eb;font-weight:700}.overlay{position:absolute;inset:18px;background:rgba(17,24,39,.94);border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center;color:#fff}.overlay p{max-width:340px;color:#cbd5e1;line-height:1.5}.btn{padding:9px 16px;background:#6c63ff;color:#fff;border:none;border-radius:10px;font-weight:700;cursor:pointer}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center;padding:0 16px}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🏓 Pong 2P</h1>
+<p class="sub">Head-to-head pong for two players. First to 7 points wins the match.</p>
+<div class="score-bar"><div class="score-box"><div class="score-label">P1</div><div class="score-val" id="p1">0</div></div><div class="score-box"><div class="score-label">P2</div><div class="score-val" id="p2">0</div></div><div class="score-box"><div class="score-label">Best Rally</div><div class="score-val" id="best">0</div></div></div>
+<div class="game">
+  <canvas id="canvas" width="520" height="340"></canvas>
+  <div class="status" id="status">Press Start for a 2-player duel.</div>
+  <div class="overlay" id="overlay"><h2>🏓 Pong 2P</h2><p>Player 1 uses W/S, Player 2 uses ↑/↓. On touch screens, drag your side of the court.</p><button class="btn" id="overlay-btn">Start Match</button></div>
+</div>
+<p class="hint">Keyboard: W/S and ↑/↓ · Touch: drag on the left or right half of the canvas</p>
+<script>
+const W=520,H=340,PW=12,PH=76,R=8,WIN=7,BEST_KEY='pong2pBestRally';
+const canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d'),overlay=document.getElementById('overlay'),statusEl=document.getElementById('status');
+const keys={};
+let left,right,ball,scores=[0,0],running=false,raf=0,rally=0,best=+(localStorage.getItem(BEST_KEY)||0);
+document.getElementById('best').textContent=String(best);
+function resetBall(dir){ball={x:W/2,y:H/2,vx:4.5*dir,vy:(Math.random()*4-2),r:R};rally=0;}
+function startGame(){left={x:20,y:H/2-PH/2};right={x:W-32,y:H/2-PH/2};scores=[0,0];document.getElementById('p1').textContent='0';document.getElementById('p2').textContent='0';overlay.style.display='none';statusEl.textContent='Match live!';resetBall(Math.random()>.5?1:-1);running=true;cancelAnimationFrame(raf);loop();}
+function finish(winner){running=false;overlay.innerHTML=`<h2>${winner} Wins! 🎉</h2><p>${scores[0]} – ${scores[1]} final score.</p><button class="btn" id="overlay-btn">Play Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);} 
+function clampPaddles(){left.y=Math.max(0,Math.min(H-PH,left.y));right.y=Math.max(0,Math.min(H-PH,right.y));}
+function update(){if(keys.w||keys.W)left.y-=5;if(keys.s||keys.S)left.y+=5;if(keys.ArrowUp)right.y-=5;if(keys.ArrowDown)right.y+=5;clampPaddles();ball.x+=ball.vx;ball.y+=ball.vy;if(ball.y<R||ball.y>H-R){ball.vy*=-1;ball.y=Math.max(R,Math.min(H-R,ball.y));}if(ball.x-ball.r<left.x+PW&&ball.y>left.y&&ball.y<left.y+PH&&ball.vx<0){ball.vx=Math.abs(ball.vx)*1.04;ball.vy=((ball.y-(left.y+PH/2))/(PH/2))*5;rally++;}if(ball.x+ball.r>right.x&&ball.y>right.y&&ball.y<right.y+PH&&ball.vx>0){ball.vx=-Math.abs(ball.vx)*1.04;ball.vy=((ball.y-(right.y+PH/2))/(PH/2))*5;rally++;}if(rally>best){best=rally;localStorage.setItem(BEST_KEY,String(best));document.getElementById('best').textContent=String(best);}if(ball.x<-20){scores[1]++;document.getElementById('p2').textContent=String(scores[1]);if(scores[1]>=WIN){finish('Player 2');return;}statusEl.textContent='Player 2 scores!';resetBall(1);}if(ball.x>W+20){scores[0]++;document.getElementById('p1').textContent=String(scores[0]);if(scores[0]>=WIN){finish('Player 1');return;}statusEl.textContent='Player 1 scores!';resetBall(-1);}}
+function draw(){ctx.fillStyle='#111827';ctx.fillRect(0,0,W,H);ctx.strokeStyle='rgba(255,255,255,.16)';ctx.setLineDash([8,8]);ctx.beginPath();ctx.moveTo(W/2,0);ctx.lineTo(W/2,H);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle='#fff';ctx.fillRect(left.x,left.y,PW,PH);ctx.fillRect(right.x,right.y,PW,PH);ctx.beginPath();ctx.arc(ball.x,ball.y,R,0,Math.PI*2);ctx.fill();ctx.fillStyle='rgba(255,255,255,.6)';ctx.font='bold 34px system-ui';ctx.textAlign='center';ctx.fillText(scores[0],W/2-70,44);ctx.fillText(scores[1],W/2+70,44);} 
+function loop(){if(!running)return;update();draw();raf=requestAnimationFrame(loop);} 
+document.getElementById('overlay-btn').addEventListener('click',startGame);document.addEventListener('keydown',event=>{keys[event.key]=true;if(overlay.style.display!=='none'&&(event.key==='Enter'||event.key===' ')){event.preventDefault();startGame();}});document.addEventListener('keyup',event=>keys[event.key]=false);canvas.addEventListener('pointerdown',event=>moveTouch(event));canvas.addEventListener('pointermove',event=>{if(event.buttons)moveTouch(event);});function moveTouch(event){if(!running)return;const rect=canvas.getBoundingClientRect();const x=(event.clientX-rect.left)*(canvas.width/rect.width),y=(event.clientY-rect.top)*(canvas.height/rect.height);if(x<W/2)left.y=y-PH/2;else right.y=y-PH/2;clampPaddles();}
+draw();
+</script>
+</body>
+</html>

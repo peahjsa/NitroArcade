@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Speed Math — Game Portal</title>
+<meta name="description" content="Play Speed Math free online — Solve math problems as fast as possible. Beat the timer! A Medium Memory &amp; Reflex game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/speed-math/"/>
+<meta property="og:title" content="🧮 Speed Math — Free Browser Game"/>
+<meta property="og:description" content="Play Speed Math free in your browser. Solve math problems as fast as possible. Beat the timer!"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/speed-math/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Speed Math",
+  "description": "Solve math problems as fast as possible. Beat the timer!",
+  "url": "https://arcade.sotshau.fun/games/speed-math/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Memory & Reflex",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px}.score-bar{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 18px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:96px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;box-shadow:0 8px 20px rgba(0,0,0,.08);padding:24px;width:min(680px,94vw)}.problem{background:#111827;color:#fff;border-radius:18px;padding:24px;text-align:center;font-size:42px;font-weight:800;letter-spacing:.04em;margin-bottom:18px}.choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.choice{padding:16px;border:1px solid #cbd5e1;border-radius:14px;background:#fff;cursor:pointer;display:flex;align-items:center;gap:10px}.choice.selected{border-color:#6c63ff;box-shadow:0 0 0 3px rgba(108,99,255,.12)}.choice-num{font-size:12px;font-weight:700;color:#fff;background:#9ca3af;border-radius:6px;min-width:22px;height:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0}.choice-val{font-size:22px;font-weight:800;color:#1f2937}.status{min-height:24px;text-align:center;color:#374151;font-weight:700;margin:16px 0}.overlay{position:absolute;inset:0;background:rgba(245,245,247,.96);border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p{color:#6b7280;max-width:320px;line-height:1.5}.btn{padding:10px 18px;border:none;border-radius:10px;background:#6c63ff;color:#fff;font-weight:700;cursor:pointer}.hint{margin-top:14px;font-size:12px;color:#9ca3af;text-align:center;padding:0 16px}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🧮 Speed Math</h1>
+<p class="sub">Solve as many quick arithmetic problems as you can in one minute. Use 1–4 or tap the correct answer.</p>
+<div class="score-bar"><div class="score-box"><div class="score-label">Score</div><div class="score-val" id="score">0</div></div><div class="score-box"><div class="score-label">Time</div><div class="score-val" id="time">60</div></div><div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">0</div></div></div>
+<div class="game">
+  <div class="problem" id="problem">0 + 0</div>
+  <div class="choices" id="choices"></div>
+  <div class="status" id="status">Press Start to begin.</div>
+  <div class="overlay" id="overlay"><h2>🧮 Speed Math</h2><p>Answer fast for a better score. Use the number keys 1–4 or click/tap the correct option.</p><button class="btn" id="overlay-btn">Start Round</button></div>
+</div>
+<p class="hint">Keyboard: 1–4 · Touch: tap an answer card</p>
+<script>
+const BEST_KEY='speedMathBest';
+const problemEl=document.getElementById('problem'),choicesEl=document.getElementById('choices'),statusEl=document.getElementById('status'),overlay=document.getElementById('overlay');
+let correctAnswer=0,selected=0,score=0,timeLeft=60,active=false,timer=null;
+document.getElementById('best').textContent=localStorage.getItem(BEST_KEY)||'0';
+function rand(min,max){return Math.floor(Math.random()*(max-min+1))+min;}
+function buildProblem(){const ops=['+','-','×'];const op=ops[rand(0,ops.length-1)];let a=rand(2,20),b=rand(2,20);if(op==='-'){if(b>a)[a,b]=[b,a];correctAnswer=a-b;}else if(op==='×'){a=rand(2,12);b=rand(2,12);correctAnswer=a*b;}else correctAnswer=a+b;problemEl.textContent=`${a} ${op} ${b}`;const answers=new Set([correctAnswer]);while(answers.size<4){const candidate=correctAnswer+rand(-10,10);answers.add(candidate===correctAnswer?candidate+1:candidate);}const list=[...answers].sort(()=>Math.random()-.5);selected=0;choicesEl.innerHTML='';list.forEach((value,index)=>{const btn=document.createElement('button');btn.className='choice'+(index===selected?' selected':'');btn.innerHTML=`<span class="choice-num">${index+1}</span><span class="choice-val">${value}</span>`;btn.dataset.value=String(value);btn.addEventListener('click',()=>choose(index));choicesEl.appendChild(btn);});}
+function choose(index){if(!active)return;selected=index;renderSelection();submitChoice();}
+function renderSelection(){[...choicesEl.children].forEach((btn,i)=>btn.classList.toggle('selected',i===selected));}
+function submitChoice(){const picked=Number(choicesEl.children[selected].dataset.value);if(picked===correctAnswer){score++;statusEl.textContent='Correct!';}else{score=Math.max(0,score-1);statusEl.textContent=`Oops — the answer was ${correctAnswer}.`;}document.getElementById('score').textContent=String(score);buildProblem();}
+function startGame(){score=0;timeLeft=60;active=true;overlay.style.display='none';document.getElementById('score').textContent='0';document.getElementById('time').textContent='60';statusEl.textContent='Solve quickly!';buildProblem();clearInterval(timer);timer=setInterval(()=>{timeLeft--;document.getElementById('time').textContent=String(timeLeft);if(timeLeft<=0)finishGame();},1000);}
+function finishGame(){active=false;clearInterval(timer);const best=Math.max(score,+(localStorage.getItem(BEST_KEY)||0));localStorage.setItem(BEST_KEY,String(best));document.getElementById('best').textContent=String(best);statusEl.textContent=`Time! Final score: ${score}.`;overlay.innerHTML=`<h2>⏰ Time Up</h2><p>You solved <strong>${score}</strong> problems. Try to beat your best score!</p><button class="btn" id="overlay-btn">Play Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);}
+document.getElementById('overlay-btn').addEventListener('click',startGame);document.addEventListener('keydown',e=>{if(overlay.style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}if(!active)return;if(['1','2','3','4'].includes(e.key)){selected=Number(e.key)-1;renderSelection();submitChoice();}if(e.key==='ArrowRight'||e.key==='ArrowDown'){selected=(selected+1)%4;renderSelection();}if(e.key==='ArrowLeft'||e.key==='ArrowUp'){selected=(selected+3)%4;renderSelection();}if(e.key==='Enter'){submitChoice();}});
+</script>
+</body>
+</html>

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Game Portal — 110 Free Web Games</title>
+  <meta name="description" content="Play 110 free browser games instantly — no download, no login. Classic arcade, puzzle, card games, strategy and more."/>
+  <link rel="canonical" href="https://arcade.sotshau.fun/"/>
+  <meta property="og:title" content="Arcade Portal — 110 Free Browser Games"/>
+  <meta property="og:description" content="Play 110 free browser games instantly — no download, no login."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://arcade.sotshau.fun/"/>
+  <meta property="og:site_name" content="Arcade Portal"/>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Arcade Portal",
+    "url": "https://arcade.sotshau.fun/",
+    "description": "110 free browser games — no download, no login.",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://arcade.sotshau.fun/?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
+<!-- Header -->
+<header class="header">
+  <div class="header-inner">
+    <a class="logo" href="#">
+      <span class="logo-icon">🎮</span>
+      <span class="logo-text">Game<span>Portal</span></span>
+    </a>
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input id="search" type="search" placeholder="Search games..." autocomplete="off" />
+    </div>
+    <div class="header-count" id="count"></div>
+  </div>
+</header>
+
+<!-- Category Tabs -->
+<nav class="category-bar">
+  <div class="category-inner" id="cat-bar"></div>
+</nav>
+
+<!-- Main -->
+<main class="main" id="main-content">
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero-copy">
+      <div class="hero-kicker">Arcade Portal</div>
+      <h1 class="hero-title" id="hero-title">110 browser games in one loud little arcade.</h1>
+      <p class="hero-lead">Pick a lane fast: reflex games, puzzles, classics, party picks, and weird little surprises that open instantly with no download and no login.</p>
+      <div class="hero-actions">
+        <a class="hero-action hero-action-primary" href="#grid">Browse all games</a>
+        <button class="hero-action hero-action-secondary" id="random-game-btn" type="button">Surprise me</button>
+      </div>
+      <div class="hero-marquee" aria-label="Portal highlights">
+        <span>Instant play</span>
+        <span>Offline friendly</span>
+        <span>Keyboard + touch</span>
+        <span>Arcade chaos</span>
+      </div>
+    </div>
+    <div class="hero-poster" aria-hidden="true">
+      <div class="poster-frame">
+        <div class="poster-badge">No install</div>
+        <div class="poster-stack">
+          <div class="poster-card poster-card-1">🦕</div>
+          <div class="poster-card poster-card-2">🧩</div>
+          <div class="poster-card poster-card-3">🚀</div>
+        </div>
+        <div class="poster-burst"></div>
+        <div class="poster-copy">
+          <div class="poster-label">Tonight's cabinet wall</div>
+          <div class="poster-title">Play fast.<br/>Stay curious.</div>
+          <div class="poster-meta">Classic arcade, puzzle hits, party games, and offbeat experiments.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="portal-meta" aria-label="Portal stats and shortcuts">
+    <div class="portal-stat">
+      <span class="portal-stat-label">Library</span>
+      <strong class="portal-stat-value">110</strong>
+      <span class="portal-stat-note">instant browser games</span>
+    </div>
+    <div class="portal-stat">
+      <span class="portal-stat-label">Good for</span>
+      <strong class="portal-stat-value">Quick picks</strong>
+      <span class="portal-stat-note">search, filter, jump straight in</span>
+    </div>
+    <div class="portal-stat">
+      <span class="portal-stat-label">Shortcuts</span>
+      <div class="quick-picks" id="quick-picks"></div>
+    </div>
+  </section>
+
+  <section class="catalog-head">
+    <div>
+      <div class="section-label" id="section-label">All Games</div>
+      <p class="section-copy" id="section-copy">A noisy wall of fast-loading games for short breaks and longer rabbit holes.</p>
+    </div>
+    <div class="catalog-count" id="catalog-count">110 live cabinets</div>
+  </section>
+
+  <div class="game-grid" id="grid"></div>
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+  110 free browser games — no download, no login &nbsp;·&nbsp; Built with pure HTML, CSS & JS
+</footer>
+
+<script src="games.js"></script>
+<script>
+  let activeCategory = 'All';
+  let searchQuery = '';
+
+  // Build category buttons
+  const catBar = document.getElementById('cat-bar');
+  const allCats = ['All', ...CATEGORIES];
+  allCats.forEach(cat => {
+    const btn = document.createElement('button');
+    btn.className = 'cat-btn' + (cat === 'All' ? ' active' : '');
+    btn.textContent = cat;
+    btn.addEventListener('click', () => {
+      activeCategory = cat;
+      document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      render();
+    });
+    catBar.appendChild(btn);
+  });
+
+  // Search
+  const searchEl = document.getElementById('search');
+  searchEl.addEventListener('input', e => {
+    searchQuery = e.target.value.trim().toLowerCase();
+    render();
+  });
+
+  const quickPickCategories = ['Classic Arcade', 'Puzzle', 'Action & Shooter', '2-Player Local'];
+  const quickPicks = document.getElementById('quick-picks');
+  quickPickCategories.forEach((cat, index) => {
+    const btn = document.createElement('button');
+    btn.className = 'quick-pick';
+    btn.type = 'button';
+    btn.style.setProperty('--i', index);
+    btn.textContent = cat;
+    btn.addEventListener('click', () => {
+      activeCategory = cat;
+      searchQuery = '';
+      searchEl.value = '';
+      document.querySelectorAll('.cat-btn').forEach(b => b.classList.toggle('active', b.textContent === cat));
+      render();
+      document.getElementById('grid').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    quickPicks.appendChild(btn);
+  });
+
+  document.getElementById('random-game-btn').addEventListener('click', () => {
+    const game = GAMES[Math.floor(Math.random() * GAMES.length)];
+    window.location.href = `games/${game.slug}/`;
+  });
+
+  // Render
+  function render() {
+    const filtered = GAMES.filter(g => {
+      const matchCat = activeCategory === 'All' || g.category === activeCategory;
+      const matchSearch = !searchQuery ||
+        g.name.toLowerCase().includes(searchQuery) ||
+        g.description.toLowerCase().includes(searchQuery) ||
+        g.category.toLowerCase().includes(searchQuery);
+      return matchCat && matchSearch;
+    });
+
+    const grid = document.getElementById('grid');
+    const count = document.getElementById('count');
+    const label = document.getElementById('section-label');
+    const copy = document.getElementById('section-copy');
+    const catalogCount = document.getElementById('catalog-count');
+
+    count.textContent = `${filtered.length} / ${GAMES.length} games`;
+    catalogCount.textContent = `${filtered.length} live cabinets`;
+
+    if (searchQuery) {
+      label.textContent = `Results for "${searchQuery}"`;
+      copy.textContent = 'Direct hits from the arcade wall. Clear the search or switch category to widen the hunt.';
+    } else if (activeCategory !== 'All') {
+      label.textContent = activeCategory;
+      copy.textContent = `A focused lane of ${activeCategory.toLowerCase()} picks, ready to launch instantly.`;
+    } else {
+      label.textContent = 'All Games';
+      copy.textContent = 'A noisy wall of fast-loading games for short breaks and longer rabbit holes.';
+    }
+
+    if (filtered.length === 0) {
+      grid.innerHTML = `
+        <div class="empty">
+          <div class="empty-icon">🕹️</div>
+          <h3>No games found</h3>
+          <p>Try a different search term or category.</p>
+        </div>`;
+      return;
+    }
+
+      grid.innerHTML = filtered.map((g, index) => `
+        <a class="game-card" href="games/${g.slug}/" title="${g.name}" style="--i:${index}">
+          <div class="card-thumb">${g.emoji}</div>
+        <div class="card-body">
+          <div class="card-name">${g.name}</div>
+          <div class="card-desc">${g.description}</div>
+          <div class="card-footer">
+            <span class="badge badge-${g.difficulty}">${g.difficulty}</span>
+            <span class="card-category">${g.category}</span>
+          </div>
+          <span class="card-play" aria-hidden="true">Play Now</span>
+          <span class="sr-only">Open game</span>
+        </div>
+      </a>
+    `).join('');
+  }
+
+  render();
+</script>
+</body>
+</html>

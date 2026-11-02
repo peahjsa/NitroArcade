@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>⚫ Reversi — Game Portal</title>
+<meta name="description" content="Play Othello / Reversi free online — Flip your opponent's discs. Control the board to win. A Medium Card &amp; Board game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/reversi/"/>
+<meta property="og:title" content="⬛ Othello / Reversi — Free Browser Game"/>
+<meta property="og:description" content="Play Othello / Reversi free in your browser. Flip your opponent's discs. Control the board to win."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/reversi/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Othello / Reversi",
+  "description": "Flip your opponent's discs. Control the board to win.",
+  "url": "https://arcade.sotshau.fun/games/reversi/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Card & Board",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px;color:#111827}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 18px}.score-bar{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:14px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:94px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700}.black{color:#111827}.white{color:#94a3b8}.purple{color:#6c63ff}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:18px;box-shadow:0 8px 20px rgba(0,0,0,.08)}.board{display:grid;grid-template-columns:repeat(8,56px);gap:6px;background:#166534;padding:10px;border-radius:14px}.cell{width:56px;height:56px;border:none;border-radius:10px;background:rgba(255,255,255,.1);position:relative;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(255,255,255,.15)}.cell.valid::after{content:'';position:absolute;inset:21px;border-radius:50%;background:rgba(255,255,255,.45)}.cell.cursor{outline:3px solid #6c63ff;outline-offset:2px}.disc{position:absolute;inset:6px;border-radius:50%;box-shadow:inset 0 -4px 0 rgba(0,0,0,.18)}.disc.b{background:#111827}.disc.w{background:#f9fafb;border:1px solid #cbd5e1}.controls{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:14px}.btn{padding:9px 18px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer}.btn:hover{background:#574fd6}.status{margin-top:12px;font-weight:700;color:#374151;text-align:center;min-height:24px}.overlay{position:absolute;inset:18px;background:rgba(245,245,247,.95);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p{color:#6b7280;max-width:320px;line-height:1.5}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center;padding:0 18px}@media (max-width:560px){.board{grid-template-columns:repeat(8,40px);gap:4px;padding:8px}.cell{width:40px;height:40px}.cell.valid::after{inset:14px}}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>⚫ Reversi</h1>
+<p class="sub">Trap discs between your color and flip the board in this same-device classic.</p>
+<div class="score-bar">
+  <div class="score-box"><div class="score-label">Turn</div><div class="score-val purple" id="turn">Black</div></div>
+  <div class="score-box"><div class="score-label">Black</div><div class="score-val black" id="black-count">2</div></div>
+  <div class="score-box"><div class="score-label">White</div><div class="score-val white" id="white-count">2</div></div>
+  <div class="score-box"><div class="score-label">Wins</div><div class="score-val purple" id="wins">0 - 0</div></div>
+</div>
+<div class="game">
+  <div class="board" id="board"></div>
+  <div class="controls"><button class="btn" id="new-match-btn">New Match</button></div>
+  <div class="overlay" id="overlay">
+    <h2>⚫ Reversi</h2>
+    <p>Arrow keys move the cursor and Enter places a disc. Tap any glowing cell to play. If a player has no move, the turn passes automatically.</p>
+    <button class="btn" id="overlay-btn">Start Match</button>
+  </div>
+  <div class="status" id="status">Press Start to begin.</div>
+</div>
+<p class="hint">Arrow keys + Enter · Click/tap highlighted cells · Most discs wins</p>
+<script>
+const SIZE=8,DIRS=[[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]],boardEl=document.getElementById('board'),overlay=document.getElementById('overlay'),statusEl=document.getElementById('status');
+const WINS_KEY='reversiWins';
+let board,turn='b',cursor={r:2,c:3},running=false,wins=JSON.parse(localStorage.getItem(WINS_KEY)||'{"b":0,"w":0}');
+function freshBoard(){const b=Array.from({length:SIZE},()=>Array(SIZE).fill(''));b[3][3]='w';b[3][4]='b';b[4][3]='b';b[4][4]='w';return b;}
+function inside(r,c){return r>=0&&r<SIZE&&c>=0&&c<SIZE;}
+function flipsFor(r,c,player){if(!inside(r,c)||board[r][c])return[];const enemy=player==='b'?'w':'b',flips=[];for(const[dr,dc]of DIRS){let nr=r+dr,nc=c+dc,line=[];while(inside(nr,nc)&&board[nr][nc]===enemy){line.push([nr,nc]);nr+=dr;nc+=dc;}if(line.length&&inside(nr,nc)&&board[nr][nc]===player)flips.push(...line);}return flips;}
+function validMoves(player){const moves=[];for(let r=0;r<SIZE;r++)for(let c=0;c<SIZE;c++){const flips=flipsFor(r,c,player);if(flips.length)moves.push({r,c,flips});}return moves;}
+function count(player){return board.flat().filter(v=>v===player).length;}
+function updateStats(){document.getElementById('turn').textContent=turn==='b'?'Black':'White';document.getElementById('black-count').textContent=String(count('b'));document.getElementById('white-count').textContent=String(count('w'));document.getElementById('wins').textContent=`${wins.b} - ${wins.w}`;}
+function endGame(){running=false;const black=count('b'),white=count('w');let title='Draw Game',msg='The board is even. Start another round to settle the rivalry.';if(black!==white){const winner=black>white?'b':'w';wins[winner]++;localStorage.setItem(WINS_KEY,JSON.stringify(wins));title=(winner==='b'?'Black':'White')+' Wins!';msg=`${winner==='b'?'Black':'White'} controls ${Math.max(black,white)} discs.`;}overlay.innerHTML=`<h2>${title}</h2><p>${msg}</p><button class="btn" id="overlay-btn">Play Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);statusEl.textContent=title.replace('!','.') ;updateStats();render();}
+function advanceTurn(){let moves=validMoves(turn);if(moves.length){statusEl.textContent=`${turn==='b'?'Black':'White'} to move.`;render();return;}const other=turn==='b'?'w':'b';const otherMoves=validMoves(other);if(otherMoves.length){statusEl.textContent=`${turn==='b'?'Black':'White'} has no move. Turn passes.`;turn=other;updateStats();render();return;}endGame();}
+function play(r,c){if(!running)return;const flips=flipsFor(r,c,turn);cursor={r,c};if(!flips.length){statusEl.textContent='Choose a glowing legal move.';render();return;}board[r][c]=turn;flips.forEach(([fr,fc])=>board[fr][fc]=turn);turn=turn==='b'?'w':'b';updateStats();advanceTurn();}
+function render(){const moves=running?validMoves(turn):[];boardEl.innerHTML='';for(let r=0;r<SIZE;r++)for(let c=0;c<SIZE;c++){const btn=document.createElement('button');btn.className='cell'+(cursor.r===r&&cursor.c===c?' cursor':'')+(moves.some(m=>m.r===r&&m.c===c)?' valid':'');btn.onclick=()=>play(r,c);const piece=board[r][c];if(piece){const disc=document.createElement('div');disc.className='disc '+piece;btn.appendChild(disc);}boardEl.appendChild(btn);}}
+function startGame(){board=freshBoard();turn='b';cursor={r:2,c:3};running=true;overlay.style.display='none';statusEl.textContent='Black opens the board.';updateStats();render();}
+document.addEventListener('keydown',e=>{if(overlay.style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}if(!running)return;const keys={ArrowLeft:[0,-1],ArrowRight:[0,1],ArrowUp:[-1,0],ArrowDown:[1,0]};if(keys[e.key]){e.preventDefault();cursor={r:(cursor.r+keys[e.key][0]+SIZE)%SIZE,c:(cursor.c+keys[e.key][1]+SIZE)%SIZE};render();return;}if(e.key==='Enter'||e.key===' '){e.preventDefault();play(cursor.r,cursor.c);}});
+document.getElementById('new-match-btn').addEventListener('click',startGame);
+document.getElementById('overlay-btn').addEventListener('click',startGame);
+board=freshBoard();updateStats();render();
+</script>
+</body>
+</html>

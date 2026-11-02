@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Pixel Art — Game Portal</title>
+<meta name="description" content="Play Pixel Art Painter free online — Paint pixel art on a grid canvas. Save and share your creations. A Easy Creative &amp; Art game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/pixel-art/"/>
+<meta property="og:title" content="🖼️ Pixel Art Painter — Free Browser Game"/>
+<meta property="og:description" content="Play Pixel Art Painter free in your browser. Paint pixel art on a grid canvas. Save and share your creations."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/pixel-art/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Pixel Art Painter",
+  "description": "Paint pixel art on a grid canvas. Save and share your creations.",
+  "url": "https://arcade.sotshau.fun/games/pixel-art/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Creative & Art",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px}.score-bar,.palette{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}.score-bar{margin-bottom:14px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 18px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:96px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:20px;padding:18px;box-shadow:0 8px 20px rgba(0,0,0,.08);width:min(620px,94vw)}canvas{display:block;width:min(512px,84vw);height:min(512px,84vw);margin:0 auto;background:#fff;border-radius:16px;border:1px solid #e5e7eb;touch-action:none}.palette{margin-top:14px}.swatch,.btn{border:none;border-radius:10px;cursor:pointer}.swatch{width:38px;height:38px;box-shadow:0 0 0 3px transparent;transition:transform .08s,box-shadow .08s}.swatch.active{transform:translateY(-2px);box-shadow:0 0 0 3px #6c63ff}.btn{padding:9px 16px;background:#6c63ff;color:#fff;font-weight:700}.status{min-height:24px;margin-top:12px;text-align:center;color:#374151;font-weight:700}.overlay{position:absolute;inset:18px;background:rgba(245,245,247,.96);border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p{max-width:340px;color:#6b7280;line-height:1.5}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center;padding:0 16px}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🎨 Pixel Art</h1>
+<p class="sub">Paint a tiny masterpiece on a 16×16 canvas. Move the cursor with arrow keys or tap to draw.</p>
+<div class="score-bar"><div class="score-box"><div class="score-label">Painted</div><div class="score-val" id="painted">0</div></div><div class="score-box"><div class="score-label">Color</div><div class="score-val" id="color-name">Rose</div></div><div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">0</div></div></div>
+<div class="game">
+  <canvas id="canvas" width="512" height="512"></canvas>
+  <div class="palette" id="palette"></div>
+  <div class="status" id="status">Press Start to paint.</div>
+  <div class="overlay" id="overlay"><h2>🎨 Pixel Art</h2><p>Choose a color, then use arrows + space to paint, or drag your finger across the board. Press C to clear.</p><button class="btn" id="overlay-btn">Start Painting</button></div>
+</div>
+<p class="hint">Keyboard: arrows move, 1–8 pick colors, Space paints, C clears · Touch: tap or drag to draw</p>
+<script>
+const SIZE=16,CELL=32,BEST_KEY='pixelArtBest';
+const COLORS=[['Rose','#fb7185'],['Amber','#f59e0b'],['Mint','#10b981'],['Sky','#38bdf8'],['Violet','#8b5cf6'],['Slate','#64748b'],['Ink','#111827'],['Eraser','#ffffff']];
+const canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d'),paletteEl=document.getElementById('palette'),overlay=document.getElementById('overlay'),statusEl=document.getElementById('status');
+let grid=[],cursor={x:7,y:7},colorIndex=0,started=false,pointerDown=false,best=+(localStorage.getItem(BEST_KEY)||0);
+document.getElementById('best').textContent=String(best);
+function freshGrid(){return Array.from({length:SIZE},()=>Array(SIZE).fill('#ffffff'));}
+function updateStats(){const filled=grid.flat().filter(color=>color!=='#ffffff').length;document.getElementById('painted').textContent=String(filled);document.getElementById('color-name').textContent=COLORS[colorIndex][0];if(filled>best){best=filled;localStorage.setItem(BEST_KEY,String(best));document.getElementById('best').textContent=String(best);}}
+function buildPalette(){paletteEl.innerHTML='';COLORS.forEach(([name,color],index)=>{const button=document.createElement('button');button.className='swatch'+(index===colorIndex?' active':'');button.style.background=color;button.title=`${index+1}. ${name}`;button.addEventListener('click',()=>{colorIndex=index;statusEl.textContent=`Brush: ${name}`;buildPalette();draw();});paletteEl.appendChild(button);});const clearBtn=document.createElement('button');clearBtn.className='btn';clearBtn.textContent='Clear';clearBtn.addEventListener('click',clearBoard);paletteEl.appendChild(clearBtn);} 
+function clearBoard(){grid=freshGrid();statusEl.textContent='Canvas cleared.';updateStats();draw();}
+function paintCell(x,y){if(x<0||x>=SIZE||y<0||y>=SIZE)return;cursor={x,y};grid[y][x]=COLORS[colorIndex][1];statusEl.textContent=`Painted (${x+1}, ${y+1}) with ${COLORS[colorIndex][0]}.`;updateStats();draw();}
+function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);for(let y=0;y<SIZE;y++){for(let x=0;x<SIZE;x++){ctx.fillStyle=grid[y][x];ctx.fillRect(x*CELL,y*CELL,CELL,CELL);ctx.strokeStyle='#e5e7eb';ctx.strokeRect(x*CELL+.5,y*CELL+.5,CELL,CELL);}}ctx.lineWidth=3;ctx.strokeStyle='#6c63ff';ctx.strokeRect(cursor.x*CELL+2,cursor.y*CELL+2,CELL-4,CELL-4);}
+function startGame(){started=true;grid=freshGrid();cursor={x:7,y:7};overlay.style.display='none';statusEl.textContent='Create your pixel art.';updateStats();buildPalette();draw();}
+function locateCell(clientX,clientY){const rect=canvas.getBoundingClientRect();const scaleX=canvas.width/rect.width,scaleY=canvas.height/rect.height;return{x:Math.max(0,Math.min(SIZE-1,Math.floor((clientX-rect.left)*scaleX/CELL))),y:Math.max(0,Math.min(SIZE-1,Math.floor((clientY-rect.top)*scaleY/CELL)))};}
+canvas.addEventListener('pointerdown',event=>{if(!started)return;pointerDown=true;paintCell(...Object.values(locateCell(event.clientX,event.clientY)));});
+canvas.addEventListener('pointermove',event=>{if(!started||!pointerDown)return;paintCell(...Object.values(locateCell(event.clientX,event.clientY)));});
+window.addEventListener('pointerup',()=>pointerDown=false);
+document.getElementById('overlay-btn').addEventListener('click',startGame);
+document.addEventListener('keydown',event=>{if(overlay.style.display!=='none'&&(event.key==='Enter'||event.key===' ')){event.preventDefault();startGame();return;}if(!started)return;const map={'ArrowLeft':[-1,0],'ArrowRight':[1,0],'ArrowUp':[0,-1],'ArrowDown':[0,1]};if(map[event.key]){event.preventDefault();cursor.x=(cursor.x+map[event.key][0]+SIZE)%SIZE;cursor.y=(cursor.y+map[event.key][1]+SIZE)%SIZE;statusEl.textContent=`Cursor at (${cursor.x+1}, ${cursor.y+1}).`;draw();}if(event.key===' '||event.key==='Enter'){event.preventDefault();paintCell(cursor.x,cursor.y);}if(/^\d$/.test(event.key)){const index=Number(event.key)-1;if(index>=0&&index<COLORS.length){colorIndex=index;buildPalette();statusEl.textContent=`Brush: ${COLORS[colorIndex][0]}`;updateStats();draw();}}if(event.key==='c'||event.key==='C')clearBoard();});
+grid=freshGrid();buildPalette();updateStats();draw();
+</script>
+</body>
+</html>

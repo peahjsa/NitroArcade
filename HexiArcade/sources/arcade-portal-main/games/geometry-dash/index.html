@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Geometry Dash — Game Portal</title>
+<meta name="description" content="Play Geometry Dash free online — Jump and fly through obstacle courses to the beat of the music. A Hard Action &amp; Shooter game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/geometry-dash/"/>
+<meta property="og:title" content="🔷 Geometry Dash — Free Browser Game"/>
+<meta property="og:description" content="Play Geometry Dash free in your browser. Jump and fly through obstacle courses to the beat of the music."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/geometry-dash/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Geometry Dash",
+  "description": "Jump and fly through obstacle courses to the beat of the music.",
+  "url": "https://arcade.sotshau.fun/games/geometry-dash/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Action & Shooter",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px;max-width:760px}.score-bar{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:92px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:18px;box-shadow:0 8px 20px rgba(0,0,0,.08)}canvas{display:block;background:linear-gradient(180deg,#312e81,#1d4ed8);border-radius:14px;border:1px solid #312e81;touch-action:none}.overlay{position:absolute;inset:18px;background:rgba(245,245,247,.94);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p{color:#6b7280;line-height:1.5;max-width:360px}.btn{padding:9px 22px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}.status{margin-top:12px;text-align:center;color:#374151;font-weight:700;min-height:24px;max-width:760px}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center;padding:0 16px;max-width:840px}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>�� Geometry Dash</h1>
+<p class="sub">Time each jump perfectly as your cube auto-runs through spike fields, blocks, and ever-faster rhythms.</p>
+<div class="score-bar"><div class="score-box"><div class="score-label">Distance</div><div class="score-val" id="score">0</div></div><div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">0</div></div><div class="score-box"><div class="score-label">Speed</div><div class="score-val" id="speed">1.0x</div></div><div class="score-box"><div class="score-label">Attempts</div><div class="score-val" id="attempts">0</div></div></div>
+<div class="game">
+  <canvas id="game" width="760" height="300"></canvas>
+  <div class="overlay" id="overlay">
+    <h2>�� Geometry Dash</h2>
+    <p>Press Space, Arrow Up, or tap the screen to jump. The cube never stops moving, so memorize the rhythm and clear the spikes.</p>
+    <button class="btn" id="overlay-btn">Start Game</button>
+  </div>
+  <div class="status" id="status">Press Start to begin.</div>
+</div>
+<p class="hint">Space / Arrow Up to jump · Tap on touch screens to hop</p>
+<script>
+
+const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');
+if(!ctx) throw new Error('canvas 2d context unavailable');
+const BEST_KEY='geometryDashBest';
+let player,obstacles=[],score=0,best=+(localStorage.getItem(BEST_KEY)||0),running=false,last=0,spawn=0,speed=6,attempts=0,rafId=0,statusMsg='Press Start to begin.';
+document.getElementById('best').textContent=best;
+function resetPlayer(){player={x:90,y:208,size:32,vy:0,onGround:true,rot:0};}
+function updateStats(){document.getElementById('score').textContent=Math.floor(score);document.getElementById('best').textContent=best;document.getElementById('speed').textContent=(speed/6).toFixed(1)+'x';document.getElementById('attempts').textContent=attempts;document.getElementById('status').textContent=statusMsg;}
+function startGame(){resetPlayer();obstacles=[];score=0;speed=6;spawn=0;running=true;last=0;attempts++;statusMsg='Ride the beat and jump late.';document.getElementById('overlay').style.display='none';updateStats();cancelAnimationFrame(rafId);rafId=requestAnimationFrame(loop);}
+function jump(){if(running&&player.onGround){player.vy=-11.2;player.onGround=false;statusMsg='Jump!';updateStats();}}
+function addObstacle(){const tall=Math.random()<.28;const spike=Math.random()<.7;obstacles.push(spike?{x:canvas.width+40,w:28+(Math.random()<.35?24:0),h:32+(tall?28:0),type:'spike'}:{x:canvas.width+40,w:38,h:44+(tall?30:0),type:'block'});}
+function rectHit(a,b){return a.x<b.x+b.w&&a.x+a.w>b.x&&a.y<b.y+b.h&&a.y+a.h>b.y;}
+function gameOver(text){running=false;statusMsg='Final distance: '+Math.floor(score);updateStats();const overlay=document.getElementById('overlay');overlay.innerHTML=`<h2>Level Failed</h2><p>${text}</p><button class="btn" id="overlay-btn">Try Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);} 
+function update(dt){score+=dt/130;speed=Math.min(13,6+score/30);spawn+=dt;if(spawn>Math.max(420,980-score*6)){spawn=0;addObstacle();if(Math.random()<.25&&score>20)addObstacle();}player.vy+=.58;player.y+=player.vy;if(player.y>=208){player.y=208;player.vy=0;player.onGround=true;}player.rot+=speed*.03;obstacles.forEach(o=>o.x-=speed);obstacles=obstacles.filter(o=>o.x+o.w>-20);const box={x:player.x-player.size/2,y:player.y-player.size/2,w:player.size,h:player.size};for(const o of obstacles){const target={x:o.x,y:240-o.h,w:o.w,h:o.h};if(rectHit(box,target))return gameOver('The cube clipped an obstacle.');}if(Math.floor(score)>best){best=Math.floor(score);localStorage.setItem(BEST_KEY,String(best));}updateStats();}
+function drawSpike(x,y,w,h){ctx.fillStyle='#f8fafc';const n=w>40?2:1;for(let i=0;i<n;i++){const left=x+i*(w/n);const part=w/n;ctx.beginPath();ctx.moveTo(left,y+h);ctx.lineTo(left+part/2,y);ctx.lineTo(left+part,y+h);ctx.closePath();ctx.fill();}}
+function draw(){const bg=ctx.createLinearGradient(0,0,0,canvas.height);bg.addColorStop(0,'#312e81');bg.addColorStop(1,'#1d4ed8');ctx.fillStyle=bg;ctx.fillRect(0,0,canvas.width,canvas.height);ctx.fillStyle='rgba(255,255,255,.18)';for(let i=0;i<12;i++)ctx.fillRect((i*90-(last/8)%90),50+i%3*36,50,10);ctx.fillStyle='#0f172a';ctx.fillRect(0,240,canvas.width,60);ctx.fillStyle='#22c55e';ctx.fillRect(0,236,canvas.width,4);obstacles.forEach(o=>{if(o.type==='spike')drawSpike(o.x,240-o.h,o.w,o.h);else{ctx.fillStyle='#f8fafc';ctx.fillRect(o.x,240-o.h,o.w,o.h);ctx.fillStyle='#60a5fa';ctx.fillRect(o.x+6,240-o.h+6,o.w-12,o.h-12);}});ctx.save();ctx.translate(player.x,player.y);ctx.rotate(player.rot);ctx.fillStyle='#facc15';ctx.fillRect(-16,-16,32,32);ctx.fillStyle='#1f2937';ctx.fillRect(-10,-6,6,6);ctx.fillRect(4,-6,6,6);ctx.fillRect(-8,6,16,4);ctx.restore();}
+function loop(ts){if(!running)return;const dt=ts-last||16;last=ts;update(dt);draw();if(running)rafId=requestAnimationFrame(loop);}
+document.getElementById('overlay-btn').addEventListener('click',startGame);
+document.addEventListener('keydown',e=>{if(document.getElementById('overlay').style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}if([' ','ArrowUp','w','W'].includes(e.key)){e.preventDefault();jump();}});canvas.addEventListener('pointerdown',()=>jump());resetPlayer();draw();
+
+</script>
+</body>
+</html>

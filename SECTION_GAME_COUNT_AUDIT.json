@@ -1,0 +1,11 @@
+{
+  "hexi_total": 217,
+  "hexi_by_source": {
+    "90s-games-main": 113,
+    "arcade-portal-main": 96,
+    "retroarcade-main": 1,
+    "gh-arcade": 7
+  },
+  "macro_individual_games_advertised": 285,
+  "note": "Other section counts are computed from actual rendered game cards at runtime, avoiding guessed totals."
+}

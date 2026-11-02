@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>🎰 Video Poker — Game Portal</title>
+<meta name="description" content="Play Video Poker free online — Draw cards to make the best poker hand and win credits. A Medium Card &amp; Board game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/video-poker/"/>
+<meta property="og:title" content="🎰 Video Poker — Free Browser Game"/>
+<meta property="og:description" content="Play Video Poker free in your browser. Draw cards to make the best poker hand and win credits."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/video-poker/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Video Poker",
+  "description": "Draw cards to make the best poker hand and win credits.",
+  "url": "https://arcade.sotshau.fun/games/video-poker/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Card & Board",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:14px;text-align:center;padding:0 18px}.score-bar{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:14px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:96px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.game{position:relative;background:linear-gradient(180deg,#1f2937,#111827);border-radius:18px;padding:18px;width:min(760px,96vw);box-shadow:0 8px 24px rgba(0,0,0,.22)}.cards{display:grid;grid-template-columns:repeat(5,minmax(92px,1fr));gap:12px}.card{height:136px;border:none;border-radius:14px;background:#fff;position:relative;cursor:pointer;box-shadow:0 10px 18px rgba(0,0,0,.22);display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:800;font-size:34px;color:#111827}.card.red{color:#dc2626}.card.back{background:linear-gradient(135deg,#6c63ff,#8b5cf6);color:#fff}.card .small{position:absolute;font-size:15px;top:10px;left:12px}.card .suit{font-size:18px;position:absolute;bottom:10px;right:12px}.card.hold{transform:translateY(-8px);outline:4px solid #f59e0b}.card.cursor{box-shadow:0 0 0 4px #6c63ff,0 10px 18px rgba(0,0,0,.22)}.payline{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;color:#fff;font-size:13px}.tag{background:rgba(255,255,255,.12);padding:6px 10px;border-radius:999px}.controls{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:14px}.btn{padding:9px 18px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer}.btn:hover{background:#574fd6}.btn-outline{background:transparent;border:1.5px solid #a5b4fc;color:#e0e7ff}.status{margin-top:12px;min-height:24px;text-align:center;color:#fff;font-weight:700}.overlay{position:absolute;inset:18px;background:rgba(17,24,39,.95);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center;color:#fff}.overlay p{color:#cbd5e1;max-width:340px;line-height:1.5}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center;padding:0 18px}@media (max-width:620px){.cards{grid-template-columns:repeat(5,1fr);gap:8px}.card{height:110px;font-size:26px}.card .small{font-size:12px}.card .suit{font-size:15px}}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🎰 Video Poker</h1>
+<p class="sub">Build the best five-card hand, hold the keepers, and draw for a classic jacks-or-better payout.</p>
+<div class="score-bar">
+  <div class="score-box"><div class="score-label">Balance</div><div class="score-val" id="balance">100</div></div>
+  <div class="score-box"><div class="score-label">Bet</div><div class="score-val" id="bet">1</div></div>
+  <div class="score-box"><div class="score-label">Wins</div><div class="score-val" id="wins">0</div></div>
+  <div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">—</div></div>
+</div>
+<div class="game">
+  <div class="payline">
+    <span class="tag">Royal 250×</span><span class="tag">Straight Flush 50×</span><span class="tag">Four 25×</span><span class="tag">Full House 9×</span><span class="tag">Flush 6×</span><span class="tag">Straight 4×</span><span class="tag">Trips 3×</span><span class="tag">Two Pair 2×</span><span class="tag">Jacks+ 1×</span>
+  </div>
+  <div class="cards" id="cards"></div>
+  <div class="controls">
+    <button class="btn btn-outline" id="bet-down-btn">Bet -</button>
+    <button class="btn btn-outline" id="bet-up-btn">Bet +</button>
+    <button class="btn" id="deal-btn">Deal</button>
+    <button class="btn btn-outline" id="reset-btn">Reset</button>
+  </div>
+  <div class="overlay" id="overlay">
+    <h2>🎰 Video Poker</h2>
+    <p>Set your bet, press Deal, then tap cards or press keys 1-5 to hold. Press Deal again to draw replacements and collect your payout.</p>
+    <button class="btn" id="overlay-btn">Start Machine</button>
+  </div>
+  <div class="status" id="status">Press Start to begin.</div>
+</div>
+<p class="hint">Keys: ←/→ change bet · Enter deal/draw · 1-5 hold cards · Tap cards on touch devices</p>
+<script>
+const SUITS=['♠','♥','♦','♣'],RANKS=['2','3','4','5','6','7','8','9','10','J','Q','K','A'],RED=new Set(['♥','♦']);
+const WINS_KEY='videoPokerWins',BEST_KEY='videoPokerBestHand';
+const PAYOUTS={royal:{name:'Royal Flush',mult:250,rank:9},straightFlush:{name:'Straight Flush',mult:50,rank:8},four:{name:'Four of a Kind',mult:25,rank:7},fullHouse:{name:'Full House',mult:9,rank:6},flush:{name:'Flush',mult:6,rank:5},straight:{name:'Straight',mult:4,rank:4},three:{name:'Three of a Kind',mult:3,rank:3},twoPair:{name:'Two Pair',mult:2,rank:2},jacks:{name:'Jacks or Better',mult:1,rank:1},none:{name:'No Payout',mult:0,rank:0}};
+const cardsEl=document.getElementById('cards'),overlay=document.getElementById('overlay'),statusEl=document.getElementById('status');
+let deck=[],hand=[],holds=[false,false,false,false,false],phase='idle',balance=100,bet=1,cursor=0,wins=+(localStorage.getItem(WINS_KEY)||0),best=localStorage.getItem(BEST_KEY)||'—',running=false;
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function buildDeck(){deck=shuffle(SUITS.flatMap(s=>RANKS.map(r=>({s,r}))));}
+function value(card){return RANKS.indexOf(card.r)+2;}
+function handResult(cards){const vals=cards.map(value).sort((a,b)=>a-b),counts={};cards.forEach(c=>counts[c.r]=(counts[c.r]||0)+1);const freq=Object.values(counts).sort((a,b)=>b-a);const flush=cards.every(c=>c.s===cards[0].s);let straight=vals.every((v,i)=>!i||v===vals[i-1]+1);if(JSON.stringify(vals)==='[2,3,4,5,14]')straight=true;const royal=flush&&JSON.stringify(vals)==='[10,11,12,13,14]';if(royal)return PAYOUTS.royal;if(straight&&flush)return PAYOUTS.straightFlush;if(freq[0]===4)return PAYOUTS.four;if(freq[0]===3&&freq[1]===2)return PAYOUTS.fullHouse;if(flush)return PAYOUTS.flush;if(straight)return PAYOUTS.straight;if(freq[0]===3)return PAYOUTS.three;if(freq[0]===2&&freq[1]===2)return PAYOUTS.twoPair;if(freq[0]===2){const pairRank=Object.keys(counts).find(k=>counts[k]===2);if(['J','Q','K','A'].includes(pairRank))return PAYOUTS.jacks;}return PAYOUTS.none;}
+function render(){cardsEl.innerHTML='';for(let i=0;i<5;i++){const card=hand[i];const btn=document.createElement('button');btn.className='card'+(card&&RED.has(card.s)?' red':'')+(holds[i]&&phase==='draw'?' hold':'')+(cursor===i&&running?' cursor':'')+(card?'':' back');btn.onclick=()=>toggleHold(i);if(card){btn.innerHTML=`<span class="small">${card.r}</span>${card.s}<span class="suit">${holds[i]&&phase==='draw'?'HOLD':''}</span>`;}else btn.textContent='🂠';cardsEl.appendChild(btn);}document.getElementById('balance').textContent=String(balance);document.getElementById('bet').textContent=String(bet);document.getElementById('wins').textContent=String(wins);document.getElementById('best').textContent=best;document.getElementById('deal-btn').textContent=phase==='draw'?'Draw':'Deal';}
+function startGame(){running=true;overlay.style.display='none';statusEl.textContent='Set your bet and deal a fresh hand.';phase='bet';hand=[];holds=[false,false,false,false,false];cursor=0;render();}
+function changeBet(dir){if(!running||phase==='draw')return;bet=Math.max(1,Math.min(5,bet+dir));statusEl.textContent=`Bet set to ${bet}.`;render();}
+function toggleHold(i){if(!running||phase!=='draw'||!hand[i])return;holds[i]=!holds[i];cursor=i;statusEl.textContent=holds[i]?`Holding card ${i+1}.`:`Released card ${i+1}.`;render();}
+function dealOrDraw(){if(!running)return;if(phase!=='draw'){if(balance<bet){statusEl.textContent='Not enough credits. Reset the machine to continue.';return;}balance-=bet;buildDeck();hand=[deck.pop(),deck.pop(),deck.pop(),deck.pop(),deck.pop()];holds=[false,false,false,false,false];phase='draw';statusEl.textContent='Choose cards to hold, then draw.';render();return;}for(let i=0;i<5;i++)if(!holds[i])hand[i]=deck.pop();const result=handResult(hand),payout=result.mult*bet;if(payout){balance+=payout;wins++;localStorage.setItem(WINS_KEY,String(wins));if(best==='—'||result.rank>PAYOUTS.none.rank&&Object.values(PAYOUTS).find(p=>p.name===best)?.rank<result.rank){best=result.name;localStorage.setItem(BEST_KEY,best);}statusEl.textContent=`${result.name}! Payout: ${payout}.`;}else statusEl.textContent='No payout this round.';phase='bet';holds=[false,false,false,false,false];render();}
+function resetSession(){balance=100;bet=1;wins=0;best='—';localStorage.removeItem(WINS_KEY);localStorage.removeItem(BEST_KEY);hand=[];holds=[false,false,false,false,false];phase=running?'bet':'idle';statusEl.textContent='Machine reset. Ready for a new run.';render();}
+document.addEventListener('keydown',e=>{if(overlay.style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}if(!running)return;if(['ArrowLeft','ArrowDown'].includes(e.key)&&phase!=='draw'){e.preventDefault();changeBet(-1);return;}if(['ArrowRight','ArrowUp'].includes(e.key)&&phase!=='draw'){e.preventDefault();changeBet(1);return;}if(/^[1-5]$/.test(e.key)&&phase==='draw'){e.preventDefault();toggleHold(+e.key-1);return;}if(e.key==='Enter'||e.key===' '){e.preventDefault();dealOrDraw();}});
+document.getElementById('overlay-btn').addEventListener('click',startGame);
+document.getElementById('bet-down-btn').addEventListener('click',()=>changeBet(-1));
+document.getElementById('bet-up-btn').addEventListener('click',()=>changeBet(1));
+document.getElementById('deal-btn').addEventListener('click',dealOrDraw);
+document.getElementById('reset-btn').addEventListener('click',resetSession);
+render();
+</script>
+</body>
+</html>

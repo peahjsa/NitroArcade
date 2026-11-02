@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Word Chain — Game Portal</title>
+<meta name="description" content="Play Word Chain free online — Each word must start with the last letter of the previous word. Don't repeat! A Medium Word &amp; Trivia game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/word-chain/"/>
+<meta property="og:title" content="🔗 Word Chain — Free Browser Game"/>
+<meta property="og:description" content="Play Word Chain free in your browser. Each word must start with the last letter of the previous word. Don't repeat!"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/word-chain/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Word Chain",
+  "description": "Each word must start with the last letter of the previous word. Don't repeat!",
+  "url": "https://arcade.sotshau.fun/games/word-chain/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Word & Trivia",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px}.score-bar{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 18px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:96px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;box-shadow:0 8px 20px rgba(0,0,0,.08);padding:24px;width:min(680px,94vw)}.prompt{display:grid;gap:10px;justify-items:center;margin-bottom:16px}.word-card{background:#ede9fe;color:#4c1d95;border-radius:16px;padding:16px 22px;font-size:30px;font-weight:800;letter-spacing:.05em;text-transform:uppercase}.rule{color:#64748b;font-weight:700}.input-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}.guess{padding:12px 14px;border:1px solid #cbd5e1;border-radius:12px;font-size:18px;text-transform:uppercase;width:min(280px,70vw);text-align:center}.btn{padding:10px 18px;border:none;border-radius:10px;background:#6c63ff;color:#fff;font-weight:700;cursor:pointer}.status{min-height:24px;text-align:center;color:#374151;font-weight:700;margin:16px 0}.used{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}.used-item{background:#f8fafc;border:1px solid #e5e7eb;border-radius:999px;padding:8px 12px;color:#334155;font-weight:700}.overlay{position:absolute;inset:0;background:rgba(245,245,247,.96);border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p{color:#6b7280;max-width:320px;line-height:1.5}.hint{margin-top:14px;font-size:12px;color:#9ca3af;text-align:center;padding:0 16px}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🔗 Word Chain</h1>
+<p class="sub">Keep the chain going by starting each new word with the last letter of the current one. Beat the turn timer.</p>
+<div class="score-bar"><div class="score-box"><div class="score-label">Chain</div><div class="score-val" id="chain">0</div></div><div class="score-box"><div class="score-label">Time</div><div class="score-val" id="time">12</div></div><div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">0</div></div></div>
+<div class="game">
+  <div class="prompt"><div class="word-card" id="current-word">START</div><div class="rule" id="rule">Next word must begin with T.</div></div>
+  <div class="input-row"><input id="guess" class="guess" type="text" autocomplete="off" spellcheck="false" placeholder="Next word"/><button class="btn" id="submit-btn">Submit</button></div>
+  <div class="status" id="status">Press Start to begin.</div>
+  <div class="used" id="used"></div>
+  <div class="overlay" id="overlay"><h2>🔗 Word Chain</h2><p>Type a word that starts with the final letter of the word shown above. Repeated words are not allowed.</p><button class="btn" id="overlay-btn">Start Chain</button></div>
+</div>
+<p class="hint">Keyboard: type + Enter · Touch: tap the input and submit</p>
+<script>
+const WORDS=['TRAIN','NORTH','HOUSE','EAGLE','EARTH','HONEY','YOUNG','GRASS','STONE','ECHO','OCEAN','NERVE','ENGINE','EMBER','RIVER','ROBOT','TIGER','RADAR','RAIN','NINJA','ANCHOR','ROSE','RANCH','HARBOR','ROCKET','TUNNEL','LEMON','NUGGET','TEMPLE','EASEL','LIGHT','THUNDER','RHYME','EAST','TABLE','ENERGY','YACHT','TRAIL','LASER','MANGO','ORBIT','TOWER','RIDDLE','EMERALD','DREAM','MAP'];
+const STARTERS=['PLANET','GARDEN','ROCKET','CANDLE','MARKET','THRONE'];
+const BEST_KEY='wordChainBest';
+const wordSet=new Set(WORDS.concat(STARTERS));
+const currentWordEl=document.getElementById('current-word'),ruleEl=document.getElementById('rule'),guessEl=document.getElementById('guess'),usedEl=document.getElementById('used'),statusEl=document.getElementById('status'),overlay=document.getElementById('overlay');
+let currentWord='START',used=new Set(),chain=0,timeLeft=12,timer=null,active=false;
+document.getElementById('best').textContent=localStorage.getItem(BEST_KEY)||'0';
+function updatePrompt(){const need=currentWord.slice(-1);currentWordEl.textContent=currentWord;ruleEl.textContent=`Next word must begin with ${need}.`;}
+function possibleMoves(letter){return [...wordSet].filter(word=>word.startsWith(letter)&&!used.has(word));}
+function renderUsed(){usedEl.innerHTML='';[...used].slice(-14).forEach(word=>{const span=document.createElement('div');span.className='used-item';span.textContent=word;usedEl.appendChild(span);});}
+function resetTurn(){clearInterval(timer);document.getElementById('time').textContent=String(timeLeft);timer=setInterval(()=>{timeLeft--;document.getElementById('time').textContent=String(timeLeft);if(timeLeft<=0)finishGame('⏰ Time\'s up');},1000);}
+function startGame(){currentWord=STARTERS[Math.floor(Math.random()*STARTERS.length)];used=new Set([currentWord]);chain=0;timeLeft=12;active=true;overlay.style.display='none';document.getElementById('chain').textContent='0';updatePrompt();renderUsed();resetTurn();statusEl.textContent='Make the next link!';guessEl.value='';guessEl.focus();}
+function submitWord(){if(!active)return;const word=guessEl.value.trim().toUpperCase();const need=currentWord.slice(-1);if(word.length<3){statusEl.textContent='Use at least 3 letters.';return;}if(!word.startsWith(need)){statusEl.textContent=`Your word must start with ${need}.`;return;}if(!wordSet.has(word)){statusEl.textContent='That word is not in the built-in chain list.';return;}if(used.has(word)){statusEl.textContent='Already used that word.';return;}used.add(word);currentWord=word;chain++;document.getElementById('chain').textContent=String(chain);const best=Math.max(chain,+(localStorage.getItem(BEST_KEY)||0));localStorage.setItem(BEST_KEY,String(best));document.getElementById('best').textContent=String(best);renderUsed();updatePrompt();guessEl.value='';const nextCount=possibleMoves(currentWord.slice(-1)).length;statusEl.textContent=nextCount?`Nice! ${nextCount} possible continuations remain.`:'Great chain! New starter word added.';timeLeft=12;if(!nextCount){currentWord=STARTERS[Math.floor(Math.random()*STARTERS.length)];used.add(currentWord);renderUsed();updatePrompt();}resetTurn();guessEl.focus();}
+function finishGame(title){active=false;clearInterval(timer);statusEl.textContent=`Chain ended at ${chain}.`;overlay.innerHTML=`<h2>${title}</h2><p>You built a chain of <strong>${chain}</strong> words.</p><button class="btn" id="overlay-btn">Play Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);}
+document.getElementById('submit-btn').addEventListener('click',submitWord);document.getElementById('overlay-btn').addEventListener('click',startGame);guessEl.addEventListener('input',()=>{guessEl.value=guessEl.value.toUpperCase().replace(/[^A-Z]/g,'');});guessEl.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();submitWord();}});document.addEventListener('keydown',e=>{if(overlay.style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();}});
+</script>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>✏️ Crossword — Game Portal</title>
+<meta name="description" content="Play Crossword free online — Fill the crossword grid using clues across and down. A Hard Word &amp; Trivia game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/crossword/"/>
+<meta property="og:title" content="📰 Crossword — Free Browser Game"/>
+<meta property="og:description" content="Play Crossword free in your browser. Fill the crossword grid using clues across and down."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/crossword/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Crossword",
+  "description": "Fill the crossword grid using clues across and down.",
+  "url": "https://arcade.sotshau.fun/games/crossword/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Word & Trivia",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}nav a:hover{text-decoration:underline}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{font-size:14px;color:#6b7280;text-align:center;margin-bottom:16px;padding:0 16px}.score-bar{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 18px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:90px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.wrap{position:relative;display:grid;gap:16px;background:#fff;border:1px solid #e5e7eb;border-radius:18px;box-shadow:0 8px 20px rgba(0,0,0,.08);padding:18px;max-width:720px;width:min(720px,calc(100vw - 32px))}.grid{display:grid;grid-template-columns:repeat(3,72px);gap:6px;justify-content:center}.cell{width:72px;height:72px;border-radius:14px;border:1px solid #d1d5db;background:#fff;position:relative}.cell input{width:100%;height:100%;border:none;background:transparent;text-align:center;font-size:32px;font-weight:800;text-transform:uppercase;color:#6c63ff;outline:none}.number{position:absolute;top:4px;left:6px;font-size:11px;color:#6b7280;font-weight:700}.cell.active{outline:3px solid rgba(108,99,255,.28)}.clues{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}.clues h3{font-size:15px;margin-bottom:8px}.clues ol{padding-left:18px;color:#4b5563;display:grid;gap:6px;font-size:14px}.status{min-height:24px;text-align:center;color:#4b5563;font-weight:600}.controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}.btn{padding:9px 22px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}.btn:hover{background:#574fd6}.btn-outline{background:transparent;border:1.5px solid #6c63ff;color:#6c63ff}.btn-outline:hover{background:#ede9ff}.overlay{position:absolute;inset:0;background:rgba(245,245,247,.94);border-radius:18px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:10px;padding:24px;text-align:center}.overlay p{color:#6b7280;max-width:320px;line-height:1.5}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center;padding:0 16px}@media (max-width:520px){.grid{grid-template-columns:repeat(3,60px)}.cell{width:60px;height:60px}}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>✏️ Crossword</h1>
+<p class="sub">Fill the mini crossword using the across and down clues.</p>
+<div class="score-bar">
+  <div class="score-box"><div class="score-label">Filled</div><div class="score-val" id="filled">0/9</div></div>
+  <div class="score-box"><div class="score-label">Checks</div><div class="score-val" id="checks">0</div></div>
+  <div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">—</div></div>
+</div>
+<div class="wrap">
+  <div class="grid" id="grid"></div>
+  <div class="clues">
+    <div>
+      <h3>Across</h3>
+      <ol>
+        <li value="1">A whiskered house pet (3)</li>
+        <li value="4">Rock mined for metal (3)</li>
+        <li value="5">Warm drink in a teacup (3)</li>
+      </ol>
+    </div>
+    <div>
+      <h3>Down</h3>
+      <ol>
+        <li value="1">A portable folding bed (3)</li>
+        <li value="2">Present-tense form of “be” (3)</li>
+        <li value="3">A hot drink made from leaves (3)</li>
+      </ol>
+    </div>
+  </div>
+  <div class="status" id="status">Press Start to begin.</div>
+  <div class="controls"><button class="btn" id="check-btn">Check Puzzle</button><button class="btn btn-outline" id="clear-btn">Clear Grid</button></div>
+  <div class="overlay" id="overlay">
+    <h2>✏️ Crossword</h2>
+    <p>Type directly into the crossword cells. Arrow keys and taps both work, and Check Puzzle lets you verify your progress.</p>
+    <button class="btn" id="overlay-btn">Start Game</button>
+  </div>
+</div>
+<p class="hint">Type letters · Arrow keys move between cells · Tap any cell on mobile to fill it</p>
+<script>
+const LAYOUT=[
+  ['C','A','T'],
+  ['O','R','E'],
+  ['T','E','A']
+];
+const NUMBERING={'0,0':1,'1,0':2,'2,0':3,'0,1':4,'0,2':5};
+const BEST_KEY='crosswordBest';
+const gridEl=document.getElementById('grid');
+const overlay=document.getElementById('overlay');
+const statusEl=document.getElementById('status');
+const filledEl=document.getElementById('filled');
+const checksEl=document.getElementById('checks');
+const bestEl=document.getElementById('best');
+let inputs=[],filled=0,checks=0,best=+(localStorage.getItem(BEST_KEY)||0),active=false;
+bestEl.textContent=best?`${best} checks`:'—';
+function buildGrid(){gridEl.innerHTML='';inputs=[];for(let y=0;y<3;y++)for(let x=0;x<3;x++){const cell=document.createElement('div');cell.className='cell';if(NUMBERING[`${x},${y}`]){const n=document.createElement('div');n.className='number';n.textContent=NUMBERING[`${x},${y}`];cell.appendChild(n);}const input=document.createElement('input');input.maxLength=1;input.dataset.x=x;input.dataset.y=y;input.addEventListener('input',()=>{input.value=input.value.toUpperCase().replace(/[^A-Z]/g,'');input.style.color='#6c63ff';focusNext(x,y);updateFilled();});input.addEventListener('focus',()=>cell.classList.add('active'));input.addEventListener('blur',()=>cell.classList.remove('active'));input.addEventListener('keydown',e=>handleKey(e,x,y));cell.appendChild(input);gridEl.appendChild(cell);inputs.push(input);}}
+function startGame(){inputs.forEach(input=>{input.value='';input.style.color='#6c63ff';});filled=0;checks=0;active=true;overlay.style.display='none';statusEl.textContent='Fill the mini crossword from the clues.';updateFilled();checksEl.textContent=checks;inputs[0]?.focus();}
+function handleKey(e,x,y){if(e.key==='Backspace'&&!e.target.value){focusPrev(x,y);}else if(e.key==='ArrowLeft'){moveFocus(x-1,y);e.preventDefault();}else if(e.key==='ArrowRight'){moveFocus(x+1,y);e.preventDefault();}else if(e.key==='ArrowUp'){moveFocus(x,y-1);e.preventDefault();}else if(e.key==='ArrowDown'){moveFocus(x,y+1);e.preventDefault();}}
+function moveFocus(x,y){const target=inputs.find(input=>+input.dataset.x===x&&+input.dataset.y===y);if(target)target.focus();}
+function focusNext(x,y){const right=inputs.find(input=>+input.dataset.x===x+1&&+input.dataset.y===y);const down=inputs.find(input=>+input.dataset.x===x&&+input.dataset.y===y+1);(right||down)?.focus();}
+function focusPrev(x,y){const left=inputs.find(input=>+input.dataset.x===x-1&&+input.dataset.y===y);const up=inputs.find(input=>+input.dataset.x===x&&+input.dataset.y===y-1);(left||up)?.focus();}
+function updateFilled(){filled=inputs.filter(input=>input.value).length;filledEl.textContent=`${filled}/9`;}
+function checkPuzzle(){if(!active)return;checks++;checksEl.textContent=checks;let solved=true;inputs.forEach(input=>{const x=+input.dataset.x,y=+input.dataset.y;const correct=LAYOUT[y][x];input.style.color=input.value===correct?'#10b981':'#ef4444';if(input.value!==correct)solved=false;});if(solved){active=false;if(!best||checks<best){best=checks;localStorage.setItem(BEST_KEY,String(best));}bestEl.textContent=`${best} checks`;statusEl.textContent=`Crossword solved in ${checks} checks!`;overlay.innerHTML=`<h2>🎉 Crossword Complete</h2><p>You filled every answer correctly with ${checks} puzzle checks.</p><button class="btn" id="overlay-btn">Play Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);}else statusEl.textContent='Some letters still need work — keep going!';}
+document.getElementById('check-btn').addEventListener('click',checkPuzzle);
+document.getElementById('clear-btn').addEventListener('click',startGame);
+document.getElementById('overlay-btn').addEventListener('click',startGame);
+buildGrid();updateFilled();
+</script>
+</body>
+</html>

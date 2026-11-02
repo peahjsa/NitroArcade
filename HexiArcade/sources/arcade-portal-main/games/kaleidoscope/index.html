@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Kaleidoscope — Game Portal</title>
+<meta name="description" content="Play Kaleidoscope free online — Draw and watch symmetrical patterns mirror in real time. A Easy Creative &amp; Art game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/kaleidoscope/"/>
+<meta property="og:title" content="🔮 Kaleidoscope — Free Browser Game"/>
+<meta property="og:description" content="Play Kaleidoscope free in your browser. Draw and watch symmetrical patterns mirror in real time."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/kaleidoscope/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Kaleidoscope",
+  "description": "Draw and watch symmetrical patterns mirror in real time.",
+  "url": "https://arcade.sotshau.fun/games/kaleidoscope/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Creative & Art",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px}.score-bar,.controls{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}.score-bar{margin-bottom:14px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 18px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:96px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:20px;padding:18px;box-shadow:0 8px 20px rgba(0,0,0,.08);width:min(620px,94vw)}canvas{display:block;width:min(520px,88vw);height:min(520px,88vw);margin:0 auto;background:radial-gradient(circle at center,#111827,#020617 72%);border-radius:18px;border:1px solid #111827;touch-action:none}.controls{margin-top:14px}.btn{padding:9px 16px;background:#6c63ff;color:#fff;border:none;border-radius:10px;font-weight:700;cursor:pointer}.ghost{background:#374151}.status{min-height:24px;margin-top:12px;text-align:center;color:#374151;font-weight:700}.overlay{position:absolute;inset:18px;background:rgba(245,245,247,.95);border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p{max-width:340px;color:#6b7280;line-height:1.5}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center;padding:0 16px}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🪞 Kaleidoscope</h1>
+<p class="sub">Draw luminous mirrored trails. More symmetry slices create richer crystal patterns.</p>
+<div class="score-bar"><div class="score-box"><div class="score-label">Slices</div><div class="score-val" id="slices">8</div></div><div class="score-box"><div class="score-label">Strokes</div><div class="score-val" id="strokes">0</div></div><div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">0</div></div></div>
+<div class="game">
+  <canvas id="canvas" width="520" height="520"></canvas>
+  <div class="controls"><button class="btn ghost" id="minus">Fewer Slices</button><button class="btn" id="clear">Clear</button><button class="btn ghost" id="plus">More Slices</button></div>
+  <div class="status" id="status">Press Start to begin drawing.</div>
+  <div class="overlay" id="overlay"><h2>🪞 Kaleidoscope</h2><p>Hold and drag to paint mirrored light. Use [ and ] to change symmetry or tap the buttons below.</p><button class="btn" id="overlay-btn">Start Drawing</button></div>
+</div>
+<p class="hint">Keyboard: [ / ] change slices, C clears · Touch: drag anywhere on the canvas</p>
+<script>
+const BEST_KEY='kaleidoscopeBestStrokes';
+const canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d'),overlay=document.getElementById('overlay'),statusEl=document.getElementById('status');
+let slices=8,strokes=0,best=+(localStorage.getItem(BEST_KEY)||0),drawing=false,lastPoint=null,hue=0,started=false;
+document.getElementById('best').textContent=String(best);
+function clearCanvas(){ctx.fillStyle='#050816';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.strokeStyle='rgba(255,255,255,.08)';ctx.beginPath();ctx.arc(260,260,140,0,Math.PI*2);ctx.stroke();strokes=0;document.getElementById('strokes').textContent='0';statusEl.textContent='Canvas cleared.';lastPoint=null;}
+function updateSlices(delta){slices=Math.max(4,Math.min(18,slices+delta));document.getElementById('slices').textContent=String(slices);statusEl.textContent=`Symmetry set to ${slices} slices.`;}
+function pointFromEvent(event){const rect=canvas.getBoundingClientRect(),scaleX=canvas.width/rect.width,scaleY=canvas.height/rect.height;return{x:(event.clientX-rect.left)*scaleX-260,y:(event.clientY-rect.top)*scaleY-260};}
+function drawMirror(point){if(!lastPoint){lastPoint=point;return;}for(let i=0;i<slices;i++){const angle=Math.PI*2*i/slices;const cos=Math.cos(angle),sin=Math.sin(angle);const x1=lastPoint.x*cos-lastPoint.y*sin,y1=lastPoint.x*sin+lastPoint.y*cos,x2=point.x*cos-point.y*sin,y2=point.x*sin+point.y*cos;ctx.save();ctx.translate(260,260);ctx.strokeStyle=`hsla(${hue%360},90%,65%,.75)`;ctx.lineWidth=3;ctx.lineCap='round';ctx.shadowBlur=10;ctx.shadowColor=`hsla(${hue%360},100%,70%,.65)`;ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();ctx.scale(-1,1);ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();ctx.restore();}hue=(hue+2)%360;strokes++;if(strokes>best){best=strokes;localStorage.setItem(BEST_KEY,String(best));document.getElementById('best').textContent=String(best);}document.getElementById('strokes').textContent=String(strokes);statusEl.textContent='Keep drawing to grow the pattern.';lastPoint=point;}
+function startGame(){started=true;overlay.style.display='none';statusEl.textContent='Draw from the center outward.';clearCanvas();}
+canvas.addEventListener('pointerdown',event=>{if(!started)return;drawing=true;lastPoint=pointFromEvent(event);});
+canvas.addEventListener('pointermove',event=>{if(!drawing||!started)return;drawMirror(pointFromEvent(event));});
+window.addEventListener('pointerup',()=>{drawing=false;lastPoint=null;});
+document.getElementById('overlay-btn').addEventListener('click',startGame);document.getElementById('clear').addEventListener('click',clearCanvas);document.getElementById('minus').addEventListener('click',()=>updateSlices(-2));document.getElementById('plus').addEventListener('click',()=>updateSlices(2));
+document.addEventListener('keydown',event=>{if(overlay.style.display!=='none'&&(event.key==='Enter'||event.key===' ')){event.preventDefault();startGame();return;}if(event.key==='[')updateSlices(-2);if(event.key===']')updateSlices(2);if(event.key==='c'||event.key==='C')clearCanvas();});
+document.getElementById('slices').textContent=String(slices);clearCanvas();
+</script>
+</body>
+</html>

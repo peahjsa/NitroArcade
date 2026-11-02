@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="description" content="RetroArcade — 零依赖、离线的复古街机游戏合集 | Zero-dependency offline retro arcade game collection" />
+  <meta name="theme-color" content="#0b0b1a" />
+  <title>RetroArcade · 复古街机游戏合集</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <!-- CRT 扫描线覆盖层 -->
+  <div class="crt-overlay" aria-hidden="true"></div>
+  <div class="crt-vignette" aria-hidden="true"></div>
+
+  <div class="arcade-shell">
+    <header class="arcade-header">
+      <div class="brand">
+        <span class="brand-mark">🕹️</span>
+        <div class="brand-text">
+          <h1>RETRO<span>ARCADE</span></h1>
+          <p class="tagline">零依赖 · 离线 · 纯前端经典游戏合集</p>
+        </div>
+      </div>
+      <div class="header-stats">
+        <div class="stat">
+          <span class="stat-label">最高分</span>
+          <span class="stat-value" id="stat-best">0</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">游戏数</span>
+          <span class="stat-value">6</span>
+        </div>
+        <button class="icon-btn" id="btn-sound" title="音效开关" aria-label="切换音效">🔊</button>
+      </div>
+    </header>
+
+    <main>
+      <!-- 主菜单 -->
+      <section id="screen-menu" class="screen active">
+        <div class="menu-intro">
+          <h2>选择你的游戏</h2>
+          <p>经典玩法，现代体验。全部在浏览器本地运行，无需联网。</p>
+        </div>
+        <div class="game-grid" id="game-grid"></div>
+      </section>
+
+      <!-- 游戏界面 -->
+      <section id="screen-game" class="screen">
+        <div class="game-topbar">
+          <button class="icon-btn" id="btn-back" aria-label="返回菜单">← 菜单</button>
+          <h2 id="game-title">游戏</h2>
+          <div class="game-hud">
+            <span class="hud-item">得分 <b id="hud-score">0</b></span>
+            <span class="hud-item">最高 <b id="hud-best">0</b></span>
+          </div>
+        </div>
+        <div class="game-stage" id="game-stage"></div>
+        <div class="game-controls" id="game-controls"></div>
+        <div class="game-overlay" id="game-overlay">
+          <div class="overlay-card">
+            <h3 id="overlay-title">暂停</h3>
+            <p id="overlay-desc"></p>
+            <div class="overlay-actions">
+              <button class="btn primary" id="btn-primary">继续</button>
+              <button class="btn ghost" id="btn-restart">重新开始</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="arcade-footer">
+      <p>RetroArcade · MIT License · 100% 本地运行，数据仅存于你的浏览器</p>
+    </footer>
+  </div>
+
+  <script src="js/engine.js"></script>
+  <script src="js/games/snake.js"></script>
+  <script src="js/games/tetris.js"></script>
+  <script src="js/games/breakout.js"></script>
+  <script src="js/games/pong.js"></script>
+  <script src="js/games/minesweeper.js"></script>
+  <script src="js/games/g2048.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

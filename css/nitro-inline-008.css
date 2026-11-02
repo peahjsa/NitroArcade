@@ -1,0 +1,22 @@
+
+html{background:#080719!important;scrollbar-color:#9445d9 #140a27!important}
+body:not(.nitro-boot-ready) > :not(#nitroBootScreen){visibility:hidden!important}
+#nitroBootScreen{position:fixed;inset:0;z-index:2147483647;background:radial-gradient(circle at 50% 42%,#42216c,#100a25 52%,#050511);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:19px;color:#f5eaff;font:900 18px 'Trebuchet MS',system-ui,sans-serif;letter-spacing:2px}
+#nitroBootScreen .nitroBootIcon{font-size:55px;color:#d18aff;text-shadow:0 0 32px #bd58ff;animation:nitroBootPulse 1.2s ease-in-out infinite alternate}
+#nitroBootScreen .nitroBootTrack{height:5px;width:min(240px,65vw);background:#2b1947;border-radius:100px;overflow:hidden}
+#nitroBootScreen .nitroBootTrack::after{content:'';display:block;width:40%;height:100%;background:linear-gradient(90deg,#8b44ff,#e884ff);border-radius:100px;animation:nitroBootTravel 1.2s ease-in-out infinite alternate}
+#nitroBootScreen small{color:#a891ca;font:600 11px system-ui,sans-serif;letter-spacing:1px}
+@keyframes nitroBootPulse{to{transform:scale(1.1);filter:brightness(1.35)}}
+@keyframes nitroBootTravel{to{transform:translateX(150%)}}
+body.nitro-boot-ready #nitroBootScreen{display:none!important}
+@media(prefers-reduced-motion:reduce){#nitroBootScreen *{animation:none!important}}
+
+:root{--nxFont:'Mario Party Hudson','Trebuchet MS','Arial Rounded MT Bold',system-ui,sans-serif}
+body{font-family:var(--nxFont)!important}
+.nxSideBrand,.nxWelcome h2,.hero h1,.ntDeckTop h2,.nxPanelTitle,.game-meta h3{font-family:'Mario Party Hudson','Trebuchet MS','Arial Rounded MT Bold',system-ui,sans-serif!important;font-weight:900!important}
+
+html,body,.nxSidebar,#npOverlay,#nxStudioOverlay{scrollbar-color:#a64dea #140a27;scrollbar-width:thin}
+::-webkit-scrollbar{width:11px;height:11px}
+::-webkit-scrollbar-track{background:linear-gradient(#0c0920,#1d1036,#0c0920)}
+::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#f18dff,#a34be7 45%,#6532b7);border:2px solid #130a26;border-radius:20px}
+::-webkit-scrollbar-thumb:hover{background:linear-gradient(#ffc2ff,#be6cff,#8144df)}

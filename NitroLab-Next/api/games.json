@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "games": [
+    {
+      "id": "nitro-clicker",
+      "title": "Nitro Clicker",
+      "offline": true,
+      "url": "games/clicker.html"
+    },
+    {
+      "id": "neon-dodge",
+      "title": "Neon Dodge",
+      "offline": true,
+      "url": "games/dodge.html"
+    },
+    {
+      "id": "pixel-catcher",
+      "title": "Pixel Catcher",
+      "offline": true,
+      "url": "games/catcher.html"
+    },
+    {
+      "id": "nes-plus",
+      "title": "NES Emulator Plus",
+      "offline": false,
+      "url": "../HexiArcade/nes-emulator-plus/index.html"
+    },
+    {
+      "id": "goat-sandbox",
+      "name": "Goat Chaos Sandbox",
+      "type": "offline",
+      "url": "games/goat-sandbox.html"
+    },
+    {
+      "id": "capybara-clicker",
+      "name": "Capybara Clicker",
+      "type": "online",
+      "url": "games/capybara-clicker.html"
+    },
+    {
+      "id": "fun-clicker",
+      "title": "Fun Clicker (Horror)",
+      "type": "online-iframe",
+      "url": "games/fun-clicker.html",
+      "requiresUrl": true
+    },
+    {
+      "id": "maze-runner",
+      "title": "Maze Runner",
+      "type": "offline",
+      "url": "games/maze-runner.html"
+    }
+  ]
+}

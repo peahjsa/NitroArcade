@@ -1,0 +1,11 @@
+
+
+#nitroMixPanel{position:fixed;inset:0;z-index:2147483646;background:#090d15;color:#f4f6ff;display:none;overflow:auto;padding:22px;font:14px Arial,sans-serif}
+#nitroMixPanel.open{display:block}
+#nitroMixPanel button,#nitroMixPanel input{padding:9px;border-radius:7px;border:1px solid #526278;background:#172238;color:#fff;margin:3px}
+#nitroMixPanel button{cursor:pointer}
+#nitroMixPanel .mixrow{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:12px 0}
+#nitroMixPanel .mixcard{max-width:850px;margin:auto}
+#nitroMixPanel .mixtrack{display:flex;gap:10px;align-items:center;justify-content:space-between;border-bottom:1px solid #374356;padding:9px 0}
+#nitroMixPanel .mixtrack button{flex-shrink:0}
+#nitroMixPanel audio{width:100%;margin:12px 0}

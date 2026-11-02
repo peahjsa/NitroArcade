@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Pendulum — Game Portal</title>
+<meta name="description" content="Play Pendulum Art free online — Watch chaotic pendulums trace beautiful patterns over time. A Easy Physics &amp; Simulation game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/pendulum/"/>
+<meta property="og:title" content="⏱️ Pendulum Art — Free Browser Game"/>
+<meta property="og:description" content="Play Pendulum Art free in your browser. Watch chaotic pendulums trace beautiful patterns over time."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/pendulum/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Pendulum Art",
+  "description": "Watch chaotic pendulums trace beautiful patterns over time.",
+  "url": "https://arcade.sotshau.fun/games/pendulum/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Physics & Simulation",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:38px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px}.score-bar{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:12px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:92px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.toolbar{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:12px}.pill{background:#fff;border:1px solid #e5e7eb;border-radius:999px;padding:8px 14px;font-size:13px;color:#4b5563}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:18px;box-shadow:0 8px 20px rgba(0,0,0,.08)}canvas{display:block;background:linear-gradient(#eff6ff,#faf5ff);border-radius:14px;border:1px solid #d1d5db;touch-action:none}.status{min-height:24px;text-align:center;font-weight:700;color:#374151;margin-top:12px}.overlay{position:absolute;inset:18px;background:rgba(245,245,247,.95);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p{color:#6b7280;line-height:1.5;max-width:340px}.btn{padding:9px 18px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center;padding:0 18px}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🪢 Pendulum</h1>
+<p class="sub">Pump the swing, adjust the rope length, and collect stars while avoiding the red hazard orbs.</p>
+<div class="score-bar">
+  <div class="score-box"><div class="score-label">Score</div><div class="score-val" id="score">0</div></div>
+  <div class="score-box"><div class="score-label">Length</div><div class="score-val" id="length">180</div></div>
+  <div class="score-box"><div class="score-label">Time</div><div class="score-val" id="time">45</div></div>
+  <div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">0</div></div>
+</div>
+<div class="toolbar"><div class="pill">Left/Right pump · Up/Down change length</div></div>
+<div class="game">
+  <canvas id="pendulum" width="560" height="420"></canvas>
+  <div class="overlay" id="overlay">
+    <h2>🪢 Pendulum</h2>
+    <p>Use Left and Right to add swing, Up and Down to shorten or lengthen the rope, and tap the left or right side on touch screens to pump.</p>
+    <button class="btn" id="overlay-btn">Start Swinging</button>
+  </div>
+  <div class="status" id="status">Catch the stars and dodge the red hazard orbs.</div>
+</div>
+<p class="hint">Keyboard: arrows · Touch: tap left/right half to pump, top/bottom to adjust rope</p>
+<script>
+const canvas=document.getElementById('pendulum'),ctx=canvas.getContext('2d');
+const BEST_KEY='pendulumBest',anchor={x:280,y:44};
+let angle=.95,vel=0,length=180,score=0,best=+(localStorage.getItem(BEST_KEY)||0),timeLeft=45,last=0,running=false,rafId=0,statusMsg='Catch the stars and dodge the red hazard orbs.',star={x:120,y:180,r:14},hazards=[];
+document.getElementById('best').textContent=best;
+function spawnStar(){star={x:80+Math.random()*400,y:120+Math.random()*220,r:14};}
+function reset(){angle=.95;vel=0;length=180;score=0;timeLeft=45;hazards=[{phase:0,y:270,amp:180},{phase:2,y:340,amp:130}];spawnStar();statusMsg='Catch the stars and dodge the red hazard orbs.';renderStats();draw();}
+function startGame(){running=true;last=0;document.getElementById('overlay').style.display='none';reset();cancelAnimationFrame(rafId);rafId=requestAnimationFrame(loop);} 
+function bob(){return{x:anchor.x+Math.sin(angle)*length,y:anchor.y+Math.cos(angle)*length};}
+function renderStats(){if(score>best){best=score;localStorage.setItem(BEST_KEY,String(best));}document.getElementById('score').textContent=score;document.getElementById('length').textContent=Math.round(length);document.getElementById('time').textContent=Math.ceil(timeLeft);document.getElementById('best').textContent=best;document.getElementById('status').textContent=statusMsg;}
+function pump(dir){vel+=dir*.08;statusMsg=dir<0?'Pushed left.':'Pushed right.';renderStats();}
+function adjust(delta){length=Math.max(110,Math.min(240,length+delta));statusMsg='Adjusted rope length.';renderStats();}
+function finish(win){running=false;const overlay=document.getElementById('overlay');overlay.innerHTML=`<h2>${win?'✨ Swing Master':'💥 Swing Lost'}</h2><p>${win?`You collected <strong>${score}</strong> stars.`:'A hazard clipped the pendulum. Try another rhythm.'}</p><button class="btn" id="overlay-btn">Play Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);} 
+function update(dt){timeLeft-=dt;if(timeLeft<=0)return finish(true);vel+=(-9.8/length)*Math.sin(angle)*dt*26;vel*=.996;angle+=vel;const b=bob();if(Math.hypot(b.x-star.x,b.y-star.y)<26){score++;statusMsg='Star collected!';spawnStar();}
+hazards.forEach(h=>h.phase+=dt*1.8);if(hazards.some(h=>Math.hypot(b.x-(280+Math.sin(h.phase)*h.amp),b.y-h.y)<24)){return finish(false);}renderStats();}
+function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.fillStyle='#c7d2fe';ctx.beginPath();ctx.arc(anchor.x,anchor.y,12,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#475569';ctx.lineWidth=4;const b=bob();ctx.beginPath();ctx.moveTo(anchor.x,anchor.y);ctx.lineTo(b.x,b.y);ctx.stroke();ctx.fillStyle='#6c63ff';ctx.beginPath();ctx.arc(b.x,b.y,20,0,Math.PI*2);ctx.fill();ctx.fillStyle='#facc15';ctx.beginPath();ctx.arc(star.x,star.y,star.r,0,Math.PI*2);ctx.fill();ctx.fillStyle='rgba(250,204,21,.25)';ctx.beginPath();ctx.arc(star.x,star.y,star.r+12,0,Math.PI*2);ctx.fill();hazards.forEach(h=>{const x=280+Math.sin(h.phase)*h.amp;ctx.fillStyle='#ef4444';ctx.beginPath();ctx.arc(x,h.y,14,0,Math.PI*2);ctx.fill();});}
+function loop(ts){if(!running)return;const dt=(ts-last||16)/1000;last=ts;update(dt);draw();rafId=requestAnimationFrame(loop);} 
+canvas.addEventListener('click',e=>{const r=canvas.getBoundingClientRect(),x=(e.clientX-r.left)*(canvas.width/r.width),y=(e.clientY-r.top)*(canvas.height/r.height);if(y<140)adjust(-10);else if(y>300)adjust(10);else pump(x<canvas.width/2?-1:1);});canvas.addEventListener('touchstart',e=>{const r=canvas.getBoundingClientRect(),t=e.touches[0],x=(t.clientX-r.left)*(canvas.width/r.width),y=(t.clientY-r.top)*(canvas.height/r.height);if(y<140)adjust(-10);else if(y>300)adjust(10);else pump(x<canvas.width/2?-1:1);},{passive:true});
+document.getElementById('overlay-btn').addEventListener('click',startGame);document.addEventListener('keydown',e=>{const overlay=document.getElementById('overlay');if(overlay.style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}if(e.key==='ArrowLeft'){e.preventDefault();pump(-1);}if(e.key==='ArrowRight'){e.preventDefault();pump(1);}if(e.key==='ArrowUp'){e.preventDefault();adjust(-10);}if(e.key==='ArrowDown'){e.preventDefault();adjust(10);}});reset();
+</script>
+</body>
+</html>

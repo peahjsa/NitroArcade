@@ -1,0 +1,43 @@
+
+
+.navbar{justify-content:center!important}
+.navbar .nav-actions{display:none!important}
+.navbar .search-wrap{width:min(690px,92%)!important;max-width:690px!important;flex:1!important}
+.navbar .search-wrap input{height:43px;border:1px solid #493073!important;background:linear-gradient(90deg,#11122a,#1a1235)!important;box-shadow:0 0 24px #9a47ef19;color:#f6eaff;font-size:13px!important;padding-left:40px!important}
+.navbar .search-wrap input:focus{border-color:#bc68ff!important;box-shadow:0 0 0 3px #9a47ef2a,0 0 30px #a54cff30}
+.nxSidebar button{transition:background .2s,border-color .2s,transform .2s}
+.nxSidebar button:hover{transform:translateX(3px)}
+.nxSideBrand>span{animation:nxBrandGlow 3s ease-in-out infinite alternate}
+@keyframes nxBrandGlow{to{filter:drop-shadow(0 0 16px #c276ff);transform:rotate(12deg)}}
+.nxWelcome h2{background:linear-gradient(90deg,#fff 15%,#f7b5ff 65%,#9a83ff);color:transparent;background-clip:text}
+.nxPanel,.ntCommandDeck{backdrop-filter:blur(10px)}
+.nxPanel{transition:border-color .25s,box-shadow .25s,transform .25s}
+.nxPanel:hover{border-color:#7445a5;box-shadow:0 0 30px #9845f519}
+.nxISGCard{position:relative;overflow:hidden}
+.nxISGCard::after{content:"✦";position:absolute;right:18px;top:38px;font-size:85px;color:#ba5af326;pointer-events:none}
+.nxHeroArtwork .nxPlanet{animation:nxPlanetPulse 7s ease-in-out infinite alternate}
+@keyframes nxPlanetPulse{to{filter:hue-rotate(28deg) brightness(1.25);scale:1.06}}
+.nxDashboardGrid .hero{background-image:radial-gradient(circle at 83% 35%,#f64fd455,transparent 31%),radial-gradient(circle at 52% 100%,#563bd34b,transparent 52%),linear-gradient(110deg,#0e0e2c,#2a104a 65%,#321357)!important}
+.game-card{--gameTint:#a54cff}
+.game-card .thumb{box-shadow:inset 0 -40px 70px color-mix(in srgb,var(--gameTint) 20%,transparent)}
+.game-card:hover{border-color:var(--gameTint)!important;box-shadow:0 15px 45px color-mix(in srgb,var(--gameTint) 28%,transparent)!important}
+.nxGameColorButton{position:absolute;right:11px;bottom:75px;z-index:6;display:flex;align-items:center;justify-content:center;gap:4px;border:1px solid #ffffff4b;background:#121225ed;color:white;padding:7px 10px;border-radius:9px;font-size:10px;font-weight:900;cursor:pointer;box-shadow:0 4px 15px #0007}
+.nxGameColorButton:hover{background:#36205e;border-color:#dba7ff}
+#nxColorOverlay{display:none;position:fixed;inset:0;z-index:2147483610;background:#040413e8;backdrop-filter:blur(12px);padding:18px;overflow:auto;align-items:center;justify-content:center}
+#nxColorOverlay.open{display:flex}
+.nxColorDialog{width:min(570px,100%);padding:25px;border:1px solid #8050c4;border-radius:20px;background:linear-gradient(135deg,#161331,#090e21);color:#f7edff;box-shadow:0 20px 90px #000a}
+.nxColorDialog h2{font-size:27px;margin-bottom:8px}
+.nxColorDialog p{font-size:12px;color:#a8a0c7;line-height:1.6;margin-bottom:18px}
+.nxColorGrid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin:14px 0}
+.nxSwatch{aspect-ratio:1;border-radius:12px;border:2px solid #ffffff44;cursor:pointer;box-shadow:inset 0 -8px 18px #0004;transition:transform .2s}
+.nxSwatch:hover{transform:translateY(-5px) scale(1.04);border-color:white}
+.nxColorControls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:16px}
+.nxColorControls label{display:flex;align-items:center;gap:9px;font-size:12px;color:#d8c9f0}
+.nxColorControls input[type=color]{width:50px;height:39px;background:transparent;border:0;cursor:pointer}
+.nxColorControls button{border:1px solid #6746a0;border-radius:10px;background:#251742;color:white;padding:10px 14px;cursor:pointer;font-weight:800}
+.nxColorControls button:first-of-type{background:#7133b7}
+.nxColorPreview{height:90px;border-radius:13px;background:radial-gradient(circle at 75% 30%,var(--nxPreviewColor,#a54cff),transparent 55%),linear-gradient(110deg,#10122a,#21163d);border:1px solid var(--nxPreviewColor,#a54cff);display:flex;align-items:end;padding:15px;font-size:19px;font-weight:900}
+.nxColorHint{font-size:11px;color:#8f8baa;margin-top:12px}
+.nxColorPlayerTip{font-size:10px;color:#ae9ccc}
+body.ntLowMotion .nxPlanet,body.ntLowMotion .nxSideBrand>span{animation:none!important}
+@media(max-width:550px){.nxColorGrid{grid-template-columns:repeat(4,1fr)}.nxGameColorButton{bottom:73px;right:8px}}

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Color Puzzle — Game Portal</title>
+<meta name="description" content="Play Color Mixing free online — Mix primary colors to match the target shade. Learn color theory! A Easy Creative &amp; Art game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/color-puzzle/"/>
+<meta property="og:title" content="🎨 Color Mixing — Free Browser Game"/>
+<meta property="og:description" content="Play Color Mixing free in your browser. Mix primary colors to match the target shade. Learn color theory!"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/color-puzzle/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Color Mixing",
+  "description": "Mix primary colors to match the target shade. Learn color theory!",
+  "url": "https://arcade.sotshau.fun/games/color-puzzle/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Creative & Art",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px}.score-bar{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:14px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 18px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:96px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:20px;padding:20px;box-shadow:0 8px 20px rgba(0,0,0,.08);width:min(560px,94vw)}.board{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.tile{aspect-ratio:1/1;border:none;border-radius:16px;cursor:pointer;position:relative;box-shadow:0 2px 6px rgba(0,0,0,.08)}.tile.selected{outline:4px solid #6c63ff}.tile.cursor::after{content:'';position:absolute;inset:8px;border:3px dashed rgba(255,255,255,.75);border-radius:12px}.status{min-height:24px;margin-top:14px;text-align:center;color:#374151;font-weight:700}.btn{padding:9px 16px;background:#6c63ff;color:#fff;border:none;border-radius:10px;font-weight:700;cursor:pointer}.controls{margin-top:14px;display:flex;justify-content:center}.overlay{position:absolute;inset:18px;background:rgba(245,245,247,.95);border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p{max-width:340px;color:#6b7280;line-height:1.5}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center;padding:0 16px}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🌈 Color Puzzle</h1>
+<p class="sub">Swap tiles until the gradient flows smoothly from cool top-left tones to warm bottom-right tones.</p>
+<div class="score-bar"><div class="score-box"><div class="score-label">Moves</div><div class="score-val" id="moves">0</div></div><div class="score-box"><div class="score-label">Time</div><div class="score-val" id="time">0s</div></div><div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">—</div></div></div>
+<div class="game">
+  <div class="board" id="board"></div>
+  <div class="controls"><button class="btn" id="shuffle-btn">Shuffle</button></div>
+  <div class="status" id="status">Press Start to scramble the board.</div>
+  <div class="overlay" id="overlay"><h2>🌈 Color Puzzle</h2><p>Select two tiles to swap them. Use arrow keys to move the cursor and Space to pick a tile.</p><button class="btn" id="overlay-btn">Start Puzzle</button></div>
+</div>
+<p class="hint">Keyboard: arrows move, Space/Enter select · Touch: tap two tiles to swap</p>
+<script>
+const SIZE=4,BEST_KEY='colorPuzzleBest';
+const boardEl=document.getElementById('board'),overlay=document.getElementById('overlay'),statusEl=document.getElementById('status');
+let tiles=[],selected=null,cursor=0,moves=0,seconds=0,timer=0,started=false;
+function solvedTiles(){return Array.from({length:SIZE*SIZE},(_,i)=>{const row=Math.floor(i/SIZE),col=i%SIZE;return{id:i,color:`hsl(${210+row*18+col*10},75%,${78-col*6-row*4}%)`};});}
+function bestLabel(value){return value?`${value}m`:'—';}
+function updateBest(value){const current=+(localStorage.getItem(BEST_KEY)||0);if(!current||value<current)localStorage.setItem(BEST_KEY,String(value));document.getElementById('best').textContent=bestLabel(+(localStorage.getItem(BEST_KEY)||0));}
+function render(){boardEl.innerHTML='';tiles.forEach((tile,index)=>{const button=document.createElement('button');button.className='tile'+(selected===index?' selected':'')+(cursor===index?' cursor':'');button.style.background=tile.color;button.addEventListener('click',()=>select(index));boardEl.appendChild(button);});document.getElementById('moves').textContent=String(moves);document.getElementById('time').textContent=seconds+'s';}
+function shuffle(){tiles=solvedTiles();for(let i=tiles.length-1;i>0;i--){const j=(Math.random()*(i+1))|0;[tiles[i],tiles[j]]=[tiles[j],tiles[i]];}if(checkSolved())return shuffle();moves=0;seconds=0;selected=null;started=true;clearInterval(timer);timer=setInterval(()=>{seconds++;document.getElementById('time').textContent=seconds+'s';},1000);overlay.style.display='none';statusEl.textContent='Arrange the gradient in order.';render();}
+function checkSolved(){return tiles.every((tile,index)=>tile.id===index);}
+function finish(){clearInterval(timer);statusEl.textContent=`Solved in ${moves} moves and ${seconds} seconds!`;updateBest(moves);overlay.innerHTML=`<h2>✨ Gradient Restored</h2><p>You solved the puzzle in <strong>${moves}</strong> moves.</p><button class="btn" id="overlay-btn">Play Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',shuffle);} 
+function select(index){if(!started)return;cursor=index;if(selected===null){selected=index;statusEl.textContent='Choose a second tile to swap.';}else if(selected===index){selected=null;statusEl.textContent='Selection cleared.';}else{[tiles[selected],tiles[index]]=[tiles[index],tiles[selected]];selected=null;moves++;statusEl.textContent='Tiles swapped.';if(checkSolved())finish();}render();}
+document.getElementById('overlay-btn').addEventListener('click',shuffle);document.getElementById('shuffle-btn').addEventListener('click',shuffle);document.getElementById('best').textContent=bestLabel(+(localStorage.getItem(BEST_KEY)||0));
+document.addEventListener('keydown',event=>{if(overlay.style.display!=='none'&&(event.key==='Enter'||event.key===' ')){event.preventDefault();shuffle();return;}const row=Math.floor(cursor/SIZE),col=cursor%SIZE;if(event.key==='ArrowLeft'){event.preventDefault();cursor=row*SIZE+((col+SIZE-1)%SIZE);render();}if(event.key==='ArrowRight'){event.preventDefault();cursor=row*SIZE+((col+1)%SIZE);render();}if(event.key==='ArrowUp'){event.preventDefault();cursor=((row+SIZE-1)%SIZE)*SIZE+col;render();}if(event.key==='ArrowDown'){event.preventDefault();cursor=((row+1)%SIZE)*SIZE+col;render();}if(event.key===' '||event.key==='Enter'){event.preventDefault();select(cursor);}});
+tiles=solvedTiles();render();
+</script>
+</body>
+</html>

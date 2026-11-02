@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Dice War — Game Portal</title>
+<meta name="description" content="Play Dice War free online — Roll dice to conquer territories in this Risk-inspired quick game. A Easy Strategy game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/dice-war/"/>
+<meta property="og:title" content="🎲 Dice War — Free Browser Game"/>
+<meta property="og:description" content="Play Dice War free in your browser. Roll dice to conquer territories in this Risk-inspired quick game."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/dice-war/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Dice War",
+  "description": "Roll dice to conquer territories in this Risk-inspired quick game.",
+  "url": "https://arcade.sotshau.fun/games/dice-war/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Strategy",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px}.score-bar{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:12px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:92px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:18px;box-shadow:0 8px 20px rgba(0,0,0,.08)}canvas{display:block;background:linear-gradient(#eff6ff,#faf5ff);border-radius:14px;border:1px solid #d1d5db;touch-action:none}.status{min-height:24px;text-align:center;font-weight:700;color:#374151;margin-top:12px}.overlay{position:absolute;inset:18px;background:rgba(245,245,247,.95);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p{color:#6b7280;line-height:1.5;max-width:360px}.btn{padding:9px 18px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center;padding:0 18px}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🎲 Dice War</h1>
+<p class="sub">Select a blue territory, attack adjacent enemies, and let the dice decide the front line.</p>
+<div class="score-bar">
+  <div class="score-box"><div class="score-label">Turn</div><div class="score-val" id="turn">1</div></div>
+  <div class="score-box"><div class="score-label">Blue</div><div class="score-val" id="blue">0</div></div>
+  <div class="score-box"><div class="score-label">Orange</div><div class="score-val" id="orange">0</div></div>
+  <div class="score-box"><div class="score-label">Wins</div><div class="score-val" id="wins">0</div></div>
+</div>
+<div class="game">
+  <canvas id="board" width="500" height="500"></canvas>
+  <div class="overlay" id="overlay">
+    <h2>🎲 Dice War</h2>
+    <p>Move the cursor with the arrow keys, press Enter to select and attack, and Space to end your turn. Tap territories on touch devices.</p>
+    <button class="btn" id="overlay-btn">Start Game</button>
+  </div>
+  <div class="status" id="status">Blue begins the war.</div>
+</div>
+<p class="hint">Keyboard: arrows + Enter · Space to pass · Touch: tap cells</p>
+<script>
+const canvas=document.getElementById('board'),ctx=canvas.getContext('2d');
+if(!ctx) throw new Error('Canvas 2D context not available');
+const SIZE=5,CELL=100,WINS_KEY='diceWarWins';
+let grid=[],cursor=0,selected=null,turn=1,wins=+(localStorage.getItem(WINS_KEY)||0),running=false,statusMsg='Blue begins the war.';
+document.getElementById('wins').textContent=wins;
+function init(){grid=[];for(let y=0;y<SIZE;y++)for(let x=0;x<SIZE;x++){const owner=x<2?1:x>2?2:(Math.random()>.5?1:2);grid.push({owner,dice:1+Math.floor(Math.random()*5)});}cursor=12;selected=null;turn=1;statusMsg='Blue begins the war.';renderStats();draw();}
+function neighbors(i){const x=i%SIZE,y=Math.floor(i/SIZE),list=[];[[1,0],[-1,0],[0,1],[0,-1]].forEach(([dx,dy])=>{const nx=x+dx,ny=y+dy;if(nx>=0&&nx<SIZE&&ny>=0&&ny<SIZE)list.push(ny*SIZE+nx);});return list;}
+function count(owner){return grid.filter(c=>c.owner===owner).length;}
+function sumRoll(n){let total=0,parts=[];for(let i=0;i<n;i++){const v=1+Math.floor(Math.random()*6);parts.push(v);total+=v;}return{total,parts};}
+function renderStats(){document.getElementById('turn').textContent=turn;document.getElementById('blue').textContent=count(1);document.getElementById('orange').textContent=count(2);document.getElementById('wins').textContent=wins;document.getElementById('status').textContent=statusMsg;}
+function reinforcements(owner){const owned=grid.map((cell,i)=>({cell,i})).filter(v=>v.cell.owner===owner);for(let k=0;k<Math.max(1,Math.floor(owned.length/3));k++){const choice=owned[Math.floor(Math.random()*owned.length)];choice.cell.dice=Math.min(8,choice.cell.dice+1);}}
+function finish(win){running=false;if(win){wins++;localStorage.setItem(WINS_KEY,String(wins));}renderStats();const overlay=document.getElementById('overlay');overlay.innerHTML=`<h2>${win?'🏆 Blue Triumph':'💥 Orange Prevails'}</h2><p>${win?'You conquered the board!':'The enemy rolled over your last territory.'}</p><button class="btn" id="overlay-btn">Play Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);}
+function endRound(){selected=null;reinforcements(1);aiTurn();reinforcements(2);turn++;if(count(2)===0)return finish(true);if(count(1)===0)return finish(false);renderStats();draw();}
+function aiTurn(){const attacks=[];grid.forEach((cell,i)=>{if(cell.owner!==2||cell.dice<2)return;neighbors(i).forEach(n=>{if(grid[n].owner!==2)attacks.push({from:i,to:n,score:grid[i].dice-grid[n].dice});});});if(!attacks.length){statusMsg='Orange fortified its borders.';return;}attacks.sort((a,b)=>b.score-a.score);const move=attacks[0],from=grid[move.from],to=grid[move.to],atk=sumRoll(from.dice),def=sumRoll(to.dice);if(atk.total>=def.total){to.owner=2;to.dice=Math.max(1,from.dice-1);from.dice=1;statusMsg=`Orange rolled ${atk.total} vs ${def.total} and captured a territory.`;}else{from.dice=1;statusMsg=`Orange rolled ${atk.total} vs ${def.total} and failed.`;}}
+function act(i){if(!running)return;const tile=grid[i];if(!selected){if(tile.owner===1&&tile.dice>1){selected=i;statusMsg='Pick an adjacent orange tile to attack.';}else statusMsg='Choose a blue territory with at least 2 dice.';renderStats();return draw();}if(i===selected){selected=null;statusMsg='Selection cleared.';renderStats();return draw();}if(!neighbors(selected).includes(i)){statusMsg='Target must be orthogonally adjacent.';renderStats();return draw();}const from=grid[selected],to=grid[i];if(to.owner===1){to.dice=Math.min(8,to.dice+from.dice-1);from.dice=1;statusMsg='Blue regrouped its armies.';}else{const atk=sumRoll(from.dice),def=sumRoll(to.dice);if(atk.total>=def.total){to.owner=1;to.dice=Math.max(1,from.dice-1);from.dice=1;statusMsg=`Blue rolled ${atk.total} vs ${def.total} and captured the territory.`;}else{from.dice=1;statusMsg=`Blue rolled ${atk.total} vs ${def.total} and lost the assault.`;}}renderStats();draw();if(count(2)===0)return finish(true);setTimeout(endRound,450);} 
+function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);grid.forEach((tile,i)=>{const x=(i%SIZE)*CELL,y=Math.floor(i/SIZE)*CELL;ctx.fillStyle=tile.owner===1?'#60a5fa':'#fb923c';ctx.fillRect(x+5,y+5,CELL-10,CELL-10);ctx.fillStyle='rgba(255,255,255,.16)';ctx.fillRect(x+5,y+5,CELL-10,28);ctx.strokeStyle=selected===i?'#f59e0b':cursor===i?'#111827':'rgba(17,24,39,.15)';ctx.lineWidth=selected===i?4:2;ctx.strokeRect(x+5,y+5,CELL-10,CELL-10);ctx.fillStyle='#111827';ctx.font='700 34px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('⚅',x+CELL/2,y+40);ctx.font='700 26px system-ui';ctx.fillText(tile.dice,x+CELL/2,y+66);});}
+function startGame(){running=true;document.getElementById('overlay').style.display='none';init();}
+canvas.addEventListener('click',e=>{const r=canvas.getBoundingClientRect(),x=Math.floor((e.clientX-r.left)/(r.width/SIZE)),y=Math.floor((e.clientY-r.top)/(r.height/SIZE));cursor=Math.max(0,Math.min(SIZE*SIZE-1,y*SIZE+x));act(cursor);});
+document.getElementById('overlay-btn').addEventListener('click',startGame);document.addEventListener('keydown',e=>{const overlay=document.getElementById('overlay');if(overlay.style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}if(e.key==='ArrowLeft'){e.preventDefault();cursor=(cursor%SIZE===0)?cursor+SIZE-1:cursor-1;draw();}if(e.key==='ArrowRight'){e.preventDefault();cursor=(cursor%SIZE===SIZE-1)?cursor-SIZE+1:cursor+1;draw();}if(e.key==='ArrowUp'){e.preventDefault();cursor=(cursor+SIZE*(SIZE-1))%(SIZE*SIZE);draw();}if(e.key==='ArrowDown'){e.preventDefault();cursor=(cursor+SIZE)%(SIZE*SIZE);draw();}if(e.key==='Enter'){e.preventDefault();act(cursor);}if(e.key===' '&&running){e.preventDefault();selected=null;statusMsg='Blue held position this turn.';renderStats();setTimeout(endRound,350);}});init();
+</script>
+</body>
+</html>

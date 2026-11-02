@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>🐉 Chinese Chess — Game Portal</title>
+<meta name="description" content="Play Chinese Chess free online — 象棋 — Capture the opponent's General to win this 2000-year-old classic. A Hard Card &amp; Board game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/chinese-chess/"/>
+<meta property="og:title" content="🉐 Chinese Chess — Free Browser Game"/>
+<meta property="og:description" content="Play Chinese Chess free in your browser. 象棋 — Capture the opponent's General to win this 2000-year-old classic."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/chinese-chess/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Chinese Chess",
+  "description": "象棋 — Capture the opponent's General to win this 2000-year-old classic.",
+  "url": "https://arcade.sotshau.fun/games/chinese-chess/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Card & Board",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px;color:#111827}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 18px}.score-bar{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:14px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:94px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700}.purple{color:#6c63ff}.red{color:#dc2626}.black{color:#111827}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:18px;box-shadow:0 8px 20px rgba(0,0,0,.08)}.board{display:grid;grid-template-columns:repeat(9,58px);grid-template-rows:repeat(10,58px);gap:0;border-radius:14px;overflow:hidden;background:#d6a75d;border:2px solid #8b5a2b;position:relative}.cell{width:58px;height:58px;border:none;background:transparent;position:relative;cursor:pointer;display:flex;align-items:center;justify-content:center}.cell::before,.cell::after{content:'';position:absolute;background:#7c4a1f;opacity:.78}.cell::before{height:1.5px;left:0;right:0;top:50%;transform:translateY(-50%)}.cell::after{width:1.5px;top:0;bottom:0;left:50%;transform:translateX(-50%)}.piece{width:44px;height:44px;border-radius:50%;background:#fef3c7;border:2px solid currentColor;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800;box-shadow:0 4px 10px rgba(0,0,0,.16);position:relative;z-index:1}.piece.red{color:#dc2626}.piece.black{color:#111827}.cell.cursor{outline:3px solid #6c63ff;outline-offset:-3px}.cell.selected{box-shadow:inset 0 0 0 4px #93c5fd}.cell.move::after{content:'';position:absolute;inset:22px;border-radius:50%;background:rgba(255,255,255,.55)}.river{position:absolute;left:0;right:0;top:calc(58px * 4);height:58px;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800;letter-spacing:.4em;color:rgba(124,74,31,.5);pointer-events:none}.controls{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:14px}.btn{padding:9px 18px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer}.btn:hover{background:#574fd6}.status{margin-top:12px;font-weight:700;text-align:center;color:#374151;min-height:24px}.overlay{position:absolute;inset:18px;background:rgba(245,245,247,.95);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p{color:#6b7280;max-width:350px;line-height:1.5}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center;padding:0 18px}@media (max-width:660px){.board{grid-template-columns:repeat(9,36px);grid-template-rows:repeat(10,36px)}.cell{width:36px;height:36px}.piece{width:28px;height:28px;font-size:16px}.river{top:calc(36px * 4);height:36px;font-size:14px}.cell.move::after{inset:12px}}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🐉 Chinese Chess</h1>
+<p class="sub">Command rooks, cannons, horses, and soldiers in a same-device Xiangqi duel across the river.</p>
+<div class="score-bar">
+  <div class="score-box"><div class="score-label">Turn</div><div class="score-val purple" id="turn">Red</div></div>
+  <div class="score-box"><div class="score-label">Red Wins</div><div class="score-val red" id="red-wins">0</div></div>
+  <div class="score-box"><div class="score-label">Black Wins</div><div class="score-val black" id="black-wins">0</div></div>
+  <div class="score-box"><div class="score-label">Phase</div><div class="score-val purple" id="phase">Ready</div></div>
+</div>
+<div class="game">
+  <div class="board" id="board"><div class="river">楚 河　　　　漢 界</div></div>
+  <div class="controls"><button class="btn" id="new-match-btn">New Match</button></div>
+  <div class="overlay" id="overlay">
+    <h2>🐉 Chinese Chess</h2>
+    <p>Arrow keys move the cursor and Enter selects or moves. Tap a piece and then a destination on touch devices. Cannons need one screen to capture, elephants cannot cross the river, and flying generals are enforced.</p>
+    <button class="btn" id="overlay-btn">Start Match</button>
+  </div>
+  <div class="status" id="status">Press Start to begin.</div>
+</div>
+<p class="hint">Arrow keys + Enter · Click/tap intersections · General checks and river rules included</p>
+<script>
+const boardEl=document.getElementById('board'),overlay=document.getElementById('overlay'),statusEl=document.getElementById('status');
+document.getElementById('new-match-btn').addEventListener('click',startGame);
+document.getElementById('overlay-btn').addEventListener('click',startGame);
+const WINS_KEY='chineseChessWins';
+const ICONS={R:'俥',H:'傌',E:'相',A:'仕',K:'帥',C:'炮',P:'兵',r:'車',h:'馬',e:'象',a:'士',k:'將',c:'砲',p:'卒'};
+const START=[['r','h','e','a','k','a','e','h','r'],['','','','','','','','',''],['','c','','','','','','c',''],['p','','p','','p','','p','','p'],['','','','','','','','',''],['','','','','','','','',''],['P','','P','','P','','P','','P'],['','C','','','','','','C',''],['','','','','','','','',''],['R','H','E','A','K','A','E','H','R']];
+let board,turn='r',cursor={r:9,c:4},selected=null,running=false,wins=JSON.parse(localStorage.getItem(WINS_KEY)||'{"r":0,"b":0}');
+function cloneBoard(src){return src.map(row=>row.slice());}
+function resetBoard(){return START.map(row=>row.slice());}
+function side(piece){return piece?piece===piece.toUpperCase()?'r':'b':'';}
+function enemyOf(s){return s==='r'?'b':'r';}
+function inside(r,c){return r>=0&&r<10&&c>=0&&c<9;}
+function palace(sideName,r,c){return c>=3&&c<=5&&(sideName==='r'?r>=7&&r<=9:r>=0&&r<=2);}
+function findGeneral(sideName,src){const mark=sideName==='r'?'K':'k';for(let r=0;r<10;r++)for(let c=0;c<9;c++)if(src[r][c]===mark)return{r,c};return null;}
+function generalsFacing(src){const red=findGeneral('r',src),black=findGeneral('b',src);if(!red||!black||red.c!==black.c)return false;for(let r=black.r+1;r<red.r;r++)if(src[r][red.c])return false;return true;}
+function addMove(moves,src,r,c,tr,tc){if(!inside(tr,tc))return false;const piece=src[r][c],mine=side(piece),target=src[tr][tc];if(!target){moves.push({r:tr,c:tc});return false;}if(side(target)!==mine)moves.push({r:tr,c:tc});return true;}
+function pseudoMoves(r,c,src){const piece=src[r][c],mine=side(piece),enemy=enemyOf(mine),type=piece?piece.toLowerCase():'';const moves=[];if(!piece)return moves;if(type==='k'){for(const[dr,dc]of[[1,0],[-1,0],[0,1],[0,-1]]){const nr=r+dr,nc=c+dc;if(palace(mine,nr,nc)&&side(src[nr][nc])!==mine)moves.push({r:nr,c:nc});}const foe=findGeneral(enemy,src);if(foe&&foe.c===c){let clear=true;for(let rr=Math.min(r,foe.r)+1;rr<Math.max(r,foe.r);rr++)if(src[rr][c])clear=false;if(clear)moves.push({r:foe.r,c:foe.c});}return moves;}if(type==='a'){for(const[dr,dc]of[[1,1],[1,-1],[-1,1],[-1,-1]]){const nr=r+dr,nc=c+dc;if(palace(mine,nr,nc)&&side(src[nr][nc])!==mine)moves.push({r:nr,c:nc});}return moves;}if(type==='e'){for(const[dr,dc]of[[2,2],[2,-2],[-2,2],[-2,-2]]){const nr=r+dr,nc=c+dc,br=r+dr/2,bc=c+dc/2;if(!inside(nr,nc)||src[br][bc])continue;if(mine==='r'&&nr<5)continue;if(mine==='b'&&nr>4)continue;if(side(src[nr][nc])!==mine)moves.push({r:nr,c:nc});}return moves;}if(type==='h'){for(const[dr,dc,lr,lc]of[[2,1,1,0],[2,-1,1,0],[-2,1,-1,0],[-2,-1,-1,0],[1,2,0,1],[1,-2,0,-1],[-1,2,0,1],[-1,-2,0,-1]]){const nr=r+dr,nc=c+dc;if(inside(nr,nc)&&!src[r+lr][c+lc]&&side(src[nr][nc])!==mine)moves.push({r:nr,c:nc});}return moves;}if(type==='r'||type==='c'){for(const[dr,dc]of[[1,0],[-1,0],[0,1],[0,-1]]){let nr=r+dr,nc=c+dc,screen=false;while(inside(nr,nc)){const target=src[nr][nc];if(type==='r'){if(addMove(moves,src,r,c,nr,nc))break;}else{if(!screen){if(!target)moves.push({r:nr,c:nc});else screen=true;}else if(target){if(side(target)!==mine)moves.push({r:nr,c:nc});break;}}nr+=dr;nc+=dc;}}return moves;}if(type==='p'){const forward=mine==='r'?-1:1;const candidates=[[r+forward,c]];if((mine==='r'&&r<=4)||(mine==='b'&&r>=5))candidates.push([r,c-1],[r,c+1]);for(const[nr,nc]of candidates)if(inside(nr,nc)&&side(src[nr][nc])!==mine)moves.push({r:nr,c:nc});return moves;}return moves;}
+function makeMove(src,sr,sc,tr,tc){const next=cloneBoard(src);next[tr][tc]=next[sr][sc];next[sr][sc]='';return next;}
+function isInCheck(sideName,src){if(generalsFacing(src))return true;const general=findGeneral(sideName,src);if(!general)return true;for(let r=0;r<10;r++)for(let c=0;c<9;c++)if(src[r][c]&&side(src[r][c])===enemyOf(sideName)&&pseudoMoves(r,c,src).some(m=>m.r===general.r&&m.c===general.c))return true;return false;}
+function legalMoves(r,c,src=board){const piece=src[r][c];if(!piece)return[];const mine=side(piece);return pseudoMoves(r,c,src).filter(m=>!isInCheck(mine,makeMove(src,r,c,m.r,m.c)));}
+function anyLegal(sideName){for(let r=0;r<10;r++)for(let c=0;c<9;c++)if(board[r][c]&&side(board[r][c])===sideName&&legalMoves(r,c).length)return true;return false;}
+function updateStats(phase='Playing'){document.getElementById('turn').textContent=turn==='r'?'Red':'Black';document.getElementById('red-wins').textContent=String(wins.r);document.getElementById('black-wins').textContent=String(wins.b);document.getElementById('phase').textContent=phase;}
+function finish(result,title,msg){running=false;if(result)wins[result]++,localStorage.setItem(WINS_KEY,JSON.stringify(wins));overlay.innerHTML=`<h2>${title}</h2><p>${msg}</p><button class="btn" id="overlay-btn">Play Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);statusEl.textContent=msg;updateStats(title.split(' ')[0]);render();}
+function afterMove(){if(!findGeneral(turn,board)){finish(enemyOf(turn),`${enemyOf(turn)==='r'?'Red':'Black'} Wins`,`The opposing general has fallen.`);return;}if(!anyLegal(turn)){finish(enemyOf(turn),`${enemyOf(turn)==='r'?'Red':'Black'} Wins`,`${turn==='r'?'Red':'Black'} has no legal move.`);return;}statusEl.textContent=`${turn==='r'?'Red':'Black'} to move${isInCheck(turn,board)?' — check!':''}.`;updateStats(isInCheck(turn,board)?'Check':'Playing');render();}
+function selectCell(r,c){if(!running)return;cursor={r,c};const piece=board[r][c];if(selected){const move=legalMoves(selected.r,selected.c).find(m=>m.r===r&&m.c===c);if(move){board=makeMove(board,selected.r,selected.c,r,c);selected=null;turn=enemyOf(turn);afterMove();return;}}if(piece&&side(piece)===turn&&legalMoves(r,c).length){selected={r,c};statusEl.textContent=`${turn==='r'?'Red':'Black'} selected ${ICONS[piece]}.`;render();}else{selected=null;render();}}
+function render(){boardEl.querySelectorAll('.cell').forEach(el=>el.remove());const moves=selected?legalMoves(selected.r,selected.c):[];for(let r=0;r<10;r++)for(let c=0;c<9;c++){const btn=document.createElement('button');btn.className='cell'+(cursor.r===r&&cursor.c===c?' cursor':'')+(selected&&selected.r===r&&selected.c===c?' selected':'')+(moves.some(m=>m.r===r&&m.c===c)?' move':'');btn.style.gridRow=String(r+1);btn.style.gridColumn=String(c+1);btn.onclick=()=>selectCell(r,c);const piece=board[r][c];if(piece){const disc=document.createElement('div');disc.className='piece '+(side(piece)==='r'?'red':'black');disc.textContent=ICONS[piece];btn.appendChild(disc);}boardEl.appendChild(btn);}}
+function startGame(){board=resetBoard();turn='r';cursor={r:9,c:4};selected=null;running=true;overlay.style.display='none';statusEl.textContent='Red to move.';updateStats('Playing');render();}
+document.addEventListener('keydown',e=>{if(overlay.style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}if(!running)return;const keys={ArrowLeft:[0,-1],ArrowRight:[0,1],ArrowUp:[-1,0],ArrowDown:[1,0]};if(keys[e.key]){e.preventDefault();cursor={r:(cursor.r+keys[e.key][0]+10)%10,c:(cursor.c+keys[e.key][1]+9)%9};render();return;}if(e.key==='Enter'||e.key===' '){e.preventDefault();selectCell(cursor.r,cursor.c);}});
+board=resetBoard();updateStats('Ready');render();
+</script>
+</body>
+</html>

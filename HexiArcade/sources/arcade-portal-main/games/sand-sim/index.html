@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Sand Sim — Game Portal</title>
+<meta name="description" content="Play Sand Simulation free online — Draw with sand, water, fire, and more. Watch elements interact. A Easy Physics &amp; Simulation game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/sand-sim/"/>
+<meta property="og:title" content="⏳ Sand Simulation — Free Browser Game"/>
+<meta property="og:description" content="Play Sand Simulation free in your browser. Draw with sand, water, fire, and more. Watch elements interact."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/sand-sim/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Sand Simulation",
+  "description": "Draw with sand, water, fire, and more. Watch elements interact.",
+  "url": "https://arcade.sotshau.fun/games/sand-sim/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Physics & Simulation",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px}.score-bar{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:12px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:92px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.toolbar{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:12px}.tool{padding:8px 12px;border:1px solid #d1d5db;border-radius:999px;background:#fff;font-size:13px;font-weight:700;cursor:pointer}.tool.active{background:#6c63ff;color:#fff;border-color:#6c63ff}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:18px;box-shadow:0 8px 20px rgba(0,0,0,.08)}canvas{display:block;background:#0f172a;border-radius:14px;border:1px solid #1e293b;image-rendering:pixelated;touch-action:none}.status{min-height:24px;text-align:center;font-weight:700;color:#374151;margin-top:12px}.overlay{position:absolute;inset:18px;background:rgba(245,245,247,.95);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p{color:#6b7280;line-height:1.5;max-width:360px}.btn{padding:9px 18px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center;padding:0 18px}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>⏳ Sand Sim</h1>
+<p class="sub">Paint sand, water, walls, and fire into the box and watch them tumble into tiny physics sculptures.</p>
+<div class="score-bar">
+  <div class="score-box"><div class="score-label">Particles</div><div class="score-val" id="particles">0</div></div>
+  <div class="score-box"><div class="score-label">Material</div><div class="score-val" id="material">Sand</div></div>
+  <div class="score-box"><div class="score-label">Mode</div><div class="score-val" id="mode">Running</div></div>
+  <div class="score-box"><div class="score-label">Best Fill</div><div class="score-val" id="best">0</div></div>
+</div>
+<div class="toolbar" id="toolbar"></div>
+<div class="game">
+  <canvas id="sim" width="600" height="420"></canvas>
+  <div class="overlay" id="overlay">
+    <h2>⏳ Sand Sim</h2>
+    <p>Use number keys 1–5 to choose a material, Enter to stamp at the cursor, and Space to pause. Touch and drag to paint directly.</p>
+    <button class="btn" id="overlay-btn">Start Sandbox</button>
+  </div>
+  <div class="status" id="status">Build a tiny world of falling particles.</div>
+</div>
+<p class="hint">1 Sand · 2 Water · 3 Wall · 4 Fire · 5 Erase · Space pause · C clear</p>
+<script>
+const canvas=document.getElementById('sim'),ctx=canvas.getContext('2d');
+if(!ctx) throw new Error('Canvas 2d context unavailable');
+const W=100,H=70,S=6,BEST_KEY='sandSimBest';
+const materials=['sand','water','wall','fire','erase'];
+const labels={sand:'Sand',water:'Water',wall:'Wall',fire:'Fire',erase:'Erase'};
+let grid=Array.from({length:H},()=>Array(W).fill(0)),cursor={x:50,y:35},selected='sand',running=false,paused=false,best=+(localStorage.getItem(BEST_KEY)||0),painting=false,statusMsg='Build a tiny world of falling particles.',rafId=0;
+function typeId(name){return{sand:1,water:2,wall:3,fire:4,erase:0}[name];}
+function setup(){grid=Array.from({length:H},()=>Array(W).fill(0));cursor={x:50,y:35};selected='sand';paused=false;statusMsg='Build a tiny world of falling particles.';buildToolbar();renderStats();draw();}
+function buildToolbar(){const bar=document.getElementById('toolbar');bar.innerHTML='';materials.forEach((m,i)=>{const b=document.createElement('button');b.className='tool'+(selected===m?' active':'');b.textContent=`${i+1}. ${labels[m]}`;b.addEventListener('click',()=>{selected=m;buildToolbar();renderStats();});bar.appendChild(b);});}
+function countParticles(){return grid.flat().filter(Boolean).length;}
+function renderStats(){const particles=countParticles();if(particles>best){best=particles;localStorage.setItem(BEST_KEY,String(best));}document.getElementById('particles').textContent=particles;document.getElementById('material').textContent=labels[selected];document.getElementById('mode').textContent=paused?'Paused':'Running';document.getElementById('best').textContent=best;document.getElementById('status').textContent=statusMsg;buildToolbar();}
+function startGame(){running=true;document.getElementById('overlay').style.display='none';setup();cancelAnimationFrame(rafId);rafId=requestAnimationFrame(loop);}
+function stamp(cx,cy){for(let dy=-2;dy<=2;dy++)for(let dx=-2;dx<=2;dx++){const x=cx+dx,y=cy+dy;if(x<0||x>=W||y<0||y>=H)continue;if(dx*dx+dy*dy>5)continue;grid[y][x]=typeId(selected);}statusMsg=`Painted ${labels[selected]}.`;renderStats();draw();}
+function clearGrid(){grid.forEach(row=>row.fill(0));statusMsg='Sandbox cleared.';renderStats();draw();}
+function step(){for(let y=H-2;y>=0;y--)for(let x=0;x<W;x++){const v=grid[y][x];if(v===1){if(!grid[y+1][x]){grid[y+1][x]=1;grid[y][x]=0;}else{const dir=Math.random()<.5?-1:1;if(x+dir>=0&&x+dir<W&&!grid[y+1][x+dir]){grid[y+1][x+dir]=1;grid[y][x]=0;}}}if(v===2){if(!grid[y+1][x]){grid[y+1][x]=2;grid[y][x]=0;}else{const dirs=Math.random()<.5?[-1,1]:[1,-1];for(const dir of dirs){if(x+dir>=0&&x+dir<W&&!grid[y][x+dir]){grid[y][x+dir]=2;grid[y][x]=0;break;}}} }if(v===4){if(y>0&&grid[y-1][x]===2)grid[y-1][x]=0;if(Math.random()<.03)grid[y][x]=0;}}}
+function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);for(let y=0;y<H;y++)for(let x=0;x<W;x++){const v=grid[y][x];if(!v)continue;ctx.fillStyle=v===1?'#fbbf24':v===2?'#38bdf8':v===3?'#64748b':'#ef4444';ctx.fillRect(x*S,y*S,S,S);}ctx.strokeStyle='#6c63ff';ctx.strokeRect(cursor.x*S-1,cursor.y*S-1,S*2+2,S*2+2);} 
+function loop(){if(!running)return;if(!paused)step();renderStats();draw();rafId=requestAnimationFrame(loop);}
+function posFromClient(clientX,clientY){const r=canvas.getBoundingClientRect();return{x:Math.max(0,Math.min(W-1,Math.floor((clientX-r.left)/(r.width/W)))),y:Math.max(0,Math.min(H-1,Math.floor((clientY-r.top)/(r.height/H))))};}
+canvas.addEventListener('mousedown',e=>{painting=true;const p=posFromClient(e.clientX,e.clientY);cursor=p;stamp(p.x,p.y);});window.addEventListener('mousemove',e=>{if(!painting)return;const p=posFromClient(e.clientX,e.clientY);cursor=p;stamp(p.x,p.y);});window.addEventListener('mouseup',()=>painting=false);canvas.addEventListener('touchstart',e=>{painting=true;const t=e.touches[0],p=posFromClient(t.clientX,t.clientY);cursor=p;stamp(p.x,p.y);},{passive:true});canvas.addEventListener('touchmove',e=>{if(!painting)return;const t=e.touches[0],p=posFromClient(t.clientX,t.clientY);cursor=p;stamp(p.x,p.y);},{passive:true});canvas.addEventListener('touchend',()=>painting=false,{passive:true});
+document.getElementById('overlay-btn').addEventListener('click',startGame);document.addEventListener('keydown',e=>{const overlay=document.getElementById('overlay');if(overlay.style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}if(/[1-5]/.test(e.key)){e.preventDefault();selected=materials[+e.key-1];buildToolbar();renderStats();}if(e.key==='ArrowLeft'){e.preventDefault();cursor.x=Math.max(0,cursor.x-1);draw();}if(e.key==='ArrowRight'){e.preventDefault();cursor.x=Math.min(W-1,cursor.x+1);draw();}if(e.key==='ArrowUp'){e.preventDefault();cursor.y=Math.max(0,cursor.y-1);draw();}if(e.key==='ArrowDown'){e.preventDefault();cursor.y=Math.min(H-1,cursor.y+1);draw();}if(e.key==='Enter'){e.preventDefault();stamp(cursor.x,cursor.y);}if(e.key===' '){e.preventDefault();paused=!paused;statusMsg=paused?'Simulation paused.':'Simulation resumed.';renderStats();}if(e.key==='c'||e.key==='C'){e.preventDefault();clearGrid();}});setup();
+</script>
+</body>
+</html>

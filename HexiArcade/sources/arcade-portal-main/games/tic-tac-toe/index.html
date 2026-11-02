@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Tic-Tac-Toe — Game Portal</title>
+<meta name="description" content="Play Tic-Tac-Toe free online — Get three in a row against a smart AI opponent. A Easy Strategy game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/tic-tac-toe/"/>
+<meta property="og:title" content="❌ Tic-Tac-Toe — Free Browser Game"/>
+<meta property="og:description" content="Play Tic-Tac-Toe free in your browser. Get three in a row against a smart AI opponent."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/tic-tac-toe/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Tic-Tac-Toe",
+  "description": "Get three in a row against a smart AI opponent.",
+  "url": "https://arcade.sotshau.fun/games/tic-tac-toe/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Strategy",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}
+nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}
+nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}
+nav a:hover{text-decoration:underline}
+h1{margin:20px 0 4px;font-size:24px;font-weight:700}
+.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px}
+.score-bar{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}
+.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 18px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:92px}
+.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}
+.score-val{font-size:20px;font-weight:700;color:#6c63ff}
+.game-wrap{position:relative}
+.board{display:grid;grid-template-columns:repeat(3,94px);gap:10px}
+.cell{width:94px;height:94px;border:none;border-radius:16px;background:#fff;border:1px solid #e5e7eb;box-shadow:0 4px 10px rgba(0,0,0,.06);font-size:44px;font-weight:800;color:#6c63ff;cursor:pointer;transition:transform .12s,border-color .12s,box-shadow .12s}
+.cell:hover:not(:disabled),.cell.focused{transform:translateY(-2px);border-color:#6c63ff;box-shadow:0 8px 18px rgba(108,99,255,.18)}
+.cell.o{color:#ef4444}
+.cell:disabled{cursor:default}
+.status{margin:14px 0 10px;font-size:16px;font-weight:600;color:#374151;min-height:24px;text-align:center}
+.controls{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.btn{padding:9px 22px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}
+.btn:hover{background:#574fd6}
+.btn-outline{background:transparent;border:1.5px solid #6c63ff;color:#6c63ff}
+.btn-outline:hover{background:#ede9ff}
+.overlay{position:absolute;inset:0;background:rgba(245,245,247,.94);border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:24px;text-align:center}
+.overlay h2{font-size:28px}
+.overlay p{color:#6b7280;max-width:280px;line-height:1.5}
+.hint{margin-top:14px;font-size:12px;color:#9ca3af;text-align:center;padding:0 16px}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>❌ Tic-Tac-Toe</h1>
+<p class="sub">Get three in a row against a smart AI. Use arrow keys to move and Enter to place.</p>
+
+<div class="score-bar">
+  <div class="score-box"><div class="score-label">Wins</div><div class="score-val" id="wins">0</div></div>
+  <div class="score-box"><div class="score-label">AI Wins</div><div class="score-val" id="losses">0</div></div>
+  <div class="score-box"><div class="score-label">Best Streak</div><div class="score-val" id="best">0</div></div>
+</div>
+
+<div class="status" id="status">Press Start to begin.</div>
+<div class="game-wrap">
+  <div class="board" id="board"></div>
+  <div class="overlay" id="overlay">
+    <h2>❌ Ready to Play?</h2>
+    <p>You are X. The AI is O. Taps work on mobile, and keyboard controls work on desktop.</p>
+    <button class="btn" id="overlay-btn">Start Game</button>
+  </div>
+</div>
+
+<div class="controls">
+  <button class="btn btn-outline" id="new-round-btn">New Round</button>
+  <button class="btn" id="restart-btn">Restart Match</button>
+</div>
+<p class="hint">Arrow keys move focus · Enter/Space places your mark · Tap any tile on mobile</p>
+
+<script>
+const boardEl=document.getElementById('board');
+const statusEl=document.getElementById('status');
+const overlay=document.getElementById('overlay');
+const overlayBtn=document.getElementById('overlay-btn');
+const winEl=document.getElementById('wins');
+const lossEl=document.getElementById('losses');
+const bestEl=document.getElementById('best');
+const lines=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+const BEST_KEY='tttBestStreak';
+
+let board,cells=[],active=false,focusIndex=0,wins=0,losses=0,streak=0,best=+(localStorage.getItem(BEST_KEY)||0);
+bestEl.textContent=best;
+
+function makeBoard(){
+  boardEl.innerHTML='';
+  cells=[];
+  for(let i=0;i<9;i++){
+    const btn=document.createElement('button');
+    btn.className='cell';
+    btn.setAttribute('aria-label',`Cell ${i+1}`);
+    btn.addEventListener('click',()=>placeMove(i));
+    boardEl.appendChild(btn);
+    cells.push(btn);
+  }
+}
+
+function startGame(){
+  wins=0;losses=0;streak=0;
+  updateScores();
+  resetRound();
+  overlay.style.display='none';
+}
+
+function resetRound(){
+  board=Array(9).fill('');
+  active=true;
+  focusIndex=4;
+  statusEl.textContent='Your turn';
+  overlay.style.display='none';
+  render();
+  focusCell();
+}
+
+function updateScores(){
+  winEl.textContent=wins;
+  lossEl.textContent=losses;
+  bestEl.textContent=best;
+}
+
+function render(){
+  cells.forEach((cell,i)=>{
+    cell.textContent=board[i];
+    cell.disabled=!active||Boolean(board[i]);
+    cell.classList.toggle('o',board[i]==='O');
+    cell.classList.toggle('focused',i===focusIndex&&active&&!board[i]);
+  });
+}
+
+function focusCell(){
+  const target=cells[focusIndex];
+  if(target)target.focus();
+}
+
+function checkWinner(state){
+  for(const [a,b,c] of lines){
+    if(state[a]&&state[a]===state[b]&&state[a]===state[c])return state[a];
+  }
+  return state.every(Boolean)?'draw':null;
+}
+
+function placeMove(index){
+  if(!active||board[index])return;
+  board[index]='X';
+  focusIndex=index;
+  render();
+  const result=checkWinner(board);
+  if(result){finishRound(result);return;}
+  active=false;
+  statusEl.textContent='AI is thinking...';
+  setTimeout(aiMove,220);
+}
+
+function aiMove(){
+  const move=findBestMove();
+  if(move===-1)return;
+  board[move]='O';
+  focusIndex=move;
+  const result=checkWinner(board);
+  if(result){render();finishRound(result);return;}
+  active=true;
+  statusEl.textContent='Your turn';
+  render();
+  focusCell();
+}
+
+function findBestMove(){
+  let bestScore=-Infinity;
+  let move=-1;
+  for(let i=0;i<board.length;i++){
+    if(board[i])continue;
+    board[i]='O';
+    const score=minimax(board,0,false);
+    board[i]='';
+    if(score>bestScore){bestScore=score;move=i;}
+  }
+  return move;
+}
+
+function minimax(state,depth,isMax){
+  const result=checkWinner(state);
+  if(result==='O')return 10-depth;
+  if(result==='X')return depth-10;
+  if(result==='draw')return 0;
+  if(isMax){
+    let bestScore=-Infinity;
+    for(let i=0;i<state.length;i++){
+      if(state[i])continue;
+      state[i]='O';
+      bestScore=Math.max(bestScore,minimax(state,depth+1,false));
+      state[i]='';
+    }
+    return bestScore;
+  }
+  let bestScore=Infinity;
+  for(let i=0;i<state.length;i++){
+    if(state[i])continue;
+    state[i]='X';
+    bestScore=Math.min(bestScore,minimax(state,depth+1,true));
+    state[i]='';
+  }
+  return bestScore;
+}
+
+function finishRound(result){
+  active=false;
+  if(result==='X'){
+    wins++;streak++;
+    if(streak>best){best=streak;localStorage.setItem(BEST_KEY,String(best));}
+    statusEl.textContent='You win!';
+    showOverlay('🎉 You Win!','Nice work — ready for another round?');
+  }else if(result==='O'){
+    losses++;streak=0;
+    statusEl.textContent='AI wins this round.';
+    showOverlay('🤖 AI Wins','The AI found the line. Try again!');
+  }else{
+    streak=0;
+    statusEl.textContent='It\'s a draw.';
+    showOverlay('🤝 Draw','Nobody got three in a row this time.');
+  }
+  updateScores();
+  render();
+}
+
+function showOverlay(title,text){
+  overlay.innerHTML=`<h2>${title}</h2><p>${text}</p><button class="btn" id="overlay-btn">Play Again</button>`;
+  overlay.style.display='flex';
+  document.getElementById('overlay-btn').addEventListener('click',resetRound);
+}
+
+document.addEventListener('keydown',e=>{
+  if(overlay.style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();(document.getElementById('overlay-btn')||overlayBtn).click();return;}
+  if(!active)return;
+  const row=Math.floor(focusIndex/3),col=focusIndex%3;
+  const moveMap={ArrowUp:[Math.max(0,row-1),col],ArrowDown:[Math.min(2,row+1),col],ArrowLeft:[row,Math.max(0,col-1)],ArrowRight:[row,Math.min(2,col+1)]};
+  if(moveMap[e.key]){
+    const [r,c]=moveMap[e.key];
+    focusIndex=r*3+c;
+    render();focusCell();e.preventDefault();
+    return;
+  }
+  if((e.key==='Enter'||e.key===' ')&&!board[focusIndex]){e.preventDefault();placeMove(focusIndex);}
+  if(/^([1-9])$/.test(e.key)){e.preventDefault();placeMove(+e.key-1);}
+});
+
+document.getElementById('overlay-btn').addEventListener('click',startGame);
+document.getElementById('new-round-btn').addEventListener('click',resetRound);
+document.getElementById('restart-btn').addEventListener('click',startGame);
+makeBoard();
+render();
+</script>
+</body>
+</html>

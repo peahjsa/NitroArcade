@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Emoji Puzzle — Game Portal</title>
+<meta name="description" content="Play Emoji Puzzle free online — Guess the word, movie, or phrase from emoji clues. A Easy Creative &amp; Art game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/emoji-puzzle/"/>
+<meta property="og:title" content="😀 Emoji Puzzle — Free Browser Game"/>
+<meta property="og:description" content="Play Emoji Puzzle free in your browser. Guess the word, movie, or phrase from emoji clues."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/emoji-puzzle/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Emoji Puzzle",
+  "description": "Guess the word, movie, or phrase from emoji clues.",
+  "url": "https://arcade.sotshau.fun/games/emoji-puzzle/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Creative & Art",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px}.score-bar{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:14px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 18px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:96px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:20px;padding:20px;box-shadow:0 8px 20px rgba(0,0,0,.08);width:min(500px,94vw)}.board{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.tile{aspect-ratio:1/1;border:none;border-radius:18px;background:#ede9fe;font-size:32px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(108,99,255,.12)}.tile.blank{background:#e5e7eb;box-shadow:none}.tile.cursor{outline:4px dashed #6c63ff}.status{min-height:24px;margin-top:14px;text-align:center;color:#374151;font-weight:700}.btn{padding:9px 16px;background:#6c63ff;color:#fff;border:none;border-radius:10px;font-weight:700;cursor:pointer}.controls{margin-top:14px;display:flex;justify-content:center}.overlay{position:absolute;inset:18px;background:rgba(245,245,247,.95);border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p{max-width:340px;color:#6b7280;line-height:1.5}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center;padding:0 16px}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🧩 Emoji Puzzle</h1>
+<p class="sub">Slide the blank space around until the emoji tiles are back in order from top-left to bottom-right.</p>
+<div class="score-bar"><div class="score-box"><div class="score-label">Moves</div><div class="score-val" id="moves">0</div></div><div class="score-box"><div class="score-label">Time</div><div class="score-val" id="time">0s</div></div><div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">—</div></div></div>
+<div class="game">
+  <div class="board" id="board"></div>
+  <div class="controls"><button class="btn" id="shuffle-btn">Shuffle</button></div>
+  <div class="status" id="status">Press Start to scramble the puzzle.</div>
+  <div class="overlay" id="overlay"><h2>🧩 Emoji Puzzle</h2><p>Tap a tile next to the blank space to slide it. Arrow keys move the blank directly.</p><button class="btn" id="overlay-btn">Start Puzzle</button></div>
+</div>
+<p class="hint">Keyboard: arrows slide the blank · Touch: tap adjacent tiles</p>
+<script>
+const EMOJIS=['😀','😎','🤖','👾','🐸','🦊','🐼','🐙','🍕','🌈','⚽','🚀','🎵','⭐','🔥',''];
+const BEST_KEY='emojiPuzzleBest';
+const boardEl=document.getElementById('board'),overlay=document.getElementById('overlay'),statusEl=document.getElementById('status');
+let tiles=[...EMOJIS],blank=15,moves=0,seconds=0,timer=0,started=false;
+function updateBest(value){const current=+(localStorage.getItem(BEST_KEY)||0);if(!current||value<current)localStorage.setItem(BEST_KEY,String(value));document.getElementById('best').textContent=currentLabel();}
+function currentLabel(){const best=+(localStorage.getItem(BEST_KEY)||0);return best?`${best}m`:'—';}
+function render(){boardEl.innerHTML='';tiles.forEach((tile,index)=>{const button=document.createElement('button');button.className='tile'+(!tile?' blank':'')+(index===blank?' cursor':'');button.textContent=tile;button.addEventListener('click',()=>moveTile(index));boardEl.appendChild(button);});document.getElementById('moves').textContent=String(moves);document.getElementById('time').textContent=seconds+'s';}
+function neighbors(index){const row=Math.floor(index/4),col=index%4,list=[];if(col>0)list.push(index-1);if(col<3)list.push(index+1);if(row>0)list.push(index-4);if(row<3)list.push(index+4);return list;}
+function shuffle(){tiles=[...EMOJIS];blank=15;for(let i=0;i<160;i++){const list=neighbors(blank);const next=list[(Math.random()*list.length)|0];[tiles[blank],tiles[next]]=[tiles[next],tiles[blank]];blank=next;}moves=0;seconds=0;started=true;overlay.style.display='none';clearInterval(timer);timer=setInterval(()=>{seconds++;document.getElementById('time').textContent=seconds+'s';},1000);statusEl.textContent='Slide the emojis back into place.';render();}
+function solved(){return tiles.every((tile,index)=>tile===EMOJIS[index]);}
+function finish(){clearInterval(timer);statusEl.textContent=`Solved in ${moves} moves!`;updateBest(moves);overlay.innerHTML=`<h2>🥳 Puzzle Solved</h2><p>You solved the emoji slider in <strong>${moves}</strong> moves.</p><button class="btn" id="overlay-btn">Play Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',shuffle);} 
+function moveTile(index){if(!started||!neighbors(blank).includes(index))return;[tiles[blank],tiles[index]]=[tiles[index],tiles[blank]];blank=index;moves++;statusEl.textContent='Tile moved.';render();if(solved())finish();}
+document.getElementById('overlay-btn').addEventListener('click',shuffle);document.getElementById('shuffle-btn').addEventListener('click',shuffle);document.getElementById('best').textContent=currentLabel();
+document.addEventListener('keydown',event=>{if(overlay.style.display!=='none'&&(event.key==='Enter'||event.key===' ')){event.preventDefault();shuffle();return;}const map={ArrowLeft:-1,ArrowRight:1,ArrowUp:-4,ArrowDown:4};if(map[event.key]!==undefined){event.preventDefault();const target=blank+map[event.key];if(neighbors(blank).includes(target))moveTile(target);}});
+render();
+</script>
+</body>
+</html>

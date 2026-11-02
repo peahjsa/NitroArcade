@@ -1,0 +1,45 @@
+
+.ntCommandDeck{margin:18px 0 24px;padding:clamp(18px,3vw,30px);border:1px solid #345b9d;border-radius:19px;background:radial-gradient(ellipse at 100% 0%,#3b236d65,transparent 45%),linear-gradient(125deg,#0b1b33,#0b1024 70%);box-shadow:0 14px 50px #0006,0 0 45px #317dd51a;position:relative;overflow:hidden;color:#e9f8ff}
+.ntCommandDeck::before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(110deg,transparent 0%,#ffffff09 48%,transparent 52%);background-size:250% 100%;animation:ntShimmer 12s linear infinite}
+@keyframes ntShimmer{to{background-position:-250% 0}}
+.ntDeckTop{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:20px}
+.ntMicro{color:#7adfff;font-size:10px;font-weight:900;letter-spacing:2px}
+.ntDeckTop h2{font-size:clamp(22px,3.3vw,38px);margin:8px 0;letter-spacing:-1.2px}
+.ntDeckTop p{font-size:12px;color:#a3b9d5}
+.ntLive{white-space:nowrap;color:#8ef7c1;border:1px solid #2a896c;background:#0a302d;padding:10px 13px;border-radius:10px;font-size:11px;font-weight:900}
+.ntLive small{display:block;font-size:9px;color:#9bb9bb;margin-top:4px;text-align:right}
+.ntLiveDot{display:inline-block;background:#46e39e;width:8px;height:8px;border-radius:50%;margin-right:5px;box-shadow:0 0 10px #46e39e;animation:ntBlink 2s infinite}
+@keyframes ntBlink{50%{opacity:.45}}
+.ntQuickGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.ntQuickGrid button{position:relative;text-align:left;padding:17px 15px 24px;min-height:140px;border:1px solid #315479;border-radius:13px;background:linear-gradient(145deg,#142c4a,#11162e);color:#eaf8ff;cursor:pointer;transition:transform .2s,border-color .2s,box-shadow .2s}
+.ntQuickGrid button:nth-child(2){background:linear-gradient(145deg,#243258,#221638)}
+.ntQuickGrid button:nth-child(3){background:linear-gradient(145deg,#153e48,#111d35)}
+.ntQuickGrid button:nth-child(4){background:linear-gradient(145deg,#3a2549,#17162c)}
+.ntQuickGrid button:hover{transform:translateY(-5px);border-color:#75e7ff;box-shadow:0 12px 30px #39c6ff26}
+.ntQuickIcon{display:block;font-size:25px;margin-bottom:13px}
+.ntQuickGrid strong{display:block;font-size:12px;letter-spacing:.7px}
+.ntQuickGrid small{display:block;color:#a4bbd3;font-size:10px;line-height:1.5;margin-top:6px}
+.ntArrow{position:absolute;right:14px;top:12px;color:#78eaff}
+.ntInfoStrip{display:flex;gap:15px 24px;flex-wrap:wrap;padding-top:18px;margin-top:18px;border-top:1px solid #2d4b71;font-size:11px;color:#a8c7e0}
+.ntInfoStrip b{color:#fff}
+.ntInfoStrip kbd{background:#193655;border:1px solid #4273a1;padding:2px 6px;border-radius:5px}
+#ntHistory{display:none;position:fixed;inset:0;z-index:2147483620;background:#020816eF;backdrop-filter:blur(15px);overflow:auto;padding:20px;color:#ecf8ff}
+#ntHistory.active{display:block}
+.ntHistoryInner{max-width:950px;margin:35px auto;border:1px solid #436fa6;border-radius:20px;background:linear-gradient(145deg,#101e39,#0a1024);padding:clamp(20px,4vw,44px)}
+.ntHistoryTop{display:flex;justify-content:space-between;gap:12px;align-items:start}
+.ntHistoryTop h2{font-size:clamp(32px,6vw,60px);line-height:1.04;letter-spacing:-2px;margin:12px 0}
+.ntHistoryTop p{color:#a9c6df;line-height:1.6}
+.ntHistoryTop button{background:#172c49;border:1px solid #5686b5;color:#fff;border-radius:10px;padding:10px 14px;cursor:pointer}
+.ntTimeline{display:grid;gap:13px;margin-top:35px}
+.ntEra{border-left:3px solid #60dfff;background:#102744;border-radius:0 12px 12px 0;padding:17px 22px}
+.ntEra:nth-child(2){border-color:#85d58e}.ntEra:nth-child(3){border-color:#e7ae74}.ntEra:nth-child(4){border-color:#b68aff}.ntEra:nth-child(5){border-color:#ff7bd1}
+.ntEra span{font-size:10px;letter-spacing:1.5px;color:#8fbedf}.ntEra h3{font-size:21px;margin:5px 0}.ntEra p{font-size:13px;color:#b4cce3;line-height:1.6}
+.ntHistoryFooter{margin-top:25px;padding:18px;border:1px solid #466b9c;border-radius:12px;background:#142544;color:#b8d9f2;line-height:1.6}
+body.ntLowMotion *,body.ntLowMotion *::before,body.ntLowMotion *::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
+body.ntLowMotion .hero-art{display:none!important}
+body.theme-light .ntCommandDeck{background:linear-gradient(125deg,#eef8ff,#f0edff);color:#102c45}
+body.theme-light .ntDeckTop p{color:#48637c}
+body.theme-light .ntInfoStrip{color:#385b74}
+body.theme-light .ntInfoStrip b{color:#102c45}
+@media(max-width:850px){.ntQuickGrid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.ntDeckTop{align-items:start;flex-direction:column}.ntQuickGrid{grid-template-columns:1fr 1fr}.ntQuickGrid button{min-height:130px;padding:13px}.ntQuickIcon{font-size:21px}.ntLive small{text-align:left}}

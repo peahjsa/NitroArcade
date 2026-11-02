@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Angry Birds — Game Portal</title>
+<meta name="description" content="Play Angry Birds free online — Launch birds to demolish pig fortresses. Use the right bird for each shot! A Medium Physics &amp; Simulation game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/angry-birds/"/>
+<meta property="og:title" content="🐦 Angry Birds — Free Browser Game"/>
+<meta property="og:description" content="Play Angry Birds free in your browser. Launch birds to demolish pig fortresses. Use the right bird for each shot!"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/angry-birds/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Angry Birds",
+  "description": "Launch birds to demolish pig fortresses. Use the right bird for each shot!",
+  "url": "https://arcade.sotshau.fun/games/angry-birds/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Physics & Simulation",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px}.score-bar{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:12px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:92px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.toolbar{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:12px}.pill{background:#fff;border:1px solid #e5e7eb;border-radius:999px;padding:8px 14px;font-size:13px;color:#4b5563}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:18px;box-shadow:0 8px 20px rgba(0,0,0,.08)}canvas{display:block;background:linear-gradient(#bfdbfe 0 72%,#84cc16 72%);border-radius:14px;border:1px solid #d1d5db;touch-action:none}.status{min-height:22px;text-align:center;font-weight:700;color:#374151;margin-top:12px}.overlay{position:absolute;inset:18px;background:rgba(245,245,247,.94);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p{color:#6b7280;line-height:1.5;max-width:360px}.btn{padding:9px 18px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center;padding:0 16px}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🐦 Angry Birds</h1>
+<p class="sub">Pull back the sling, smash the stack, and knock every pig off its perch.</p>
+<div class="score-bar">
+  <div class="score-box"><div class="score-label">Score</div><div class="score-val" id="score">0</div></div>
+  <div class="score-box"><div class="score-label">Birds</div><div class="score-val" id="birds">3</div></div>
+  <div class="score-box"><div class="score-label">Pigs</div><div class="score-val" id="pigs">3</div></div>
+  <div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">0</div></div>
+</div>
+<div class="toolbar"><div class="pill">Arrow keys aim, Space launches, or drag the bird</div></div>
+<div class="game">
+  <canvas id="game" width="720" height="420"></canvas>
+  <div class="overlay" id="overlay">
+    <h2>🐦 Angry Birds</h2>
+    <p>Drag the bird away from the sling to set power, or use arrow keys to change angle and strength before launching with Space.</p>
+    <button class="btn" id="overlay-btn">Start Game</button>
+  </div>
+  <div class="status" id="status">Bring the tower down.</div>
+</div>
+<p class="hint">Keyboard: arrows + Space · Touch/mouse: drag from the sling</p>
+<script>
+const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');
+const BEST_KEY='angryBirdsBest',GROUND=304,SLING={x:120,y:280};
+let bird,blocks,pigs,birdsLeft=3,score=0,best=+(localStorage.getItem(BEST_KEY)||0),aimAngle=-.75,aimPower=60,dragging=false,running=false,last=0,statusMsg='Bring the tower down.',rafId=0;
+document.getElementById('best').textContent=best;
+function makeBlock(x,y,w,h){return{x,y,w,h,vx:0,vy:0};}
+function makePig(x,y){return{x,y,r:16,vx:0,vy:0,hp:28};}
+function resetLevel(){bird={x:SLING.x,y:SLING.y,r:16,vx:0,vy:0,launched:false,alive:true};blocks=[makeBlock(500,240,26,66),makeBlock(548,240,26,66),makeBlock(524,188,88,24),makeBlock(520,270,100,20),makeBlock(612,254,26,52)];pigs=[makePig(524,160),makePig(560,224),makePig(614,224)];aimAngle=-.75;aimPower=60;statusMsg='Bring the tower down.';updateStats();}
+function startGame(){birdsLeft=3;score=0;running=true;last=0;document.getElementById('overlay').style.display='none';resetLevel();draw();cancelAnimationFrame(rafId);rafId=requestAnimationFrame(loop);}
+function updateStats(){if(score>best){best=score;localStorage.setItem(BEST_KEY,String(best));}document.getElementById('score').textContent=score;document.getElementById('birds').textContent=birdsLeft;document.getElementById('pigs').textContent=pigs.length;document.getElementById('best').textContent=best;document.getElementById('status').textContent=statusMsg;}
+function launch(){if(!running||bird.launched||birdsLeft<=0)return;bird.launched=true;bird.vx=Math.cos(aimAngle)*aimPower*2.2;bird.vy=Math.sin(aimAngle)*aimPower*2.2;statusMsg='Bird launched!';updateStats();}
+function nextBird(){if(pigs.length===0)return end(true);birdsLeft--;if(birdsLeft<=0)return end(false);bird={x:SLING.x,y:SLING.y,r:16,vx:0,vy:0,launched:false,alive:true};aimAngle=-.75;aimPower=60;statusMsg='Line up the next bird.';updateStats();}
+function end(win){running=false;const overlay=document.getElementById('overlay');overlay.innerHTML=`<h2>${win?'🎉 Tower Crushed':'💥 Out of Birds'}</h2><p>${win?`You scored <strong>${score}</strong> points.`:'Try a steeper arc next time.'}</p><button class="btn" id="overlay-btn">Play Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);} 
+function rectCircle(rect,c){const nx=Math.max(rect.x-rect.w/2,Math.min(c.x,rect.x+rect.w/2));const ny=Math.max(rect.y-rect.h/2,Math.min(c.y,rect.y+rect.h/2));const dx=c.x-nx,dy=c.y-ny;return dx*dx+dy*dy<c.r*c.r;}
+function updateBody(b,dt){b.vy+=980*dt;b.x+=b.vx*dt;b.y+=b.vy*dt;if(b.y+b.r>GROUND){b.y=GROUND-b.r;b.vy*=-.45;b.vx*=.9;}if(Math.abs(b.vx)+Math.abs(b.vy)<20&&b.launched)b.alive=false;}
+function update(dt){if(bird.launched){updateBody(bird,dt);}
+for(const bl of blocks){bl.vy+=980*dt;bl.x+=bl.vx*dt;bl.y+=bl.vy*dt;if(bl.y+bl.h/2>GROUND){bl.y=GROUND-bl.h/2;bl.vy*=-.3;bl.vx*=.92;}if(Math.abs(bl.vx)+Math.abs(bl.vy)<8){bl.vx*=.95;}}
+for(const pig of pigs){pig.vy+=980*dt;pig.x+=pig.vx*dt;pig.y+=pig.vy*dt;if(pig.y+pig.r>GROUND){pig.y=GROUND-pig.r;pig.vy*=-.3;pig.vx*=.94;}if(bird.launched&&rectCircle({x:pig.x,y:pig.y,w:pig.r*2,h:pig.r*2},bird)){pig.hp-=18+Math.hypot(bird.vx,bird.vy)*.05;bird.vx*=.76;bird.vy*=.76;}for(const bl of blocks){if(rectCircle(bl,pig)){pig.hp-=Math.hypot(bl.vx,bl.vy)*.06;pig.vx+=bl.vx*.05;}}}
+for(const bl of blocks){if(bird.launched&&rectCircle(bl,bird)){bl.vx+=bird.vx*.35;bl.vy+=bird.vy*.25;bird.vx*=.72;bird.vy*=.72;}}
+for(let i=pigs.length-1;i>=0;i--){if(pigs[i].hp<=0||pigs[i].y>430){pigs.splice(i,1);score+=100;statusMsg='Pig popped!';}}
+if(pigs.length===0)return end(true);if(bird.launched&&!bird.alive&&Math.abs(bird.vy)<80&&bird.y>GROUND-20)setTimeout(()=>running&&nextBird(),220);updateStats();}
+function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.fillStyle='#65a30d';ctx.fillRect(0,GROUND,canvas.width,canvas.height-GROUND);ctx.strokeStyle='#78350f';ctx.lineWidth=8;ctx.beginPath();ctx.moveTo(SLING.x-18,SLING.y+12);ctx.lineTo(SLING.x-10,SLING.y-42);ctx.lineTo(SLING.x+10,SLING.y-42);ctx.lineTo(SLING.x+18,SLING.y+12);ctx.stroke();if(!bird.launched){ctx.strokeStyle='rgba(55,65,81,.5)';ctx.beginPath();ctx.moveTo(SLING.x-8,SLING.y-28);ctx.lineTo(bird.x,bird.y);ctx.lineTo(SLING.x+8,SLING.y-28);ctx.stroke();}blocks.forEach(bl=>{ctx.fillStyle='#d97706';ctx.fillRect(bl.x-bl.w/2,bl.y-bl.h/2,bl.w,bl.h);ctx.fillStyle='rgba(255,255,255,.2)';ctx.fillRect(bl.x-bl.w/2,bl.y-bl.h/2,bl.w,8);});pigs.forEach(p=>{ctx.fillStyle='#22c55e';ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();ctx.fillStyle='#111827';ctx.beginPath();ctx.arc(p.x-5,p.y-3,2.8,0,Math.PI*2);ctx.arc(p.x+5,p.y-3,2.8,0,Math.PI*2);ctx.fill();});ctx.fillStyle='#ef4444';ctx.beginPath();ctx.arc(bird.x,bird.y,bird.r,0,Math.PI*2);ctx.fill();ctx.fillStyle='#111827';ctx.beginPath();ctx.arc(bird.x+4,bird.y-4,3,0,Math.PI*2);ctx.fill();if(!bird.launched&&!dragging){const tx=SLING.x+Math.cos(aimAngle)*-aimPower*.7,ty=SLING.y+Math.sin(aimAngle)*-aimPower*.7;ctx.strokeStyle='rgba(17,24,39,.35)';ctx.setLineDash([6,6]);ctx.beginPath();ctx.moveTo(SLING.x,SLING.y);ctx.lineTo(tx,ty);ctx.stroke();ctx.setLineDash([]);}}
+function loop(ts){if(!running)return;const dt=(ts-last||16)/1000;last=ts;update(dt);draw();rafId=requestAnimationFrame(loop);}
+function setAim(mx,my){const dx=SLING.x-mx,dy=SLING.y-my;aimAngle=Math.atan2(dy,dx);aimPower=Math.min(90,Math.max(20,Math.hypot(dx,dy)));bird.x=SLING.x-Math.cos(aimAngle)*aimPower;bird.y=SLING.y-Math.sin(aimAngle)*aimPower;draw();}
+canvas.addEventListener('mousedown',e=>{if(bird.launched)return;dragging=true;const r=canvas.getBoundingClientRect();setAim((e.clientX-r.left)*(canvas.width/r.width),(e.clientY-r.top)*(canvas.height/r.height));});window.addEventListener('mousemove',e=>{if(!dragging)return;const r=canvas.getBoundingClientRect();setAim((e.clientX-r.left)*(canvas.width/r.width),(e.clientY-r.top)*(canvas.height/r.height));});window.addEventListener('mouseup',()=>{if(dragging){dragging=false;launch();}});
+canvas.addEventListener('touchstart',e=>{if(bird.launched)return;const r=canvas.getBoundingClientRect(),t=e.touches[0];dragging=true;setAim((t.clientX-r.left)*(canvas.width/r.width),(t.clientY-r.top)*(canvas.height/r.height));},{passive:true});canvas.addEventListener('touchmove',e=>{if(!dragging)return;const r=canvas.getBoundingClientRect(),t=e.touches[0];setAim((t.clientX-r.left)*(canvas.width/r.width),(t.clientY-r.top)*(canvas.height/r.height));},{passive:true});canvas.addEventListener('touchend',()=>{if(dragging){dragging=false;launch();}},{passive:true});
+document.getElementById('overlay-btn').addEventListener('click',startGame);document.addEventListener('keydown',e=>{const overlay=document.getElementById('overlay');if(overlay.style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}if(e.key==='ArrowLeft'&&!bird.launched){e.preventDefault();aimAngle-=.08;bird.x=SLING.x-Math.cos(aimAngle)*aimPower;bird.y=SLING.y-Math.sin(aimAngle)*aimPower;draw();}if(e.key==='ArrowRight'&&!bird.launched){e.preventDefault();aimAngle+=.08;bird.x=SLING.x-Math.cos(aimAngle)*aimPower;bird.y=SLING.y-Math.sin(aimAngle)*aimPower;draw();}if(e.key==='ArrowUp'&&!bird.launched){e.preventDefault();aimPower=Math.min(90,aimPower+4);bird.x=SLING.x-Math.cos(aimAngle)*aimPower;bird.y=SLING.y-Math.sin(aimAngle)*aimPower;draw();}if(e.key==='ArrowDown'&&!bird.launched){e.preventDefault();aimPower=Math.max(20,aimPower-4);bird.x=SLING.x-Math.cos(aimAngle)*aimPower;bird.y=SLING.y-Math.sin(aimAngle)*aimPower;draw();}if(e.key===' '){e.preventDefault();launch();}});resetLevel();draw();
+</script>
+</body>
+</html>

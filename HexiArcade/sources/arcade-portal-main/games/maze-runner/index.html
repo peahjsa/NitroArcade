@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Maze Runner — Game Portal</title>
+<meta name="description" content="Play Maze Runner free online — Navigate through procedurally generated mazes to find the exit. A Easy Platform &amp; Adventure game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/maze-runner/"/>
+<meta property="og:title" content="🌀 Maze Runner — Free Browser Game"/>
+<meta property="og:description" content="Play Maze Runner free in your browser. Navigate through procedurally generated mazes to find the exit."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/maze-runner/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Maze Runner",
+  "description": "Navigate through procedurally generated mazes to find the exit.",
+  "url": "https://arcade.sotshau.fun/games/maze-runner/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Platform & Adventure",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px;max-width:720px}.score-bar{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:96px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:18px;box-shadow:0 8px 20px rgba(0,0,0,.08)}canvas{display:block;background:#fff;border-radius:14px;border:1px solid #e5e7eb;touch-action:none}.overlay{position:absolute;inset:18px;background:rgba(245,245,247,.95);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p{color:#6b7280;line-height:1.5;max-width:340px}.btn{padding:9px 22px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}.status{margin-top:12px;text-align:center;color:#374151;font-weight:700;min-height:24px}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center;padding:0 16px}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🌀 Maze Runner</h1>
+<p class="sub">Race through a fresh maze every round, collect time orbs, and reach the glowing exit before the clock expires.</p>
+<div class="score-bar"><div class="score-box"><div class="score-label">Level</div><div class="score-val" id="level">1</div></div><div class="score-box"><div class="score-label">Time</div><div class="score-val" id="time">45</div></div><div class="score-box"><div class="score-label">Steps</div><div class="score-val" id="steps">0</div></div><div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">1</div></div></div>
+<div class="game"><canvas id="game" width="468" height="468"></canvas><div class="overlay" id="overlay"><h2>🌀 Maze Runner</h2><p>Use arrow keys or swipe to move one tile at a time. Grab blue time orbs for bonus seconds before reaching the exit.</p><button class="btn" id="overlay-btn">Start Run</button></div><div class="status" id="status">Press Start to begin.</div></div>
+<p class="hint">Arrow keys / WASD to move · Swipe to move on touch devices · Each exit raises the maze level</p>
+<script>
+const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');
+if(!ctx) throw new Error('canvas 2d context unavailable');
+const BEST_KEY='mazeRunnerBest';
+let size=13,cell=36,maze=[],player,exitCell,orbs=[],level=1,timeLeft=45,steps=0,best=+(localStorage.getItem(BEST_KEY)||1),running=false,timer=null,statusMsg='Press Start to begin.';
+document.getElementById('best').textContent=String(best);
+function buildMaze(n){const grid=Array.from({length:n},()=>Array.from({length:n},()=>({n:1,e:1,s:1,w:1,v:false})));const dirs=[[0,-1,'n','s'],[1,0,'e','w'],[0,1,'s','n'],[-1,0,'w','e']];const stack=[[0,0]];grid[0][0].v=true;while(stack.length){const [x,y]=stack[stack.length-1];const next=dirs.map(([dx,dy,a,b])=>({x:x+dx,y:y+dy,a,b})).filter(o=>o.x>=0&&o.y>=0&&o.x<n&&o.y<n&&!grid[o.y][o.x].v);if(!next.length){stack.pop();continue;}const pick=next[Math.floor(Math.random()*next.length)];grid[y][x][pick.a]=0;grid[pick.y][pick.x][pick.b]=0;grid[pick.y][pick.x].v=true;stack.push([pick.x,pick.y]);}return grid;}
+function spawnLevel(resetTimer){size=Math.min(17,11+level*2);cell=468/size;maze=buildMaze(size);player={x:0,y:0};exitCell={x:size-1,y:size-1};steps=0;if(resetTimer)timeLeft=48;else timeLeft=Math.min(60,timeLeft+12);orbs=[];for(let i=0;i<Math.min(4,2+level);i++){let ox,oy;do{ox=Math.floor(Math.random()*size);oy=Math.floor(Math.random()*size);}while((ox===0&&oy===0)||(ox===exitCell.x&&oy===exitCell.y)||orbs.some(o=>o.x===ox&&o.y===oy));orbs.push({x:ox,y:oy});}statusMsg='Find the exit!';updateStats();draw();}
+function updateStats(){document.getElementById('level').textContent=String(level);document.getElementById('time').textContent=String(timeLeft);document.getElementById('steps').textContent=String(steps);document.getElementById('best').textContent=String(best);document.getElementById('status').textContent=statusMsg;}
+function startGame(){level=1;running=true;spawnLevel(true);document.getElementById('overlay').style.display='none';clearInterval(timer);timer=setInterval(()=>{if(!running)return;timeLeft--;if(timeLeft<=0){finish(false,'The maze sealed shut before you escaped.');return;}updateStats();},1000);}
+function canMove(dx,dy){const cellData=maze[player.y][player.x];if(dx===1)return !cellData.e;if(dx===-1)return !cellData.w;if(dy===1)return !cellData.s;return !cellData.n;}
+function move(dx,dy){if(!running||!canMove(dx,dy))return;player.x+=dx;player.y+=dy;steps++;const orbIndex=orbs.findIndex(o=>o.x===player.x&&o.y===player.y);if(orbIndex>-1){orbs.splice(orbIndex,1);timeLeft+=6;statusMsg='Time orb collected!';}if(player.x===exitCell.x&&player.y===exitCell.y){level++;best=Math.max(best,level);localStorage.setItem(BEST_KEY,String(best));if(level>6){finish(true,'You mastered six shifting mazes in a row!');return;}statusMsg=`Level ${level}: the maze expands.`;spawnLevel(false);return;}updateStats();draw();}
+function finish(win,text){running=false;clearInterval(timer);const overlay=document.getElementById('overlay');overlay.innerHTML=`<h2>${win?'🏁 Maze Master':'Time Up'}</h2><p>${text}</p><button class="btn" id="overlay-btn">${win?'Run Again':'Try Again'}</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);updateStats();}
+function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.fillStyle='#f8fafc';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.strokeStyle='#111827';ctx.lineWidth=3;for(let y=0;y<size;y++)for(let x=0;x<size;x++){const c=maze[y][x],sx=x*cell,sy=y*cell;if(c.n){ctx.beginPath();ctx.moveTo(sx,sy);ctx.lineTo(sx+cell,sy);ctx.stroke();}if(c.e){ctx.beginPath();ctx.moveTo(sx+cell,sy);ctx.lineTo(sx+cell,sy+cell);ctx.stroke();}if(c.s){ctx.beginPath();ctx.moveTo(sx,sy+cell);ctx.lineTo(sx+cell,sy+cell);ctx.stroke();}if(c.w){ctx.beginPath();ctx.moveTo(sx,sy);ctx.lineTo(sx,sy+cell);ctx.stroke();}}ctx.fillStyle='#dcfce7';ctx.fillRect(4,4,cell-8,cell-8);ctx.fillStyle='#ede9fe';ctx.fillRect(exitCell.x*cell+6,exitCell.y*cell+6,cell-12,cell-12);orbs.forEach(o=>{ctx.fillStyle='#38bdf8';ctx.beginPath();ctx.arc(o.x*cell+cell/2,o.y*cell+cell/2,cell*0.18,0,Math.PI*2);ctx.fill();});ctx.fillStyle='#6c63ff';ctx.beginPath();ctx.arc(player.x*cell+cell/2,player.y*cell+cell/2,cell*0.26,0,Math.PI*2);ctx.fill();}
+document.getElementById('overlay-btn').addEventListener('click',startGame);document.addEventListener('keydown',e=>{if(document.getElementById('overlay').style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}const map={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1],a:[-1,0],d:[1,0],w:[0,-1],s:[0,1],A:[-1,0],D:[1,0],W:[0,-1],S:[0,1]};if(map[e.key]){e.preventDefault();move(...map[e.key]);}});let touchStart=null;canvas.addEventListener('touchstart',e=>{const t=e.touches[0];touchStart={x:t.clientX,y:t.clientY};},{passive:true});canvas.addEventListener('touchend',e=>{if(!touchStart)return;const t=e.changedTouches[0],dx=t.clientX-touchStart.x,dy=t.clientY-touchStart.y;if(Math.abs(dx)>Math.abs(dy)){if(dx>16)move(1,0);else if(dx<-16)move(-1,0);}else{if(dy>16)move(0,1);else if(dy<-16)move(0,-1);}touchStart=null;},{passive:true});spawnLevel(true);
+</script>
+</body>
+</html>

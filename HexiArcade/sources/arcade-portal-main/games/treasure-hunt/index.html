@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Treasure Hunt — Game Portal</title>
+<meta name="description" content="Play Treasure Hunt free online — Follow clues and explore maps to find buried treasure. A Easy Platform &amp; Adventure game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/treasure-hunt/"/>
+<meta property="og:title" content="💎 Treasure Hunt — Free Browser Game"/>
+<meta property="og:description" content="Play Treasure Hunt free in your browser. Follow clues and explore maps to find buried treasure."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/treasure-hunt/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Treasure Hunt",
+  "description": "Follow clues and explore maps to find buried treasure.",
+  "url": "https://arcade.sotshau.fun/games/treasure-hunt/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Platform & Adventure",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px;max-width:760px}.score-bar{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:96px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:18px;box-shadow:0 8px 20px rgba(0,0,0,.08)}canvas{display:block;background:#fef3c7;border-radius:14px;border:1px solid #fcd34d;touch-action:none}.overlay{position:absolute;inset:18px;background:rgba(245,245,247,.95);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p{color:#6b7280;line-height:1.5;max-width:340px}.btn{padding:9px 22px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}.controls{display:flex;gap:10px;justify-content:center;margin-top:12px;flex-wrap:wrap}.status{margin-top:12px;text-align:center;color:#374151;font-weight:700;min-height:24px}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center;padding:0 16px}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🗺️ Treasure Hunt</h1>
+<p class="sub">Roam the island, read the detector hint, and dig on the right tile to uncover all hidden treasure chests.</p>
+<div class="score-bar"><div class="score-box"><div class="score-label">Found</div><div class="score-val" id="found">0 / 3</div></div><div class="score-box"><div class="score-label">Moves</div><div class="score-val" id="moves">24</div></div><div class="score-box"><div class="score-label">Hint</div><div class="score-val" id="hintval">—</div></div><div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">0</div></div></div>
+<div class="game"><canvas id="game" width="450" height="450"></canvas><div class="overlay" id="overlay"><h2>🗺️ Treasure Hunt</h2><p>Move with arrow keys or swipe, then press Space or tap Dig to search the tile beneath your explorer. The detector shows the distance to the nearest treasure.</p><button class="btn" id="overlay-btn">Start Hunt</button></div><div class="status" id="status">Press Start to begin.</div></div>
+<div class="controls"><button class="btn" id="dig-btn">Dig Here</button></div>
+<p class="hint">Arrow keys / WASD to move · Space to dig · Swipe to move · Find all 3 chests before you run out of moves</p>
+<script>
+const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');
+if(!ctx) throw new Error('Canvas 2D context unavailable');
+const SIZE=9,CELL=50,BEST_KEY='treasureHuntBest';
+let state,statusMsg='Press Start to begin.',best=+(localStorage.getItem(BEST_KEY)||0),running=false;
+document.getElementById('best').textContent=String(best);
+function pickCell(ex=[]){let x,y;do{x=Math.floor(Math.random()*SIZE);y=Math.floor(Math.random()*SIZE);}while(ex.some(p=>p.x===x&&p.y===y));return{x,y};}
+function startGame(){state={player:{x:0,y:0},moves:24,found:0,treasures:[],dug:[]};for(let i=0;i<3;i++)state.treasures.push({...pickCell([{x:0,y:0},...state.treasures]),found:false});running=true;statusMsg='The detector is humming.';document.getElementById('overlay').style.display='none';updateStats();draw();}
+function nearestHint(){const remaining=state.treasures.filter(t=>!t.found);if(!remaining.length)return 0;return Math.min(...remaining.map(t=>Math.abs(t.x-state.player.x)+Math.abs(t.y-state.player.y)));}
+function updateStats(){document.getElementById('found').textContent=`${state.found} / 3`;document.getElementById('moves').textContent=String(state.moves);document.getElementById('hintval').textContent=running?String(nearestHint()):'—';document.getElementById('best').textContent=String(best);document.getElementById('status').textContent=statusMsg;}
+function move(dx,dy){if(!running)return;const nx=Math.max(0,Math.min(SIZE-1,state.player.x+dx)),ny=Math.max(0,Math.min(SIZE-1,state.player.y+dy));if(nx===state.player.x&&ny===state.player.y)return;state.player.x=nx;state.player.y=ny;state.moves--;statusMsg='Detector updated.';afterTurn();}
+function dig(){if(!running)return;state.moves--;const key=`${state.player.x},${state.player.y}`;if(!state.dug.includes(key))state.dug.push(key);const treasure=state.treasures.find(t=>!t.found&&t.x===state.player.x&&t.y===state.player.y);if(treasure){treasure.found=true;state.found++;statusMsg='Treasure uncovered!';best=Math.max(best,state.found);localStorage.setItem(BEST_KEY,String(best));if(state.found===3){finish(true,'You uncovered every chest on the island!');return;}}else statusMsg='Only sand and shells here.';afterTurn();}
+function afterTurn(){if(state.moves<=0){finish(false,'Your expedition ended before the last chest surfaced.');return;}updateStats();draw();}
+function finish(win,text){running=false;const overlay=document.getElementById('overlay');overlay.innerHTML=`<h2>${win?'💰 Treasure Found':'⏳ Expedition Over'}</h2><p>${text}</p><button class="btn" id="overlay-btn">${win?'Hunt Again':'Try Again'}</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);updateStats();}
+function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);for(let y=0;y<SIZE;y++)for(let x=0;x<SIZE;x++){ctx.fillStyle=(x+y)%2?'#fcd34d':'#fde68a';ctx.fillRect(x*CELL,y*CELL,CELL,CELL);ctx.strokeStyle='rgba(255,255,255,.35)';ctx.strokeRect(x*CELL,y*CELL,CELL,CELL);}state.dug.forEach(id=>{const [x,y]=id.split(',').map(Number);ctx.fillStyle='#d97706';ctx.beginPath();ctx.arc(x*CELL+25,y*CELL+25,10,0,Math.PI*2);ctx.fill();});state.treasures.filter(t=>t.found).forEach(t=>{ctx.fillStyle='#92400e';ctx.fillRect(t.x*CELL+12,t.y*CELL+20,26,18);ctx.fillStyle='#facc15';ctx.fillRect(t.x*CELL+12,t.y*CELL+18,26,6);});ctx.fillStyle='#2563eb';ctx.beginPath();ctx.arc(state.player.x*CELL+25,state.player.y*CELL+25,14,0,Math.PI*2);ctx.fill();ctx.fillStyle='#fff';ctx.fillRect(state.player.x*CELL+20,state.player.y*CELL+18,4,4);ctx.fillRect(state.player.x*CELL+27,state.player.y*CELL+18,4,4);}
+document.getElementById('overlay-btn').addEventListener('click',startGame);document.getElementById('dig-btn').addEventListener('click',dig);document.addEventListener('keydown',e=>{if(document.getElementById('overlay').style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}const map={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1],a:[-1,0],d:[1,0],w:[0,-1],s:[0,1],A:[-1,0],D:[1,0],W:[0,-1],S:[0,1]};if(map[e.key]){e.preventDefault();move(...map[e.key]);}if(e.key===' '){e.preventDefault();dig();}});let touchStart=null;canvas.addEventListener('touchstart',e=>{const t=e.touches[0];touchStart={x:t.clientX,y:t.clientY};},{passive:true});canvas.addEventListener('touchend',e=>{if(!touchStart)return;const t=e.changedTouches[0],dx=t.clientX-touchStart.x,dy=t.clientY-touchStart.y;if(Math.abs(dx)<12&&Math.abs(dy)<12)dig();else if(Math.abs(dx)>Math.abs(dy)){if(dx>16)move(1,0);else if(dx<-16)move(-1,0);}else{if(dy>16)move(0,1);else if(dy<-16)move(0,-1);}touchStart=null;},{passive:true});state={player:{x:0,y:0},moves:24,found:0,treasures:[],dug:[]};updateStats();draw();
+</script>
+</body>
+</html>

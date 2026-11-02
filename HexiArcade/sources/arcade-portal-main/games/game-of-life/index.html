@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Game of Life — Game Portal</title>
+<meta name="description" content="Play Conway's Game of Life free online — Place cells and watch life evolve according to Conway's rules. A Easy Physics &amp; Simulation game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/game-of-life/"/>
+<meta property="og:title" content="🧬 Conway's Game of Life — Free Browser Game"/>
+<meta property="og:description" content="Play Conway's Game of Life free in your browser. Place cells and watch life evolve according to Conway's rules."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/game-of-life/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Conway's Game of Life",
+  "description": "Place cells and watch life evolve according to Conway's rules.",
+  "url": "https://arcade.sotshau.fun/games/game-of-life/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Physics & Simulation",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px}.score-bar{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:12px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:92px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.toolbar{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:12px}.btn{padding:9px 18px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:18px;box-shadow:0 8px 20px rgba(0,0,0,.08)}canvas{display:block;background:#0f172a;border-radius:14px;border:1px solid #1e293b;touch-action:none}.status{min-height:24px;text-align:center;font-weight:700;color:#374151;margin-top:12px}.overlay{position:absolute;inset:18px;background:rgba(245,245,247,.95);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p{color:#6b7280;line-height:1.5;max-width:360px}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center;padding:0 18px}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🧬 Game of Life</h1>
+<p class="sub">Seed cells, start the simulation, and watch Conway's tiny ecosystem evolve.</p>
+<div class="score-bar">
+  <div class="score-box"><div class="score-label">Generation</div><div class="score-val" id="gen">0</div></div>
+  <div class="score-box"><div class="score-label">Alive</div><div class="score-val" id="alive">0</div></div>
+  <div class="score-box"><div class="score-label">Mode</div><div class="score-val" id="mode">Edit</div></div>
+  <div class="score-box"><div class="score-label">Best Gen</div><div class="score-val" id="best">0</div></div>
+</div>
+<div class="toolbar">
+  <button class="btn" id="random-btn">Random Seed</button>
+  <button class="btn" id="clear-btn">Clear</button>
+</div>
+<div class="game">
+  <canvas id="life" width="560" height="392"></canvas>
+  <div class="overlay" id="overlay">
+    <h2>🧬 Game of Life</h2>
+    <p>Arrow keys move the cursor, Enter toggles a cell, and Space starts or pauses the simulation. Tap cells directly on touch devices.</p>
+    <button class="btn" id="overlay-btn">Start Life</button>
+  </div>
+  <div class="status" id="status">Paint some living cells to begin.</div>
+</div>
+<p class="hint">Keyboard: arrows + Enter · Space run/pause · R randomize · C clear</p>
+<script>
+const canvas=document.getElementById('life'),ctx=canvas.getContext('2d');
+if(!ctx) throw new Error('canvas 2d context unavailable');
+const COLS=35,ROWS=24,CELL=16,BEST_KEY='gameOfLifeBest';
+let grid=Array.from({length:ROWS},()=>Array(COLS).fill(0)),cursor={x:17,y:12},running=false,playing=false,generation=0,best=+(localStorage.getItem(BEST_KEY)||0),lastStep=0,rafId=0,statusMsg='Paint some living cells to begin.';
+document.getElementById('best').textContent=best;
+function seedRandom(){grid=grid.map(row=>row.map(()=>Math.random()>.72?1:0));generation=0;statusMsg='Random pattern seeded.';renderStats();draw();}
+function clearGrid(){grid.forEach(row=>row.fill(0));generation=0;playing=false;statusMsg='Grid cleared.';renderStats();draw();}
+function toggle(x,y){grid[y][x]=grid[y][x]?0:1;statusMsg=grid[y][x]?'Cell awakened.':'Cell removed.';renderStats();draw();}
+function aliveCount(){return grid.flat().reduce((s,v)=>s+v,0);}
+function renderStats(){if(generation>best){best=generation;localStorage.setItem(BEST_KEY,String(best));}document.getElementById('gen').textContent=generation;document.getElementById('alive').textContent=aliveCount();document.getElementById('mode').textContent=playing?'Running':'Edit';document.getElementById('best').textContent=best;document.getElementById('status').textContent=statusMsg;}
+function step(){const next=grid.map((row,y)=>row.map((cell,x)=>{let n=0;for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){if(!dx&&!dy)continue;const nx=(x+dx+COLS)%COLS,ny=(y+dy+ROWS)%ROWS;n+=grid[ny][nx];}return cell?(n===2||n===3?1:0):(n===3?1:0);}));grid=next;generation++;statusMsg='Life keeps evolving.';renderStats();draw();}
+function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);for(let y=0;y<ROWS;y++)for(let x=0;x<COLS;x++){ctx.fillStyle=grid[y][x]?'#22c55e':'#0f172a';ctx.fillRect(x*CELL,y*CELL,CELL-1,CELL-1);}ctx.strokeStyle='#6c63ff';ctx.lineWidth=2;ctx.strokeRect(cursor.x*CELL+.5,cursor.y*CELL+.5,CELL-1,CELL-1);} 
+function loop(ts){if(!running)return;if(playing&&ts-lastStep>140){lastStep=ts;step();}rafId=requestAnimationFrame(loop);}
+function posFromClient(clientX,clientY){const r=canvas.getBoundingClientRect();return{x:Math.max(0,Math.min(COLS-1,Math.floor((clientX-r.left)/(r.width/COLS)))),y:Math.max(0,Math.min(ROWS-1,Math.floor((clientY-r.top)/(r.height/ROWS))))};}
+function startGame(){running=true;playing=false;generation=0;document.getElementById('overlay').style.display='none';statusMsg='Build a pattern, then press Space.';renderStats();draw();cancelAnimationFrame(rafId);rafId=requestAnimationFrame(loop);}
+canvas.addEventListener('click',e=>{const p=posFromClient(e.clientX,e.clientY);cursor=p;toggle(p.x,p.y);});canvas.addEventListener('touchstart',e=>{const t=e.touches[0],p=posFromClient(t.clientX,t.clientY);cursor=p;toggle(p.x,p.y);},{passive:true});
+document.getElementById('overlay-btn').addEventListener('click',startGame);document.getElementById('random-btn').addEventListener('click',seedRandom);document.getElementById('clear-btn').addEventListener('click',clearGrid);document.addEventListener('keydown',e=>{const overlay=document.getElementById('overlay');if(overlay.style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}if(e.key==='ArrowLeft'){e.preventDefault();cursor.x=(cursor.x+COLS-1)%COLS;draw();}if(e.key==='ArrowRight'){e.preventDefault();cursor.x=(cursor.x+1)%COLS;draw();}if(e.key==='ArrowUp'){e.preventDefault();cursor.y=(cursor.y+ROWS-1)%ROWS;draw();}if(e.key==='ArrowDown'){e.preventDefault();cursor.y=(cursor.y+1)%ROWS;draw();}if(e.key==='Enter'){e.preventDefault();toggle(cursor.x,cursor.y);}if(e.key===' '){e.preventDefault();playing=!playing;statusMsg=playing?'Simulation running.':'Simulation paused.';renderStats();}if(e.key==='r'||e.key==='R'){e.preventDefault();seedRandom();}if(e.key==='c'||e.key==='C'){e.preventDefault();clearGrid();}});renderStats();draw();
+</script>
+</body>
+</html>

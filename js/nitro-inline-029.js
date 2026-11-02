@@ -1,0 +1,18 @@
+(function(){
+'use strict';
+const $=id=>document.getElementById(id),KEY='nitro_discovery_v1';
+function get(){try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){return {}}}
+function set(x){try{localStorage.setItem(KEY,JSON.stringify(x))}catch(e){$('ndIdeaStatus').textContent='Storage unavailable: export your ideas to keep them.'}}
+function cards(){return [...document.querySelectorAll('.game-card[data-game-id]')].filter(c=>c.dataset.gameId)}
+function name(card){return card.querySelector('h3')?.textContent?.trim()||card.dataset.gameId}
+function choose(){const all=cards();if(!all.length){$('ndPicked').textContent='Games are still loading.';return}const card=all[Math.floor(Math.random()*all.length)];$('ndPicked').textContent='🎮 '+name(card);const state=get();state.lastPick=card.dataset.gameId;set(state);card.scrollIntoView({behavior:'smooth',block:'center'});card.style.outline='2px solid #d984ff';setTimeout(()=>card.style.outline='',2500)}
+function drawQueue(){const root=$('ndQueue');root.replaceChildren();const state=get();const all=cards();const queue=Array.isArray(state.queue)?state.queue:[];if(!queue.length){root.textContent='No games queued yet. Pick one below.';return}queue.forEach(id=>{const card=all.find(c=>c.dataset.gameId===id);const button=document.createElement('button');button.textContent=(card?name(card):id)+' ↗';button.onclick=()=>{if(card){card.scrollIntoView({behavior:'smooth',block:'center'});card.querySelector('button')?.focus({preventScroll:true})}};root.append(button)})}
+function addQueue(id){const state=get();const q=Array.isArray(state.queue)?state.queue:[];state.queue=[...new Set([...q,id])].slice(-20);set(state);drawQueue()}
+function attach(){cards().forEach(card=>{if(card.querySelector('.ndQueueButton'))return;const b=document.createElement('button');b.type='button';b.className='ndQueueButton';b.textContent='＋ QUEUE';b.title='Add this game to your play queue';b.style.cssText='position:relative;z-index:5;margin:6px;border:1px solid #884bd1;border-radius:7px;background:#211637;color:#e5c8ff;padding:6px 9px;font-size:10px;cursor:pointer';b.onclick=e=>{e.stopPropagation();addQueue(card.dataset.gameId);b.textContent='✓ QUEUED';setTimeout(()=>b.textContent='＋ QUEUE',1200)};card.append(b)});drawQueue()}
+$('ndPick').onclick=$('ndSurprise').onclick=choose;
+$('ndQueueClear').onclick=()=>{const state=get();state.queue=[];set(state);drawQueue()};
+$('ndSaveIdea').onclick=()=>{const val=$('ndIdea').value.trim();if(!val)return;const state=get();state.ideas=Array.isArray(state.ideas)?state.ideas:[];state.ideas.unshift({text:val,date:new Date().toISOString()});state.ideas=state.ideas.slice(0,100);set(state);$('ndIdea').value='';$('ndIdeaStatus').textContent='✓ Idea saved ('+state.ideas.length+' total)'};
+$('ndExportIdeas').onclick=()=>{const state=get(),data=JSON.stringify(state.ideas||[],null,2),blob=new Blob([data],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='NitroArcade-Ideas.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),10000)};
+document.addEventListener('keydown',e=>{if(e.ctrlKey&&e.shiftKey&&e.key.toLowerCase()==='g'){e.preventDefault();choose()}});
+setTimeout(attach,500);setTimeout(attach,1800);const target=document.getElementById('gameGrid');if(target){const observer=new MutationObserver(()=>{clearTimeout(observer.t);observer.t=setTimeout(attach,150)});observer.observe(target,{childList:true})}
+})();

@@ -1,0 +1,2 @@
+# NitroArcade local API
+Static JSON files can be opened directly in an editor and copied by developers. The NitroLab portal uses an embedded fallback catalog when running via file:// because browser fetch() often blocks local JSON requests. When served via HTTP, /api/games.json etc. are fetchable. Run `node api/server.js` from the NitroLab-Next folder to expose GET /api/games, /api/mascots, /api/categories, /api/version. Node.js is OPTIONAL; not needed to play offline games.

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Bouncing Balls — Game Portal</title>
+<meta name="description" content="Play Bouncing Balls free online — Shoot balls to match and pop groups of 3 or more. A Easy Physics &amp; Simulation game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/bouncing-balls/"/>
+<meta property="og:title" content="🔵 Bouncing Balls — Free Browser Game"/>
+<meta property="og:description" content="Play Bouncing Balls free in your browser. Shoot balls to match and pop groups of 3 or more."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/bouncing-balls/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Bouncing Balls",
+  "description": "Shoot balls to match and pop groups of 3 or more.",
+  "url": "https://arcade.sotshau.fun/games/bouncing-balls/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Physics & Simulation",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px}.score-bar{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:12px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:92px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:18px;box-shadow:0 8px 20px rgba(0,0,0,.08)}canvas{display:block;background:#111827;border-radius:14px;border:1px solid #1f2937;touch-action:none}.status{min-height:24px;text-align:center;font-weight:700;color:#374151;margin-top:12px}.overlay{position:absolute;inset:18px;background:rgba(245,245,247,.95);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p{color:#6b7280;line-height:1.5;max-width:340px}.btn{padding:9px 18px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center;padding:0 18px}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🔵 Bouncing Balls</h1>
+<p class="sub">Move the pulse cursor, burst nearby balls, and stop the arena from overflowing.</p>
+<div class="score-bar">
+  <div class="score-box"><div class="score-label">Score</div><div class="score-val" id="score">0</div></div>
+  <div class="score-box"><div class="score-label">Balls</div><div class="score-val" id="count">0</div></div>
+  <div class="score-box"><div class="score-label">Energy</div><div class="score-val" id="energy">100</div></div>
+  <div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">0</div></div>
+</div>
+<div class="game">
+  <canvas id="arena" width="640" height="420"></canvas>
+  <div class="overlay" id="overlay">
+    <h2>🔵 Bouncing Balls</h2>
+    <p>Use arrow keys to move the pulse ring and Space to burst nearby balls. Tap or click anywhere to move and pulse on touch devices.</p>
+    <button class="btn" id="overlay-btn">Start Game</button>
+  </div>
+  <div class="status" id="status">Clear the swarm before it multiplies.</div>
+</div>
+<p class="hint">Keyboard: arrows + Space · Touch/mouse: tap to move and pulse</p>
+<script>
+const canvas=document.getElementById('arena'),ctx=canvas.getContext('2d');
+const BEST_KEY='bouncingBallsBest';
+let balls=[],cursor={x:320,y:210},energy=100,score=0,best=+(localStorage.getItem(BEST_KEY)||0),running=false,last=0,spawnTimer=0,burstFlash=0,statusMsg='Clear the swarm before it multiplies.',rafId=0;
+document.getElementById('best').textContent=best;
+function spawnBall(){const r=10+Math.random()*12;balls.push({x:40+Math.random()*560,y:40+Math.random()*320,vx:(Math.random()-.5)*220,vy:(Math.random()-.5)*220,r,color:`hsl(${Math.random()*360} 85% 60%)`});}
+function reset(){balls=[];for(let i=0;i<8;i++)spawnBall();cursor={x:320,y:210};energy=100;score=0;spawnTimer=0;burstFlash=0;statusMsg='Clear the swarm before it multiplies.';updateStats();draw();}
+function startGame(){running=true;last=0;document.getElementById('overlay').style.display='none';reset();cancelAnimationFrame(rafId);rafId=requestAnimationFrame(loop);}
+function updateStats(){if(score>best){best=score;localStorage.setItem(BEST_KEY,String(best));}document.getElementById('score').textContent=score;document.getElementById('count').textContent=balls.length;document.getElementById('energy').textContent=Math.floor(energy);document.getElementById('best').textContent=best;document.getElementById('status').textContent=statusMsg;}
+function pulse(){if(!running||energy<30)return;energy-=30;burstFlash=180;let popped=0;for(let i=balls.length-1;i>=0;i--){if(Math.hypot(balls[i].x-cursor.x,balls[i].y-cursor.y)<72){balls.splice(i,1);score+=10;popped++;}}statusMsg=popped?`Burst popped ${popped} balls!`:'Pulse missed the swarm.';updateStats();}
+function finish(){running=false;const overlay=document.getElementById('overlay');overlay.innerHTML=`<h2>🫧 Arena Overrun</h2><p>You scored <strong>${score}</strong> before the swarm overflowed.</p><button class="btn" id="overlay-btn">Play Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);} 
+function update(dt){energy=Math.min(100,energy+22*dt);spawnTimer+=dt;if(spawnTimer>1.7){spawnTimer=0;spawnBall();if(Math.random()>.55&&balls.length<26)spawnBall();}balls.forEach(b=>{b.x+=b.vx*dt;b.y+=b.vy*dt;if(b.x-b.r<0||b.x+b.r>canvas.width)b.vx*=-1;if(b.y-b.r<0||b.y+b.r>canvas.height)b.vy*=-1;b.x=Math.max(b.r,Math.min(canvas.width-b.r,b.x));b.y=Math.max(b.r,Math.min(canvas.height-b.r,b.y));});for(let i=0;i<balls.length;i++)for(let j=i+1;j<balls.length;j++){const a=balls[i],b=balls[j],dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy)||1,min=a.r+b.r;if(d<min){const nx=dx/d,ny=dy/d,push=(min-d)/2;a.x-=nx*push;a.y-=ny*push;b.x+=nx*push;b.y+=ny*push;[a.vx,b.vx]=[b.vx,a.vx];[a.vy,b.vy]=[b.vy,a.vy];}}
+if(balls.length>32)return finish();burstFlash=Math.max(0,burstFlash-dt*1000);updateStats();}
+function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.fillStyle='rgba(255,255,255,.08)';for(let i=0;i<canvas.width;i+=40){ctx.fillRect(i,0,1,canvas.height);}balls.forEach(b=>{ctx.fillStyle=b.color;ctx.beginPath();ctx.arc(b.x,b.y,b.r,0,Math.PI*2);ctx.fill();});ctx.strokeStyle='rgba(255,255,255,.7)';ctx.lineWidth=2;ctx.beginPath();ctx.arc(cursor.x,cursor.y,22,0,Math.PI*2);ctx.stroke();if(burstFlash>0){ctx.strokeStyle=`rgba(108,99,255,${burstFlash/180})`;ctx.lineWidth=6;ctx.beginPath();ctx.arc(cursor.x,cursor.y,72-burstFlash*.08,0,Math.PI*2);ctx.stroke();}}
+function loop(ts){if(!running)return;const dt=(ts-last||16)/1000;last=ts;update(dt);draw();rafId=requestAnimationFrame(loop);}
+function moveToClient(clientX,clientY){const r=canvas.getBoundingClientRect();cursor.x=(clientX-r.left)*(canvas.width/r.width);cursor.y=(clientY-r.top)*(canvas.height/r.height);draw();}
+canvas.addEventListener('click',e=>{moveToClient(e.clientX,e.clientY);pulse();});canvas.addEventListener('touchstart',e=>{const t=e.touches[0];moveToClient(t.clientX,t.clientY);pulse();},{passive:true});
+document.getElementById('overlay-btn').addEventListener('click',startGame);document.addEventListener('keydown',e=>{const overlay=document.getElementById('overlay');if(overlay.style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}if(e.key==='ArrowLeft'){e.preventDefault();cursor.x=Math.max(20,cursor.x-20);draw();}if(e.key==='ArrowRight'){e.preventDefault();cursor.x=Math.min(canvas.width-20,cursor.x+20);draw();}if(e.key==='ArrowUp'){e.preventDefault();cursor.y=Math.max(20,cursor.y-20);draw();}if(e.key==='ArrowDown'){e.preventDefault();cursor.y=Math.min(canvas.height-20,cursor.y+20);draw();}if(e.key===' '){e.preventDefault();pulse();}});reset();
+</script>
+</body>
+</html>

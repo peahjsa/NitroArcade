@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Water Flow — Game Portal</title>
+<meta name="description" content="Play Water Flow free online — Draw terrain and watch water flow realistically downhill. A Medium Physics &amp; Simulation game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/water-flow/"/>
+<meta property="og:title" content="💧 Water Flow — Free Browser Game"/>
+<meta property="og:description" content="Play Water Flow free in your browser. Draw terrain and watch water flow realistically downhill."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/water-flow/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Water Flow",
+  "description": "Draw terrain and watch water flow realistically downhill.",
+  "url": "https://arcade.sotshau.fun/games/water-flow/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Physics & Simulation",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px;color:#111827}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px}.score-bar{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:12px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:92px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.toolbar{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:12px}.btn{padding:9px 18px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer}.btn.secondary{background:#fff;border:1px solid #c7d2fe;color:#6c63ff}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:18px;box-shadow:0 8px 20px rgba(0,0,0,.08);width:min(560px,94vw)}.board{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}.cell{aspect-ratio:1/1;border:1px solid #d1d5db;border-radius:16px;background:linear-gradient(180deg,#eff6ff,#e0f2fe);display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;transition:transform .12s,box-shadow .12s,background .12s}.cell:hover{transform:translateY(-1px)}.cell.cursor{box-shadow:0 0 0 3px rgba(108,99,255,.28)}.cell.fixed{background:linear-gradient(180deg,#dbeafe,#bfdbfe)}.cell.filled{background:linear-gradient(180deg,#dbeafe,#7dd3fc)}.cell svg{width:88%;height:88%}.cell .badge{position:absolute;inset:auto 8px 8px auto;font-size:14px}.legend{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin-top:12px;font-size:12px;color:#6b7280}.legend span{display:flex;align-items:center;gap:6px}.swatch{width:12px;height:12px;border-radius:999px;background:#6c63ff}.swatch.water{background:#38bdf8}.status{min-height:24px;text-align:center;font-weight:700;color:#374151;margin-top:14px}.overlay{position:absolute;inset:18px;background:rgba(245,245,247,.94);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p{color:#6b7280;line-height:1.5;max-width:360px}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center;padding:0 18px}@media (max-width:560px){.game{padding:14px}.cell{border-radius:14px}}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>💧 Water Flow</h1>
+<p class="sub">Rotate the pipes and flood the basin. Each completed route advances the puzzle to a trickier layout.</p>
+<div class="score-bar">
+  <div class="score-box"><div class="score-label">Level</div><div class="score-val" id="level">1</div></div>
+  <div class="score-box"><div class="score-label">Moves</div><div class="score-val" id="moves">0</div></div>
+  <div class="score-box"><div class="score-label">Filled</div><div class="score-val" id="filled">0</div></div>
+  <div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">1</div></div>
+</div>
+<div class="toolbar">
+  <button class="btn" id="run-btn">Run Water</button>
+  <button class="btn secondary" id="shuffle-btn">New Puzzle</button>
+</div>
+<div class="game">
+  <div class="board" id="board"></div>
+  <div class="status" id="status">Rotate the pipes and press Run Water.</div>
+  <div class="legend"><span><i class="swatch"></i>Pipe</span><span><i class="swatch water"></i>Water</span><span>Source and basin stay locked</span></div>
+  <div class="overlay" id="overlay">
+    <h2 id="overlay-title">💧 Water Flow</h2>
+    <p id="overlay-text">Use arrow keys to move the cursor, Enter to rotate a tile, and Space to test the flow. Tap any tile on touch screens to rotate it instantly.</p>
+    <button class="btn" id="overlay-btn">Start Puzzle</button>
+  </div>
+</div>
+<p class="hint">Keyboard: arrows move · Enter rotates · Space runs water · Touch: tap tiles · R starts a fresh puzzle</p>
+<script>
+const SIZE=6;
+const BEST_KEY='gamePortal.waterFlowBestLevel';
+const DIRS=[[0,-1],[1,0],[0,1],[-1,0]];
+const OPP=[2,3,0,1];
+const boardEl=document.getElementById('board');
+const overlayEl=document.getElementById('overlay');
+const overlayTitleEl=document.getElementById('overlay-title');
+const overlayTextEl=document.getElementById('overlay-text');
+const overlayBtn=document.getElementById('overlay-btn');
+const statusEl=document.getElementById('status');
+const levelEl=document.getElementById('level');
+const movesEl=document.getElementById('moves');
+const filledEl=document.getElementById('filled');
+const bestEl=document.getElementById('best');
+let grid=[];
+let filled=new Set();
+let cursor=0;
+let level=1;
+let moves=0;
+let best=Math.max(1,+(localStorage.getItem(BEST_KEY)||1));
+let running=false;
+let started=false;
+let statusMsg='Rotate the pipes and press Run Water.';
+const rand=n=>Math.floor(Math.random()*n);
+function tileKey(x,y){return `${x},${y}`;}
+function shuffle(list){
+  const arr=list.slice();
+  for(let i=arr.length-1;i>0;i--){
+    const j=rand(i+1);
+    [arr[i],arr[j]]=[arr[j],arr[i]];
+  }
+  return arr;
+}
+function makeTile(type,rot,fixed=false){
+  return {type,rot,fixed};
+}
+function getConnections(tile){
+  if(tile.type==='source'||tile.type==='sink')return[tile.rot];
+  if(tile.type==='straight')return tile.rot%2===0?[0,2]:[1,3];
+  if(tile.type==='corner')return[[0,1],[1,2],[2,3],[3,0]][tile.rot%4];
+  if(tile.type==='tee')return[[0,1,3],[0,1,2],[1,2,3],[0,2,3]][tile.rot%4];
+  return[0,1,2,3];
+}
+function directionBetween(a,b){
+  for(let d=0;d<DIRS.length;d++){
+    const [dx,dy]=DIRS[d];
+    if(a[0]+dx===b[0]&&a[1]+dy===b[1])return d;
+  }
+  return 0;
+}
+function buildPath(){
+  for(let attempt=0;attempt<120;attempt++){
+    const start=[0,rand(SIZE)];
+    const goal=[SIZE-1,rand(SIZE)];
+    const path=[];
+    const seen=new Set();
+    function dfs(x,y){
+      path.push([x,y]);
+      seen.add(tileKey(x,y));
+      if(x===goal[0]&&y===goal[1]&&path.length>=SIZE+2)return true;
+      const nextSteps=shuffle([0,1,2,3]).map(dir=>{
+        const nx=x+DIRS[dir][0],ny=y+DIRS[dir][1];
+        const score=Math.abs(goal[0]-nx)*1.6+Math.abs(goal[1]-ny)+(dir===1?-0.5:0)+(dir===3?0.4:0)+Math.random();
+        return{dir,nx,ny,score};
+      }).filter(step=>step.nx>=0&&step.nx<SIZE&&step.ny>=0&&step.ny<SIZE&&!seen.has(tileKey(step.nx,step.ny)));
+      nextSteps.sort((a,b)=>a.score-b.score);
+      for(const step of nextSteps){
+        if(dfs(step.nx,step.ny))return true;
+      }
+      path.pop();
+      seen.delete(tileKey(x,y));
+      return false;
+    }
+    if(dfs(start[0],start[1]))return path;
+  }
+  return[[0,2],[1,2],[2,2],[3,2],[4,2],[5,2]];
+}
+function tileForPath(path,index){
+  const current=path[index];
+  if(index===0){
+    return makeTile('source',directionBetween(current,path[1]),true);
+  }
+  if(index===path.length-1){
+    return makeTile('sink',directionBetween(current,path[index-1]),true);
+  }
+  const prev=path[index-1];
+  const next=path[index+1];
+  const dirA=directionBetween(current,prev);
+  const dirB=directionBetween(current,next);
+  const pair=[dirA,dirB].sort((a,b)=>a-b).join(',');
+  if(pair==='0,2')return makeTile('straight',0);
+  if(pair==='1,3')return makeTile('straight',1);
+  const cornerMap={'0,1':0,'1,2':1,'2,3':2,'0,3':3};
+  return makeTile('corner',cornerMap[pair]||0);
+}
+function randomFiller(){
+  const roll=Math.random();
+  if(roll<0.35)return makeTile('corner',rand(4));
+  if(roll<0.7)return makeTile('straight',rand(2));
+  if(roll<0.92)return makeTile('tee',rand(4));
+  return makeTile('cross',0);
+}
+function rotateTile(index){
+  if(running||!started)return;
+  const tile=grid[index];
+  if(tile.fixed){
+    statusMsg='The source and basin stay locked.';
+    renderStats();
+    return;
+  }
+  tile.rot=(tile.rot+1)%4;
+  moves++;
+  filled.clear();
+  statusMsg='Pipe rotated.';
+  render();
+  renderStats();
+}
+function flowOrder(){
+  if(!grid.length)return[];
+  const startIndex=grid.findIndex(tile=>tile.type==='source');
+  const queue=[startIndex];
+  const seen=new Set([startIndex]);
+  const order=[];
+  while(queue.length){
+    const index=queue.shift();
+    order.push(index);
+    const x=index%SIZE;
+    const y=Math.floor(index/SIZE);
+    for(const dir of getConnections(grid[index])){
+      const nx=x+DIRS[dir][0],ny=y+DIRS[dir][1];
+      if(nx<0||ny<0||nx>=SIZE||ny>=SIZE)continue;
+      const neighbor=ny*SIZE+nx;
+      if(seen.has(neighbor))continue;
+      if(getConnections(grid[neighbor]).includes(OPP[dir])){
+        seen.add(neighbor);
+        queue.push(neighbor);
+      }
+    }
+  }
+  return order;
+}
+function showOverlay(title,text,label='Start Puzzle'){
+  overlayTitleEl.textContent=title;
+  overlayTextEl.innerHTML=text;
+  overlayBtn.textContent=label;
+  overlayEl.style.display='flex';
+}
+function hideOverlay(){
+  overlayEl.style.display='none';
+}
+function createPuzzle(newLevel){
+  level=newLevel;
+  moves=0;
+  filled.clear();
+  cursor=0;
+  running=false;
+  const path=buildPath();
+  const pathSet=new Set(path.map(([x,y])=>tileKey(x,y)));
+  grid=[];
+  for(let y=0;y<SIZE;y++){
+    for(let x=0;x<SIZE;x++){
+      const pathIndex=path.findIndex(([px,py])=>px===x&&py===y);
+      if(pathIndex!==-1){
+        const tile=tileForPath(path,pathIndex);
+        if(!tile.fixed){
+          tile.rot=(tile.rot+1+rand(3)+Math.min(2,Math.floor(level/2)))%4;
+        }
+        grid.push(tile);
+      }else{
+        const filler=randomFiller();
+        filler.rot=(filler.rot+rand(4))%4;
+        if(level>2&&Math.random()<0.16&&!pathSet.has(tileKey(x,y)))filler.type='cross';
+        grid.push(filler);
+      }
+    }
+  }
+  statusMsg='Rotate the pipes and press Run Water.';
+  render();
+  renderStats();
+}
+function svgFor(tile,isFilled){
+  const stroke=isFilled?'#0ea5e9':'#475569';
+  const glow=isFilled?'#e0f2fe':'#dbeafe';
+  const segs=[];
+  const cons=getConnections(tile);
+  cons.forEach(dir=>{
+    if(dir===0)segs.push('<path d="M50 50 V12"/>');
+    if(dir===1)segs.push('<path d="M50 50 H88"/>');
+    if(dir===2)segs.push('<path d="M50 50 V88"/>');
+    if(dir===3)segs.push('<path d="M50 50 H12"/>');
+  });
+  const badge=tile.type==='source'?'🚰':tile.type==='sink'?'🏁':'';
+  return `${badge?`<span class="badge">${badge}</span>`:''}<svg viewBox="0 0 100 100" aria-hidden="true"><g stroke="${stroke}" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" fill="none">${segs.join('')}</g><circle cx="50" cy="50" r="16" fill="${glow}" stroke="${stroke}" stroke-width="8"/></svg>`;
+}
+function render(){
+  boardEl.innerHTML='';
+  grid.forEach((tile,index)=>{
+    const button=document.createElement('button');
+    button.className=`cell${filled.has(index)?' filled':''}${tile.fixed?' fixed':''}${index===cursor?' cursor':''}`;
+    button.type='button';
+    button.innerHTML=svgFor(tile,filled.has(index));
+    button.addEventListener('click',()=>{
+      cursor=index;
+      rotateTile(index);
+    });
+    boardEl.appendChild(button);
+  });
+}
+function renderStats(){
+  levelEl.textContent=String(level);
+  movesEl.textContent=String(moves);
+  filledEl.textContent=String(filled.size);
+  bestEl.textContent=String(best);
+  statusEl.textContent=statusMsg;
+}
+function runWater(){
+  if(running||!started)return;
+  const order=flowOrder();
+  const sinkIndex=grid.findIndex(tile=>tile.type==='sink');
+  const won=order.includes(sinkIndex);
+  filled.clear();
+  render();
+  renderStats();
+  running=true;
+  let step=0;
+  const timer=setInterval(()=>{
+    if(step<order.length){
+      filled.add(order[step]);
+      render();
+      renderStats();
+      step++;
+      return;
+    }
+    clearInterval(timer);
+    running=false;
+    if(won){
+      best=Math.max(best,level);
+      localStorage.setItem(BEST_KEY,String(best));
+      statusMsg='Water reached the basin! Next puzzle loading...';
+      renderStats();
+      setTimeout(()=>createPuzzle(level+1),800);
+    }else{
+      statusMsg='The flow stalled before the basin. Rotate a few more pipes.';
+      renderStats();
+    }
+  },80);
+}
+function startGame(){
+  started=true;
+  hideOverlay();
+  createPuzzle(1);
+}
+function moveCursor(dx,dy){
+  const x=(cursor%SIZE+dx+SIZE)%SIZE;
+  const y=(Math.floor(cursor/SIZE)+dy+SIZE)%SIZE;
+  cursor=y*SIZE+x;
+  render();
+}
+overlayBtn.addEventListener('click',startGame);
+document.getElementById('run-btn').addEventListener('click',runWater);
+document.getElementById('shuffle-btn').addEventListener('click',()=>{if(!started)startGame();else createPuzzle(level);});
+document.addEventListener('keydown',event=>{
+  if(overlayEl.style.display!=='none'&&(event.key==='Enter'||event.key===' ')){
+    event.preventDefault();
+    startGame();
+    return;
+  }
+  if(!started)return;
+  if(event.key==='ArrowLeft'){event.preventDefault();moveCursor(-1,0);}
+  else if(event.key==='ArrowRight'){event.preventDefault();moveCursor(1,0);}
+  else if(event.key==='ArrowUp'){event.preventDefault();moveCursor(0,-1);}
+  else if(event.key==='ArrowDown'){event.preventDefault();moveCursor(0,1);}
+  else if(event.key==='Enter'){event.preventDefault();rotateTile(cursor);render();}
+  else if(event.key===' '){event.preventDefault();runWater();}
+  else if(event.key==='r'||event.key==='R'){event.preventDefault();createPuzzle(level);}
+});
+showOverlay('💧 Water Flow','Use arrow keys to move the cursor, <strong>Enter</strong> to rotate a tile, and <strong>Space</strong> to test the flow. Tap any tile on touch screens to rotate it instantly.');
+renderStats();
+</script>
+</body>
+</html>

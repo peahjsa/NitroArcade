@@ -1,0 +1,14 @@
+
+#nl-open{position:fixed;left:18px;bottom:22px;z-index:2147483640;background:linear-gradient(110deg,#008ad2,#792bd9);color:white;border:2px solid #9cf4ff;border-radius:14px;padding:13px 19px;font:800 14px system-ui;box-shadow:0 0 22px #00cfff99;cursor:pointer}
+#nl{display:none;position:fixed;left:18px;bottom:80px;z-index:2147483641;width:min(750px,calc(100vw - 36px));height:min(620px,calc(100vh - 105px));border:1px solid #5dc9ff;border-radius:17px;background:#080f20;color:white;box-shadow:0 20px 90px #000d;font:13px system-ui;overflow:hidden;flex-direction:column}
+#nl.open{display:flex}
+#nl *{box-sizing:border-box}
+#nl header{background:linear-gradient(110deg,#122e54,#32205b);padding:13px;display:flex;justify-content:space-between;align-items:center}
+#nl header strong{font-size:17px}
+#nl button{background:#182f50;color:#fff;border:1px solid #4e719b;border-radius:8px;padding:8px;cursor:pointer}
+#nl button:hover{background:#295783}
+#nl .controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:9px 12px;background:#101b32}
+#nl label{display:flex;align-items:center;gap:6px}
+#nl input{width:100px;accent-color:#54eaff}
+#nl canvas{display:block;width:100%;flex:1;min-height:150px;touch-action:none;cursor:crosshair}
+#nl footer{padding:10px;color:#b5d8ec;background:#101b32}

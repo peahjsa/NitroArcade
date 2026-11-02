@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Platformer Quest — Game Portal</title>
+<meta name="description" content="Play Platformer free online — Run, jump, and reach the flag. Classic side-scrolling platform action. A Medium Platform &amp; Adventure game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/platformer/"/>
+<meta property="og:title" content="🎮 Platformer — Free Browser Game"/>
+<meta property="og:description" content="Play Platformer free in your browser. Run, jump, and reach the flag. Classic side-scrolling platform action."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/platformer/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Platformer",
+  "description": "Run, jump, and reach the flag. Classic side-scrolling platform action.",
+  "url": "https://arcade.sotshau.fun/games/platformer/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Platform & Adventure",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px;max-width:720px}.score-bar{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:96px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:18px;box-shadow:0 8px 20px rgba(0,0,0,.08)}canvas{display:block;background:linear-gradient(#dbeafe,#eff6ff 48%,#dcfce7 48%,#bbf7d0 100%);border-radius:14px;border:1px solid #cbd5e1;touch-action:none}.overlay{position:absolute;inset:18px;background:rgba(245,245,247,.95);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p{color:#6b7280;line-height:1.5;max-width:360px}.btn{padding:9px 22px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}.status{margin-top:12px;text-align:center;color:#374151;font-weight:700;min-height:24px;max-width:760px}.touch-row{display:flex;gap:12px;justify-content:center;margin-top:12px;flex-wrap:wrap}.touch-btn{padding:12px 16px;border:none;border-radius:12px;background:#fff;color:#6c63ff;font-weight:800;box-shadow:0 4px 10px rgba(0,0,0,.08);min-width:68px}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center;padding:0 16px}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🧗 Platformer Quest</h1>
+<p class="sub">Run, jump, gather all gems, and reach the portal at the far end of the floating ruins.</p>
+<div class="score-bar"><div class="score-box"><div class="score-label">Gems</div><div class="score-val" id="gems">0 / 4</div></div><div class="score-box"><div class="score-label">Lives</div><div class="score-val" id="lives">3</div></div><div class="score-box"><div class="score-label">Progress</div><div class="score-val" id="progress">0%</div></div><div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">0%</div></div></div>
+<div class="game">
+  <canvas id="game" width="760" height="360"></canvas>
+  <div class="overlay" id="overlay"><h2>🧗 Platformer Quest</h2><p>Move with Arrow keys or A / D, jump with Space, W, or Arrow Up, and tap the on-screen buttons on touch devices.</p><button class="btn" id="overlay-btn">Start Adventure</button></div>
+  <div class="status" id="status">Press Start to begin.</div>
+</div>
+<div class="touch-row"><button class="touch-btn" data-act="left">◀</button><button class="touch-btn" data-act="jump">⤒ Jump</button><button class="touch-btn" data-act="right">▶</button></div>
+<p class="hint">Arrow keys / A D to move · Space / W / ↑ to jump · Collect every gem before entering the portal</p>
+<script>
+const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');
+const BEST_KEY='platformerQuestBest';
+const world={width:1500,height:360,ground:316,platforms:[{x:0,y:316,w:320,h:44},{x:360,y:270,w:170,h:18},{x:580,y:228,w:120,h:18},{x:740,y:286,w:150,h:18},{x:930,y:248,w:150,h:18},{x:1120,y:210,w:120,h:18},{x:1280,y:264,w:150,h:18},{x:1390,y:316,w:110,h:44}],hazards:[{x:330,y:316,w:26,h:16},{x:546,y:316,w:28,h:16},{x:1088,y:316,w:28,h:16},{x:1248,y:316,w:26,h:16}],gems:[{x:396,y:236,r:10},{x:628,y:194,r:10},{x:980,y:214,r:10},{x:1324,y:230,r:10}],enemies:[{x:770,y:262,w:28,h:24,min:740,max:860,dir:1},{x:1150,y:186,w:28,h:24,min:1120,max:1210,dir:-1}],goal:{x:1432,y:236,w:40,h:80}};
+let player,keys={},running=false,rafId=0,last=0,statusMsg='Press Start to begin.',best=+(localStorage.getItem(BEST_KEY)||0),cameraX=0,gemsTaken=0,lives=3,progress=0;
+document.getElementById('best').textContent=best+'%';
+function rectHit(a,b){return a.x<b.x+b.w&&a.x+a.w>b.x&&a.y<b.y+b.h&&a.y+a.h>b.y;}
+function resetPlayer(full=false){player={x:40,y:260,w:28,h:40,vx:0,vy:0,onGround:false,facing:1};if(full){gemsTaken=0;lives=3;progress=0;world.gems.forEach(g=>g.taken=false);}statusMsg='Collect all four gems to unlock the portal.';updateStats();}
+function startGame(){resetPlayer(true);world.enemies.forEach((e,i)=>{e.x=i?1150:770;e.dir=i?-1:1;});running=true;last=0;document.getElementById('overlay').style.display='none';cancelAnimationFrame(rafId);rafId=requestAnimationFrame(loop);}
+function updateStats(){document.getElementById('gems').textContent=`${gemsTaken} / 4`;document.getElementById('lives').textContent=String(lives);document.getElementById('progress').textContent=progress+'%';document.getElementById('best').textContent=best+'%';document.getElementById('status').textContent=statusMsg;}
+function loseLife(text){lives--;statusMsg=text;if(lives<=0){finish(false,'The ruins pushed you back this time.');return;}player.x=Math.max(40,player.x-60);player.y=220;player.vx=0;player.vy=-4;updateStats();}
+function finish(win,text){running=false;if(progress>best){best=progress;localStorage.setItem(BEST_KEY,String(best));}updateStats();const overlay=document.getElementById('overlay');overlay.innerHTML=`<h2>${win?'🏁 Course Cleared':'Game Over'}</h2><p>${text}</p><button class="btn" id="overlay-btn">${win?'Play Again':'Try Again'}</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);}
+function handleInput(){const left=keys.ArrowLeft||keys.a||keys.A,right=keys.ArrowRight||keys.d||keys.D;const jump=keys[' ']||keys.ArrowUp||keys.w||keys.W;if(left===right)player.vx*=0.75;else{player.vx=left?-3.6:3.6;player.facing=left?-1:1;}if(jump&&player.onGround){player.vy=-12;player.onGround=false;statusMsg='Nice jump!';keys[' ']=false;keys.ArrowUp=false;keys.w=false;keys.W=false;}}
+function resolvePlatforms(prevY){player.onGround=false;const solids=world.platforms.concat([{x:0,y:0,w:20,h:world.height},{x:world.width-20,y:0,w:20,h:world.height}]);solids.forEach(p=>{if(rectHit(player,p)){if(prevY+player.h<=p.y+player.vy&&player.vy>=0){player.y=p.y-player.h;player.vy=0;player.onGround=true;}else if(prevY>=p.y+p.h&&player.vy<0){player.y=p.y+p.h;player.vy=0;}else if(player.x+player.w/2<p.x+p.w/2)player.x=p.x-player.w;else player.x=p.x+p.w;}});if(player.y+player.h>=world.ground&&player.x<320){player.y=world.ground-player.h;player.vy=0;player.onGround=true;}if(player.y>canvas.height+80)loseLife('You fell into the clouds.');}
+function update(dt){handleInput();player.vy+=0.58;player.x=Math.max(0,Math.min(world.width-player.w,player.x+player.vx));const prevY=player.y;player.y+=player.vy;resolvePlatforms(prevY);world.enemies.forEach(e=>{e.x+=e.dir*1.4*(dt/16);if(e.x<e.min||e.x>e.max)e.dir*=-1;if(rectHit(player,e))loseLife('A patrol bot knocked you away.');});world.hazards.forEach(h=>{if(rectHit(player,{x:h.x,y:h.y,w:h.w,h:h.h}))loseLife('Watch the spikes!');});world.gems.forEach(g=>{if(!g.taken&&Math.hypot(player.x+14-g.x,player.y+20-g.y)<24){g.taken=true;gemsTaken++;statusMsg='Gem secured.';}});const portalOpen=gemsTaken===world.gems.length;if(portalOpen&&rectHit(player,world.goal)){progress=100;finish(true,'You gathered every gem and escaped through the portal!');return;}if(rectHit(player,world.goal)&&!portalOpen)statusMsg='The portal is sealed. Collect all gems first.';progress=Math.max(progress,Math.min(99,Math.floor(((player.x+player.w)/world.goal.x)*100)));if(progress>best){best=progress;localStorage.setItem(BEST_KEY,String(best));}cameraX=Math.max(0,Math.min(world.width-canvas.width,player.x-240));player.vx*=player.onGround?.82:.96;updateStats();}
+function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.save();ctx.translate(-cameraX,0);ctx.fillStyle='#bfdbfe';ctx.fillRect(0,0,world.width,170);ctx.fillStyle='#ffffff';for(let i=0;i<8;i++){ctx.beginPath();ctx.arc(90+i*190,70+(i%2)*24,28,0,Math.PI*2);ctx.arc(120+i*190,66+(i%2)*24,22,0,Math.PI*2);ctx.arc(148+i*190,74+(i%2)*24,25,0,Math.PI*2);ctx.fill();}ctx.fillStyle='#86efac';world.platforms.forEach(p=>{ctx.fillRect(p.x,p.y,p.w,p.h);ctx.fillStyle='#22c55e';ctx.fillRect(p.x,p.y,p.w,8);ctx.fillStyle='#86efac';});ctx.fillStyle='#ef4444';world.hazards.forEach(h=>{for(let x=0;x<h.w;x+=12){ctx.beginPath();ctx.moveTo(h.x+x,h.y+h.h);ctx.lineTo(h.x+x+6,h.y);ctx.lineTo(h.x+x+12,h.y+h.h);ctx.closePath();ctx.fill();}});world.gems.forEach(g=>{if(g.taken)return;ctx.fillStyle='#6c63ff';ctx.beginPath();ctx.moveTo(g.x,g.y-12);ctx.lineTo(g.x+10,g.y);ctx.lineTo(g.x,g.y+12);ctx.lineTo(g.x-10,g.y);ctx.closePath();ctx.fill();});world.enemies.forEach(e=>{ctx.fillStyle='#111827';ctx.fillRect(e.x,e.y,e.w,e.h);ctx.fillStyle='#f8fafc';ctx.fillRect(e.x+6,e.y+5,5,5);ctx.fillRect(e.x+17,e.y+5,5,5);});const portalOpen=gemsTaken===world.gems.length;ctx.fillStyle=portalOpen?'#7c3aed':'#94a3b8';ctx.fillRect(world.goal.x,world.goal.y,world.goal.w,world.goal.h);ctx.fillStyle='#ede9fe';ctx.fillRect(world.goal.x+10,world.goal.y+14,20,46);ctx.fillStyle='#f59e0b';ctx.beginPath();ctx.arc(world.goal.x+world.goal.w-8,world.goal.y+42,3,0,Math.PI*2);ctx.fill();ctx.fillStyle='#111827';ctx.fillRect(player.x,player.y,player.w,player.h);ctx.fillStyle='#6c63ff';ctx.fillRect(player.x+4,player.y+4,player.w-8,player.h-12);ctx.fillStyle='#fde68a';ctx.beginPath();ctx.arc(player.x+14,player.y+10,6,0,Math.PI*2);ctx.fill();ctx.restore();}
+function loop(ts){if(!running)return;const dt=ts-last||16;last=ts;update(dt);draw();if(running)rafId=requestAnimationFrame(loop);}
+document.getElementById('overlay-btn').addEventListener('click',startGame);document.addEventListener('keydown',e=>{if(document.getElementById('overlay').style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}if(['ArrowLeft','ArrowRight','ArrowUp',' ','a','A','d','D','w','W'].includes(e.key))e.preventDefault();keys[e.key]=true;});document.addEventListener('keyup',e=>{keys[e.key]=false;});document.querySelectorAll('.touch-btn').forEach(btn=>{const act=btn.dataset.act;const on=()=>{if(act==='jump'){keys[' ']=true;}else keys[act==='left'?'ArrowLeft':'ArrowRight']=true;};const off=()=>{if(act==='jump')keys[' ']=false;else keys[act==='left'?'ArrowLeft':'ArrowRight']=false;};btn.addEventListener('touchstart',e=>{e.preventDefault();on();},{passive:false});btn.addEventListener('touchend',e=>{e.preventDefault();off();},{passive:false});btn.addEventListener('mousedown',on);btn.addEventListener('mouseup',off);btn.addEventListener('mouseleave',off);});resetPlayer(true);draw();
+</script>
+</body>
+</html>

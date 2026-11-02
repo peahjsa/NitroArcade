@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>📦 Sokoban — Game Portal</title>
+<meta name="description" content="Play Sokoban free online — Push boxes onto target spots. Think carefully — you can't pull! A Hard Puzzle game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/sokoban/"/>
+<meta property="og:title" content="📦 Sokoban — Free Browser Game"/>
+<meta property="og:description" content="Play Sokoban free in your browser. Push boxes onto target spots. Think carefully — you can't pull!"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/sokoban/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Sokoban",
+  "description": "Push boxes onto target spots. Think carefully — you can't pull!",
+  "url": "https://arcade.sotshau.fun/games/sokoban/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Puzzle",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}nav a:hover{text-decoration:underline}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{font-size:14px;color:#6b7280;text-align:center;margin-bottom:16px;padding:0 16px}.score-bar{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 18px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:90px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.wrap{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;box-shadow:0 8px 20px rgba(0,0,0,.08);padding:18px}.board{display:grid;grid-template-columns:repeat(8,42px);gap:4px}.cell{width:42px;height:42px;border-radius:12px;background:#f8fafc;display:flex;align-items:center;justify-content:center;font-size:24px}.wall{background:#334155}.goal{background:#ede9fe}.box{background:#f59e0b;color:#fff}.box.goal{background:#10b981}.player{background:#6c63ff;color:#fff}.controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px}.touch-pad{display:grid;grid-template-columns:repeat(3,52px);gap:8px;justify-content:center;margin-top:14px}.touch-btn,.btn{padding:9px 22px;background:#6c63ff;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer}.btn:hover,.touch-btn:hover{background:#574fd6}.btn-outline{background:transparent;border:1.5px solid #6c63ff;color:#6c63ff}.btn-outline:hover{background:#ede9ff}.touch-btn.blank{visibility:hidden}.status{margin-top:14px;text-align:center;min-height:24px;color:#4b5563;font-weight:600}.overlay{position:absolute;inset:0;background:rgba(245,245,247,.94);border-radius:18px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:10px;padding:24px;text-align:center}.overlay p{color:#6b7280;max-width:300px;line-height:1.5}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center;padding:0 16px}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>📦 Sokoban</h1>
+<p class="sub">Push every crate onto a glowing storage pad without getting stuck.</p>
+<div class="score-bar">
+  <div class="score-box"><div class="score-label">Moves</div><div class="score-val" id="moves">0</div></div>
+  <div class="score-box"><div class="score-label">Pushes</div><div class="score-val" id="pushes">0</div></div>
+  <div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">—</div></div>
+</div>
+<div class="wrap">
+  <div class="board" id="board"></div>
+  <div class="overlay" id="overlay">
+    <h2>📦 Sokoban</h2>
+    <p>Use arrow keys or the on-screen pad to move. Push boxes onto all three targets to win the level.</p>
+    <button class="btn" id="overlay-btn">Start Game</button>
+  </div>
+  <div class="status" id="status">Press Start to begin.</div>
+  <div class="controls"><button class="btn btn-outline" id="reset-btn">Reset Level</button></div>
+  <div class="touch-pad">
+    <button class="touch-btn blank" aria-hidden="true"></button>
+    <button class="touch-btn" id="touch-up">↑</button>
+    <button class="touch-btn blank" aria-hidden="true"></button>
+    <button class="touch-btn" id="touch-left">←</button>
+    <button class="touch-btn" id="touch-down">↓</button>
+    <button class="touch-btn" id="touch-right">→</button>
+  </div>
+</div>
+<p class="hint">Arrow keys / WASD move · Tap the pad on touch screens</p>
+<script>
+const LEVEL=[
+  '########',
+  '#..#...#',
+  '#.$ $..#',
+  '#  @ $.#',
+  '#..#...#',
+  '########'
+];
+const BEST_KEY='sokobanBest';
+const boardEl=document.getElementById('board');
+const overlay=document.getElementById('overlay');
+const statusEl=document.getElementById('status');
+const movesEl=document.getElementById('moves');
+const pushesEl=document.getElementById('pushes');
+const bestEl=document.getElementById('best');
+let grid=[],goals=[],player={x:0,y:0},movesCount=0,pushCount=0,best=+(localStorage.getItem(BEST_KEY)||0),active=false;
+bestEl.textContent=best?best:'—';
+function loadLevel(){
+  grid=[];goals=[];
+  LEVEL.forEach((row,y)=>{const cells=[];[...row].forEach((ch,x)=>{let tile='floor';if(ch==='#')tile='wall';if(ch==='.')goals.push(`${x},${y}`);if(ch==='@')player={x,y};if(ch==='$')tile='box';cells.push(tile);});grid.push(cells);});
+  movesCount=0;pushCount=0;active=true;overlay.style.display='none';statusEl.textContent='Cover every target with a crate.';render();
+}
+function startGame(){loadLevel();}
+function isGoal(x,y){return goals.includes(`${x},${y}`);}
+function hasBox(x,y){return grid[y]?.[x]==='box';}
+function move(dx,dy){
+  if(!active)return;
+  const nx=player.x+dx,ny=player.y+dy;
+  const next=grid[ny]?.[nx];
+  if(next==='wall'||next===undefined)return;
+  if(next==='box'){
+    const bx=nx+dx,by=ny+dy;
+    const beyond=grid[by]?.[bx];
+    if(beyond==='wall'||beyond==='box'||beyond===undefined)return;
+    grid[ny][nx]='floor';grid[by][bx]='box';pushCount++;
+  }
+  player={x:nx,y:ny};movesCount++;render();checkWin();
+}
+function render(){
+  boardEl.innerHTML='';
+  for(let y=0;y<grid.length;y++)for(let x=0;x<grid[y].length;x++){
+    const cell=document.createElement('div');
+    cell.className='cell';
+    const goal=isGoal(x,y);
+    const tile=grid[y][x];
+    if(tile==='wall')cell.classList.add('wall');
+    else if(player.x===x&&player.y===y){cell.classList.add('player');cell.textContent='🙂';if(goal)cell.style.boxShadow='inset 0 0 0 3px #10b981';}
+    else if(tile==='box'){cell.classList.add('box');if(goal)cell.classList.add('goal');cell.textContent=goal?'✅':'📦';}
+    else if(goal){cell.classList.add('goal');cell.textContent='•';}
+    boardEl.appendChild(cell);
+  }
+  movesEl.textContent=movesCount;pushesEl.textContent=pushCount;bestEl.textContent=best?best:'—';
+}
+function checkWin(){
+  const allOnGoals=goals.every(key=>{const [x,y]=key.split(',').map(Number);return hasBox(x,y);});
+  if(!allOnGoals)return;
+  active=false;if(!best||pushCount<best){best=pushCount;localStorage.setItem(BEST_KEY,String(best));}bestEl.textContent=best;statusEl.textContent=`Level complete in ${pushCount} pushes!`;overlay.innerHTML=`<h2>🎉 Warehouse Cleared</h2><p>You solved the room in ${movesCount} moves and ${pushCount} pushes.</p><button class="btn" id="overlay-btn">Play Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',loadLevel);
+}
+document.getElementById('overlay-btn').addEventListener('click',startGame);
+document.getElementById('reset-btn').addEventListener('click',startGame);
+document.getElementById('touch-up').addEventListener('click',()=>move(0,-1));
+document.getElementById('touch-left').addEventListener('click',()=>move(-1,0));
+document.getElementById('touch-down').addEventListener('click',()=>move(0,1));
+document.getElementById('touch-right').addEventListener('click',()=>move(1,0));
+document.addEventListener('keydown',e=>{if(overlay.style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}const map={ArrowUp:[0,-1],ArrowDown:[0,1],ArrowLeft:[-1,0],ArrowRight:[1,0],w:[0,-1],a:[-1,0],s:[0,1],d:[1,0],W:[0,-1],A:[-1,0],S:[0,1],D:[1,0]};if(map[e.key]){e.preventDefault();move(...map[e.key]);}});
+loadLevel();overlay.style.display='flex';statusEl.textContent='Press Start to begin.';
+</script>
+</body>
+</html>

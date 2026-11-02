@@ -1,0 +1,10 @@
+
+:root{--nxCustomAccent:#a54cff}
+body.npCompact .game-grid{grid-template-columns:repeat(auto-fill,minmax(205px,1fr))!important;gap:10px!important}
+body.npCompact .game-card .thumb{height:145px!important}
+body.npCompact .game-card .game-meta{padding:11px!important}
+body.npContrast .nxPanel,body.npContrast .game-card,body.npContrast .ntCommandDeck{border-color:#8063b0!important;background:#16152d!important}
+body.npReduceMotion *,body.npReduceMotion *::before,body.npReduceMotion *::after{animation-duration:.001ms!important;transition-duration:.001ms!important}
+.nxSidebar .nxSideActive{border-color:var(--nxCustomAccent)!important}
+.nxSideBrand>span{color:var(--nxCustomAccent)!important}
+.ntPlusActions button:hover{border-color:var(--nxCustomAccent)!important}

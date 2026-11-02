@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Boggle — Game Portal</title>
+<meta name="description" content="Play Boggle free online — Find as many words as possible in the 4×4 letter grid before time runs out. A Hard Word &amp; Trivia game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/boggle/"/>
+<meta property="og:title" content="🎲 Boggle — Free Browser Game"/>
+<meta property="og:description" content="Play Boggle free in your browser. Find as many words as possible in the 4×4 letter grid before time runs out."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/boggle/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Boggle",
+  "description": "Find as many words as possible in the 4×4 letter grid before time runs out.",
+  "url": "https://arcade.sotshau.fun/games/boggle/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Word & Trivia",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px}.score-bar{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 18px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:96px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;box-shadow:0 8px 20px rgba(0,0,0,.08);padding:24px;width:min(760px,94vw)}.layout{display:grid;grid-template-columns:minmax(0,260px) minmax(0,1fr);gap:20px;align-items:start}.board{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.tile{height:56px;border:none;border-radius:14px;background:#ede9fe;color:#4c1d95;font-size:24px;font-weight:800;cursor:pointer}.tile:hover{background:#ddd6fe}.input-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}.guess{padding:12px 14px;border:1px solid #cbd5e1;border-radius:12px;font-size:18px;text-transform:uppercase;width:min(240px,100%)}.btn{padding:10px 18px;border:none;border-radius:10px;background:#6c63ff;color:#fff;font-weight:700;cursor:pointer}.btn.alt{background:#fff;color:#6c63ff;border:1px solid #6c63ff}.status{min-height:24px;color:#374151;font-weight:700;margin-bottom:10px}.found{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px}.found-item{background:#f8fafc;border:1px solid #e5e7eb;border-radius:10px;padding:8px 10px;color:#334155;font-weight:700}.overlay{position:absolute;inset:0;background:rgba(245,245,247,.96);border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p{color:#6b7280;max-width:320px;line-height:1.5}.hint{margin-top:14px;font-size:12px;color:#9ca3af;text-align:center;padding:0 16px}@media (max-width:680px){.layout{grid-template-columns:1fr}}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🎲 Boggle</h1>
+<p class="sub">Find as many connected words as you can before time runs out. Type a word or tap tiles to build one.</p>
+<div class="score-bar"><div class="score-box"><div class="score-label">Words</div><div class="score-val" id="words-count">0</div></div><div class="score-box"><div class="score-label">Time</div><div class="score-val" id="time">90</div></div><div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">0</div></div></div>
+<div class="game">
+  <div class="layout">
+    <div class="board" id="board"></div>
+    <div>
+      <div class="input-row"><input id="guess" class="guess" type="text" autocomplete="off" spellcheck="false" placeholder="Enter a word"/><button class="btn" id="submit-btn">Submit</button><button class="btn alt" id="clear-btn">Clear</button></div>
+      <div class="status" id="status">Press Start to begin.</div>
+      <div class="found" id="found"></div>
+    </div>
+  </div>
+  <div class="overlay" id="overlay"><h2>🎲 Boggle</h2><p>Words need 3 or more letters. Use connected neighbors on the grid, and don’t repeat a word in the same round.</p><button class="btn" id="overlay-btn">Start Round</button></div>
+</div>
+<p class="hint">Keyboard: type + Enter · Touch: tap tiles to add letters, then Submit</p>
+<script>
+const BOARDS=[['CATS','RENO','PLAY','DOGS'],['FARM','EAST','LION','CURE'],['MINT','AERO','SLED','PARK']];
+const DICTIONARY=['CAT','CATS','DOG','DOGS','PLAY','PLAYS','SON','SONG','SONGS','SEND','TEND','TENDS','TONE','TONES','NOTE','NOTES','SEAL','SALE','LANE','PLAN','PLANE','YEAR','YARD','READ','READS','ROAD','ROADS','CARE','CARES','CURE','CURES','LION','LIONS','FARM','FARMS','EAST','EATS','TEAR','TEARS','PARK','PARKS','MINT','MINTS','MIND','MINDS','AERO','SLED','SLEDS','ROPE','ROSE','ROSES','MORE','CAR','CARS','CARD','GOAL','GOALS','LEAD','LEADS'];
+const BEST_KEY='boggleBestScore';
+const boardEl=document.getElementById('board'),guessEl=document.getElementById('guess'),foundEl=document.getElementById('found'),statusEl=document.getElementById('status'),overlay=document.getElementById('overlay');
+let grid=[],validWords=new Set(),found=new Set(),timeLeft=90,timer=null,active=false,score=0;
+document.getElementById('best').textContent=localStorage.getItem(BEST_KEY)||'0';
+function scoreWord(word){return word.length<5?1:word.length-3;}
+function neighbors(r,c){const result=[];for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){if(!dr&&!dc)continue;const nr=r+dr,nc=c+dc;if(grid[nr]?.[nc])result.push([nr,nc]);}return result;}
+function canTrace(word){const target=word.toUpperCase();function dfs(r,c,index,seen){if(grid[r][c]!==target[index])return false;if(index===target.length-1)return true;seen.add(r+','+c);for(const [nr,nc] of neighbors(r,c)){const key=nr+','+nc;if(!seen.has(key)&&dfs(nr,nc,index+1,new Set(seen)))return true;}return false;}for(let r=0;r<4;r++)for(let c=0;c<4;c++)if(grid[r][c]===target[0]&&dfs(r,c,0,new Set()))return true;return false;}
+function computeValidWords(){validWords=new Set(DICTIONARY.filter(word=>word.length>=3&&canTrace(word)));}
+function buildBoard(){boardEl.innerHTML='';grid.flat().forEach(letter=>{const btn=document.createElement('button');btn.className='tile';btn.textContent=letter;btn.addEventListener('click',()=>{if(!active)return;guessEl.value=(guessEl.value+letter).toUpperCase();guessEl.focus();});boardEl.appendChild(btn);});}
+function startGame(){const pick=BOARDS[Math.floor(Math.random()*BOARDS.length)];grid=pick.map(row=>row.split(''));found=new Set();score=0;timeLeft=90;active=true;overlay.style.display='none';foundEl.innerHTML='';guessEl.value='';document.getElementById('words-count').textContent='0';document.getElementById('time').textContent='90';computeValidWords();buildBoard();statusEl.textContent=`Find words! ${validWords.size} are possible in this board.`;clearInterval(timer);timer=setInterval(()=>{timeLeft--;document.getElementById('time').textContent=String(timeLeft);if(timeLeft<=0)finishGame();},1000);guessEl.focus();}
+function submitWord(){if(!active)return;const word=guessEl.value.trim().toUpperCase();if(word.length<3){statusEl.textContent='Use at least 3 letters.';return;}if(found.has(word)){statusEl.textContent='Already found.';return;}if(!validWords.has(word)){statusEl.textContent='That word is not available on this board.';return;}found.add(word);score+=scoreWord(word);document.getElementById('words-count').textContent=String(found.size);const best=Math.max(score,+(localStorage.getItem(BEST_KEY)||0));localStorage.setItem(BEST_KEY,String(best));document.getElementById('best').textContent=String(best);const item=document.createElement('div');item.className='found-item';item.textContent=word;foundEl.prepend(item);guessEl.value='';statusEl.textContent=`Great find! ${word} is worth ${scoreWord(word)}.`;}
+function finishGame(){active=false;clearInterval(timer);statusEl.textContent=`Time! You found ${found.size} words.`;overlay.innerHTML=`<h2>⏰ Boggle Over</h2><p>You found <strong>${found.size}</strong> words for <strong>${score}</strong> points.</p><button class="btn" id="overlay-btn">Play Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);}
+document.getElementById('submit-btn').addEventListener('click',submitWord);document.getElementById('clear-btn').addEventListener('click',()=>{guessEl.value='';guessEl.focus();});document.getElementById('overlay-btn').addEventListener('click',startGame);guessEl.addEventListener('input',()=>{guessEl.value=guessEl.value.toUpperCase().replace(/[^A-Z]/g,'');});guessEl.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();submitWord();}if(e.key==='Escape'){guessEl.value='';}});document.addEventListener('keydown',e=>{if(overlay.style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();}});
+</script>
+</body>
+</html>

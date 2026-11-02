@@ -1,0 +1,97 @@
+
+:root{--nxAccent:#b15aff;--nxAccent2:#ff63d8;--nxBg:#080719;--nxPanel:#13112a;--nxText:#f8f1ff;--nxRadius:17px;--nxScale:1;--nxGlow:1;--nxWallOpacity:.17;--nxWallImage:none;--nxFont:system-ui,sans-serif;--nxBorder:#443069;--nxSidebarWidth:236px}
+
+html{scrollbar-color:#8640d1 #110b25;scrollbar-width:thin}
+*,*::before,*::after{scrollbar-color:#8640d1 #110b25;scrollbar-width:thin}
+::-webkit-scrollbar{width:12px;height:12px}
+::-webkit-scrollbar-track{background:linear-gradient(180deg,#0d0a1e,#1d1036,#0b0920);border-left:1px solid #452b6e}
+::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#ee78ff 0%,#a23df0 38%,#5e31c8 80%,#bd6aff 100%);border:2px solid #120a26;border-radius:100px;box-shadow:inset 0 0 8px #f6b7ff70,0 0 9px #a442f8a0}
+::-webkit-scrollbar-thumb:hover{background:linear-gradient(180deg,#ffa9ff,#cf55ff,#854aff);border-color:#2b174d}
+::-webkit-scrollbar-corner{background:#120b29}
+body{font-family:var(--nxFont)!important;background:var(--nxBg)!important;color:var(--nxText)!important;font-size:calc(14px * var(--nxScale));}
+body::before{content:""!important;position:fixed!important;inset:0!important;pointer-events:none!important;z-index:-1!important;opacity:var(--nxWallOpacity)!important;background-image:var(--nxWallImage),radial-gradient(ellipse at 72% 0%,var(--nxAccent),transparent 56%)!important;background-size:cover!important;background-position:center!important}
+.nxSidebar{width:var(--nxSidebarWidth)!important;background:linear-gradient(180deg,#0b081a 0%,#100b24 55%,#090718 100%)!important;border-right:1px solid #50316e!important;padding:19px 12px!important;box-shadow:8px 0 30px #0005;gap:3px!important}
+.nxSidebar button{font-size:12px!important;min-height:40px!important;padding:10px 12px!important;border-radius:10px!important;color:#c9bde0!important;letter-spacing:.1px!important}
+.nxSidebar button:hover{background:linear-gradient(90deg,#44206b,#211536)!important;color:white!important}
+.nxSidebar .nxSideActive{background:linear-gradient(110deg,#6c279e,#3c1c65)!important;box-shadow:0 0 20px #a342f02b!important}
+.nxSideLabel{font-size:10px!important;letter-spacing:1.5px!important;color:#ac83d8!important;margin:15px 10px 6px!important}
+.nxSideBrand{font-size:17px!important}
+.navbar{left:var(--nxSidebarWidth)!important;width:calc(100% - var(--nxSidebarWidth))!important;height:75px!important;background:#0a081bf5!important;border-bottom:1px solid #42305d!important}
+.page{margin-left:var(--nxSidebarWidth)!important;width:calc(100% - var(--nxSidebarWidth))!important}
+#aboutPage.about-page{margin-left:var(--nxSidebarWidth)!important;width:calc(100% - var(--nxSidebarWidth))!important}
+.navbar .search-wrap{max-width:760px!important}
+.navbar .search-wrap input{height:48px!important;font-size:14px!important;letter-spacing:.2px!important;background:#17102f!important;border:1px solid #664091!important;box-shadow:0 0 25px #b654ff1b!important}
+.nxWelcome h2{font-size:clamp(27px,3.3vw,42px)!important}
+.nxWelcome>div>span,.ntMicro{font-size:11px!important}
+.hero{border-radius:var(--nxRadius)!important;box-shadow:0 0 calc(35px * var(--nxGlow)) #a342ef20,0 20px 60px #0008!important}
+.nxPanel,.ntCommandDeck,.game-card{border-radius:var(--nxRadius)!important;border-color:var(--nxBorder)!important;box-shadow:0 8px 25px #0004!important}
+.nxPanel:hover,.game-card:hover{box-shadow:0 12px calc(28px * var(--nxGlow)) #b256ef30!important}
+.nxPanelTitle span{font-size:12px!important;color:#e6d5ff!important}
+.nxCollection strong{font-size:12px!important}
+.nxCollection small,.nxCollection i{font-size:10px!important}
+.nxCollection>button{min-height:74px!important;border-radius:11px!important}
+.nxProfileCenter strong{font-size:13px!important}
+.nxProfileCenter small{font-size:11px!important}
+.nxProfileStats small{font-size:10px!important}
+.ntDeckTop p,.ntQuickGrid small,.nxISGCard p{font-size:12px!important}
+.ntQuickGrid strong{font-size:12px!important}
+.ntQuickGrid button{min-height:118px!important;border-radius:12px!important}
+.ntInfoStrip{font-size:12px!important}
+.game-card{transition:transform .2s,box-shadow .2s,border-color .2s!important}
+.game-card:hover{transform:translateY(-4px)!important}
+.nxFeatureBanner{margin:15px 0;padding:18px 20px;border-radius:var(--nxRadius);display:flex;align-items:center;justify-content:space-between;gap:14px;background:radial-gradient(circle at 100% 10%,#db50d050,transparent 38%),linear-gradient(120deg,#2c1453,#151630);border:1px solid #7e47b2}
+.nxFeatureBanner small{font-size:10px;letter-spacing:1.5px;color:#dda2ff}
+.nxFeatureBanner h3{font-size:20px;margin:8px 0 5px;color:white}
+.nxFeatureBanner em{font-style:normal;color:#e17aff}
+.nxFeatureBanner p{font-size:12px;color:#c3aedb;line-height:1.6}
+.nxFeatureBanner button{background:linear-gradient(110deg,#b043f1,#7738d3);border:1px solid #e4b4ff;color:white;border-radius:11px;padding:13px 16px;font-size:11px;font-weight:900;white-space:nowrap;cursor:pointer;box-shadow:0 5px 20px #ae43ee50}
+#nxStudioOverlay{position:fixed;inset:0;z-index:2147483608;background:#050414eb;backdrop-filter:blur(16px);display:none;overflow:auto;padding:clamp(10px,2vw,28px);color:#f9f1ff;font-family:system-ui,sans-serif}
+#nxStudioOverlay.open{display:block}
+#nxStudioShell{max-width:1250px;min-height:82vh;margin:auto;border:1px solid #7b4ab2;border-radius:20px;overflow:hidden;background:linear-gradient(140deg,#16112e,#0b0c20);box-shadow:0 35px 100px #000c}
+#nxStudioHead{padding:19px 24px;display:flex;align-items:center;justify-content:space-between;gap:15px;background:linear-gradient(100deg,#43146c,#17102c 60%,#12132c);border-bottom:1px solid #5b327c}
+#nxStudioHead small{font-size:10px;letter-spacing:1.7px;color:#d7a4ff}
+#nxStudioHead h2{font-size:26px;margin-top:5px;color:#fff}
+#nxStudioClose{padding:10px 15px;background:#32184e;border:1px solid #9952d0;border-radius:10px;color:#fff;cursor:pointer}
+#nxStudioNav{display:flex;gap:6px;flex-wrap:wrap;padding:12px 20px;border-bottom:1px solid #3e2c61}
+#nxStudioNav button{background:#19142e;color:#bcb0da;border:1px solid #3e315b;padding:10px 12px;border-radius:10px;font-size:12px;font-weight:800;cursor:pointer}
+#nxStudioNav button.active{background:#5f2794;color:#fff;border-color:#b36eff}
+#nxStudioBody{padding:clamp(15px,3vw,30px);min-height:520px}
+#nxStudioBody h3{font-size:21px;margin:0 0 8px;color:#f6eaff}
+#nxStudioBody p{font-size:12px;color:#bdb0d8;line-height:1.7}
+.nxXGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px;margin:18px 0}
+.nxXCard{background:#17142f;border:1px solid #453366;border-radius:12px;padding:13px;min-width:0;transition:transform .15s,border-color .15s}
+.nxXCard:hover{transform:translateY(-3px);border-color:#b96cff}
+.nxXCard h4{font-size:13px;margin:9px 0 4px;color:white;overflow-wrap:anywhere}
+.nxXCard small{font-size:10px;color:#a79aba}
+.nxXCard button,.nxXBtn{background:#522584;border:1px solid #9156bd;color:white;border-radius:9px;padding:10px 12px;font-size:11px;font-weight:800;cursor:pointer}
+.nxXCard button:hover,.nxXBtn:hover{background:#7735b2}
+.nxXSwatch{height:78px;border-radius:9px;border:1px solid #ffffff2b;box-shadow:inset 0 -12px 35px #0004}
+.nxXToolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:12px 0 19px}
+.nxXToolbar input:not([type=range]):not([type=color]),.nxXToolbar select,#nxStudioBody textarea{border:1px solid #5b3a7d;background:#110f26;color:#fff;border-radius:9px;padding:10px 12px;font:inherit;font-size:12px}
+.nxXToolbar input[type=search]{min-width:210px;flex:1}
+.nxXToolbar input[type=color]{width:45px;height:38px;background:transparent;border:0;cursor:pointer}
+.nxXToolbar label{font-size:12px;color:#dfd0f5;display:flex;align-items:center;gap:8px}
+.nxXToolbar input[type=range]{accent-color:#b65aff}
+.nxXPanel{border:1px solid #443360;background:#151329;border-radius:13px;padding:18px;margin:12px 0}
+.nxXPanel h4{font-size:14px;margin:0 0 12px}
+.nxXHint{color:#a8a0c0;font-size:11px;line-height:1.6;margin:10px 0}
+.nxXCanvas{image-rendering:pixelated;touch-action:none;background:#fff;border:2px solid #8f5bc2;border-radius:9px;max-width:100%;cursor:crosshair}
+.nxXToolGrid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.nxXPreview{min-height:190px;border:1px solid #764aa0;border-radius:12px;display:grid;place-items:center;padding:20px;text-align:center;overflow:hidden;background:#18112f}
+.nxXPreview h2{font-size:32px;text-shadow:0 0 20px #ae4aff}
+.nxXKeyboard{font:11px monospace;border:1px solid #5d4580;background:#271a40;color:#e6c7ff;border-radius:5px;padding:4px 6px}
+.nxXPad{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:8px;margin-top:15px}
+.nxXPad button{min-height:65px;border:1px solid #8656ad;background:linear-gradient(145deg,#3c1a66,#19162f);color:white;border-radius:10px;font-size:11px;font-weight:800;cursor:pointer;touch-action:manipulation}
+.nxXPad button:active,.nxXPad button.playing{background:#ae48f2;box-shadow:0 0 25px #c95cff}
+.nxXList{display:grid;gap:9px}
+.nxXListItem{display:flex;align-items:center;justify-content:space-between;gap:12px;background:#15132c;border:1px solid #443360;border-radius:10px;padding:12px}
+.nxXListItem b{font-size:12px}
+.nxXListItem small{display:block;font-size:10px;color:#ab9bbb;margin-top:5px}
+.nxXListItem button{border:1px solid #724c9c;border-radius:8px;padding:8px 10px;background:#352050;color:white;cursor:pointer}
+.nxXAccentPreview{display:flex;gap:0;border-radius:10px;overflow:hidden;height:68px;border:1px solid #fff2}
+.nxXAccentPreview span{flex:1}
+.nxXBadge{font-size:10px;color:#e8b8ff;border:1px solid #8451b6;border-radius:100px;padding:6px 9px}
+.nxXToast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:2147483610;border:1px solid #bb6dff;background:#281644;color:white;border-radius:10px;padding:12px 20px;display:none;box-shadow:0 10px 40px #000a;font-size:12px}
+@media(max-width:950px){.nxXToolGrid{grid-template-columns:1fr}.nxXPad{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:760px){:root{--nxSidebarWidth:67px}.nxSidebar{padding:15px 6px!important}.nxSidebar button{font-size:18px!important;justify-content:center}.nxSidebar button span{display:none}.nxSideBrand strong{display:none}.nxSideLabel{display:none}.nxFeatureBanner{flex-direction:column;align-items:start}.nxFeatureBanner button{white-space:normal}.nxWelcome h2{font-size:26px!important}}
+@media(max-width:450px){.nxXGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.nxXPad{grid-template-columns:repeat(4,1fr)}#nxStudioNav button{font-size:10px;padding:8px}}

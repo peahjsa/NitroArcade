@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>🧠 Mastermind — Game Portal</title>
+<meta name="description" content="Play Mastermind free online — Guess the secret color code using clues from each attempt. A Medium Puzzle game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/mastermind/"/>
+<meta property="og:title" content="🎯 Mastermind — Free Browser Game"/>
+<meta property="og:description" content="Play Mastermind free in your browser. Guess the secret color code using clues from each attempt."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/mastermind/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Mastermind",
+  "description": "Guess the secret color code using clues from each attempt.",
+  "url": "https://arcade.sotshau.fun/games/mastermind/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Puzzle",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}nav a:hover{text-decoration:underline}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{font-size:14px;color:#6b7280;text-align:center;margin-bottom:16px;padding:0 16px}.score-bar{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 18px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:90px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.wrap{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;box-shadow:0 8px 20px rgba(0,0,0,.08);padding:18px;display:grid;gap:16px;max-width:560px;width:min(560px,calc(100vw - 32px))}.palette{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}.color-btn{width:38px;height:38px;border-radius:50%;border:3px solid transparent;cursor:pointer}.color-btn.active{transform:scale(1.08);border-color:#111827}.guess-row,.history-row{display:grid;grid-template-columns:repeat(4,56px) 88px;gap:10px;align-items:center;justify-content:center}.slot{width:56px;height:56px;border-radius:50%;border:2px dashed #cbd5e1;background:#f8fafc;cursor:pointer}.slot.focused{outline:3px solid rgba(108,99,255,.3)}.slot.filled{border-style:solid}.feedback{display:grid;grid-template-columns:repeat(2,14px);gap:6px;justify-content:center}.peg{width:14px;height:14px;border-radius:50%;background:#d1d5db}.peg.hit{background:#111827}.peg.near{background:#f59e0b}.history{display:grid;gap:10px;max-height:340px;overflow:auto;padding-right:4px}.status{min-height:22px;text-align:center;color:#4b5563;font-weight:600}.controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}.btn{padding:9px 22px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}.btn:hover{background:#574fd6}.btn-outline{background:transparent;border:1.5px solid #6c63ff;color:#6c63ff}.btn-outline:hover{background:#ede9ff}.overlay{position:absolute;inset:0;background:rgba(245,245,247,.94);border-radius:18px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:10px;padding:24px;text-align:center}.overlay p{color:#6b7280;max-width:320px;line-height:1.5}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center;padding:0 16px}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🧠 Mastermind</h1>
+<p class="sub">Crack the secret four-color code within ten guesses.</p>
+<div class="score-bar">
+  <div class="score-box"><div class="score-label">Guess</div><div class="score-val" id="guess-count">1</div></div>
+  <div class="score-box"><div class="score-label">Wins</div><div class="score-val" id="wins">0</div></div>
+  <div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">—</div></div>
+</div>
+<div class="wrap">
+  <div class="palette" id="palette"></div>
+  <div class="guess-row" id="current-row"></div>
+  <div class="history" id="history"></div>
+  <div class="status" id="status">Press Start to begin.</div>
+  <div class="controls"><button class="btn" id="submit-btn">Submit Guess</button><button class="btn btn-outline" id="new-code-btn">New Code</button></div>
+  <div class="overlay" id="overlay">
+    <h2>🧠 Mastermind</h2>
+    <p>Select a color, then click a peg to place it. Use digits 1-8, arrow keys to move between pegs, and Enter to submit.</p>
+    <button class="btn" id="overlay-btn">Start Game</button>
+  </div>
+</div>
+<p class="hint">Digits 1–8 choose colors · Arrow keys move peg focus · Enter submits</p>
+<script>
+const COLORS=['#ef4444','#f59e0b','#eab308','#10b981','#06b6d4','#3b82f6','#8b5cf6','#ec4899'];
+const COLOR_NAMES=['Red','Orange','Gold','Green','Cyan','Blue','Purple','Pink'];
+const BEST_KEY='mastermindBest';
+const paletteEl=document.getElementById('palette');
+const currentRowEl=document.getElementById('current-row');
+const historyEl=document.getElementById('history');
+const overlay=document.getElementById('overlay');
+const statusEl=document.getElementById('status');
+const guessCountEl=document.getElementById('guess-count');
+const winsEl=document.getElementById('wins');
+const bestEl=document.getElementById('best');
+let secret=[],current=[null,null,null,null],selectedColor=0,focusIndex=0,guessNumber=1,wins=0,best=+(localStorage.getItem(BEST_KEY)||0),active=false;
+bestEl.textContent=best?best:'—';
+function buildPalette(){paletteEl.innerHTML='';COLORS.forEach((color,index)=>{const btn=document.createElement('button');btn.className='color-btn'+(index===selectedColor?' active':'');btn.style.background=color;btn.title=`${index+1}: ${COLOR_NAMES[index]}`;btn.addEventListener('click',()=>{selectedColor=index;renderPalette();});paletteEl.appendChild(btn);});}
+function renderPalette(){[...paletteEl.children].forEach((btn,i)=>btn.classList.toggle('active',i===selectedColor));}
+function renderCurrent(){currentRowEl.innerHTML='';for(let i=0;i<4;i++){const btn=document.createElement('button');btn.className='slot'+(i===focusIndex&&active?' focused':'')+(current[i]!==null?' filled':'');btn.style.background=current[i]===null?'#f8fafc':COLORS[current[i]];btn.setAttribute('aria-label',`Peg ${i+1}`);btn.addEventListener('click',()=>{focusIndex=i;setPeg(i,selectedColor);});currentRowEl.appendChild(btn);}const feedback=document.createElement('div');feedback.className='feedback';feedback.innerHTML='<div class="peg"></div>'.repeat(4);currentRowEl.appendChild(feedback);guessCountEl.textContent=guessNumber;}
+function startGame(){wins=0;winsEl.textContent=wins;resetRound();overlay.style.display='none';}
+function resetRound(){secret=Array.from({length:4},()=>Math.floor(Math.random()*COLORS.length));current=[null,null,null,null];guessNumber=1;focusIndex=0;active=true;historyEl.innerHTML='';statusEl.textContent='Build your first guess.';overlay.style.display='none';renderCurrent();renderPalette();}
+function setPeg(index,colorIndex){if(!active)return;current[index]=colorIndex;renderCurrent();currentRowEl.children[index]?.focus();}
+function scoreGuess(guess){const code=[...secret],attempt=[...guess];let hits=0,near=0;for(let i=0;i<4;i++){if(attempt[i]===code[i]){hits++;code[i]=attempt[i]=null;}}for(let i=0;i<4;i++){if(attempt[i]===null)continue;const found=code.indexOf(attempt[i]);if(found!==-1){near++;code[found]=null;}}return{hits,near};}
+function submitGuess(){if(!active)return;if(current.some(v=>v===null)){statusEl.textContent='Fill all four pegs first.';return;}const guess=[...current];const result=scoreGuess(guess);addHistoryRow(guess,result);if(result.hits===4){active=false;wins++;winsEl.textContent=wins;if(!best||guessNumber<best){best=guessNumber;localStorage.setItem(BEST_KEY,String(best));}bestEl.textContent=best;statusEl.textContent=`Code cracked in ${guessNumber} guesses!`;overlay.innerHTML=`<h2>🎉 Code Cracked</h2><p>You solved the code in ${guessNumber} guesses. Can you do it even faster?</p><button class="btn" id="overlay-btn">Play Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',resetRound);return;}guessNumber++;if(guessNumber>10){active=false;statusEl.textContent='Out of guesses!';const reveal=secret.map(i=>`<span style="display:inline-block;width:18px;height:18px;border-radius:50%;background:${COLORS[i]};margin:0 2px;vertical-align:middle"></span>`).join('');overlay.innerHTML=`<h2>🔐 Code Escaped</h2><p>The secret was <span>${reveal}</span>. Take another shot!</p><button class="btn" id="overlay-btn">Try Again</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',resetRound);return;}current=[null,null,null,null];focusIndex=0;statusEl.textContent=`Guess ${guessNumber}: use the hints to refine your code.`;renderCurrent();}
+function addHistoryRow(guess,result){const row=document.createElement('div');row.className='history-row';guess.forEach(i=>{const peg=document.createElement('div');peg.className='slot filled';peg.style.width='44px';peg.style.height='44px';peg.style.cursor='default';peg.style.background=COLORS[i];row.appendChild(peg);});const feedback=document.createElement('div');feedback.className='feedback';const list=[];for(let i=0;i<result.hits;i++)list.push('hit');for(let i=0;i<result.near;i++)list.push('near');while(list.length<4)list.push('');list.forEach(type=>{const peg=document.createElement('div');peg.className='peg'+(type?` ${type}`:'');feedback.appendChild(peg);});row.appendChild(feedback);historyEl.prepend(row);}
+document.addEventListener('keydown',e=>{if(overlay.style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}if(!active)return;if(/^[1-8]$/.test(e.key)){selectedColor=+e.key-1;renderPalette();setPeg(focusIndex,selectedColor);e.preventDefault();return;}if(e.key==='ArrowLeft'){focusIndex=Math.max(0,focusIndex-1);renderCurrent();e.preventDefault();}else if(e.key==='ArrowRight'){focusIndex=Math.min(3,focusIndex+1);renderCurrent();e.preventDefault();}else if(e.key==='ArrowUp'){selectedColor=(selectedColor+COLORS.length-1)%COLORS.length;renderPalette();e.preventDefault();}else if(e.key==='ArrowDown'){selectedColor=(selectedColor+1)%COLORS.length;renderPalette();e.preventDefault();}else if(e.key===' '){setPeg(focusIndex,selectedColor);e.preventDefault();}else if(e.key==='Backspace'||e.key==='Delete'){current[focusIndex]=null;renderCurrent();e.preventDefault();}else if(e.key==='Enter'){submitGuess();e.preventDefault();}});
+document.getElementById('overlay-btn').addEventListener('click',startGame);
+document.getElementById('submit-btn').addEventListener('click',submitGuess);
+document.getElementById('new-code-btn').addEventListener('click',resetRound);
+buildPalette();renderCurrent();
+</script>
+</body>
+</html>

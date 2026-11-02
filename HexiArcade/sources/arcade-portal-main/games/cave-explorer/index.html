@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Cave Explorer — Game Portal</title>
+<meta name="description" content="Play Cave Explorer free online — Explore dark caves, avoid hazards, and collect gems. A Medium Platform &amp; Adventure game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/cave-explorer/"/>
+<meta property="og:title" content="🕯️ Cave Explorer — Free Browser Game"/>
+<meta property="og:description" content="Play Cave Explorer free in your browser. Explore dark caves, avoid hazards, and collect gems."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/cave-explorer/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Cave Explorer",
+  "description": "Explore dark caves, avoid hazards, and collect gems.",
+  "url": "https://arcade.sotshau.fun/games/cave-explorer/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Platform & Adventure",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px;max-width:760px}.score-bar{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:96px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:18px;box-shadow:0 8px 20px rgba(0,0,0,.08)}canvas{display:block;background:#0f172a;border-radius:14px;border:1px solid #1e293b;touch-action:none}.overlay{position:absolute;inset:18px;background:rgba(245,245,247,.95);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p{color:#6b7280;line-height:1.5;max-width:340px}.btn{padding:9px 22px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}.status{margin-top:12px;text-align:center;color:#374151;font-weight:700;min-height:24px}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center;padding:0 16px}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🪨 Cave Explorer</h1>
+<p class="sub">Descend glowing caverns, collect crystals, manage oxygen, and find the ladder down to survive deeper depths.</p>
+<div class="score-bar"><div class="score-box"><div class="score-label">Depth</div><div class="score-val" id="depth">1</div></div><div class="score-box"><div class="score-label">Crystals</div><div class="score-val" id="crystals">0</div></div><div class="score-box"><div class="score-label">Oxygen</div><div class="score-val" id="oxygen">18</div></div><div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">1</div></div></div>
+<div class="game"><canvas id="game" width="440" height="440"></canvas><div class="overlay" id="overlay"><h2>🪨 Cave Explorer</h2><p>Move one tile at a time with arrow keys or swipe. Gather crystals and oxygen tanks, then reach the ladder to descend.</p><button class="btn" id="overlay-btn">Start Descent</button></div><div class="status" id="status">Press Start to begin.</div></div>
+<p class="hint">Arrow keys / WASD to move · Swipe to move · Keep an eye on oxygen in the dark</p>
+<script>
+const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');
+const SIZE=10,CELL=44,BEST_KEY='caveExplorerBest';
+let state,statusMsg='Press Start to begin.',best=+(localStorage.getItem(BEST_KEY)||1),running=false;
+document.getElementById('best').textContent=String(best);
+function rand(ex=[]){let x,y;do{x=Math.floor(Math.random()*SIZE);y=Math.floor(Math.random()*SIZE);}while(ex.some(p=>p.x===x&&p.y===y));return{x,y};}
+function makeDepth(depth){const player={x:0,y:0};const ladder=rand([player]);const crystals=[];const tanks=[];const bats=[];for(let i=0;i<3;i++)crystals.push(rand([player,ladder,...crystals]));for(let i=0;i<Math.min(2,depth);i++)tanks.push(rand([player,ladder,...crystals,...tanks]));for(let i=0;i<depth;i++)bats.push(rand([player,ladder,...crystals,...tanks,...bats]));return{depth,player,ladder,crystals,tanks,bats,oxygen:18,collected:0};}
+function startGame(){state=makeDepth(1);running=true;statusMsg='Collect crystals, then find the ladder.';document.getElementById('overlay').style.display='none';updateStats();draw();}
+function updateStats(){document.getElementById('depth').textContent=String(state.depth);document.getElementById('crystals').textContent=String(state.collected);document.getElementById('oxygen').textContent=String(state.oxygen);document.getElementById('best').textContent=String(best);document.getElementById('status').textContent=statusMsg;}
+function moveBats(){state.bats.forEach(b=>{const options=[[1,0],[-1,0],[0,1],[0,-1],[0,0]];const [dx,dy]=options[Math.floor(Math.random()*options.length)];b.x=Math.max(0,Math.min(SIZE-1,b.x+dx));b.y=Math.max(0,Math.min(SIZE-1,b.y+dy));});}
+function move(dx,dy){if(!running)return;state.player.x=Math.max(0,Math.min(SIZE-1,state.player.x+dx));state.player.y=Math.max(0,Math.min(SIZE-1,state.player.y+dy));state.oxygen--;const crystalIndex=state.crystals.findIndex(c=>c.x===state.player.x&&c.y===state.player.y);if(crystalIndex>-1){state.crystals.splice(crystalIndex,1);state.collected++;statusMsg='Crystal recovered.';}const tankIndex=state.tanks.findIndex(t=>t.x===state.player.x&&t.y===state.player.y);if(tankIndex>-1){state.tanks.splice(tankIndex,1);state.oxygen+=6;statusMsg='Fresh air tank found.';}moveBats();if(state.bats.some(b=>b.x===state.player.x&&b.y===state.player.y)){state.oxygen-=3;statusMsg='A cave bat knocks the air from your lungs!';}if(state.player.x===state.ladder.x&&state.player.y===state.ladder.y){if(state.collected<3){statusMsg='The ladder descends farther, but you still need more crystals.';}else{const next=state.depth+1;best=Math.max(best,next);localStorage.setItem(BEST_KEY,String(best));if(next>4){finish(true,'You charted four crystal-rich depths and returned safely!');return;}state=makeDepth(next);statusMsg=`Depth ${next}: the cave grows colder.`;updateStats();draw();return;}}if(state.oxygen<=0){finish(false,'Your oxygen ran out in the dark.');return;}updateStats();draw();}
+function finish(win,text){running=false;const overlay=document.getElementById('overlay');overlay.innerHTML=`<h2>${win?'💎 Expedition Complete':'Expedition Lost'}</h2><p>${text}</p><button class="btn" id="overlay-btn">${win?'Explore Again':'Try Again'}</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);updateStats();}
+function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);for(let y=0;y<SIZE;y++)for(let x=0;x<SIZE;x++){ctx.fillStyle=(x+y)%2?'#111827':'#1f2937';ctx.fillRect(x*CELL,y*CELL,CELL,CELL);}ctx.fillStyle='#22c55e';ctx.fillRect(state.ladder.x*CELL+14,state.ladder.y*CELL+8,16,28);state.crystals.forEach(c=>{ctx.fillStyle='#60a5fa';ctx.beginPath();ctx.moveTo(c.x*CELL+22,c.y*CELL+10);ctx.lineTo(c.x*CELL+30,c.y*CELL+22);ctx.lineTo(c.x*CELL+22,c.y*CELL+34);ctx.lineTo(c.x*CELL+14,c.y*CELL+22);ctx.closePath();ctx.fill();});state.tanks.forEach(t=>{ctx.fillStyle='#38bdf8';ctx.fillRect(t.x*CELL+16,t.y*CELL+12,12,22);});state.bats.forEach(b=>{ctx.font='24px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('🦇',b.x*CELL+22,b.y*CELL+22);});ctx.fillStyle='#f8fafc';ctx.beginPath();ctx.arc(state.player.x*CELL+22,state.player.y*CELL+22,12,0,Math.PI*2);ctx.fill();ctx.fillStyle='rgba(15,23,42,.72)';ctx.fillRect(0,0,canvas.width,canvas.height);const grad=ctx.createRadialGradient(state.player.x*CELL+22,state.player.y*CELL+22,26,state.player.x*CELL+22,state.player.y*CELL+22,120);grad.addColorStop(0,'rgba(255,255,255,0)');grad.addColorStop(1,'rgba(15,23,42,.86)');ctx.globalCompositeOperation='destination-out';ctx.fillStyle=grad;ctx.beginPath();ctx.arc(state.player.x*CELL+22,state.player.y*CELL+22,120,0,Math.PI*2);ctx.fill();ctx.globalCompositeOperation='source-over';}
+document.getElementById('overlay-btn').addEventListener('click',startGame);document.addEventListener('keydown',e=>{if(document.getElementById('overlay').style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}const map={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1],a:[-1,0],d:[1,0],w:[0,-1],s:[0,1],A:[-1,0],D:[1,0],W:[0,-1],S:[0,1]};if(map[e.key]){e.preventDefault();move(...map[e.key]);}});let touchStart=null;canvas.addEventListener('touchstart',e=>{const t=e.touches[0];touchStart={x:t.clientX,y:t.clientY};},{passive:true});canvas.addEventListener('touchend',e=>{if(!touchStart)return;const t=e.changedTouches[0],dx=t.clientX-touchStart.x,dy=t.clientY-touchStart.y;if(Math.abs(dx)>Math.abs(dy)){if(dx>16)move(1,0);else if(dx<-16)move(-1,0);}else{if(dy>16)move(0,1);else if(dy<-16)move(0,-1);}touchStart=null;},{passive:true});state=makeDepth(1);updateStats();draw();
+</script>
+</body>
+</html>

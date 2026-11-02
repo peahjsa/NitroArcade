@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Typing Speed — Game Portal</title>
+<meta name="description" content="Play Typing Speed free online — Type the passage as fast and accurately as you can. Measure your WPM! A Easy Word &amp; Trivia game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/typing-speed/"/>
+<meta property="og:title" content="⌨️ Typing Speed — Free Browser Game"/>
+<meta property="og:description" content="Play Typing Speed free in your browser. Type the passage as fast and accurately as you can. Measure your WPM!"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/typing-speed/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Typing Speed",
+  "description": "Type the passage as fast and accurately as you can. Measure your WPM!",
+  "url": "https://arcade.sotshau.fun/games/typing-speed/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Word & Trivia",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}h1{margin:20px 0 4px;font-size:24px;font-weight:700}.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px}.score-bar{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:92px}.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}.score-val{font-size:20px;font-weight:700;color:#6c63ff}.game{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:22px;box-shadow:0 8px 20px rgba(0,0,0,.08);width:min(760px,94vw)}.prompt{font-size:20px;line-height:1.7;color:#1f2937;background:#f8fafc;border:1px solid #e5e7eb;border-radius:14px;padding:18px;min-height:128px}.prompt span.good{color:#16a34a}.prompt span.bad{color:#dc2626;background:#fee2e2;border-radius:4px}.prompt span.current{background:#ddd6fe;border-radius:4px}.input{width:100%;min-height:120px;margin-top:14px;border:1px solid #cbd5e1;border-radius:14px;padding:14px;font:inherit;resize:vertical}.controls{display:flex;gap:10px;justify-content:center;margin-top:14px;flex-wrap:wrap}.btn{padding:9px 18px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}.overlay{position:absolute;inset:18px;background:rgba(245,245,247,.95);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center}.overlay p{color:#6b7280;max-width:340px;line-height:1.5}.status{margin-top:12px;text-align:center;color:#374151;font-weight:700;min-height:24px}.hint{margin-top:12px;font-size:12px;color:#9ca3af;text-align:center}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>⌨️ Typing Speed</h1>
+<p class="sub">Type the sample passage as quickly and accurately as you can before the clock runs out.</p>
+<div class="score-bar">
+  <div class="score-box"><div class="score-label">WPM</div><div class="score-val" id="wpm">0</div></div>
+  <div class="score-box"><div class="score-label">Accuracy</div><div class="score-val" id="accuracy">100%</div></div>
+  <div class="score-box"><div class="score-label">Time Left</div><div class="score-val" id="time">60s</div></div>
+  <div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">0</div></div>
+</div>
+<div class="game">
+  <div class="prompt" id="prompt"></div>
+  <textarea class="input" id="input" placeholder="Press Start, then begin typing here..." spellcheck="false"></textarea>
+  <div class="controls"><button class="btn" id="new-passage-btn">New Passage</button></div>
+  <div class="overlay" id="overlay">
+    <h2>⌨️ Typing Speed</h2>
+    <p>Click Start to load a passage and begin the 60-second test. Use your physical keyboard or mobile on-screen keyboard.</p>
+    <button class="btn" id="overlay-btn">Start Test</button>
+  </div>
+  <div class="status" id="status">Press Start to begin.</div>
+</div>
+<p class="hint">Typing starts the timer immediately · Mobile keyboards work in the textarea too</p>
+<script>
+const PASSAGES=[
+  'Quick reflexes and calm hands turn a chaotic arcade round into a carefully controlled win.',
+  'Every great portal game feels easy to enter, delightful to learn, and hard to stop playing.',
+  'Practice makes your fingers faster, but accuracy is what transforms speed into a real high score.',
+  'A tiny improvement repeated every day can quietly become a major skill by the end of the month.'
+];
+const BEST_KEY='typingSpeedBest';
+const promptEl=document.getElementById('prompt'),inputEl=document.getElementById('input'),overlay=document.getElementById('overlay'),statusEl=document.getElementById('status');
+let target='',timeLeft=60,timer=null,active=false,best=+(localStorage.getItem(BEST_KEY)||0),startedAt=0;document.getElementById('best').textContent=best;
+function renderPrompt(text=''){promptEl.innerHTML=target.split('').map((char,i)=>{let cls='';if(i<text.length)cls=text[i]===char?'good':'bad';else if(i===text.length)cls='current';return`<span class="${cls}">${char===' '?'&nbsp;':char}</span>`;}).join('');}
+function updateStats(text=''){const correct=text.split('').filter((ch,i)=>ch===target[i]).length;const minutes=Math.max(1/60,(60-timeLeft)/60);const wpm=Math.round((correct/5)/minutes);const accuracy=text.length?Math.max(0,Math.round(correct/text.length*100)):100;document.getElementById('wpm').textContent=String(Number.isFinite(wpm)?wpm:0);document.getElementById('accuracy').textContent=accuracy+'%';document.getElementById('time').textContent=timeLeft+'s';document.getElementById('best').textContent=best;}
+function startGame(){target=PASSAGES[Math.floor(Math.random()*PASSAGES.length)];timeLeft=60;active=true;startedAt=Date.now();clearInterval(timer);inputEl.value='';inputEl.disabled=false;overlay.style.display='none';statusEl.textContent='Type the passage before time runs out.';renderPrompt('');updateStats('');timer=setInterval(()=>{timeLeft--;updateStats(inputEl.value);if(timeLeft<=0)finishGame();},1000);setTimeout(()=>inputEl.focus(),0);} 
+function finishGame(){if(!active)return;active=false;clearInterval(timer);inputEl.disabled=true;const finalWpm=+document.getElementById('wpm').textContent;if(finalWpm>best){best=finalWpm;localStorage.setItem(BEST_KEY,String(best));}updateStats(inputEl.value);statusEl.textContent='Test complete.';overlay.innerHTML=`<h2>Test Finished</h2><p>You reached ${finalWpm} WPM with ${document.getElementById('accuracy').textContent} accuracy.</p><button class="btn" id="overlay-btn">Try Another Passage</button>`;overlay.style.display='flex';document.getElementById('overlay-btn').addEventListener('click',startGame);}
+inputEl.addEventListener('input',()=>{if(!active)return;const text=inputEl.value.slice(0,target.length);if(text!==inputEl.value)inputEl.value=text;renderPrompt(inputEl.value);updateStats(inputEl.value);if(inputEl.value===target)finishGame();});
+document.addEventListener('keydown',e=>{if(overlay.style.display!=='none'&&(e.key==='Enter')&&!e.shiftKey){e.preventDefault();document.getElementById('overlay-btn').click();}});
+document.getElementById('overlay-btn').addEventListener('click',startGame);
+document.getElementById('new-passage-btn').addEventListener('click',startGame);
+renderPrompt('');updateStats('');
+</script>
+</body>
+</html>

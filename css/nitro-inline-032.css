@@ -1,0 +1,6 @@
+
+#nitroStreamSection{margin-top:25px;border-top:1px solid #35506d;padding-top:22px}
+.nitroStreamTabs{display:flex;gap:9px;flex-wrap:wrap;margin:15px 0}
+#nitroStreamInput{flex:1;min-width:220px}
+#nitroStreamPlayer{min-height:95px;border:1px solid #35506d;border-radius:14px;overflow:hidden;background:#080e1c;margin-top:15px}
+#nitroStreamPlayer iframe{display:block;width:100%;border:0}

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Simon Says — Game Portal</title>
+<meta name="description" content="Play Simon Says free online — Repeat the growing color sequence. How long can your memory last? A Easy Memory &amp; Reflex game."/>
+<link rel="canonical" href="https://arcade.sotshau.fun/games/simon-says/"/>
+<meta property="og:title" content="🟢 Simon Says — Free Browser Game"/>
+<meta property="og:description" content="Play Simon Says free in your browser. Repeat the growing color sequence. How long can your memory last?"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://arcade.sotshau.fun/games/simon-says/"/>
+<meta property="og:site_name" content="Arcade Portal"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Simon Says",
+  "description": "Repeat the growing color sequence. How long can your memory last?",
+  "url": "https://arcade.sotshau.fun/games/simon-says/",
+  "gamePlatform": "Web Browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "genre": "Memory & Reflex",
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding-bottom:40px}
+nav{width:100%;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:50px;display:flex;align-items:center}
+nav a{color:#6c63ff;text-decoration:none;font-size:14px;font-weight:500}
+h1{margin:20px 0 4px;font-size:24px;font-weight:700}
+.sub{color:#6b7280;font-size:14px;margin-bottom:16px;text-align:center;padding:0 16px}
+.score-bar{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}
+.score-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px 18px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06);min-width:92px}
+.score-label{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.05em}
+.score-val{font-size:20px;font-weight:700;color:#6c63ff}
+.game{position:relative;background:#111827;border-radius:22px;padding:22px;width:min(430px,92vw);box-shadow:0 12px 28px rgba(0,0,0,.18)}
+.pads{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.pad{height:150px;border:none;border-radius:18px;cursor:pointer;opacity:.82;transition:transform .08s,opacity .08s,box-shadow .08s;font-weight:800;font-size:24px;color:rgba(255,255,255,.88)}
+.pad:hover{transform:scale(.99)}
+.pad.active{opacity:1;box-shadow:0 0 0 4px rgba(255,255,255,.35) inset,0 0 26px rgba(255,255,255,.2)}
+.pad-0{background:#22c55e}.pad-1{background:#ef4444}.pad-2{background:#eab308;color:#3f3f46}.pad-3{background:#3b82f6}
+.status{margin-top:16px;text-align:center;min-height:24px;color:#e5e7eb;font-weight:700}
+.overlay{position:absolute;inset:0;background:rgba(17,24,39,.94);border-radius:22px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:24px;text-align:center;color:#fff}
+.overlay p{color:#cbd5e1;max-width:300px;line-height:1.5}
+.btn{padding:9px 22px;background:#6c63ff;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}
+.btn:hover{background:#574fd6}
+.hint{margin-top:14px;font-size:12px;color:#9ca3af;text-align:center;padding:0 16px}
+</style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HEGRZDYMY7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HEGRZDYMY7');
+  </script>
+</head>
+<body>
+<nav><a href="../../">← Back to Portal</a></nav>
+<h1>🟢 Simon Says</h1>
+<p class="sub">Watch the sequence, then repeat it from memory. Each round adds one more color.</p>
+
+<div class="score-bar">
+  <div class="score-box"><div class="score-label">Round</div><div class="score-val" id="round">0</div></div>
+  <div class="score-box"><div class="score-label">Best</div><div class="score-val" id="best">0</div></div>
+  <div class="score-box"><div class="score-label">Input</div><div class="score-val" id="input">0</div></div>
+</div>
+
+<div class="game">
+  <div class="pads" id="pads"></div>
+  <div class="status" id="status">Press Start to begin.</div>
+  <div class="overlay" id="overlay">
+    <h2>🧠 Simon Says</h2>
+    <p>Tap the pads or use keys 1–4 after the sequence finishes playing.</p>
+    <button class="btn" id="overlay-btn">Start Game</button>
+  </div>
+</div>
+<p class="hint">Keys 1 / 2 / 3 / 4 also work · Taps work on mobile</p>
+
+<script>
+const BEST_KEY='simonBestRound';
+const padsEl=document.getElementById('pads');
+const overlay=document.getElementById('overlay');
+const statusEl=document.getElementById('status');
+const colors=['Green','Red','Yellow','Blue'];
+let sequence=[],inputIndex=0,accepting=false,best=+(localStorage.getItem(BEST_KEY)||0);
+document.getElementById('best').textContent=best;
+
+function buildPads(){
+  padsEl.innerHTML='';
+  colors.forEach((name,index)=>{
+    const btn=document.createElement('button');
+    btn.className=`pad pad-${index}`;
+    btn.textContent=name;
+    btn.addEventListener('click',()=>pressPad(index));
+    padsEl.appendChild(btn);
+  });
+}
+
+function startGame(){
+  sequence=[];
+  document.getElementById('round').textContent='0';
+  document.getElementById('input').textContent='0';
+  overlay.style.display='none';
+  statusEl.textContent='Watch carefully...';
+  nextRound();
+}
+
+function nextRound(){
+  accepting=false;
+  inputIndex=0;
+  sequence.push(Math.floor(Math.random()*4));
+  document.getElementById('round').textContent=sequence.length;
+  document.getElementById('input').textContent='0';
+  statusEl.textContent='Watch the sequence...';
+  playSequence(0);
+}
+
+function playSequence(step){
+  if(step>=sequence.length){
+    accepting=true;
+    statusEl.textContent='Your turn!';
+    return;
+  }
+  flashPad(sequence[step]);
+  setTimeout(()=>playSequence(step+1),700);
+}
+
+function flashPad(index){
+  const pad=padsEl.children[index];
+  if(!pad)return;
+  pad.classList.add('active');
+  setTimeout(()=>pad.classList.remove('active'),320);
+}
+
+function pressPad(index){
+  if(!accepting)return;
+  flashPad(index);
+  if(index!==sequence[inputIndex]){
+    accepting=false;
+    finishGame();
+    return;
+  }
+  inputIndex++;
+  document.getElementById('input').textContent=inputIndex;
+  if(inputIndex===sequence.length){
+    accepting=false;
+    if(sequence.length>best){best=sequence.length;localStorage.setItem(BEST_KEY,String(best));document.getElementById('best').textContent=best;}
+    statusEl.textContent='Nice! Next round...';
+    setTimeout(nextRound,700);
+  }
+}
+
+function finishGame(){
+  const round=Math.max(0,sequence.length-1);
+  statusEl.textContent=`Game over at round ${round}.`;
+  overlay.innerHTML=`<h2>❌ Sequence broken</h2><p>You reached round <strong>${round}</strong>. Ready to try again?</p><button class="btn" id="overlay-btn">Play Again</button>`;
+  overlay.style.display='flex';
+  document.getElementById('overlay-btn').addEventListener('click',startGame);
+}
+
+document.addEventListener('keydown',e=>{
+  if(overlay.style.display!=='none'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();document.getElementById('overlay-btn').click();return;}
+  const map={'1':0,'2':1,'3':2,'4':3};
+  if(map[e.key]!==undefined){e.preventDefault();pressPad(map[e.key]);}
+});
+
+document.getElementById('overlay-btn').addEventListener('click',startGame);
+buildPads();
+</script>
+</body>
+</html>
