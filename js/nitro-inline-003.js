@@ -11,6 +11,7 @@
         let libraryFilter = 'all';
 
         const gamesDatabase = [
+            {id:'growden_io',name:'Growden.io',category:'arcade',type:'iframe',source:'https://growden.io/#4TUWS3',desc:'Grow your garden · online iframe · internet required'},
             {id:'solar_smash_online',name:'Solar Smash',category:'arcade',type:'iframe',source:'https://solarsmashonline.com/play/solar-smash',desc:'Solar Smash browser game · online iframe · internet required'},
 
             {id:'geometry_dash_webport',name:'Geometry Dash',category:'arcade',type:'iframe',source:'https://gd-webport.pages.dev/',desc:'Online browser game · iframe · internet required'},
