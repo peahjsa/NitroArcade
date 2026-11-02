@@ -38,6 +38,11 @@
 <link rel="stylesheet" href="css/macro-game-catalog.css">
 <style id="nitro-mascot-animations">@keyframes nitroAppear{from{opacity:0;transform:translateY(13px)}to{opacity:1;transform:translateY(0)}}@keyframes nitroGlow{50%{filter:drop-shadow(0 0 10px #b067ff)}}.nitro-mascot-strip{display:flex;gap:12px;align-items:center;padding:9px 12px;margin:8px 0;border:1px solid #7d42d4;border-radius:14px;background:#1c1039;color:#f5eaff;text-decoration:none;animation:nitroAppear .65s ease both}.nitro-mascot-strip img{width:38px;height:38px;image-rendering:pixelated;animation:nitroGlow 2s infinite}.nitro-mascot-strip:hover{background:#36215e}@media(prefers-reduced-motion:reduce){.nitro-mascot-strip,.nitro-mascot-strip img{animation:none}}</style><style id="nitro-mascot-edition-css">
 :root{--nitro-glow:#a68bff} .nitro-mascot-float{position:fixed;z-index:120;right:14px;top:28%;display:flex;flex-direction:column;gap:12px;pointer-events:none} .nitro-mascot-float a{pointer-events:auto;display:flex;align-items:center;justify-content:center;position:relative;width:64px;height:64px;border:1px solid #9beaff88;border-radius:20px;background:linear-gradient(145deg,#231345e8,#091c36ee);box-shadow:0 4px 24px #6b35ff55;transition:transform .2s,box-shadow .2s;text-decoration:none} .nitro-mascot-float a:hover{transform:translateX(-7px) rotate(-4deg) scale(1.08);box-shadow:0 4px 28px #77e6ff99}.nitro-mascot-float img{height:48px;width:48px;object-fit:contain;filter:drop-shadow(0 0 6px #d3c6ff88);animation:nitro-mascot-bob 3.4s ease-in-out infinite}.nitro-mascot-float a:nth-child(2) img{animation-delay:-1.7s}.nitro-mascot-float a:focus-visible{outline:3px solid #fff}.nitro-mascot-float a::after{content:attr(data-name);position:absolute;right:72px;top:19px;white-space:nowrap;background:#170f30;color:#fff;border:1px solid #9beaff88;border-radius:8px;padding:5px 9px;font:700 12px system-ui;opacity:0;transform:translateX(5px);transition:.2s;pointer-events:none}.nitro-mascot-float a:hover::after,.nitro-mascot-float a:focus-visible::after{opacity:1;transform:none}@keyframes nitro-mascot-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}@media(max-width:800px){.nitro-mascot-float{top:auto;bottom:105px;right:8px;gap:5px}.nitro-mascot-float a{width:44px;height:44px;border-radius:12px}.nitro-mascot-float img{height:34px;width:34px}.nitro-mascot-float a::after{display:none}}@media(prefers-reduced-motion:reduce){.nitro-mascot-float img{animation:none}}
+</style><style id="nitro-download-style">.nxNitroDownload{display:flex;align-items:center;gap:9px;margin:12px 10px;padding:13px 10px;border:1px solid #7ce9ff;border-radius:12px;background:linear-gradient(110deg,#5630b5,#087fbb);box-shadow:0 0 18px #6845ff66;color:#fff!important;font-weight:800;font-size:12px;text-decoration:none;transition:transform .2s,filter .2s}.nxNitroDownload:hover,.nxNitroDownload:focus-visible{transform:translateY(-2px);filter:brightness(1.2);outline:2px solid #c8f7ff;outline-offset:2px}.nxNitroDownload span{line-height:1.35}</style><style id="nitro-zip-visible-fix">
+.nxSidebar .nxNitroDownload{display:flex!important;align-items:center;justify-content:center;gap:8px;position:relative;flex-shrink:0;margin:12px 10px 14px;padding:13px 10px!important;border:2px solid #a6f2ff!important;border-radius:12px;background:linear-gradient(110deg,#6332d6,#117eac)!important;color:white!important;font:800 12px system-ui!important;text-align:center;text-decoration:none!important;box-shadow:0 0 17px #8c4aff88;white-space:normal!important;min-height:44px;visibility:visible!important;opacity:1!important}
+.nxSidebar .nxNitroDownload:hover{filter:brightness(1.25)}
+.nxZipDashboard{display:flex;align-items:center;justify-content:center;padding:12px 14px;border:1px solid #a4eaff;border-radius:12px;color:white;background:linear-gradient(110deg,#6433cb,#126eae);font:800 12px system-ui;text-decoration:none;min-height:48px}
+#gameGrid{display:grid}#gameGrid .game-card[data-game-id="neon_dodge"]{order:9998!important}#gameGrid .game-card[data-game-id="pixel_catcher"]{order:9999!important}
 </style></head>
 
 <body class="crt">
@@ -92,6 +97,7 @@
 
     <aside class="nxSidebar" aria-label="Arcade navigation">
 <div class="nxSideBrand"><span>◈</span><strong>NITRO<span>ARCADE</span></strong></div>
+<a class="nxNitroDownload" href="https://github.com/peahjsa/NitroArcade/archive/refs/heads/main.zip" aria-label="Download NitroArcade source ZIP" target="_blank" rel="noopener">📦 <span>DOWNLOAD WEBSITE ZIP</span></a>
 <div class="nxSideLabel">DISCOVER</div>
 <button class="nxSideActive" onclick="NitroNeo.home()">⌂ <span>Dashboard</span></button>
 <button onclick="NitroNeo.games()">▣ <span>Playground</span></button>
@@ -121,6 +127,7 @@
 <button onclick="NitroPlus.open('settings')">◈ <span>Personalize</span></button>
 <div class="nxSideLabel">FAMILY & WELLBEING</div>
 <button id="nfSidebarButton" type="button" onclick="NitroFamily.openSettings()">🌙 <span>Bedtime / Screen Limits</span></button>
+
 <div class="nxSideLabel">EXTRAS</div>
 <button onclick="NitroForum.openISG()">▤ <span>ISG Forum</span></button>
 <button onclick="NitroStyle.open()">⚙ <span>Style Studio</span></button>
@@ -183,6 +190,7 @@
             <section class="nxFillPanel" aria-label="Quick arcade actions">
               <div class="nxFillHeading"><span>✦ QUICK START</span><strong>JUMP BACK INTO THE ACTION</strong><small>No need to scroll through the whole library.</small></div>
               <div class="nxFillActions">
+<a class="nxZipDashboard" href="https://github.com/peahjsa/NitroArcade/archive/refs/heads/main.zip" target="_blank" rel="noopener">📦 DOWNLOAD FULL WEBSITE ZIP ↗</a>
                 <button type="button" onclick="showArcadePart('small')"><span>🎮</span><strong>Small Games</strong><small>PLAY ↗</small></button>
                 <button type="button" onclick="showArcadePart('big')"><span>🚀</span><strong>Big Games</strong><small>EXPLORE ↗</small></button>
                 <button type="button" onclick="showArcadePart('challenge')"><span>🏆</span><strong>Challenge</strong><small>START ↗</small></button>
@@ -240,6 +248,8 @@
   <iframe src="HexiArcade/index.html" id="reallyCoolFrame" title="HexiArcade Games — merged local game collections" loading="eager" allow="fullscreen; autoplay; gamepad" allowfullscreen referrerpolicy="strict-origin-when-cross-origin" style="display:block;width:100%;height:calc(100vh - 190px);min-height:580px;border:1px solid #6935a4;border-radius:12px;background:#090b16"></iframe>
 </section>
 <div class="game-grid" id="gameGrid">
+<article class="game-card" data-game-id="minecraft_versions" data-arcade-part="big" onclick="launchGame(gamesDatabase.find(g => g.id === 'minecraft_versions'))" style="cursor:pointer"><button class="favorite-btn" data-fav-id="minecraft_versions" onclick="toggleFavorite(event, 'minecraft_versions')" title="Favorite">☆</button><div class="thumb" style="background:linear-gradient(135deg,#29563b,#142339);display:grid;place-items:center;min-height:135px"><span style="font-size:60px">⛏️</span><div class="thumb-label">ONLINE · IFRAME</div><div class="play-pill">▶</div></div><div class="game-meta"><div><h3>Minecraft Versions</h3><p>Browser versions · Internet required</p></div><div class="tag">PLAY</div></div></article>
+
 <article class="game-card" data-game-id="zombs_royale" data-arcade-part="big" onclick="launchGame(gamesDatabase.find(g=>g.id==='zombs_royale'))"><button class="favorite-btn" data-fav-id="zombs_royale" onclick="toggleFavorite(event,'zombs_royale')" title="Favorite">☆</button><div class="thumb" style="background:linear-gradient(135deg,#2a664d,#102437);display:grid;place-items:center;font-size:62px">🧟<div class="thumb-label">ONLINE</div><div class="play-pill">▶</div></div><div class="game-meta"><div><h3>ZombsRoyale</h3><p>Online battle royale · Play inside NitroArcade</p></div><div class="tag">PLAY</div></div></article>
 <article class="game-card" data-game-id="fruit_ninja_yellow" data-arcade-part="big" onclick="launchGame(gamesDatabase.find(g=>g.id==='fruit_ninja_yellow'))" style="cursor:pointer"><button class="favorite-btn" data-fav-id="fruit_ninja_yellow" onclick="toggleFavorite(event,'fruit_ninja_yellow')" title="Favorite">☆</button><div class="thumb" style="background:linear-gradient(135deg,#4d822a,#db6941);display:grid;place-items:center;font-size:62px">🍉<div class="thumb-label">ONLINE</div><div class="play-pill">▶</div></div><div class="game-meta"><div><h3>Fruit Ninja</h3><p>Slice fruit · Online arcade game</p></div><div class="tag">PLAY</div></div></article>
 <article class="game-card" data-game-id="subway_surfers" data-arcade-part="big" onclick="launchGame(gamesDatabase.find(g=>g.id==='subway_surfers'))"><button class="favorite-btn" data-fav-id="subway_surfers" onclick="toggleFavorite(event,'subway_surfers')" title="Favorite">☆</button><div class="thumb" style="background:linear-gradient(135deg,#264c9c,#e6a04d);display:grid;place-items:center;font-size:62px">🚆<div class="thumb-label">ONLINE</div><div class="play-pill">▶</div></div><div class="game-meta"><div><h3>Subway Surfers</h3><p>Online endless runner · Embed may be restricted</p></div><div class="tag">PLAY</div></div></article>
@@ -313,8 +323,8 @@
 <!-- NitroArcade integrated original and experimental games -->
 <article class="game-card" data-game-id="lost_levels_alt" data-arcade-part="big" onclick="openWorkingLostLevels()" style="cursor:pointer"><button class="favorite-btn" data-fav-id="lost_levels_alt" onclick="toggleFavorite(event, 'lost_levels_alt')" title="Favorite">☆</button><div class="thumb" style="display:grid;place-items:center;background:linear-gradient(140deg,#13172c,#5a2b89);min-height:125px"><div class="thumb-label">NES · Online core</div><div class="play-pill">PLAY</div></div><div class="game-meta"><div><h3>Super Mario Bros. 2: The Lost Levels</h3><p>Lost Levels · auto-loads bundled game · alternative NES engine</p></div><div class="tag">OPEN</div></div></article>
 <article class="game-card" data-game-id="nitro_clicker" data-arcade-part="big" onclick="launchGame(gamesDatabase.find(g => g.id === 'nitro_clicker'))" style="cursor:pointer"><button class="favorite-btn" data-fav-id="nitro_clicker" onclick="toggleFavorite(event, 'nitro_clicker')" title="Favorite">☆</button><div class="thumb" style="display:grid;place-items:center;background:linear-gradient(140deg,#13172c,#5a2b89);min-height:125px"><div class="thumb-label">OFFLINE</div><div class="play-pill">PLAY</div></div><div class="game-meta"><div><h3>Stimulation Clicker</h3><p>Online game by Neal.fun · embedding may be restricted</p></div><div class="tag">OPEN</div></div></article>
-<article class="game-card" data-game-id="neon_dodge" data-arcade-part="small" onclick="launchGame(gamesDatabase.find(g => g.id === 'neon_dodge'))" style="cursor:pointer"><button class="favorite-btn" data-fav-id="neon_dodge" onclick="toggleFavorite(event, 'neon_dodge')" title="Favorite">☆</button><div class="thumb" style="display:grid;place-items:center;background:linear-gradient(140deg,#13172c,#5a2b89);min-height:125px"><div class="thumb-label">OFFLINE</div><div class="play-pill">PLAY</div></div><div class="game-meta"><div><h3>Neon Dodge</h3><p>Dodge falling hazards</p></div><div class="tag">OPEN</div></div></article>
-<article class="game-card" data-game-id="pixel_catcher" data-arcade-part="small" onclick="launchGame(gamesDatabase.find(g => g.id === 'pixel_catcher'))" style="cursor:pointer"><button class="favorite-btn" data-fav-id="pixel_catcher" onclick="toggleFavorite(event, 'pixel_catcher')" title="Favorite">☆</button><div class="thumb" style="display:grid;place-items:center;background:linear-gradient(140deg,#13172c,#5a2b89);min-height:125px"><div class="thumb-label">OFFLINE</div><div class="play-pill">PLAY</div></div><div class="game-meta"><div><h3>Pixel Catcher</h3><p>Catch falling shapes</p></div><div class="tag">OPEN</div></div></article>
+
+
 <article class="game-card" data-game-id="goat_chaos" data-arcade-part="big" onclick="launchGame(gamesDatabase.find(g => g.id === 'goat_chaos'))" style="cursor:pointer"><button class="favorite-btn" data-fav-id="goat_chaos" onclick="toggleFavorite(event, 'goat_chaos')" title="Favorite">☆</button><div class="thumb" style="display:grid;place-items:center;background:linear-gradient(140deg,#13172c,#5a2b89);min-height:125px"><div class="thumb-label">OFFLINE 3D</div><div class="play-pill">PLAY</div></div><div class="game-meta"><div><h3>Goat Chaos: Mega Map</h3><p>3D goat physics playground with ramps, lake, village and chaos</p></div><div class="tag">OPEN</div></div></article>
 
 
@@ -366,6 +376,8 @@
                             </div>
                         </div>
                     </article>
+<article class="game-card" data-game-id="neon_dodge" data-arcade-part="small" onclick="launchGame(gamesDatabase.find(g => g.id === 'neon_dodge'))" style="cursor:pointer"><button class="favorite-btn" data-fav-id="neon_dodge" onclick="toggleFavorite(event, 'neon_dodge')" title="Favorite">☆</button><div class="thumb" style="display:grid;place-items:center;background:linear-gradient(140deg,#13172c,#5a2b89);min-height:125px"><div class="thumb-label">OFFLINE</div><div class="play-pill">PLAY</div></div><div class="game-meta"><div><h3>Neon Dodge</h3><p>Dodge falling hazards</p></div><div class="tag">OPEN</div></div></article>
+<article class="game-card" data-game-id="pixel_catcher" data-arcade-part="small" onclick="launchGame(gamesDatabase.find(g => g.id === 'pixel_catcher'))" style="cursor:pointer"><button class="favorite-btn" data-fav-id="pixel_catcher" onclick="toggleFavorite(event, 'pixel_catcher')" title="Favorite">☆</button><div class="thumb" style="display:grid;place-items:center;background:linear-gradient(140deg,#13172c,#5a2b89);min-height:125px"><div class="thumb-label">OFFLINE</div><div class="play-pill">PLAY</div></div><div class="game-meta"><div><h3>Pixel Catcher</h3><p>Catch falling shapes</p></div><div class="tag">OPEN</div></div></article>
                 </div>
 
                 <div class="recent-strip">
@@ -629,7 +641,7 @@ parent.postMessage({macroNitro:true,action:&#x27;ready&#x27;},&#x27;*&#x27;);
         <section class="about-page" id="aboutPage">
             <button class="btn about-back" id="aboutBack" onclick="closeAboutPage()">← BACK TO ARCADE</button>
             <div class="about-kicker">NITROARCADE // ABOUT</div>
-<div class="nmTeamNote"><strong>ONE TEAM, TWO ARCADES.</strong> NitroArcade brings our games, creative tools and community together. Alin and Viyan are members of the same nine-person team and focus on MacroArcade, our companion project. Eight MacroArcade worlds are integrated into the NitroArcade game library — without changing NitroArcade’s design.</div>
+<div class="nmTeamNote"><strong>ONE TEAM, TWO ARCADES.</strong> NitroArcade brings our games, creative tools and community together. Alin and Viyan are members of the same ten-person team and focus on MacroArcade, our companion project. Eight MacroArcade worlds are integrated into the NitroArcade game library — without changing NitroArcade’s design.</div>
             <h1 class="about-title">ONE ARCADE.<br><span>ENDLESS IDEAS.</span></h1>
             <p class="about-lead">NitroArcade is a browser-based arcade platform created as a school AI project for the ISG Forum at Indian School Al Ghubra. Thanks to the school and our teachers for the opportunity to turn our ideas into a playable project. Our goal is to bring different styles of games, challenges, creative tools and experiments into one place — and keep improving it together.</p>
 
@@ -677,10 +689,11 @@ parent.postMessage({macroNitro:true,action:&#x27;ready&#x27;},&#x27;*&#x27;);
                 <article class="team-card"><div class="team-number">PLAYER 07</div><div class="team-avatar">H</div><h3>Haran</h3><p>NITROARCADE TEAM</p></article>
                 <article class="team-card"><div class="team-number">PLAYER 08</div><div class="team-avatar">V</div><h3>Vihaan</h3><p>NITROARCADE TEAM</p></article>
                 <article class="team-card"><div class="team-number">PLAYER 09</div><div class="team-avatar">A</div><h3>Aaron</h3><p>NITROARCADE TEAM</p></article>
+                <article class="team-card"><div class="team-number">PLAYER 10</div><div class="team-avatar">A</div><h3>Arihant</h3><p>NITROARCADE TEAM</p></article>
             </div>
 
             <div class="about-manifesto">
-                <strong>BUILT BY NINE.<br>PLAYED BY EVERYONE.</strong>
+                <strong>BUILT BY TEN.<br>PLAYED BY EVERYONE.</strong>
                 <span>THE ARCADE KEEPS GROWING.</span>
             </div>
 
@@ -1277,5 +1290,29 @@ parent.postMessage({macroNitro:true,action:&#x27;ready&#x27;},&#x27;*&#x27;);
 <script src="js/mario-font.js"></script>
 <script src="js/macro-game-catalog.js"></script>
 <a href="NitroLab-Next/index.html" id="nitrolab-next-entry" style="position:fixed;right:16px;bottom:72px;z-index:2147483640;padding:12px 18px;background:linear-gradient(120deg,#42248f,#126e9c);border:2px solid #9beaff;border-radius:14px;color:white;font:700 14px system-ui;text-decoration:none;box-shadow:0 0 16px #9beaff77">NITROLAB NEXT</a>
-<script id="nitro-mascot-ui">document.addEventListener('DOMContentLoaded',()=>{if(document.querySelector('.nitro-mascot-strip'))return;const a=document.createElement('a');a.className='nitro-mascot-strip';a.href='NitroLab-Next/mascots.html';a.innerHTML='<img src="NitroLab-Next/assets/mascots/pixie.svg" alt="Pixie"><img src="NitroLab-Next/assets/mascots/ometobyte.svg" alt="OmetoByte"><span><strong>Meet the mascots</strong><small style="display:block">Animated pixel-art characters</small></span>';const t=[...document.querySelectorAll('a,button')].find(e=>/OPEN NITROLAB/i.test(e.textContent));if(t&&t.parentNode)t.parentNode.insertBefore(a,t);else document.body.appendChild(a)});</script><style>.nitro-count-grid{display:flex;flex-wrap:wrap;gap:8px 18px;margin:8px 0}.nitro-count-grid span{border:1px solid #47306e;border-radius:8px;padding:3px 9px}#nitro-count-report small{color:#bcb1d4}</style><script src="scripts/section-game-counts.js"></script><script>function openWorkingLostLevels(){window.location.href='HexiArcade/nes-emulator-plus/lost-levels.html';}</script><script id="nitro-mascot-edition-js">document.addEventListener('DOMContentLoaded',function(){if(document.querySelector('.nitro-mascot-float'))return;var dock=document.createElement('nav');dock.className='nitro-mascot-float';dock.setAttribute('aria-label','NitroArcade mascots');[['Pixie','pixie.svg'],['OmetoByte','ometobyte.svg']].forEach(function(pair){var a=document.createElement('a');a.href='NitroLab-Next/mascots.html';a.title='Meet '+pair[0];a.setAttribute('aria-label','Meet '+pair[0]);a.setAttribute('data-name',pair[0]);var im=document.createElement('img');im.src='NitroLab-Next/assets/mascots/'+pair[1];im.alt=pair[0];a.appendChild(im);dock.appendChild(a)});document.body.appendChild(dock)});</script><link rel="stylesheet" href="css/nitro-neon-upgrade.css"><script src="js/nitro-neon-upgrade.js"></script></body>
+<script id="nitro-mascot-ui">document.addEventListener('DOMContentLoaded',()=>{if(document.querySelector('.nitro-mascot-strip'))return;const a=document.createElement('a');a.className='nitro-mascot-strip';a.href='NitroLab-Next/mascots.html';a.innerHTML='<img src="NitroLab-Next/assets/mascots/pixie.svg" alt="Pixie"><img src="NitroLab-Next/assets/mascots/ometobyte.svg" alt="OmetoByte"><span><strong>Meet the mascots</strong><small style="display:block">Animated pixel-art characters</small></span>';const t=[...document.querySelectorAll('a,button')].find(e=>/OPEN NITROLAB/i.test(e.textContent));if(t&&t.parentNode)t.parentNode.insertBefore(a,t);else document.body.appendChild(a)});</script><style>.nitro-count-grid{display:flex;flex-wrap:wrap;gap:8px 18px;margin:8px 0}.nitro-count-grid span{border:1px solid #47306e;border-radius:8px;padding:3px 9px}#nitro-count-report small{color:#bcb1d4}</style><script src="scripts/section-game-counts.js"></script><script>function openWorkingLostLevels(){window.location.href='HexiArcade/nes-emulator-plus/lost-levels.html';}</script><script id="nitro-mascot-edition-js">document.addEventListener('DOMContentLoaded',function(){if(document.querySelector('.nitro-mascot-float'))return;var dock=document.createElement('nav');dock.className='nitro-mascot-float';dock.setAttribute('aria-label','NitroArcade mascots');[['Pixie','pixie.svg'],['OmetoByte','ometobyte.svg']].forEach(function(pair){var a=document.createElement('a');a.href='NitroLab-Next/mascots.html';a.title='Meet '+pair[0];a.setAttribute('aria-label','Meet '+pair[0]);a.setAttribute('data-name',pair[0]);var im=document.createElement('img');im.src='NitroLab-Next/assets/mascots/'+pair[1];im.alt=pair[0];a.appendChild(im);dock.appendChild(a)});document.body.appendChild(dock)});</script><link rel="stylesheet" href="css/nitro-neon-upgrade.css"><script src="js/nitro-neon-upgrade.js"></script>
+<script id="nitro-small-games-last-order">
+(function(){
+  function moveLast(){
+    const grid=document.getElementById('gameGrid');
+    if(!grid)return;
+    for(const id of ['neon_dodge','pixel_catcher']){
+      const card=Array.from(grid.children).find(el=>el.dataset&&el.dataset.gameId===id);
+      if(card && card!==grid.lastElementChild) grid.appendChild(card);
+    }
+  }
+  document.addEventListener('DOMContentLoaded',function(){
+    moveLast();
+    const grid=document.getElementById('gameGrid');
+    if(!grid)return;
+    let busy=false;
+    new MutationObserver(function(){
+      if(busy)return;
+      busy=true;
+      try{moveLast();}finally{queueMicrotask(()=>{busy=false;});}
+    }).observe(grid,{childList:true});
+  });
+})();
+</script>
+</body>
 </html>

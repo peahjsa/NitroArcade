@@ -11,6 +11,7 @@
         let libraryFilter = 'all';
 
         const gamesDatabase = [
+            {id:'minecraft_versions',name:'Minecraft Versions',category:'arcade',type:'iframe',source:'https://eaglercraft.com/play',desc:'Minecraft-style browser versions · internet required · iframe'},
             {id:'zombs_royale',name:'ZombsRoyale',category:'arcade',type:'iframe',source:'https://zombsroyale.io',desc:'Online multiplayer battle royale · iframe (internet required)'},
             {id:'real_football_challenge',name:'Real Football Challenge',category:'arcade',type:'iframe',source:'https://yell0wsuit.page/assets/games/real-football-challenge/index.html',desc:'Football challenge · online iframe game'},
             {id:'angry_birds_chrome',name:'Angry Birds Chrome',category:'arcade',type:'iframe',source:'https://yell0wsuit.page/assets/games/angry-birds-chrome/index.html',desc:'Angry Birds browser game · online iframe game'},
