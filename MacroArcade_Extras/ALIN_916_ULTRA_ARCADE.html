@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ALIN 916 ULTRA ARCADE</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;
+ background:#050713;
+ color:white;
+ font-family:Arial,sans-serif;
+ min-height:100vh;
+}
+header{
+ padding:25px;
+ text-align:center;
+ background:linear-gradient(135deg,#08152d,#16082d);
+ border-bottom:2px solid #00eaff;
+ box-shadow:0 0 25px #00eaff55;
+}
+h1{
+ margin:0;
+ color:#00eaff;
+ font-size:36px;
+ text-shadow:0 0 15px #00eaff;
+}
+header p{color:#aaa}
+#search{
+ width:90%;
+ max-width:600px;
+ padding:14px;
+ border-radius:30px;
+ border:1px solid #00eaff;
+ background:#050a18;
+ color:white;
+ outline:none;
+ font-size:16px;
+}
+.grid{
+ padding:25px;
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+ gap:20px;
+}
+.card{
+ background:linear-gradient(145deg,#10182c,#080b18);
+ border:1px solid #263c63;
+ border-radius:18px;
+ padding:15px;
+ cursor:pointer;
+ transition:.25s;
+ box-shadow:0 8px 20px #0008;
+}
+.card:hover{
+ transform:translateY(-7px) scale(1.02);
+ border-color:#00eaff;
+ box-shadow:0 0 25px #00eaff55;
+}
+.thumb{
+ height:130px;
+ border-radius:13px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-size:65px;
+ background:
+ radial-gradient(circle at 30% 30%,#00eaff44,transparent 35%),
+ linear-gradient(135deg,#171c42,#090b18);
+ border:1px solid #ffffff18;
+}
+.card h3{margin:12px 0 5px}
+.card p{margin:0;color:#888}
+button{
+ border:0;
+ border-radius:10px;
+ padding:11px 16px;
+ background:#00eaff;
+ color:#001018;
+ font-weight:bold;
+ cursor:pointer;
+}
+button:hover{filter:brightness(1.2)}
+footer{
+ text-align:center;
+ padding:30px;
+ color:#00eaff;
+}
+#gameBox{
+ display:none;
+ position:fixed;
+ inset:0;
+ background:#02030aee;
+ z-index:10;
+ padding:20px;
+ overflow:auto;
+}
+#gamePanel{
+ max-width:900px;
+ margin:20px auto;
+ background:#090d1c;
+ border:2px solid #00eaff;
+ border-radius:20px;
+ padding:20px;
+ box-shadow:0 0 40px #00eaff44;
+}
+#gameTitle{
+ color:#00eaff;
+ text-align:center;
+ font-size:28px;
+}
+#gameArea{
+ min-height:350px;
+ position:relative;
+ border:1px solid #253b60;
+ border-radius:15px;
+ background:#03050d;
+ overflow:hidden;
+}
+#info{
+ text-align:center;
+ color:#bbb;
+ padding:12px;
+}
+canvas{
+ display:block;
+ width:100%;
+ max-width:800px;
+ height:auto;
+ margin:auto;
+ background:#02040a;
+}
+.center{text-align:center;padding:30px}
+.big{
+ font-size:35px;
+ color:#00eaff;
+}
+.target{
+ position:absolute;
+ width:55px;
+ height:55px;
+ border-radius:50%;
+ background:#ff1744;
+ box-shadow:0 0 25px #ff1744;
+ cursor:pointer;
+}
+.tile{
+ display:inline-flex;
+ align-items:center;
+ justify-content:center;
+ margin:5px;
+ width:55px;
+ height:55px;
+ background:#182542;
+ border:1px solid #00eaff;
+ border-radius:10px;
+ cursor:pointer;
+ font-weight:bold;
+}
+input.gameInput{
+ padding:13px;
+ background:#050a18;
+ border:1px solid #00eaff;
+ color:white;
+ border-radius:8px;
+ margin:6px;
+}
+.bigGrid{
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+ gap:8px;
+ padding:15px;
+}
+.bigGrid button{
+ min-height:60px;
+}
+.close{
+ float:right;
+ background:#ff1744;
+ color:white;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>⚡ ALIN 916 ULTRA ARCADE ⚡</h1>
+<p>24 DIFFERENT GAMES • NO REPEATS</p>
+<input id="search" placeholder="🔎 Search games..." oninput="searchGames()">
+</header>
+
+<div class="grid" id="games"></div>
+
+<footer>⚡ CREATED BY ALIN 916 ⚡</footer>
+
+<div id="gameBox">
+<div id="gamePanel">
+<button class="close" onclick="closeGame()">✕ CLOSE</button>
+<h2 id="gameTitle"></h2>
+<div id="info"></div>
+<div id="gameArea"></div>
+</div>
+</div>
+
+<script>
+
+const games=[
+["🎯","Neon Target","Hit the targets as fast as possible."],
+["🐍","Cyber Snake","Grow your snake and avoid yourself."],
+["🧠","Memory Matrix","Remember the glowing pattern."],
+["⌨️","Hyper Type","Type the words before time runs out."],
+["☄️","Asteroid Dodge","Move your ship and survive."],
+["🧱","Neon Breaker","Break every block with the ball."],
+["🤖","Bot Smash","Smash the moving robots."],
+["⚡","Reaction Core","Click when the core turns green."],
+["🔢","Number Hacker","Guess the secret number."],
+["🌈","Color Sync","Choose the correct color."],
+["➗","Math Reactor","Solve calculations quickly."],
+["🌀","Quantum Maze","Find your way through the maze."],
+["🏃","Cyber Runner","Jump over obstacles."],
+["🏓","Laser Pong","Beat the computer."],
+["💣","Mine Scanner","Find safe squares."],
+["❌","Grid Battle","Get three in a row."],
+["🪽","Sky Hopper","Jump between platforms."],
+["🚀","Star Blaster","Destroy incoming enemies."],
+["🎵","Memory Pulse","Repeat the sound sequence."],
+["🚗","Neon Parking","Park inside the target."],
+["🔴","Orb Catcher","Catch falling orbs."],
+["🧩","2048 Reactor","Combine matching tiles."],
+["🔤","Code Breaker","Break the secret code."],
+["🏹","Precision Shot","Hit the moving bullseye."]
+];
+
+const gamesDiv=document.getElementById("games");
+
+function drawGames(list=games){
+ gamesDiv.innerHTML="";
+ list.forEach((g,i)=>{
+  const c=document.createElement("div");
+  c.className="card";
+  c.dataset.name=g[1].toLowerCase();
+  c.innerHTML=`
+   <div class="thumb">${g[0]}</div>
+   <h3>${g[1]}</h3>
+   <p>${g[2]}</p>
+   <br>
+   <button>PLAY ▶</button>`;
+  c.onclick=()=>startGame(games.indexOf(g));
+  gamesDiv.appendChild(c);
+ });
+}
+drawGames();
+const selectedGame = new URLSearchParams(location.search).get('game');
+if(selectedGame !== null && /^\d+$/.test(selectedGame) && +selectedGame < games.length) startGame(+selectedGame);
+
+function searchGames(){
+ const q=document.getElementById("search").value.toLowerCase();
+ drawGames(games.filter(g=>g[1].toLowerCase().includes(q)));
+}
+
+const box=document.getElementById("gameBox");
+const area=document.getElementById("gameArea");
+const title=document.getElementById("gameTitle");
+const info=document.getElementById("info");
+
+let timer=null;
+let keyHandler=null;
+
+function startGame(i){
+ clearGame();
+ box.style.display="block";
+ title.textContent=games[i][0]+" "+games[i][1];
+ window["game"+i]();
+}
+
+function closeGame(){
+ clearGame();
+ box.style.display="none";
+}
+
+function clearGame(){
+ clearInterval(timer);
+ clearTimeout(timer);
+ if(keyHandler){
+  document.removeEventListener("keydown",keyHandler);
+  keyHandler=null;
+ }
+ area.innerHTML="";
+ info.innerHTML="";
+}
+
+/* 1 TARGET */
+
+function game0(){
+ info.textContent="Click 15 targets. Your time will be measured.";
+ let score=0,start=Date.now();
+ function make(){
+  area.innerHTML="";
+  const t=document.createElement("div");
+  t.className="target";
+  t.style.left=Math.random()*80+"%";
+  t.style.top=Math.random()*75+"%";
+  t.onclick=()=>{
+   score++;
+   if(score>=15){
+    area.innerHTML=`<div class="center"><div class="big">🎯 COMPLETE!</div>Time: ${((Date.now()-start)/1000).toFixed(2)} seconds</div>`;
+   }else make();
+  };
+  area.appendChild(t);
+ }
+ make();
+}
+
+/* 2 SNAKE */
+
+function game1(){
+ area.innerHTML=`<canvas id="c" width="700" height="400"></canvas>`;
+ const c=document.getElementById("c"),x=c.getContext("2d");
+ let snake=[{x:10,y:10}],dx=1,dy=0,food={x:20,y:10},score=0;
+ keyHandler=e=>{
+  if(e.key==="ArrowUp"&&dy!==1){dx=0;dy=-1}
+  if(e.key==="ArrowDown"&&dy!==-1){dx=0;dy=1}
+  if(e.key==="ArrowLeft"&&dx!==1){dx=-1;dy=0}
+  if(e.key==="ArrowRight"&&dx!==-1){dx=1;dy=0}
+ };
+ document.addEventListener("keydown",keyHandler);
+ timer=setInterval(()=>{
+  let h={x:snake[0].x+dx,y:snake[0].y+dy};
+  if(h.x<0||h.y<0||h.x>=35||h.y>=20||
+     snake.some(s=>s.x===h.x&&s.y===h.y)){
+   clearInterval(timer);
+   info.textContent="GAME OVER • Score: "+score;
+   return;
+  }
+  snake.unshift(h);
+  if(h.x===food.x&&h.y===food.y){
+   score++;
+   food={x:Math.floor(Math.random()*35),y:Math.floor(Math.random()*20)};
+  }else snake.pop();
+  x.clearRect(0,0,700,400);
+  x.fillStyle="#00eaff";
+  snake.forEach(s=>x.fillRect(s.x*20,s.y*20,18,18));
+  x.fillStyle="#ff1744";
+  x.fillRect(food.x*20,food.y*20,18,18);
+  info.textContent="Score: "+score+" • Use arrow keys";
+ },100);
+}
+
+/* 3 MEMORY */
+
+function game2(){
+ let nums=[...Array(9)].map((_,i)=>i);
+ nums.sort(()=>Math.random()-.5);
+ area.innerHTML=`<div class="center"><h2>Remember this order:</h2><div class="big">${nums.join(" ")}</div><br><button id="hide">HIDE</button></div>`;
+ document.getElementById("hide").onclick=()=>{
+  area.innerHTML=`<div class="center"><input class="gameInput" id="ans" placeholder="Type the sequence"><br><button onclick="checkMemory()">CHECK</button></div>`;
+ };
+ window.checkMemory=()=>{
+  const v=document.getElementById("ans").value.replace(/\s/g,"");
+  info.textContent=v===nums.join("")?"🧠 PERFECT!":"❌ Wrong! Correct: "+nums.join("");
+ };
+}
+
+/* 4 TYPING */
+
+function game3(){
+ const words=["CYBER","NEON","ARCADE","QUANTUM","LASER","ROCKET","GALAXY","ALIN"];
+ let word=words[Math.floor(Math.random()*words.length)];
+ area.innerHTML=`<div class="center"><div class="big">${word}</div><input class="gameInput" id="type" autofocus><br><button onclick="typeCheck()">SUBMIT</button></div>`;
+ window.typeCheck=()=>{
+  if(document.getElementById("type").value.toUpperCase()===word){
+   info.textContent="⌨️ CORRECT! You are fast.";
+  }else info.textContent="❌ Try again.";
+ };
+}
+
+/* 5 ASTEROID DODGE */
+
+function game4(){
+ area.innerHTML=`<canvas id="c" width="700" height="400"></canvas>`;
+ const c=document.getElementById("c"),x=c.getContext("2d");
+ let px=330,rocks=[],score=0;
+ keyHandler=e=>{
+  if(e.key==="ArrowLeft")px-=25;
+  if(e.key==="ArrowRight")px+=25;
+  px=Math.max(0,Math.min(660,px));
+ };
+ document.addEventListener("keydown",keyHandler);
+ timer=setInterval(()=>{
+  rocks.push({x:Math.random()*680,y:-30});
+  x.clearRect(0,0,700,400);
+  x.fillStyle="#00eaff";
+  x.fillRect(px,350,40,20);
+  x.fillStyle="#ff1744";
+  rocks.forEach(r=>{r.y+=6;x.fillRect(r.x,r.y,25,25)});
+  rocks=rocks.filter(r=>r.y<430);
+  for(const r of rocks){
+   if(r.x<px+40&&r.x+25>px&&r.y<370&&r.y+25>350){
+    clearInterval(timer);info.textContent="☄️ HIT! Score: "+score;return;
+   }
+  }
+  score++;
+  info.textContent="Move with ← → • Survive: "+score;
+ },60);
+}
+
+/* 6 BREAKER */
+
+function game5(){
+ area.innerHTML=`<canvas id="c" width="700" height="400"></canvas>`;
+ const c=document.getElementById("c"),x=c.getContext("2d");
+ let bx=340,by=350,dx=4,dy=-4,paddle=300,blocks=[];
+ for(let r=0;r<4;r++)for(let q=0;q<8;q++)blocks.push({x:q*85+10,y:r*30+20});
+ keyHandler=e=>{
+  if(e.key==="ArrowLeft")paddle-=30;
+  if(e.key==="ArrowRight")paddle+=30;
+ };
+ document.addEventListener("keydown",keyHandler);
+ timer=setInterval(()=>{
+  bx+=dx;by+=dy;
+  if(bx<0||bx>680)dx*=-1;
+  if(by<0)dy*=-1;
+  if(by>370&&bx>paddle&&bx<paddle+100)dy=-4;
+  blocks.forEach((b,i)=>{
+   if(b&&bx>b.x&&bx<b.x+75&&by>b.y&&by<b.y+20){
+    blocks[i]=null;dy*=-1;
+   }
+  });
+  x.clearRect(0,0,700,400);
+  x.fillStyle="#00eaff";x.fillRect(paddle,380,100,10);
+  x.fillStyle="#ff1744";x.beginPath();x.arc(bx,by,8,0,7);x.fill();
+  x.fillStyle="#a000ff";blocks.forEach(b=>{if(b)x.fillRect(b.x,b.y,75,20)});
+  if(by>410){clearInterval(timer);info.textContent="GAME OVER"}
+  if(blocks.every(b=>!b)){clearInterval(timer);info.textContent="🧱 ALL BLOCKS DESTROYED!"}
+ },30);
+}
+
+/* 7 BOT SMASH */
+
+function game6(){
+ let score=0;
+ area.innerHTML=`<div class="center"><div id="bot" class="target">🤖</div></div>`;
+ const bot=document.getElementById("bot");
+ timer=setInterval(()=>{
+  bot.style.left=Math.random()*80+"%";
+  bot.style.top=Math.random()*75+"%";
+ },500);
+ bot.onclick=()=>{
+  score++;
+  info.textContent="Robots smashed: "+score;
+ };
+}
+
+/* 8 REACTION */
+
+function game7(){
+ area.innerHTML=`<div class="center"><div id="react" style="font-size:100px">🔴</div></div>`;
+ const r=document.getElementById("react");
+ let ready=false;
+ const delay=1000+Math.random()*3000;
+ timer=setTimeout(()=>{r.textContent="🟢";ready=true;},delay);
+ r.onclick=()=>{
+  if(ready)info.textContent="⚡ Great reaction!";
+  else{clearTimeout(timer);info.textContent="❌ Too early!"}
+ };
+}
+
+/* 9 NUMBER HACK */
+
+function game8(){
+ const n=Math.floor(Math.random()*100)+1;
+ area.innerHTML=`<div class="center"><h2>Guess 1-100</h2><input class="gameInput" id="guess" type="number"><button onclick="guessNum()">HACK</button></div>`;
+ window.guessNum=()=>{
+  const g=+document.getElementById("guess").value;
+  info.textContent=g===n?"🔓 HACKED!":g<n?"⬆️ Higher":"⬇️ Lower";
+ };
+}
+
+/* 10 COLOR */
+
+function game9(){
+ const colors=["RED","BLUE","GREEN","YELLOW"];
+ const real=colors[Math.floor(Math.random()*4)];
+ const shown=colors[Math.floor(Math.random()*4)];
+ area.innerHTML=`<div class="center"><div class="big">${shown}</div><p>Click the color named by the word.</p>${colors.map(c=>`<button onclick="colorCheck('${c}')">${c}</button>`).join(" ")}</div>`;
+ window.colorCheck=c=>info.textContent=c===real?"🌈 CORRECT!":"❌ WRONG!";
+}
+
+/* 11 MATH */
+
+function game10(){
+ const a=Math.floor(Math.random()*20)+1,b=Math.floor(Math.random()*20)+1;
+ const ans=a+b;
+ area.innerHTML=`<div class="center"><div class="big">${a} + ${b} = ?</div><input class="gameInput" id="math"><button onclick="mathCheck()">SOLVE</button></div>`;
+ window.mathCheck=()=>info.textContent=+document.getElementById("math").value===ans?"➗ CORRECT!":"❌ WRONG!";
+}
+
+/* 12 MAZE */
+
+function game11(){
+ const maze=[
+ "##########",
+ "#S       #",
+ "# ###### #",
+ "#      # #",
+ "###### # #",
+ "#      # #",
+ "# ###### #",
+ "#       G#",
+ "##########"];
+ let p={x:1,y:1};
+ area.innerHTML=`<div class="center"><div id="maze" style="font-family:monospace;font-size:28px;line-height:1.2"></div></div>`;
+ function draw(){
+  document.getElementById("maze").innerHTML=maze.map((row,y)=>[...row].map((ch,x)=>{
+   if(x===p.x&&y===p.y)return"🟢";
+   return ch==="G"?"🏆":ch==="#"?"⬛":"⬜";
+  }).join("")).join("<br>");
+ }
+ keyHandler=e=>{
+  let nx=p.x,ny=p.y;
+  if(e.key==="ArrowUp")ny--;
+  if(e.key==="ArrowDown")ny++;
+  if(e.key==="ArrowLeft")nx--;
+  if(e.key==="ArrowRight")nx++;
+  if(maze[ny][nx]!=="#"){p={x:nx,y:ny};draw();}
+  if(maze[p.y][p.x]==="G")info.textContent="🌀 MAZE COMPLETE!";
+ };
+ document.addEventListener("keydown",keyHandler);
+ draw();
+}
+
+/* 13 RUNNER */
+
+function game12(){
+ area.innerHTML=`<canvas id="c" width="700" height="300"></canvas>`;
+ const c=document.getElementById("c"),x=c.getContext("2d");
+ let py=240,vy=0,obs=[],score=0;
+ keyHandler=e=>{
+  if(e.code==="Space"&&py>=240)vy=-13;
+ };
+ document.addEventListener("keydown",keyHandler);
+ timer=setInterval(()=>{
+  py+=vy;vy+=.7;
+  if(py>240){py=240;vy=0}
+  if(Math.random()<.035)obs.push({x:700});
+  obs.forEach(o=>o.x-=7);
+  x.clearRect(0,0,700,300);
+  x.fillStyle="#00eaff";x.fillRect(80,py,35,60);
+  x.fillStyle="#ff1744";
+  obs.forEach(o=>x.fillRect(o.x,250,25,50));
+  if(obs.some(o=>o.x<115&&o.x>70&&py>190)){
+   clearInterval(timer);info.textContent="🏃 GAME OVER • "+score;return;
+  }
+  score++;info.textContent="SPACE = JUMP • Score "+score;
+ },40);
+}
+
+/* 14 PONG */
+
+function game13(){
+ area.innerHTML=`<canvas id="c" width="700" height="400"></canvas>`;
+ const c=document.getElementById("c"),x=c.getContext("2d");
+ let py=160,by=200,bx=350,dx=5,dy=4;
+ keyHandler=e=>{
+  if(e.key==="ArrowUp")py-=20;
+  if(e.key==="ArrowDown")py+=20;
+ };
+ document.addEventListener("keydown",keyHandler);
+ timer=setInterval(()=>{
+  bx+=dx;by+=dy;
+  if(by<0||by>390)dy*=-1;
+  if(bx<25&&by>py&&by<py+80)dx=5;
+  if(bx>675){bx=350;by=200}
+  if(bx<0){clearInterval(timer);info.textContent="🏓 COMPUTER WINS"}
+  x.clearRect(0,0,700,400);
+  x.fillStyle="#00eaff";x.fillRect(10,py,15,80);
+  x.fillStyle="#ff1744";x.fillRect(675,180,15,80);
+  x.beginPath();x.arc(bx,by,8,0,7);x.fill();
+ },25);
+}
+
+/* 15 MINES */
+
+function game14(){
+ let mines=new Set();
+ while(mines.size<5)mines.add(Math.floor(Math.random()*16));
+ area.innerHTML=`<div class="center"><h2>Find 11 safe squares</h2><div class="bigGrid">${[...Array(16)].map((_,i)=>`<button onclick="mine(${i})">?</button>`).join("")}</div></div>`;
+ window.mine=i=>{
+  if(mines.has(i)){
+   info.textContent="💣 BOOM! You found a mine.";
+  }else{
+   const b=[...document.querySelectorAll(".bigGrid button")][i];
+   b.textContent="✓";b.disabled=true;
+   info.textContent="🟢 SAFE!";
+  }
+ };
+}
+
+/* 16 TIC TAC TOE */
+
+function game15(){
+ let cells=Array(9).fill("");
+ area.innerHTML=`<div class="center"><div class="bigGrid">${cells.map((_,i)=>`<button onclick="tic(${i})" id="t${i}"></button>`).join("")}</div></div>`;
+ let turn="X";
+ window.tic=i=>{
+  if(cells[i])return;
+  cells[i]=turn;
+  document.getElementById("t"+i).textContent=turn;
+  const wins=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+  if(wins.some(w=>w.every(j=>cells[j]===turn))){
+   info.textContent="❌ "+turn+" WINS!";
+   return;
+  }
+  turn=turn==="X"?"O":"X";
+ };
+}
+
+/* 17 SKY HOPPER */
+
+function game16(){
+ area.innerHTML=`<canvas id="c" width="700" height="400"></canvas>`;
+ const c=document.getElementById("c"),x=c.getContext("2d");
+ let px=350,py=330,vy=-10,platforms=[{x:300,y:360}],score=0;
+ keyHandler=e=>{
+  if(e.key==="ArrowLeft")px-=20;
+  if(e.key==="ArrowRight")px+=20;
+ };
+ document.addEventListener("keydown",keyHandler);
+ timer=setInterval(()=>{
+  vy+=.5;py+=vy;
+  if(py>340){py=340;vy=-10}
+  if(Math.random()<.03)platforms.push({x:Math.random()*600,y:Math.random()*300});
+  platforms=platforms.filter(p=>p.y<390);
+  x.clearRect(0,0,700,400);
+  x.fillStyle="#00eaff";x.fillRect(px,py,30,30);
+  x.fillStyle="#a000ff";platforms.forEach(p=>x.fillRect(p.x,p.y,80,10));
+  score++;
+  info.textContent="🪽 Keep flying! "+score;
+ },40);
+}
+
+/* 18 STAR BLASTER */
+
+function game17(){
+ area.innerHTML=`<canvas id="c" width="700" height="400"></canvas>`;
+ const c=document.getElementById("c"),x=c.getContext("2d");
+ let bullets=[],enemies=[],ship=330,score=0;
+ keyHandler=e=>{
+  if(e.key==="ArrowLeft")ship-=20;
+  if(e.key==="ArrowRight")ship+=20;
+  if(e.code==="Space")bullets.push({x:ship+20,y:350});
+ };
+ document.addEventListener("keydown",keyHandler);
+ timer=setInterval(()=>{
+  if(Math.random()<.04)enemies.push({x:Math.random()*680,y:0});
+  bullets.forEach(b=>b.y-=8);
+  enemies.forEach(e=>e.y+=3);
+  enemies=enemies.filter(e=>e.y<400);
+  bullets.forEach(b=>enemies.forEach((e,i)=>{
+   if(Math.abs(b.x-e.x)<25&&Math.abs(b.y-e.y)<25){
+    enemies.splice(i,1);score++;
+   }
+  }));
+  x.clearRect(0,0,700,400);
+  x.fillStyle="#00eaff";x.fillRect(ship,360,40,20);
+  x.fillStyle="#fff";bullets.forEach(b=>x.fillRect(b.x,b.y,5,12));
+  x.fillStyle="#ff1744";enemies.forEach(e=>x.fillRect(e.x,e.y,25,25));
+  info.textContent="SPACE = FIRE • Score "+score;
+ },30);
+}
+
+/* 19 MEMORY PULSE */
+
+function game18(){
+ const seq=[];
+ for(let i=0;i<4;i++)seq.push(Math.floor(Math.random()*4));
+ let buttons=["🔵","🟢","🟡","🔴"];
+ area.innerHTML=`<div class="center"><h2>Memorize:</h2><div class="big">${seq.map(i=>buttons[i]).join(" ")}</div><br><button onclick="pulseInput()">READY</button></div>`;
+ window.pulseInput=()=>{
+  area.innerHTML=`<div class="center">${buttons.map((b,i)=>`<button onclick="pulse(${i})">${b}</button>`).join(" ")}</div>`;
+  window.pi=0;
+ };
+ window.pulse=i=>{
+  if(i!==seq[window.pi]){info.textContent="🎵 Wrong sequence!";return}
+  window.pi++;
+  if(window.pi===seq.length)info.textContent="🎵 PERFECT MEMORY!";
+ };
+}
+
+/* 20 PARKING */
+
+function game19(){
+ area.innerHTML=`<div class="center"><div style="height:280px;position:relative;background:#202020;border:2px solid #555">
+ <div id="car" style="position:absolute;width:50px;height:80px;background:#00eaff;left:30px;top:100px;border-radius:10px"></div>
+ <div style="position:absolute;border:3px dashed #00ff66;width:80px;height:100px;right:40px;top:90px"></div>
+ </div>
+ <p>Use LEFT / RIGHT to steer. Reach the green parking zone.</p></div>`;
+ let pos=30;
+ keyHandler=e=>{
+  if(e.key==="ArrowRight")pos+=10;
+  if(e.key==="ArrowLeft")pos-=10;
+  pos=Math.max(0,Math.min(650,pos));
+  document.getElementById("car").style.left=pos+"px";
+  if(pos>560)info.textContent="🚗 PARKED!";
+ };
+ document.addEventListener("keydown",keyHandler);
+}
+
+/* 21 ORB CATCHER */
+
+function game20(){
+ area.innerHTML=`<canvas id="c" width="700" height="400"></canvas>`;
+ const c=document.getElementById("c"),x=c.getContext("2d");
+ let px=330,orbs=[],score=0;
+ keyHandler=e=>{
+  if(e.key==="ArrowLeft")px-=25;
+  if(e.key==="ArrowRight")px+=25;
+ };
+ document.addEventListener("keydown",keyHandler);
+ timer=setInterval(()=>{
+  if(Math.random()<.08)orbs.push({x:Math.random()*680,y:0});
+  orbs.forEach(o=>o.y+=5);
+  orbs.forEach((o,i)=>{
+   if(o.y>350&&Math.abs(o.x-px)<45){score++;orbs.splice(i,1)}
+  });
+  x.clearRect(0,0,700,400);
+  x.fillStyle="#00eaff";x.fillRect(px,370,60,15);
+  x.fillStyle="#ff1744";orbs.forEach(o=>{x.beginPath();x.arc(o.x,o.y,10,0,7);x.fill()});
+  info.textContent="🔴 Catch score: "+score;
+ },30);
+}
+
+/* 22 2048 */
+
+function game21(){
+ let board=Array(16).fill(0);
+ board[Math.floor(Math.random()*16)]=2;
+ board[Math.floor(Math.random()*16)]=2;
+ area.innerHTML=`<div class="center"><div id="b2048" class="bigGrid"></div><p>Use arrow keys.</p></div>`;
+ function draw(){
+  document.getElementById("b2048").innerHTML=board.map(n=>`<button>${n||""}</button>`).join("");
+ }
+ function move(dir){
+  let rows=[];
+  for(let r=0;r<4;r++){
+   let row=board.slice(r*4,r*4+4);
+   if(dir==="right"||dir==="down")row.reverse();
+   row=row.filter(Boolean);
+   for(let i=0;i<row.length-1;i++)if(row[i]===row[i+1]){
+    row[i]*=2;row.splice(i+1,1);
+   }
+   while(row.length<4)row.push(0);
+   if(dir==="right"||dir==="down")row.reverse();
+   rows.push(row);
+  }
+  if(dir==="up"||dir==="down"){
+   let n=Array(16).fill(0);
+   for(let c=0;c<4;c++)for(let r=0;r<4;r++)n[r*4+c]=rows[c][r];
+   board=n;
+  }else board=rows.flat();
+  let empty=board.map((v,i)=>v?null:i).filter(v=>v!==null);
+  if(empty.length)board[empty[Math.floor(Math.random()*empty.length)]]=2;
+  draw();
+ }
+ keyHandler=e=>{
+  if(["ArrowLeft","ArrowRight","ArrowUp","ArrowDown"].includes(e.key))
+   move(e.key.replace("Arrow","").toLowerCase());
+ };
+ document.addEventListener("keydown",keyHandler);
+ draw();
+}
+
+/* 23 CODE BREAKER */
+
+function game22(){
+ const chars="ABCDEFGHJKLMNPQRSTUVWXYZ";
+ let secret="";
+ for(let i=0;i<4;i++)secret+=chars[Math.floor(Math.random()*chars.length)];
+ area.innerHTML=`<div class="center"><h2>Crack the 4-letter code</h2><input class="gameInput" id="code"><button onclick="codeCheck()">HACK</button></div>`;
+ window.codeCheck=()=>{
+  const g=document.getElementById("code").value.toUpperCase();
+  let exact=0;
+  for(let i=0;i<4;i++)if(g[i]===secret[i])exact++;
+  info.textContent=exact===4?"🔓 CODE BROKEN!":"Correct positions: "+exact;
+ };
+}
+
+/* 24 PRECISION SHOT */
+
+function game23(){
+ area.innerHTML=`<div class="center"><div id="bull" style="font-size:110px;cursor:pointer">🎯</div></div>`;
+ const b=document.getElementById("bull");
+ let score=0;
+ timer=setInterval(()=>{
+  b.style.transform=`translate(${Math.random()*250-125}px,${Math.random()*120-60}px)`;
+ },500);
+ b.onclick=()=>{
+  score++;
+  info.textContent="🏹 Hits: "+score;
+ };
+}
+
+</script>
+</body>
+</html>

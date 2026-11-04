@@ -11,6 +11,8 @@
         let libraryFilter = 'all';
 
         const gamesDatabase = [
+            {id:'angry_birds_chrome',name:'Angry Birds Chrome',category:'arcade',type:'iframe',source:'https://angry-birds-chrome.vercel.app/',desc:'Bird-flinging puzzle game · online · internet required'},
+            {id:'granny_online',name:'Granny',category:'arcade',type:'iframe',source:'https://grannyonline.io/granny.embed',desc:'Horror escape game · online · internet required'},
             {id:'growden_io',name:'Growden.io',category:'arcade',type:'iframe',source:'https://growden.io/#4TUWS3',desc:'Grow your garden · online iframe · internet required'},
             {id:'solar_smash_online',name:'Solar Smash',category:'arcade',type:'iframe',source:'https://solarsmashonline.com/play/solar-smash',desc:'Solar Smash browser game · online iframe · internet required'},
 
@@ -346,7 +348,7 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
         let currentArcadePart='small';
         function showArcadePart(part){
             if(document.getElementById('aboutPage')?.classList.contains('active'))closeAboutPage();
-            if(!['small','big','challenge','macro','fnaf','cool'].includes(part))part='small';
+            if(!['small','big','challenge','macro','fnaf','cool','nexus','ultra'].includes(part))part='small';
             currentArcadePart=part;
             const info={
               small:['Small Games','Detailed quick-play originals with clear goals, controls, game-specific previews and richer arcade presentation.'],
@@ -354,21 +356,24 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
               challenge:['Challenge','Beat the Hacker Challenge to discover the secret game.'],
               macro:['MacroArcade Games','Eight original MacroArcade worlds plus two complete local arcade collections.'],
               fnaf:['FNAF Games','Eight unofficial browser ports from the HD FNAF collection. Internet required; embedding is not guaranteed.'],
+              nexus:['NexusArcade Games','ALIN Nexus Arcade collection with its own dedicated game section.'],
+              ultra:['UltraArcade Games','Ultra Gaming Arcade collection with its own dedicated game section.'],
               cool:['HexiArcade Games','Play the merged local game collections from 90s Games, Arcade Portal, RetroArcade, GH-Arcade, and Pen Fight.']
             };
             const title=document.getElementById('libraryPartTitle'),sub=document.getElementById('libraryPartSubtitle');
             if(title)title.textContent=info[part][0];if(sub)sub.textContent=info[part][1];
-            ['small','big','challenge','macro','fnaf','cool'].forEach(p=>{
+            ['small','big','challenge','macro','fnaf','cool','nexus','ultra'].forEach(p=>{
               const b=document.getElementById('part'+p.charAt(0).toUpperCase()+p.slice(1));
               if(b)b.classList.toggle('active',p===part);
             });
-            const tools=document.getElementById('normalLibraryTools');if(tools)tools.style.display=(part==='challenge'||part==='macro'||part==='fnaf'||part==='cool')?'none':'flex';
+            const tools=document.getElementById('normalLibraryTools');if(tools)tools.style.display=(part==='challenge'||part==='macro'||part==='fnaf'||part==='cool'||part==='nexus'||part==='ultra')?'none':'flex';
             const macroPanel=document.getElementById('nitroMacroWorlds');if(macroPanel)macroPanel.style.display=part==='macro'?'block':'none';
             const fnafPanel=document.getElementById('nitroFnafGames');if(fnafPanel)fnafPanel.style.display=part==='fnaf'?'block':'none';
-            const coolPanel=document.getElementById('reallyCoolGames');if(coolPanel)coolPanel.style.display=part==='cool'?'block':'none';
-            const coolFrame=document.getElementById('reallyCoolFrame');if(coolFrame){if(part==='cool'&&!coolFrame.getAttribute('src'))coolFrame.src='HexiArcade/index.html';}
-            const gameGrid=document.getElementById('gameGrid');if(gameGrid)gameGrid.style.display=(part==='macro'||part==='fnaf'||part==='cool')?'none':'';
-            const noResults=document.getElementById('noResults');if(noResults&&(part==='macro'||part==='fnaf'||part==='cool'))noResults.style.display='none';
+            for(const [key,id] of [['nexus','nexusArcadeSection'],['ultra','ultraArcadeSection']]){const panel=document.getElementById(id);if(panel)panel.style.display=part===key?'block':'none';}
+            const coolPanel=document.getElementById('hexiArcadeSection');if(coolPanel)coolPanel.style.display=part==='cool'?'block':'none';
+            const coolFrame=document.getElementById('hexiArcadeFrame');if(coolFrame){if(part==='cool'&&!coolFrame.getAttribute('src'))coolFrame.src='HexiArcade/index.html';}
+            const gameGrid=document.getElementById('gameGrid');if(gameGrid)gameGrid.style.display=(part==='macro'||part==='fnaf'||part==='cool'||part==='nexus'||part==='ultra')?'none':'';
+            const noResults=document.getElementById('noResults');if(noResults&&(part==='macro'||part==='fnaf'||part==='cool'||part==='nexus'||part==='ultra'))noResults.style.display='none';
             document.querySelectorAll('#gameGrid .game-card').forEach(card=>{
               const cp=card.dataset.arcadePart||(card.dataset.gameId==='hackerchallenge'?'challenge':'small');
               card.style.display=cp===part?'':'none';

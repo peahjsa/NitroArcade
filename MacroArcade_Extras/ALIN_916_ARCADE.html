@@ -1,0 +1,1845 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ALIN 916 // FUTURE ARCADE</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap');
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+html,body{
+    min-height:100%;
+    font-family:Orbitron,Arial,sans-serif;
+    background:#02040b;
+    color:#fff;
+    overflow-x:hidden;
+}
+
+body{
+    background:
+      radial-gradient(circle at 15% 20%,rgba(0,220,255,.12),transparent 25%),
+      radial-gradient(circle at 85% 10%,rgba(160,0,255,.13),transparent 25%),
+      radial-gradient(circle at 50% 100%,rgba(0,255,170,.08),transparent 30%),
+      #02040b;
+}
+
+canvas#stars{
+    position:fixed;
+    inset:0;
+    z-index:-2;
+    pointer-events:none;
+}
+
+.scanlines{
+    position:fixed;
+    inset:0;
+    z-index:100;
+    pointer-events:none;
+    opacity:.035;
+    background:repeating-linear-gradient(
+        0deg,
+        #fff 0px,#fff 1px,
+        transparent 1px,transparent 4px
+    );
+}
+
+header{
+    position:sticky;
+    top:0;
+    z-index:50;
+    padding:18px 4%;
+    background:rgba(2,4,12,.78);
+    backdrop-filter:blur(22px);
+    border-bottom:1px solid rgba(0,225,255,.22);
+    box-shadow:0 0 40px rgba(0,200,255,.08);
+}
+
+.nav{
+    max-width:1500px;
+    margin:auto;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+}
+
+.logo{
+    font-size:22px;
+    font-weight:900;
+    letter-spacing:3px;
+    color:#fff;
+    text-shadow:0 0 10px #00d9ff,0 0 30px #00d9ff;
+}
+
+.logo span{
+    color:#00eaff;
+}
+
+.status{
+    font-size:10px;
+    letter-spacing:2px;
+    color:#59ffbf;
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.status i{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:#59ffbf;
+    box-shadow:0 0 15px #59ffbf;
+    animation:pulse 1s infinite;
+}
+
+@keyframes pulse{
+    50%{opacity:.3;transform:scale(.7)}
+}
+
+.hero{
+    max-width:1500px;
+    margin:auto;
+    padding:75px 4% 35px;
+    text-align:center;
+}
+
+.badge{
+    display:inline-block;
+    padding:8px 16px;
+    border:1px solid #00eaff;
+    border-radius:30px;
+    color:#00eaff;
+    font-size:10px;
+    letter-spacing:3px;
+    box-shadow:0 0 20px rgba(0,234,255,.18);
+    margin-bottom:22px;
+}
+
+.hero h1{
+    font-size:clamp(40px,7vw,100px);
+    line-height:.95;
+    font-weight:900;
+    letter-spacing:-4px;
+    background:linear-gradient(90deg,#fff,#00eaff,#a855ff,#fff);
+    background-size:300%;
+    -webkit-background-clip:text;
+    color:transparent;
+    animation:gradient 6s linear infinite;
+    filter:drop-shadow(0 0 25px rgba(0,220,255,.25));
+}
+
+@keyframes gradient{
+    to{background-position:300%}
+}
+
+.hero p{
+    margin:25px auto;
+    max-width:750px;
+    color:#8292ad;
+    font-size:13px;
+    line-height:1.8;
+}
+
+.creator{
+    margin-top:28px;
+    font-size:14px;
+    letter-spacing:5px;
+    color:#fff;
+    text-shadow:0 0 15px #a855ff;
+}
+
+.controls{
+    max-width:1500px;
+    margin:10px auto 25px;
+    padding:0 4%;
+}
+
+.search{
+    position:relative;
+    margin-bottom:18px;
+}
+
+.search input{
+    width:100%;
+    padding:18px 22px;
+    border-radius:14px;
+    border:1px solid rgba(0,234,255,.3);
+    background:rgba(7,12,25,.75);
+    color:#fff;
+    outline:none;
+    font:inherit;
+    font-size:12px;
+    letter-spacing:1px;
+    box-shadow:inset 0 0 25px rgba(0,200,255,.04);
+}
+
+.search input:focus{
+    border-color:#00eaff;
+    box-shadow:0 0 25px rgba(0,234,255,.15);
+}
+
+.categories{
+    display:flex;
+    gap:9px;
+    overflow-x:auto;
+    padding-bottom:8px;
+}
+
+.categories::-webkit-scrollbar{height:3px}
+.categories::-webkit-scrollbar-thumb{background:#00d9ff}
+
+.cat{
+    flex:0 0 auto;
+    padding:11px 15px;
+    border:1px solid #26334b;
+    border-radius:10px;
+    background:#080d19;
+    color:#8c9bb5;
+    cursor:pointer;
+    font:inherit;
+    font-size:9px;
+    letter-spacing:1px;
+    transition:.25s;
+}
+
+.cat:hover,.cat.active{
+    color:#fff;
+    border-color:#00eaff;
+    background:rgba(0,234,255,.1);
+    box-shadow:0 0 18px rgba(0,234,255,.15);
+}
+
+.stats{
+    max-width:1500px;
+    margin:0 auto 30px;
+    padding:0 4%;
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+}
+
+.stat{
+    padding:14px 18px;
+    background:rgba(7,12,25,.6);
+    border:1px solid #18243a;
+    border-radius:12px;
+    font-size:9px;
+    color:#7d8ca6;
+}
+
+.stat b{
+    color:#00eaff;
+    font-size:15px;
+    margin-right:5px;
+}
+
+.grid{
+    max-width:1500px;
+    margin:auto;
+    padding:0 4% 80px;
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+    gap:17px;
+}
+
+.card{
+    position:relative;
+    min-height:285px;
+    border:1px solid rgba(91,111,145,.25);
+    border-radius:18px;
+    overflow:hidden;
+    background:#070b15;
+    cursor:pointer;
+    transition:.35s cubic-bezier(.2,.8,.2,1);
+    transform-style:preserve-3d;
+}
+
+.card:hover{
+    transform:translateY(-9px) scale(1.015);
+    border-color:#00eaff;
+    box-shadow:
+      0 15px 45px rgba(0,0,0,.5),
+      0 0 30px rgba(0,220,255,.14);
+}
+
+.thumb{
+    height:155px;
+    position:relative;
+    overflow:hidden;
+    background:
+      radial-gradient(circle at 50% 50%,rgba(0,234,255,.2),transparent 45%),
+      linear-gradient(135deg,#081326,#130b25);
+}
+
+.thumb:before{
+    content:"";
+    position:absolute;
+    inset:-50%;
+    background:
+      linear-gradient(90deg,transparent 48%,rgba(0,234,255,.16) 50%,transparent 52%),
+      linear-gradient(0deg,transparent 48%,rgba(168,85,255,.13) 50%,transparent 52%);
+    background-size:35px 35px;
+    transform:perspective(300px) rotateX(60deg);
+    animation:gridmove 5s linear infinite;
+}
+
+@keyframes gridmove{
+    to{transform:perspective(300px) rotateX(60deg) translateY(35px)}
+}
+
+.icon{
+    position:absolute;
+    inset:0;
+    display:grid;
+    place-items:center;
+    font-size:62px;
+    filter:drop-shadow(0 0 18px rgba(0,234,255,.55));
+    transition:.3s;
+}
+
+.card:hover .icon{
+    transform:scale(1.15) rotate(-3deg);
+}
+
+.number{
+    position:absolute;
+    top:10px;
+    left:10px;
+    padding:5px 8px;
+    border-radius:7px;
+    background:rgba(0,0,0,.5);
+    color:#6e819e;
+    font-size:8px;
+}
+
+.type{
+    position:absolute;
+    right:10px;
+    top:10px;
+    padding:5px 8px;
+    border-radius:7px;
+    background:rgba(0,234,255,.1);
+    border:1px solid rgba(0,234,255,.25);
+    color:#00eaff;
+    font-size:7px;
+}
+
+.cardbody{
+    padding:15px;
+}
+
+.card h3{
+    font-size:13px;
+    margin-bottom:8px;
+    letter-spacing:.5px;
+}
+
+.card p{
+    font-family:Arial,sans-serif;
+    color:#64748b;
+    font-size:11px;
+    line-height:1.5;
+}
+
+.play{
+    margin-top:13px;
+    width:100%;
+    padding:9px;
+    border:1px solid #1d344d;
+    border-radius:8px;
+    background:#0a1322;
+    color:#a8b8d0;
+    font:inherit;
+    font-size:8px;
+    letter-spacing:2px;
+}
+
+.card:hover .play{
+    color:#fff;
+    border-color:#00eaff;
+    background:rgba(0,234,255,.08);
+}
+
+.empty{
+    grid-column:1/-1;
+    padding:70px;
+    text-align:center;
+    color:#66758d;
+}
+
+.modal{
+    position:fixed;
+    inset:0;
+    z-index:200;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    background:rgba(0,0,0,.82);
+    backdrop-filter:blur(15px);
+}
+
+.modal.show{display:flex}
+
+.gamebox{
+    width:min(1100px,100%);
+    height:min(720px,92vh);
+    background:#050914;
+    border:1px solid #00eaff;
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 0 80px rgba(0,220,255,.18);
+    display:flex;
+    flex-direction:column;
+}
+
+.gamebar{
+    height:58px;
+    padding:0 18px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    border-bottom:1px solid #18283e;
+    background:#070c17;
+}
+
+.gamebar h2{
+    font-size:13px;
+    letter-spacing:1px;
+}
+
+.gamebar button{
+    border:1px solid #30405a;
+    background:#0b1321;
+    color:#b8c7dc;
+    padding:9px 13px;
+    border-radius:8px;
+    cursor:pointer;
+    font:inherit;
+    font-size:8px;
+}
+
+.gamebar button:hover{
+    border-color:#00eaff;
+    color:#fff;
+}
+
+.gamearea{
+    position:relative;
+    flex:1;
+    overflow:hidden;
+}
+
+#gameCanvas{
+    width:100%;
+    height:100%;
+    display:block;
+    background:#02040a;
+}
+
+.hud{
+    position:absolute;
+    top:12px;
+    left:12px;
+    right:12px;
+    display:flex;
+    justify-content:space-between;
+    pointer-events:none;
+}
+
+.hud span{
+    padding:9px 12px;
+    background:rgba(0,0,0,.5);
+    border:1px solid rgba(0,234,255,.2);
+    border-radius:8px;
+    font-size:9px;
+    color:#00eaff;
+}
+
+.instructions{
+    position:absolute;
+    bottom:12px;
+    left:50%;
+    transform:translateX(-50%);
+    padding:8px 13px;
+    border-radius:8px;
+    background:rgba(0,0,0,.6);
+    color:#73849d;
+    font-family:Arial,sans-serif;
+    font-size:11px;
+    pointer-events:none;
+    text-align:center;
+}
+
+footer{
+    border-top:1px solid #152237;
+    padding:30px;
+    text-align:center;
+    color:#506079;
+    font-size:9px;
+    letter-spacing:3px;
+}
+
+footer strong{
+    color:#00eaff;
+}
+
+@media(max-width:600px){
+    .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    .card{min-height:255px}
+    .thumb{height:125px}
+    .icon{font-size:48px}
+    .hero{padding-top:50px}
+}
+</style>
+
+</head>
+
+<body>
+<audio id="bgMusic" loop>
+  <source src="../music/alin-916-arcade.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+  const music = document.getElementById("bgMusic");
+
+  document.addEventListener("click", function startMusic() {
+    music.play().catch(() => {});
+    document.removeEventListener("click", startMusic);
+  });
+</script>
+<canvas id="stars"></canvas>
+
+<div class="scanlines"></div>
+
+<header>
+<div class="nav">
+    <div class="logo">ALIN<span>916</span> // ARCADE</div>
+    <div class="status"><i></i> SYSTEM ONLINE</div>
+</div>
+</header>
+
+<section class="hero">
+    <div class="badge">◈ NEXT-GENERATION GAME NETWORK ◈</div>
+    <h1>FUTURE<br>ARCADE</h1>
+    <p>
+        Enter a massive digital universe packed with futuristic missions,
+        combat simulations, puzzles, technology challenges, racing,
+        exploration and hundreds of arcade experiences.
+    </p>
+    <div class="creator">BY ALIN 916</div>
+</section>
+
+<section class="controls">
+    <div class="search">
+        <input id="search" placeholder="SEARCH THE GAME NETWORK...">
+    </div>
+    <div class="categories" id="categories"></div>
+</section>
+
+<div class="stats">
+    <div class="stat"><b id="gameCount">0</b> GAMES</div>
+    <div class="stat"><b id="categoryCount">0</b> CATEGORIES</div>
+    <div class="stat"><b>∞</b> ADVENTURES</div>
+    <div class="stat"><b>916</b> CREATOR</div>
+</div>
+
+<main class="grid" id="grid"></main>
+
+<footer>
+    <strong>ALIN 916</strong> // FUTURE ARCADE NETWORK // ALL SYSTEMS OPERATIONAL
+</footer>
+
+<div class="modal" id="modal">
+<div class="gamebox">
+
+<div class="gamebar">
+    <h2 id="gameTitle">GAME</h2>
+    <div>
+        <button onclick="restartGame()">↻ RESTART</button>
+        <button onclick="closeGame()">✕ EXIT</button>
+    </div>
+</div>
+
+<div class="gamearea">
+    <canvas id="gameCanvas"></canvas>
+    <div class="hud">
+        <span id="score">SCORE: 0</span>
+        <span id="level">LEVEL: 1</span>
+    </div>
+    <div class="instructions" id="instructions">
+        USE YOUR KEYBOARD TO PLAY
+    </div>
+</div>
+
+</div>
+</div>
+
+<script>
+
+/* =========================
+   STARFIELD
+========================= */
+
+const stars=document.getElementById("stars");
+const sx=stars.getContext("2d");
+
+function resizeStars(){
+    stars.width=innerWidth;
+    stars.height=innerHeight;
+}
+resizeStars();
+addEventListener("resize",resizeStars);
+
+let starList=Array.from({length:180},()=>({
+    x:Math.random()*innerWidth,
+    y:Math.random()*innerHeight,
+    z:Math.random()*2+.2,
+    s:Math.random()*1.5+.2
+}));
+
+function starLoop(){
+    sx.clearRect(0,0,stars.width,stars.height);
+    sx.fillStyle="#fff";
+
+    for(const s of starList){
+        s.y+=s.z*.22;
+        if(s.y>innerHeight){
+            s.y=0;
+            s.x=Math.random()*innerWidth;
+        }
+
+        sx.globalAlpha=.25+s.z*.25;
+        sx.beginPath();
+        sx.arc(s.x,s.y,s.s,0,Math.PI*2);
+        sx.fill();
+    }
+
+    requestAnimationFrame(starLoop);
+}
+starLoop();
+
+
+/* =========================
+   GAME DATABASE
+========================= */
+
+const gameNames = {
+
+"Shooting":[
+"Neon Strike","Cyber Sniper","Void Assault","Pulse Hunter","Shadow Ops",
+"Laser Siege","Drone Destroyer","Plasma Raiders","Zero Hour","Target X",
+"Photon Warrior","Red Zone","Mech Assault","Cosmic Gunner","Night Hunter",
+"Orbital Defense","Titan Shooter","Cyber Commando","Rogue Blaster","Nano Warfare",
+"Storm Rifle","Quantum Shot","Dark Sector","Chrome Combat","Neon Outlaw",
+"Plasma Storm","Star Soldier","Hyper Gunner","Arc Blaster","Battle Grid"
+],
+
+"Jets":[
+"Sky Dominator","Jet Phantom","Afterburner X","Thunder Wing","Mach Fury",
+"Crimson Jet","Aero Strike","Falcon Zero","Jet Horizon","Supersonic Ace",
+"Stealth Wing","Sky Hunter","Rocket Falcon","Air Raid 916","Velocity Jet",
+"Orbital Pilot","Cloud Breaker","Jet Inferno","Air Combat X","Hyper Pilot"
+],
+
+"Maze":[
+"Neon Maze","Quantum Labyrinth","Cyber Escape","Dark Corridor","Laser Maze",
+"Infinity Rooms","Matrix Maze","Void Labyrinth","Crystal Paths","AI Maze",
+"Grid Runner","Hologram Maze","Zero Exit","Digital Dungeon","Pulse Paths",
+"Shadow Labyrinth","Portal Maze","Electric Rooms","Core Escape","Maze 916"
+],
+
+"Hacker":[
+"Terminal Zero","Cyber Hack","Firewall Breaker","Root Access","Code Runner",
+"Neural Network","Data Heist","Matrix Breach","Dark Terminal","Quantum Hack",
+"System Override","Packet Storm","Crypto Break","Digital Ghost","Server Siege",
+"Code Phantom","AI Infiltrator","Cyber Vault","Mainframe X","Zero Day"
+],
+
+"Design":[
+"Pixel Studio","Cyber Painter","Logo Forge","Neon Designer","Future Fashion",
+"Room Architect","City Designer","Robot Builder","Poster Lab","UI Creator",
+"Pixel Artist","Avatar Forge","Hologram Studio","Dream House","Tech Sketch",
+"Galaxy Painter","Vehicle Designer","Cyber Art","Creative Core","Design 916"
+],
+
+"Technology":[
+"Robot Factory","Quantum Lab","AI Engineer","Circuit Master","Tech Tycoon",
+"Nano Factory","Fusion Reactor","Cyber Engineer","Space Station",
+"Drone Lab","AI Architect","Digital Factory","Mech Builder","Energy Core",
+"Quantum Reactor","Future Lab","Tech Commander","Robot Arena","Science Core","Tech 916"
+],
+
+"Racing":[
+"Neon Racer","Cyber Drift","Hyper Circuit","Street Velocity","Rocket Racer",
+"Future Formula","Turbo City","Drift Galaxy","Night Driver","Quantum Racing",
+"Plasma Kart","Cyber Speedway","Velocity Rush","Aero Racer","Neon Highway",
+"Hyper Drift","Future Rally","Chrome Racer","Zero Gravity Race","Race 916"
+],
+
+"Space":[
+"Galaxy Defender","Planet Explorer","Cosmic Miner","Star Voyager","Asteroid Rush",
+"Black Hole Run","Mars Mission","Moon Base","Solar Hunter","Cosmic Pilot",
+"Space Colony","Galaxy Trader","Nebula Quest","Alien Frontier","Orbit Master",
+"Star Navigator","Cosmic Rescue","Planet Builder","Universe Runner","Space 916"
+],
+
+"Puzzle":[
+"Quantum Blocks","Neon Sudoku","Circuit Puzzle","Logic Core","Crystal Match",
+"Mind Matrix","Color Reactor","Laser Logic","Binary Puzzle","Energy Connect",
+"Hexa Brain","Pattern Shift","Number Nexus","Gravity Puzzle","Code Puzzle",
+"Mirror Mind","Shape Reactor","Portal Logic","Brain Grid","Puzzle 916"
+],
+
+"Action":[
+"Shadow Ninja","Cyber Warrior","Titan Run","Blade Storm","Mech Runner",
+"Rogue Agent","Dragon Fury","Night Fighter","Cyber Ninja","Battle Runner",
+"Phantom Warrior","Robot Rage","Demon Hunter","Street Fighter X","Power Quest",
+"Shadow Strike","Titan Clash","Neon Warrior","Dark Hero","Action 916"
+],
+
+"Sports":[
+"Cyber Basketball","Neon Football","Rocket Tennis","Future Hockey","Space Golf",
+"Hyper Soccer","Drone Racing","Cyber Baseball","Neon Volleyball","Jet Ski X",
+"Future Boxing","Robot Football","Gravity Golf","Street Basketball","Turbo Tennis",
+"Mech Boxing","Cosmic Soccer","Neon Skate","Future Cricket","Sports 916"
+],
+
+"Survival":[
+"Zombie Sector","Alien Survival","Desert Survivor","Frozen World","Night Survival",
+"Island Zero","Monster Island","Apocalypse Run","Cyber Survival","Deep Forest",
+"Lost Planet","Ocean Survivor","Dark City","Wasteland X","Meteor Survival",
+"Underground","Arctic Escape","Alien Night","Last Colony","Survival 916"
+],
+
+"Strategy":[
+"Empire Core","Cyber Commander","Galaxy Empire","Robot Kingdom","Defense Grid",
+"Planet Strategy","War Factory","City Command","Tower Nexus","Space Empire",
+"Tech Kingdom","Mech Strategy","Resource Master","Future Civilization",
+"Defense 916","Quantum Command","Digital Empire","Battle Architect",
+"Galaxy Commander","Strategy 916"
+],
+
+"Horror":[
+"Dark Corridor","Haunted Signal","Night Shift","Void Whisper","Ghost Protocol",
+"Abandoned Lab","Red Door","Shadow House","Lost Patient","Nightmare Station",
+"Dark Elevator","Silent Facility","Unknown Room","Black Frequency","Dead Signal",
+"Haunted Server","The Last Door","Night Vision","Midnight Lab","Horror 916"
+]
+
+};
+
+let games=[];
+let id=0;
+
+for(const category in gameNames){
+    gameNames[category].forEach(name=>{
+        games.push({
+            id:id++,
+            name,
+            category,
+            icon:getIcon(category),
+            description:getDescription(category)
+        });
+    });
+}
+
+function getIcon(c){
+    const icons={
+        Shooting:"🔫",Jets:"✈️",Maze:"🌀",Hacker:"💻",Design:"🎨",
+        Technology:"🤖",Racing:"🏎️",Space:"🚀",Puzzle:"🧩",
+        Action:"⚔️",Sports:"🏆",Survival:"🧟",Strategy:"♟️",Horror:"👁️"
+    };
+    return icons[c]||"🎮";
+}
+
+function getDescription(c){
+    const d={
+        Shooting:"Enter a high-speed combat simulation and destroy incoming targets.",
+        Jets:"Take control of an advanced aircraft and dominate the skies.",
+        Maze:"Navigate impossible corridors, traps and futuristic labyrinths.",
+        Hacker:"Break systems, solve code sequences and infiltrate secure networks.",
+        Design:"Create futuristic worlds, artwork and digital masterpieces.",
+        Technology:"Build machines, solve engineering challenges and control technology.",
+        Racing:"Push your machine beyond its limits on futuristic circuits.",
+        Space:"Explore unknown worlds, survive cosmic hazards and discover the stars.",
+        Puzzle:"Solve intelligent challenges using speed, logic and precision.",
+        Action:"Fight, dodge, jump and survive an intense futuristic mission.",
+        Sports:"Compete in a collection of futuristic sporting challenges.",
+        Survival:"Stay alive against increasingly dangerous environments.",
+        Strategy:"Plan your moves, control resources and outsmart the system.",
+        Horror:"Enter dark environments where danger can appear anywhere."
+    };
+    return d[c];
+}
+
+
+/* =========================
+   CATEGORIES
+========================= */
+
+const catBox=document.getElementById("categories");
+
+let currentCategory="ALL";
+
+function makeCategories(){
+    const cats=["ALL",...Object.keys(gameNames)];
+
+    cats.forEach(cat=>{
+        const b=document.createElement("button");
+        b.className="cat"+(cat==="ALL"?" active":"");
+        b.textContent=cat;
+        b.onclick=()=>{
+            document.querySelectorAll(".cat").forEach(x=>x.classList.remove("active"));
+            b.classList.add("active");
+            currentCategory=cat;
+            render();
+        };
+        catBox.appendChild(b);
+    });
+
+    document.getElementById("categoryCount").textContent=Object.keys(gameNames).length;
+}
+
+makeCategories();
+
+
+/* =========================
+   GAME CARDS
+========================= */
+
+const grid=document.getElementById("grid");
+const search=document.getElementById("search");
+
+function render(){
+
+    const term=search.value.toLowerCase();
+
+    const filtered=games.filter(g=>
+        (currentCategory==="ALL"||g.category===currentCategory) &&
+        (g.name.toLowerCase().includes(term)||
+         g.category.toLowerCase().includes(term))
+    );
+
+    grid.innerHTML="";
+
+    document.getElementById("gameCount").textContent=filtered.length;
+
+    if(!filtered.length){
+        grid.innerHTML='<div class="empty">NO GAME FOUND IN THE NETWORK</div>';
+        return;
+    }
+
+    filtered.forEach(g=>{
+        const card=document.createElement("div");
+        card.className="card";
+
+        card.innerHTML=`
+        <div class="thumb">
+            <div class="number">#${String(g.id+1).padStart(3,"0")}</div>
+            <div class="type">${g.category.toUpperCase()}</div>
+            <div class="icon">${g.icon}</div>
+        </div>
+        <div class="cardbody">
+            <h3>${g.name}</h3>
+            <p>${g.description}</p>
+            <button class="play">▶ PLAY SIMULATION</button>
+        </div>`;
+
+        card.onclick=()=>openGame(g);
+
+        grid.appendChild(card);
+    });
+}
+
+search.addEventListener("input",render);
+render();
+
+
+/* =========================
+   GAME ENGINE
+========================= */
+
+const modal=document.getElementById("modal");
+const canvas=document.getElementById("gameCanvas");
+const ctx=canvas.getContext("2d");
+
+let currentGame=null;
+let animation=0;
+let scoreValue=0;
+let levelValue=1;
+let keys={};
+let mouse={x:0,y:0,down:false};
+
+document.addEventListener("keydown",e=>{
+    keys[e.key.toLowerCase()]=true;
+
+    if(e.key==="Escape" && modal.classList.contains("show"))
+        closeGame();
+});
+
+document.addEventListener("keyup",e=>{
+    keys[e.key.toLowerCase()]=false;
+});
+
+canvas.addEventListener("mousemove",e=>{
+    const r=canvas.getBoundingClientRect();
+    mouse.x=(e.clientX-r.left)*canvas.width/r.width;
+    mouse.y=(e.clientY-r.top)*canvas.height/r.height;
+});
+
+canvas.addEventListener("mousedown",()=>mouse.down=true);
+canvas.addEventListener("mouseup",()=>mouse.down=false);
+
+function fitCanvas(){
+    const r=canvas.getBoundingClientRect();
+    canvas.width=Math.max(500,r.width);
+    canvas.height=Math.max(350,r.height);
+}
+
+function openGame(game){
+    currentGame=game;
+    modal.classList.add("show");
+    document.getElementById("gameTitle").textContent=
+        game.name+" // "+game.category;
+
+    restartGame();
+}
+
+function closeGame(){
+    modal.classList.remove("show");
+    cancelAnimationFrame(animation);
+    currentGame=null;
+}
+
+function restartGame(){
+    cancelAnimationFrame(animation);
+    fitCanvas();
+
+    scoreValue=0;
+    levelValue=1;
+
+    document.getElementById("score").textContent="SCORE: 0";
+    document.getElementById("level").textContent="LEVEL: 1";
+
+    startSimulation(currentGame);
+}
+
+
+/* =========================
+   GENERIC PLAYABLE MODES
+========================= */
+
+let player,objects,bullets,enemies,particles,target;
+let gameOver=false;
+
+function startSimulation(game){
+
+    if(!game)return;
+
+    player={
+        x:canvas.width/2,
+        y:canvas.height/2,
+        r:14,
+        speed:5
+    };
+
+    objects=[];
+    bullets=[];
+    enemies=[];
+    particles=[];
+    gameOver=false;
+
+    const c=game.category;
+
+    if(c==="Shooting"||c==="Jets"||c==="Space"){
+        shootingGame();
+    }else if(c==="Maze"){
+        mazeGame();
+    }else if(c==="Racing"){
+        racingGame();
+    }else if(c==="Hacker"){
+        hackerGame();
+    }else if(c==="Puzzle"){
+        puzzleGame();
+    }else if(c==="Sports"){
+        sportsGame();
+    }else if(c==="Survival"||c==="Horror"){
+        survivalGame();
+    }else if(c==="Action"){
+        actionGame();
+    }else{
+        techGame();
+    }
+}
+
+
+/* =========================
+   SHOOTING
+========================= */
+
+function shootingGame(){
+
+    document.getElementById("instructions").textContent=
+        "WASD / ARROWS = MOVE • MOUSE = AIM • CLICK = FIRE";
+
+    player.x=canvas.width/2;
+    player.y=canvas.height-80;
+
+    for(let i=0;i<7;i++) spawnEnemy();
+
+    function loop(){
+
+        clear();
+
+        movePlayer();
+
+        if(mouse.down) fire();
+
+        bullets.forEach(b=>{
+            b.x+=b.dx;
+            b.y+=b.dy;
+        });
+
+        enemies.forEach(e=>{
+            const dx=player.x-e.x;
+            const dy=player.y-e.y;
+            const d=Math.hypot(dx,dy)||1;
+
+            e.x+=dx/d*(.45+levelValue*.04);
+            e.y+=dy/d*(.45+levelValue*.04);
+
+            if(d<e.r+player.r){
+                gameOver=true;
+            }
+        });
+
+        bullets=bullets.filter(b=>
+            b.x>-20&&b.x<canvas.width+20&&
+            b.y>-20&&b.y<canvas.height+20
+        );
+
+        for(let i=enemies.length-1;i>=0;i--){
+            for(let j=bullets.length-1;j>=0;j--){
+
+                const e=enemies[i],b=bullets[j];
+
+                if(Math.hypot(e.x-b.x,e.y-b.y)<e.r+5){
+
+                    explode(e.x,e.y);
+
+                    enemies.splice(i,1);
+                    bullets.splice(j,1);
+
+                    scoreValue+=100;
+                    updateHud();
+
+                    if(enemies.length<5+levelValue)
+                        spawnEnemy();
+
+                    break;
+                }
+            }
+        }
+
+        drawBullets();
+        drawEnemies();
+        drawPlayer();
+        drawParticles();
+
+        if(gameOver){
+            gameOverScreen("MISSION FAILED");
+            return;
+        }
+
+        animation=requestAnimationFrame(loop);
+    }
+
+    loop();
+}
+
+function spawnEnemy(){
+
+    const side=Math.floor(Math.random()*4);
+    let x,y;
+
+    if(side===0){x=Math.random()*canvas.width;y=-30}
+    else if(side===1){x=canvas.width+30;y=Math.random()*canvas.height}
+    else if(side===2){x=Math.random()*canvas.width;y=canvas.height+30}
+    else{x=-30;y=Math.random()*canvas.height}
+
+    enemies.push({
+        x,y,
+        r:15+Math.random()*8
+    });
+}
+
+function fire(){
+
+    if(Date.now()-fire.last<170)return;
+    fire.last=Date.now();
+
+    const dx=mouse.x-player.x;
+    const dy=mouse.y-player.y;
+    const d=Math.hypot(dx,dy)||1;
+
+    bullets.push({
+        x:player.x,
+        y:player.y,
+        dx:dx/d*10,
+        dy:dy/d*10
+    });
+}
+fire.last=0;
+
+
+/* =========================
+   MAZE
+========================= */
+
+function mazeGame(){
+
+    document.getElementById("instructions").textContent=
+        "WASD / ARROWS = MOVE • REACH THE GOLD CORE";
+
+    const cell=45;
+    const cols=Math.floor(canvas.width/cell);
+    const rows=Math.floor(canvas.height/cell);
+
+    const walls=[];
+
+    for(let y=0;y<rows;y++){
+        for(let x=0;x<cols;x++){
+
+            if(
+                Math.random()<.19 &&
+                !(x<2&&y<2) &&
+                !(x>cols-3&&y>rows-3)
+            ){
+                walls.push({x,y});
+            }
+        }
+    }
+
+    player.x=cell*1.5;
+    player.y=cell*1.5;
+
+    target={
+        x:cell*(cols-1.5),
+        y:cell*(rows-1.5)
+    };
+
+    function blocked(nx,ny){
+        return walls.some(w=>
+            nx> w.x*cell-12 &&
+            nx< w.x*cell+cell+12 &&
+            ny> w.y*cell-12 &&
+            ny< w.y*cell+cell+12
+        );
+    }
+
+    function loop(){
+
+        clear();
+
+        let nx=player.x;
+        let ny=player.y;
+
+        if(keys.w||keys.arrowup)ny-=4;
+        if(keys.s||keys.arrowdown)ny+=4;
+        if(keys.a||keys.arrowleft)nx-=4;
+        if(keys.d||keys.arrowright)nx+=4;
+
+        if(!blocked(nx,player.y))player.x=nx;
+        if(!blocked(player.x,ny))player.y=ny;
+
+        ctx.strokeStyle="rgba(0,234,255,.08)";
+        ctx.lineWidth=1;
+
+        for(let x=0;x<canvas.width;x+=cell){
+            ctx.beginPath();
+            ctx.moveTo(x,0);
+            ctx.lineTo(x,canvas.height);
+            ctx.stroke();
+        }
+
+        for(let y=0;y<canvas.height;y+=cell){
+            ctx.beginPath();
+            ctx.moveTo(0,y);
+            ctx.lineTo(canvas.width,y);
+            ctx.stroke();
+        }
+
+        walls.forEach(w=>{
+            ctx.fillStyle="#101b30";
+            ctx.shadowBlur=15;
+            ctx.shadowColor="#00eaff";
+            ctx.fillRect(w.x*cell+2,w.y*cell+2,cell-4,cell-4);
+            ctx.shadowBlur=0;
+        });
+
+        ctx.fillStyle="#ffd84d";
+        ctx.shadowBlur=30;
+        ctx.shadowColor="#ffd84d";
+        ctx.beginPath();
+        ctx.arc(target.x,target.y,15,0,Math.PI*2);
+        ctx.fill();
+        ctx.shadowBlur=0;
+
+        drawPlayer();
+
+        if(Math.hypot(player.x-target.x,player.y-target.y)<25){
+            scoreValue+=1000;
+            updateHud();
+            levelValue++;
+            document.getElementById("level").textContent="LEVEL: "+levelValue;
+
+            gameOverScreen("MAZE CLEARED");
+            return;
+        }
+
+        animation=requestAnimationFrame(loop);
+    }
+
+    loop();
+}
+
+
+/* =========================
+   RACING
+========================= */
+
+function racingGame(){
+
+    document.getElementById("instructions").textContent=
+        "A/D OR ←/→ = STEER • SURVIVE THE NEON HIGHWAY";
+
+    player.x=canvas.width/2;
+    player.y=canvas.height-90;
+
+    let road=canvas.width*.28;
+    let distance=0;
+
+    function loop(){
+
+        clear();
+
+        if(keys.a||keys.arrowleft)player.x-=6;
+        if(keys.d||keys.arrowright)player.x+=6;
+
+        player.x=Math.max(
+            canvas.width/2-road,
+            Math.min(canvas.width/2+road,player.x)
+        );
+
+        distance+=8;
+
+        ctx.fillStyle="#050812";
+        ctx.fillRect(0,0,canvas.width,canvas.height);
+
+        ctx.strokeStyle="#182a45";
+        ctx.lineWidth=4;
+
+        ctx.beginPath();
+        ctx.moveTo(canvas.width/2-road,0);
+        ctx.lineTo(canvas.width/2-road,canvas.height);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(canvas.width/2+road,0);
+        ctx.lineTo(canvas.width/2+road,canvas.height);
+        ctx.stroke();
+
+        for(let y=-100;y<canvas.height+100;y+=80){
+            const yy=(y+distance)%80;
+            ctx.strokeStyle="#00eaff";
+            ctx.lineWidth=3;
+            ctx.beginPath();
+            ctx.moveTo(canvas.width/2,yy);
+            ctx.lineTo(canvas.width/2,yy+35);
+            ctx.stroke();
+        }
+
+        ctx.fillStyle="#ff39f5";
+        ctx.shadowBlur=25;
+        ctx.shadowColor="#ff39f5";
+        ctx.fillRect(player.x-22,player.y-38,44,76);
+        ctx.shadowBlur=0;
+
+        if(Math.random()<.025){
+            objects.push({
+                x:canvas.width/2-road+30+
+                  Math.random()*(road*2-60),
+                y:-60
+            });
+        }
+
+        objects.forEach(o=>o.y+=7+levelValue);
+
+        objects.forEach(o=>{
+            ctx.fillStyle="#00eaff";
+            ctx.shadowBlur=20;
+            ctx.shadowColor="#00eaff";
+            ctx.fillRect(o.x-18,o.y-30,36,60);
+            ctx.shadowBlur=0;
+
+            if(
+                Math.abs(o.x-player.x)<40 &&
+                Math.abs(o.y-player.y)<65
+            ){
+                gameOver=true;
+            }
+        });
+
+        objects=objects.filter(o=>o.y<canvas.height+100);
+
+        distance%500<8 && scoreValue++;
+        updateHud();
+
+        if(gameOver){
+            gameOverScreen("VEHICLE DESTROYED");
+            return;
+        }
+
+        animation=requestAnimationFrame(loop);
+    }
+
+    loop();
+}
+
+
+/* =========================
+   HACKER
+========================= */
+
+function hackerGame(){
+
+    document.getElementById("instructions").textContent=
+        "TYPE THE CODE SHOWN ON SCREEN BEFORE THE TIMER EXPIRES";
+
+    let code="";
+    let input="";
+    let timer=100;
+
+    function newCode(){
+        const chars="ABCDEFGHJKLMNPQRSTUVWXYZ0123456789";
+        code="";
+        for(let i=0;i<5;i++)
+            code+=chars[Math.floor(Math.random()*chars.length)];
+        input="";
+        timer=100;
+    }
+
+    newCode();
+
+    function keyHandler(e){
+        if(!modal.classList.contains("show"))return;
+
+        if(e.key.length===1){
+            input+=e.key.toUpperCase();
+
+            if(input===code){
+                scoreValue+=250;
+                levelValue++;
+                updateHud();
+                newCode();
+            }else if(!code.startsWith(input)){
+                input="";
+            }
+        }
+    }
+
+    document.addEventListener("keydown",keyHandler);
+
+    function loop(){
+
+        clear();
+
+        timer-=.35;
+
+        ctx.fillStyle="#07140f";
+        ctx.fillRect(0,0,canvas.width,canvas.height);
+
+        ctx.font="bold 22px monospace";
+        ctx.fillStyle="#45ff9a";
+        ctx.textAlign="center";
+        ctx.shadowBlur=20;
+        ctx.shadowColor="#45ff9a";
+        ctx.fillText("SECURE TERMINAL",canvas.width/2,80);
+
+        ctx.font="bold 60px monospace";
+        ctx.fillText(code,canvas.width/2,220);
+
+        ctx.font="24px monospace";
+        ctx.fillText(input+"_",
+            canvas.width/2,290);
+
+        ctx.font="15px monospace";
+        ctx.fillText("FIREWALL INTEGRITY: "+Math.max(0,Math.floor(timer))+"%",
+            canvas.width/2,350);
+
+        ctx.shadowBlur=0;
+
+        if(timer<=0){
+            document.removeEventListener("keydown",keyHandler);
+            gameOverScreen("SYSTEM LOCKED");
+            return;
+        }
+
+        animation=requestAnimationFrame(loop);
+    }
+
+    loop();
+}
+
+
+/* =========================
+   PUZZLE
+========================= */
+
+function puzzleGame(){
+
+    document.getElementById("instructions").textContent=
+        "CLICK THE GLOWING CORE • FIND THE CORRECT TARGET";
+
+    let tx=Math.random()*canvas.width;
+    let ty=Math.random()*canvas.height;
+
+    function loop(){
+
+        clear();
+
+        ctx.font="18px Orbitron";
+        ctx.textAlign="center";
+        ctx.fillStyle="#8da1bd";
+        ctx.fillText(
+            "TARGET CORE",
+            canvas.width/2,55
+        );
+
+        ctx.fillStyle="#a855ff";
+        ctx.shadowBlur=35;
+        ctx.shadowColor="#a855ff";
+        ctx.beginPath();
+        ctx.arc(tx,ty,27,0,Math.PI*2);
+        ctx.fill();
+        ctx.shadowBlur=0;
+
+        if(mouse.down){
+            if(Math.hypot(mouse.x-tx,mouse.y-ty)<35){
+                scoreValue+=150;
+                levelValue++;
+                updateHud();
+
+                tx=30+Math.random()*(canvas.width-60);
+                ty=80+Math.random()*(canvas.height-110);
+            }
+            mouse.down=false;
+        }
+
+        animation=requestAnimationFrame(loop);
+    }
+
+    loop();
+}
+
+
+/* =========================
+   SPORTS
+========================= */
+
+function sportsGame(){
+
+    document.getElementById("instructions").textContent=
+        "MOVE WITH MOUSE • CLICK WHEN THE BALL REACHES THE TARGET";
+
+    let bx=50;
+    let by=canvas.height/2;
+
+    function loop(){
+
+        clear();
+
+        ctx.strokeStyle="#29415b";
+        ctx.lineWidth=3;
+        ctx.strokeRect(
+            40,70,
+            canvas.width-80,
+            canvas.height-120
+        );
+
+        ctx.fillStyle="#ffd84d";
+        ctx.shadowBlur=25;
+        ctx.shadowColor="#ffd84d";
+        ctx.beginPath();
+        ctx.arc(canvas.width-100,canvas.height/2,25,0,Math.PI*2);
+        ctx.fill();
+
+        bx+=5;
+
+        if(bx>canvas.width-130){
+            if(Math.abs(mouse.y-by)<60){
+                scoreValue+=100;
+                levelValue++;
+                updateHud();
+                bx=50;
+                by=80+Math.random()*(canvas.height-160);
+            }else{
+                gameOver=true;
+            }
+        }
+
+        ctx.fillStyle="#00eaff";
+        ctx.beginPath();
+        ctx.arc(bx,by,15,0,Math.PI*2);
+        ctx.fill();
+
+        if(gameOver){
+            gameOverScreen("MATCH OVER");
+            return;
+        }
+
+        animation=requestAnimationFrame(loop);
+    }
+
+    loop();
+}
+
+
+/* =========================
+   SURVIVAL / HORROR
+========================= */
+
+function survivalGame(){
+
+    document.getElementById("instructions").textContent=
+        "WASD / ARROWS = MOVE • AVOID THE HUNTERS";
+
+    player.x=canvas.width/2;
+    player.y=canvas.height/2;
+
+    for(let i=0;i<5;i++)spawnEnemy();
+
+    function loop(){
+
+        clear();
+
+        movePlayer();
+
+        enemies.forEach(e=>{
+            const dx=player.x-e.x;
+            const dy=player.y-e.y;
+            const d=Math.hypot(dx,dy)||1;
+
+            e.x+=dx/d*.7;
+            e.y+=dy/d*.7;
+
+            ctx.fillStyle="#e92f67";
+            ctx.shadowBlur=20;
+            ctx.shadowColor="#e92f67";
+            ctx.beginPath();
+            ctx.arc(e.x,e.y,e.r,0,Math.PI*2);
+            ctx.fill();
+            ctx.shadowBlur=0;
+
+            if(d<e.r+player.r)
+                gameOver=true;
+        });
+
+        drawPlayer();
+
+        scoreValue++;
+        if(scoreValue%500===0){
+            levelValue++;
+            enemies.push({
+                x:Math.random()*canvas.width,
+                y:Math.random()*canvas.height,
+                r:15
+            });
+        }
+
+        updateHud();
+
+        if(gameOver){
+            gameOverScreen("YOU DID NOT SURVIVE");
+            return;
+        }
+
+        animation=requestAnimationFrame(loop);
+    }
+
+    loop();
+}
+
+
+/* =========================
+   ACTION
+========================= */
+
+function actionGame(){
+
+    document.getElementById("instructions").textContent=
+        "WASD / ARROWS = MOVE • SPACE = DASH • SURVIVE";
+
+    player.x=canvas.width/2;
+    player.y=canvas.height/2;
+
+    for(let i=0;i<8;i++)spawnEnemy();
+
+    function loop(){
+
+        clear();
+
+        movePlayer();
+
+        if(keys[" "]){
+            player.x+=Math.random()*20-10;
+            player.y+=Math.random()*20-10;
+        }
+
+        enemies.forEach(e=>{
+            const dx=player.x-e.x;
+            const dy=player.y-e.y;
+            const d=Math.hypot(dx,dy)||1;
+
+            e.x+=dx/d*.55;
+            e.y+=dy/d*.55;
+
+            ctx.fillStyle="#a855ff";
+            ctx.beginPath();
+            ctx.arc(e.x,e.y,e.r,0,Math.PI*2);
+            ctx.fill();
+
+            if(d<e.r+player.r)
+                gameOver=true;
+        });
+
+        drawPlayer();
+        scoreValue++;
+        updateHud();
+
+        if(gameOver){
+            gameOverScreen("MISSION FAILED");
+            return;
+        }
+
+        animation=requestAnimationFrame(loop);
+    }
+
+    loop();
+}
+
+
+/* =========================
+   TECH / DESIGN
+========================= */
+
+function techGame(){
+
+    document.getElementById("instructions").textContent=
+        "MOVE THE CURSOR • COLLECT THE DIGITAL CORES";
+
+    player.x=canvas.width/2;
+    player.y=canvas.height/2;
+
+    target={
+        x:50+Math.random()*(canvas.width-100),
+        y:80+Math.random()*(canvas.height-140)
+    };
+
+    function loop(){
+
+        clear();
+
+        player.x+=(mouse.x-player.x)*.08;
+        player.y+=(mouse.y-player.y)*.08;
+
+        ctx.fillStyle="#00eaff";
+        ctx.shadowBlur=30;
+        ctx.shadowColor="#00eaff";
+        ctx.beginPath();
+        ctx.arc(target.x,target.y,18,0,Math.PI*2);
+        ctx.fill();
+        ctx.shadowBlur=0;
+
+        drawPlayer();
+
+        if(Math.hypot(player.x-target.x,player.y-target.y)<30){
+
+            scoreValue+=100;
+            levelValue++;
+            updateHud();
+
+            target.x=50+Math.random()*(canvas.width-100);
+            target.y=80+Math.random()*(canvas.height-140);
+        }
+
+        animation=requestAnimationFrame(loop);
+    }
+
+    loop();
+}
+
+
+/* =========================
+   DRAWING
+========================= */
+
+function clear(){
+    ctx.fillStyle="#02050d";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+
+    const g=ctx.createRadialGradient(
+        canvas.width/2,canvas.height/2,0,
+        canvas.width/2,canvas.height/2,
+        canvas.width*.7
+    );
+
+    g.addColorStop(0,"rgba(0,180,255,.07)");
+    g.addColorStop(1,"rgba(0,0,0,0)");
+
+    ctx.fillStyle=g;
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+}
+
+function drawPlayer(){
+
+    ctx.save();
+
+    ctx.translate(player.x,player.y);
+
+    ctx.fillStyle="#00eaff";
+    ctx.shadowBlur=25;
+    ctx.shadowColor="#00eaff";
+
+    ctx.beginPath();
+    ctx.moveTo(0,-22);
+    ctx.lineTo(17,17);
+    ctx.lineTo(0,10);
+    ctx.lineTo(-17,17);
+    ctx.closePath();
+    ctx.fill();
+
+    ctx.restore();
+    ctx.shadowBlur=0;
+}
+
+function drawBullets(){
+
+    bullets.forEach(b=>{
+        ctx.fillStyle="#fff";
+        ctx.shadowBlur=18;
+        ctx.shadowColor="#00eaff";
+        ctx.beginPath();
+        ctx.arc(b.x,b.y,4,0,Math.PI*2);
+        ctx.fill();
+    });
+
+    ctx.shadowBlur=0;
+}
+
+function drawEnemies(){
+
+    enemies.forEach(e=>{
+        ctx.fillStyle="#ff365f";
+        ctx.shadowBlur=20;
+        ctx.shadowColor="#ff365f";
+
+        ctx.beginPath();
+        ctx.arc(e.x,e.y,e.r,0,Math.PI*2);
+        ctx.fill();
+
+        ctx.shadowBlur=0;
+    });
+}
+
+function movePlayer(){
+
+    if(keys.w||keys.arrowup)player.y-=player.speed;
+    if(keys.s||keys.arrowdown)player.y+=player.speed;
+    if(keys.a||keys.arrowleft)player.x-=player.speed;
+    if(keys.d||keys.arrowright)player.x+=player.speed;
+
+    player.x=Math.max(20,Math.min(canvas.width-20,player.x));
+    player.y=Math.max(20,Math.min(canvas.height-20,player.y));
+}
+
+function explode(x,y){
+
+    for(let i=0;i<15;i++){
+        particles.push({
+            x,y,
+            dx:Math.random()*6-3,
+            dy:Math.random()*6-3,
+            life:30
+        });
+    }
+}
+
+function drawParticles(){
+
+    particles.forEach(p=>{
+        p.x+=p.dx;
+        p.y+=p.dy;
+        p.life--;
+
+        ctx.globalAlpha=Math.max(0,p.life/30);
+        ctx.fillStyle="#00eaff";
+        ctx.fillRect(p.x,p.y,3,3);
+    });
+
+    ctx.globalAlpha=1;
+    particles=particles.filter(p=>p.life>0);
+}
+
+function updateHud(){
+    document.getElementById("score").textContent=
+        "SCORE: "+scoreValue;
+
+    document.getElementById("level").textContent=
+        "LEVEL: "+levelValue;
+}
+
+function gameOverScreen(text){
+
+    cancelAnimationFrame(animation);
+
+    ctx.fillStyle="rgba(0,0,0,.75)";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+
+    ctx.textAlign="center";
+
+    ctx.font="bold 36px Orbitron";
+    ctx.fillStyle="#00eaff";
+    ctx.shadowBlur=25;
+    ctx.shadowColor="#00eaff";
+    ctx.fillText(text,canvas.width/2,canvas.height/2-30);
+
+    ctx.shadowBlur=0;
+
+    ctx.font="16px Orbitron";
+    ctx.fillStyle="#fff";
+    ctx.fillText(
+        "SCORE: "+scoreValue,
+        canvas.width/2,
+        canvas.height/2+15
+    );
+
+    ctx.font="11px Orbitron";
+    ctx.fillStyle="#73849d";
+    ctx.fillText(
+        "PRESS RESTART TO PLAY AGAIN",
+        canvas.width/2,
+        canvas.height/2+55
+    );
+}
+
+</script>
+
+</body>
+</html>
