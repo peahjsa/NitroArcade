@@ -11,6 +11,31 @@
         let libraryFilter = 'all';
 
         const gamesDatabase = [
+            {id:'nitro_moved_5',name:'Extreme Car Drift Simulator',category:'arcade',type:'iframe',source:'https://gamebol.com/gamefile/Extreme_Car_Drift_Simulator/index.html',desc:'Online iframe · internet required'},
+            {id:'nitro_moved_4',name:'Talking Ben',category:'arcade',type:'iframe',source:'https://html-classic.itch.zone/html/12272713/index.html',desc:'Online iframe · internet required'},
+            {id:'nitro_moved_0',name:'Hexanaut',category:'arcade',type:'iframe',source:'https://hexanaut.io/',desc:'Online iframe · internet required'},
+            {id:'nitro_io_new_01',name:'Wormate.io',category:'arcade',type:'iframe',source:'https://wormate.io/',desc:'Online multiplayer · internet required; some sites restrict iframes'},
+            {id:'nitro_io_new_02',name:'Skribbl.io',category:'arcade',type:'iframe',source:'https://skribbl.io/',desc:'Online multiplayer · internet required; some sites restrict iframes'},
+            {id:'nitro_io_new_03',name:'Zombs.io',category:'arcade',type:'iframe',source:'https://zombs.io/',desc:'Online multiplayer · internet required; some sites restrict iframes'},
+            {id:'nitro_io_new_04',name:'Mope.io',category:'arcade',type:'iframe',source:'https://mope.io/',desc:'Online multiplayer · internet required; some sites restrict iframes'},
+            {id:'nitro_io_new_05',name:'Splix.io',category:'arcade',type:'iframe',source:'https://splix.io/',desc:'Online multiplayer · internet required; some sites restrict iframes'},
+            {id:'nitro_io_new_06',name:'Tetr.io',category:'arcade',type:'iframe',source:'https://tetr.io/',desc:'Online multiplayer · internet required; some sites restrict iframes'},
+            {id:'nitro_io_01',name:'Agar.io',category:'arcade',type:'iframe',source:'https://agar.io/',desc:'Online iframe · internet required'},
+            {id:'nitro_io_02',name:'Paper.io',category:'arcade',type:'iframe',source:'https://paperio.site/',desc:'Online iframe · internet required'},
+            {id:'nitro_io_04',name:'Diep.io',category:'arcade',type:'iframe',source:'https://diep.io/',desc:'Online iframe · internet required'},
+            {id:'nitro_io_06',name:'Gartic.io',category:'arcade',type:'iframe',source:'https://gartic.io/',desc:'Online iframe · internet required'},
+            {id:'nitro_io_07',name:'Bonk.io',category:'arcade',type:'iframe',source:'https://bonk.io/',desc:'Online iframe · internet required'},
+            {id:'nitro_io_08',name:'Krunker.io',category:'arcade',type:'iframe',source:'https://krunker.io/',desc:'Online iframe · internet required'},
+            {id:'nitro_io_11',name:'Block Blast',category:'arcade',type:'iframe',source:'https://g.igroutka.ru/games/23/AD4Qer9Vj6EqpNPH/rvvASMiM/058a3fd0d58949be9b79e666de9ac36d/',desc:'Online iframe · internet required'},
+            {id:'nitro_io_12',name:'Temple Run 2',category:'arcade',type:'iframe',source:'https://sudoku-online.github.io/a8/temple-run-2',desc:'Online iframe · internet required'},
+            {id:'nitro_io_13',name:'Sausage Flip',category:'arcade',type:'iframe',source:'https://abinbins.github.io/a6/sausage-flip',desc:'Online iframe · internet required'},
+            {id:'nitro_io_14',name:'Stack',category:'arcade',type:'iframe',source:'https://sudoku-online.github.io/a2/stack',desc:'Online iframe · internet required'},
+            {id:'nitro_io_15',name:'Stickman Bike',category:'arcade',type:'iframe',source:'https://23azostore.github.io/s6/stickman-bike',desc:'Online iframe · internet required'},
+            {id:'nitro_io_17',name:'Hitbox.io',category:'arcade',type:'iframe',source:'https://hitbox.io/',desc:'Online iframe · internet required'},
+            {id:'nitro_io_16',name:'House of Hazards',category:'arcade',type:'iframe',source:'https://files.twoplayergames.org/files/games/o1/House_of_Hazards/index.html',desc:'Online iframe · internet required'},
+            {id:'undertale_turbowarp',name:'Undertale',category:'arcade',type:'iframe',source:'https://turbowarp.org/791527350',desc:'Fan-made TurboWarp project · internet required'},
+            {id:'deltarune_itch',name:'Deltarune',category:'arcade',type:'iframe',source:'https://html-classic.itch.zone/html/15192261/deltarune-main-1/index.html',desc:'itch.io HTML game · internet required'},
+            {id:'my_mini_mart',name:'My Mini Mart',category:'arcade',type:'iframe',source:'https://gamess.funox.com/p3307474851966636433/assets/index.html',desc:'Mini mart game · internet required'},
             {id:'angry_birds_chrome',name:'Angry Birds Chrome',category:'arcade',type:'iframe',source:'https://angry-birds-chrome.vercel.app/',desc:'Bird-flinging puzzle game · online · internet required'},
             {id:'granny_online',name:'Granny',category:'arcade',type:'iframe',source:'https://grannyonline.io/granny.embed',desc:'Horror escape game · online · internet required'},
             {id:'growden_io',name:'Growden.io',category:'arcade',type:'iframe',source:'https://growden.io/#4TUWS3',desc:'Grow your garden · online iframe · internet required'},
@@ -24,9 +49,8 @@
             {id:'subway_surfers',name:'Subway Surfers',category:'arcade',type:'iframe',source:'https://yell0wsuit.page/assets/games/subway-surfers/index.html',desc:'Online endless runner · Embedding may be blocked'},
             {id:'nitro_clicker',name:'Stimulation Clicker',category:'arcade',type:'iframe',source:'https://neal.fun/stimulation-clicker/',desc:'Online Neal.fun clicker · embedding may be restricted'},
             {id:'neon_dodge',name:'Neon Dodge',category:'arcade',type:'iframe',source:'NitroLab-Next/games/dodge.html',desc:'Original offline obstacle dodging game'},
+            {id:'amogus_io',name:'Amogus.io',category:'arcade',type:'iframe',source:'https://amogus.io/',desc:'Online multiplayer game · iframe availability depends on the website'},
             {id:'pixel_catcher',name:'Pixel Catcher',category:'arcade',type:'iframe',source:'NitroLab-Next/games/catcher.html',desc:'Original offline falling-object game'},
-            {id:'goat_chaos',name:'Goat Chaos: Mega Map',category:'arcade',type:'iframe',source:'NitroLab-Next/games/goat-sandbox.html',desc:'3D goat sandbox and physics playground'},
-            {id:'lost_levels_alt',name:'Super Mario Bros. 2: The Lost Levels',category:'arcade',type:'iframe',source:'HexiArcade/nes-emulator-plus/lost-levels.html',desc:'Alternative NES emulator · online engine required'},
             {id:'happy_wheels_eligibility',name:'Happy Wheels — Eligibility Test',category:'arcade',type:'iframe',source:'HappyWheels_Eligibility/index.html',desc:'Five-question skill challenge before opening the official Happy Wheels website · Internet required'},
             {id:'alin_nexus_macro',name:'ALIN // NEXUS ARCADE',category:'arcade',type:'iframe',source:'MacroArcade_Extras/ALIN_NEXUS_ARCADE.html',desc:'Local original arcade by ALIN · 120 titles sharing 12 game engines'},
             {id:'ultra_gaming_macro',name:'ULTRA GAMING ARCADE',category:'arcade',type:'iframe',source:'MacroArcade_Extras/ULTRA_GAMING_ARCADE.html',desc:'Local multi-game arcade by MA7 5B · racing, maze, puzzles and more'},
@@ -441,7 +465,7 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
 
         function unlockWindosill(){
             localStorage.setItem(SECRET_WINDOSILL_KEY, 'unlocked');
-            showToast('SECRET GAME UNLOCKED: WINDOSILL • SAVED!');
+            showToast('SECRET ARCADE UNLOCKED: FLASH GAMES!');
             updateWindosillShortcut();
         }
 
@@ -455,10 +479,10 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
                 card.appendChild(bar);
             }
             if(isWindosillUnlocked()){
-                bar.innerHTML='<span>🏆 CYBERARCADE VETERAN <small>Secret game permanently unlocked in this browser</small></span><button type="button" class="windosill-play">🪟 PLAY WINDOSILL →</button>';
-                bar.querySelector('button').onclick=(event)=>{event.stopPropagation();launchSecretWindosill()};
+                bar.innerHTML='<span>🏆 CYBERARCADE VETERAN <small>Flash Games unlocked permanently in this browser</small></span><button type="button" class="windosill-play">⚡ OPEN FLASH GAMES →</button>';
+                bar.querySelector('button').onclick=(event)=>{event.stopPropagation();openFlashArcade()};
             }else{
-                bar.innerHTML='<span>🔐 CYBERARCADE LEGACY <small>Beat all three trials once to unlock Windosill forever</small></span><span class="windosill-locked">LOCKED</span>';
+                bar.innerHTML='<span>🔐 CYBERARCADE LEGACY <small>Beat all three trials once to unlock Flash Games forever</small></span><span class="windosill-locked">LOCKED</span>';
             }
         }
 
@@ -3257,15 +3281,15 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
                                 <div class="challenge-final-score">3 / 3</div>
                                 <p>You cleared every NitroArcade challenge.</p>
                                 <div class="secret-unlock">
-                                    <div class="challenge-kicker">SECRET GAME UNLOCKED</div>
-                                    <h3>WINDOSILL</h3>
-                                    <p>You found the hidden game.</p>
-                                    <button class="challenge-big-btn" id="enterWindosill">ENTER WINDOSILL</button>
+                                    <div class="challenge-kicker">SECRET ARCADE UNLOCKED</div>
+                                    <h3>FLASH GAMES</h3>
+                                    <p>You unlocked a whole arcade, including Windosill!</p>
+                                    <button class="challenge-big-btn" id="enterWindosill">ENTER FLASH GAMES</button>
                                 </div>
                                 <button class="btn" id="hackAgain" style="margin-top:12px">PLAY CHALLENGE AGAIN</button>
                             </div>
                         `;
-                        stage.querySelector('#enterWindosill').onclick = launchSecretWindosill;
+                        stage.querySelector('#enterWindosill').onclick = openFlashArcade;
                         stage.querySelector('#hackAgain').onclick = stageOne;
                         return;
                     }

@@ -34,11 +34,13 @@ function initialize(){
    const name=el.querySelector('strong,h3')?.textContent?.trim()||el.textContent.trim().slice(0,80);
    if(name)items.push({name,section:el.closest('#nitroFnafGames')?'FNAF':'MacroArcade',kind:'element',element:el});
   });
+  document.querySelectorAll('#flashArcadeSection .flash-game-tile').forEach((el,i)=>{items.push({name:el.querySelector('strong')?.textContent||'',section:'Flash Games',kind:'flash',index:i})});
   return items;
  }
  function open(item){
   box.style.display='none';
-  if(item.kind==='macro'){
+  if(item.kind==='flash'){window.openFlashGame?.(item.index);}
+  else if(item.kind==='macro'){
    const file=item.source==='ALIN'?'ALIN_NEXUS_ARCADE.html':item.source==='ULTRA'?'ULTRA_GAMING_ARCADE.html':'ALIN_916_ULTRA_ARCADE.html';
    showFrame(item.name,'MacroArcade_Extras/'+file+'?game='+item.index);
   }else if(item.kind==='hexi'){
