@@ -1618,5 +1618,20 @@ document.addEventListener('DOMContentLoaded',()=>{
  const help=[...sidebar?.querySelectorAll('button')||[]].find(b=>b.textContent.includes('Help & Shortcuts'));
  if(button && help)help.insertAdjacentElement('afterend',button);
 });
+    <script>
+document.addEventListener("DOMContentLoaded", () => {
+  const removeAlinCards = () => {
+    document.querySelectorAll(".nmWorldCard").forEach(card => {
+      const tag = card.querySelector(".nmWorldTag");
+      if (tag && tag.textContent.includes("ALIN 916")) {
+        card.remove();
+      }
+    });
+  };
+
+  removeAlinCards();
+  setTimeout(removeAlinCards, 1000);
+});
+</script>
 </script></body>
 </html>
