@@ -1622,62 +1622,24 @@ document.addEventListener('DOMContentLoaded',()=>{
  const help=[...sidebar?.querySelectorAll('button')||[]].find(b=>b.textContent.includes('Help & Shortcuts'));
  if(button && help)help.insertAdjacentElement('afterend',button);
 });
-    <!-- NitroArcade: Surviv.io + Survev.io -->
-<style>
-.nitro-survival-card {
-  background: linear-gradient(145deg,#211035,#100b20);
-  border: 1px solid #7546aa;
-  border-radius: 17px;
-  padding: 22px;
-  color: white;
-  min-height: 180px;
-}
-.nitro-survival-card h3 { margin: 12px 0; }
-.nitro-survival-card p { color: #c8b6e2; }
-.nitro-survival-card button {
-  background: linear-gradient(90deg,#7738da,#178bc0);
-  color: white;
-  border: 0;
-  padding: 12px 20px;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: bold;
-}
-#nitroSurvivalPlayer {
-  display: none;
-  position: fixed;
-  inset: 0;
-  z-index: 999999;
-  background: #080612;
-  flex-direction: column;
-}
-#nitroSurvivalPlayer header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 20px;
-  color: white;
-  background: #211035;
-}
-#nitroSurvivalPlayer iframe {
-  width: 100%;
-  flex: 1;
-  border: 0;
-}
-</style>
-
-<div id="nitroSurvivalPlayer">
-  <header>
-    <strong id="nitroSurvivalTitle">Big Games</strong>
-    <button type="button" onclick="NitroSurvival.close()">✕ Close Game</button>
-  </header>
-  <iframe id="nitroSurvivalFrame"
-          title="NitroArcade Survival Game"
-          allow="fullscreen; gamepad"
-          allowfullscreen></iframe>
-</div>
-
-<script src="js/nitro-survival.js"></script>
+</script>
+<!-- NitroArcade survival games: use the existing NitroArcade game launcher. -->
+<script id="nitro-survival-registration">
+(function () {
+  const entries = [
+    {id:'surviv_io',name:'Surviv.io',category:'arcade',type:'iframe',source:'https://surviv.io',desc:'2D multiplayer battle royale · Internet required; iframe may be blocked'},
+    {id:'survev_io',name:'Survev.io',category:'arcade',type:'iframe',source:'https://survev.io',desc:'2D multiplayer survival game · Internet required; iframe may be blocked'}
+  ];
+  function register() {
+    if (typeof gamesDatabase === 'undefined' || !Array.isArray(gamesDatabase)) return false;
+    for (const game of entries) {
+      if (!gamesDatabase.some(existing => existing.id === game.id)) gamesDatabase.push(game);
+    }
+    return true;
+  }
+  if (!register()) document.addEventListener('DOMContentLoaded', register, {once:true});
+})();
+</script>
     <script>
 document.addEventListener("DOMContentLoaded", () => {
   const removeAlinCards = () => {
@@ -1693,5 +1655,5 @@ document.addEventListener("DOMContentLoaded", () => {
   setTimeout(removeAlinCards, 1000);
 });
 </script>
-</script></body>
+</body>
 </html>
