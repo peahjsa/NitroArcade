@@ -43,7 +43,9 @@
             {id:'growden_io',name:'Growden.io',category:'arcade',type:'iframe',source:'https://growden.io/#4TUWS3',desc:'Grow your garden · online iframe · internet required'},
             {id:'solar_smash_online',name:'Solar Smash',category:'arcade',type:'iframe',source:'https://solarsmashonline.com/play/solar-smash',desc:'Solar Smash browser game · online iframe · internet required'},
 
-            {id:'geometry_dash_webport',name:'Geometry Dash',category:'arcade',type:'iframe',source:'https://gd-webport.pages.dev/',desc:'Online browser game · iframe · internet required'},
+            {id:'geometry_dash_webport',name:'Geometry Dash',category:'arcade',type:'iframe',source:'https://gd-webport.pages.dev/',desc:'Online browser game · iframe · internet required'},     
+            {id:'surviv_io',name:'Surviv.io',category:'arcade',type:'iframe',source:'https://surviv.io/',desc:'Classic multiplayer 2D battle royale · internet required; iframe may be blocked'},
+            {id:'survev_io',name:'Survev.io',category:'arcade',type:'iframe',source:'https://survev.io/',desc:'Community survival battle royale · internet required; iframe may be blocked'},
             {id:'minecraft_versions',name:'Minecraft Versions',category:'arcade',type:'iframe',source:'https://eaglercraft.com/play',desc:'Minecraft-style browser versions · internet required · iframe'},
             {id:'zombs_royale',name:'ZombsRoyale',category:'arcade',type:'iframe',source:'https://zombsroyale.io',desc:'Online multiplayer battle royale · iframe (internet required)'},
             {id:'real_football_challenge',name:'Real Football Challenge',category:'arcade',type:'iframe',source:'https://yell0wsuit.page/assets/games/real-football-challenge/index.html',desc:'Football challenge · online iframe game'},
