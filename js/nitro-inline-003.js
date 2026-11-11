@@ -43,7 +43,9 @@
             {id:'growden_io',name:'Growden.io',category:'arcade',type:'iframe',source:'https://growden.io/#4TUWS3',desc:'Grow your garden · online iframe · internet required'},
             {id:'solar_smash_online',name:'Solar Smash',category:'arcade',type:'iframe',source:'https://solarsmashonline.com/play/solar-smash',desc:'Solar Smash browser game · online iframe · internet required'},
 
-            {id:'geometry_dash_webport',name:'Geometry Dash',category:'arcade',type:'iframe',source:'https://gd-webport.pages.dev/',desc:'Online browser game · iframe · internet required'},
+            {id:'geometry_dash_webport',name:'Geometry Dash',category:'arcade',type:'iframe',source:'https://gd-webport.pages.dev/',desc:'Online browser game · iframe · internet required'},     
+            {id:'surviv_io',name:'Surviv.io',category:'arcade',type:'iframe',source:'https://surviv.io/',desc:'Classic multiplayer 2D battle royale · internet required; iframe may be blocked'},
+            {id:'survev_io',name:'Survev.io',category:'arcade',type:'iframe',source:'https://survev.io/',desc:'Community survival battle royale · internet required; iframe may be blocked'},
             {id:'minecraft_versions',name:'Minecraft Versions',category:'arcade',type:'iframe',source:'https://eaglercraft.com/play',desc:'Minecraft-style browser versions · internet required · iframe'},
             {id:'zombs_royale',name:'ZombsRoyale',category:'arcade',type:'iframe',source:'https://zombsroyale.io',desc:'Online multiplayer battle royale · iframe (internet required)'},
             {id:'real_football_challenge',name:'Real Football Challenge',category:'arcade',type:'iframe',source:'https://yell0wsuit.page/assets/games/real-football-challenge/index.html',desc:'Football challenge · online iframe game'},
@@ -65,6 +67,9 @@
             {id:'fnaf_hd_w',name:'FNAF World',category:'arcade',type:'iframe',source:'https://irv77.github.io/hd_fnaf/w/',desc:'Unofficial browser edition • iframe test'},
             {id:'fnaf_hd_sl',name:'Sister Location',category:'arcade',type:'iframe',source:'https://irv77.github.io/hd_fnaf/sl/',desc:'Unofficial browser edition • iframe test'},
             {id:'fnaf_hd_ps',name:'Freddy Fazbear’s Pizzeria Simulator',category:'arcade',type:'iframe',source:'https://irv77.github.io/hd_fnaf/ps/',desc:'Unofficial browser edition • iframe test'},
+            {id:'baldi_fns_ultimate',name:"Baldi's Fun New School Plus Ultimate Edition",category:'arcade',type:'iframe',source:'https://html-classic.itch.zone/html/9131604/index.html',desc:'Baldi HTML5 game · Internet required; iframe embedding may be restricted'},
+            {id:'baldi_fns_remastered',name:"Baldi's Fun New School Remastered",category:'arcade',type:'iframe',source:'https://html-classic.itch.zone/html/7228562/index.html',desc:'Baldi HTML5 game · Internet required; iframe embedding may be restricted'},
+            {id:'zombie_tsunami_html',name:'Zombie Tsunami',category:'arcade',type:'iframe',source:'https://gameshost.io/HTML5GAMES/zombi-tsunami-html',desc:'Zombie Tsunami · Internet required; iframe embedding may be restricted'},
             {id:'baldi_web_direct',name:"Baldi's Basics (Web)",category:'arcade',type:'iframe',source:'https://html-classic.itch.zone/html/16773469/index.html',desc:'Baldi browser port • iframe test'},
             {id:'among_us_itch_direct',name:'Among Us Online',category:'arcade',type:'iframe',source:'https://html-classic.itch.zone/html/13242932/index.html?v=1782318305',desc:'Browser remake • direct itch HTML5 game'},
             {id:'coaster_foundry_direct',name:'Coaster Foundry',category:'arcade',type:'iframe',source:'https://html-classic.itch.zone/html/19239060/index.html?v=1789404315',desc:'3D roller coaster builder • direct itch HTML5 game'},
@@ -270,7 +275,7 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
                 if (visible) visibleCount++;
             });
             const noResults = document.getElementById('noResults');
-            if (noResults) noResults.style.display = ['small','big','challenge'].includes(part) && !visibleCount ? 'block' : 'none';
+            if (noResults) noResults.style.display = ['small','big','challenge','baldi'].includes(part) && !visibleCount ? 'block' : 'none';
         }
 
         function launchRandomGame() {
@@ -374,11 +379,12 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
         let currentArcadePart='small';
         function showArcadePart(part){
             if(document.getElementById('aboutPage')?.classList.contains('active'))closeAboutPage();
-            if(!['small','big','challenge','macro','fnaf','cool','nexus','ultra'].includes(part))part='small';
+            if(!['small','big','challenge','macro','baldi','fnaf','cool','nexus','ultra'].includes(part))part='small';
             currentArcadePart=part;
             const info={
               small:['Small Games','Detailed quick-play originals with clear goals, controls, game-specific previews and richer arcade presentation.'],
               big:['Big Games','Larger NitroArcade experiences with worlds, missions and longer sessions.'],
+              baldi:['Baldi Games','Three Baldi browser games — play inside NitroArcade.'],
               challenge:['Challenge','Beat the Hacker Challenge to discover the secret game.'],
               macro:['MacroArcade Games','Eight original MacroArcade worlds plus two complete local arcade collections.'],
               fnaf:['FNAF Games','Eight unofficial browser ports from the HD FNAF collection. Internet required; embedding is not guaranteed.'],
@@ -388,7 +394,7 @@ const ultraGames = [{"id": "star_catch", "name": "Star Catch", "category": "arca
             };
             const title=document.getElementById('libraryPartTitle'),sub=document.getElementById('libraryPartSubtitle');
             if(title)title.textContent=info[part][0];if(sub)sub.textContent=info[part][1];
-            ['small','big','challenge','macro','fnaf','cool','nexus','ultra'].forEach(p=>{
+            ['small','big','challenge','macro','baldi','fnaf','cool','nexus','ultra'].forEach(p=>{
               const b=document.getElementById('part'+p.charAt(0).toUpperCase()+p.slice(1));
               if(b)b.classList.toggle('active',p===part);
             });

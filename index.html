@@ -267,6 +267,7 @@ body.nitro-playerhub-open .nxSidebarProfile{width:min(520px,calc(100vw - 32px))!
 <button class="filter-chip" id="partFlash" onclick="openFlashArcade()">🔒 Flash Games</button>
 <button class="filter-chip" id="partMario" onclick="window.location.href='Mario-Games/index.html'">🍄 Mario Games</button>
                     <button class="filter-chip" id="partMacro" onclick="showArcadePart('macro')" title="Show eight MacroArcade games below">🌌 MacroArcade Games</button>
+                    <button class="filter-chip" id="partBaldi" onclick="showArcadePart('baldi')">📚 Baldi Games</button>
                     <button class="filter-chip" id="partFnaf" onclick="showArcadePart('fnaf')">🐻 FNAF Games</button>
                     <button class="filter-chip" id="partNexus" onclick="showArcadePart('nexus')">🌐 NexusArcade Games</button>
                     <button class="filter-chip" id="partUltra" onclick="showArcadePart('ultra')">⚡ UltraArcade Games</button>
@@ -314,6 +315,9 @@ body.nitro-playerhub-open .nxSidebarProfile{width:min(520px,calc(100vw - 32px))!
 <button class="flash-game-tile" onclick="openFlashGame(19)"><span class="flash-icon">⚡</span><strong>Papa’s Taco Mia</strong><small>Flash / Ruffle</small></button>
 <button class="flash-game-tile" onclick="openFlashGame(20)"><span class="flash-icon">⚡</span><strong>Papa’s Pancakeria</strong><small>Flash / Ruffle</small></button></div></section>
 <div class="game-grid" id="gameGrid">
+<article class="game-card" data-game-id="baldi_fns_ultimate" data-arcade-part="baldi" onclick="launchGame(gamesDatabase.find(g => g.id === 'baldi_fns_ultimate'))" style="cursor:pointer"><button class="favorite-btn" data-fav-id="baldi_fns_ultimate" onclick="event.stopPropagation();toggleFavorite(event,'baldi_fns_ultimate')" title="Favorite">☆</button><div class="thumb" style="background:linear-gradient(135deg,#54772b,#151d31);display:grid;place-items:center;min-height:175px"><span style="font-size:70px">📚</span><div class="play-pill">▶</div></div><div class="game-meta"><div><h3>Baldi’s Fun New School Plus Ultimate Edition</h3><p>HTML5 · Internet required · iframe may be blocked</p></div><div class="meta-right"><span class="tag">PLAY</span></div></div></article>
+<article class="game-card" data-game-id="baldi_fns_remastered" data-arcade-part="baldi" onclick="launchGame(gamesDatabase.find(g => g.id === 'baldi_fns_remastered'))" style="cursor:pointer"><button class="favorite-btn" data-fav-id="baldi_fns_remastered" onclick="event.stopPropagation();toggleFavorite(event,'baldi_fns_remastered')" title="Favorite">☆</button><div class="thumb" style="background:linear-gradient(135deg,#376c44,#1c1936);display:grid;place-items:center;min-height:175px"><span style="font-size:70px">📏</span><div class="play-pill">▶</div></div><div class="game-meta"><div><h3>Baldi’s Fun New School Remastered</h3><p>HTML5 · Internet required · iframe may be blocked</p></div><div class="meta-right"><span class="tag">PLAY</span></div></div></article>
+<article class="game-card" data-game-id="zombie_tsunami_html" data-arcade-part="big" onclick="launchGame(gamesDatabase.find(g => g.id === 'zombie_tsunami_html'))" style="cursor:pointer"><button class="favorite-btn" data-fav-id="zombie_tsunami_html" onclick="event.stopPropagation();toggleFavorite(event,'zombie_tsunami_html')" title="Favorite">☆</button><div class="thumb" style="background:linear-gradient(135deg,#276e5e,#23143a);display:grid;place-items:center;min-height:175px"><span style="font-size:70px">🧟</span><div class="play-pill">▶</div></div><div class="game-meta"><div><h3>Zombie Tsunami</h3><p>HTML5 · Internet required · iframe may be blocked</p></div><div class="meta-right"><span class="tag">PLAY</span></div></div></article>
 
 <article class="game-card" data-game-id="nitro_moved_5" data-arcade-part="big" onclick="launchGame(gamesDatabase.find(g => g.id === 'nitro_moved_5'))" style="cursor:pointer"><button class="favorite-btn" data-fav-id="nitro_moved_5" onclick="event.stopPropagation();toggleFavorite(event,'nitro_moved_5')" title="Favorite">☆</button><div class="thumb" style="background:linear-gradient(135deg,#2c2050,#10152b);display:flex;align-items:center;justify-content:center;min-height:175px"><span style="font-size:72px">🏎️</span><div class="play-pill">▶</div></div><div class="game-meta"><div><h3>Extreme Car Drift Simulator</h3><p>Online iframe · Internet required</p></div><div class="meta-right"><span class="tag">PLAY</span></div></div></article>
 
@@ -384,6 +388,10 @@ body.nitro-playerhub-open .nxSidebarProfile{width:min(520px,calc(100vw - 32px))!
 <div class="game-meta"><div><h3>Real Football Challenge</h3><p>Football challenge · online iframe game</p></div><div class="meta-right"><span class="tag">PLAY</span></div></div></article>
 
 <article class="game-card" data-game-id="geometry_dash_webport" data-arcade-part="big" onclick="launchGame(gamesDatabase.find(g => g.id === 'geometry_dash_webport'))" style="cursor:pointer"><button class="favorite-btn" data-fav-id="geometry_dash_webport" onclick="toggleFavorite(event, 'geometry_dash_webport')" title="Favorite">☆</button><div class="thumb" style="background:linear-gradient(135deg,#b89924,#14162a);display:grid;place-items:center;min-height:135px"><span style="font-size:60px">🔺</span><div class="thumb-label">ONLINE · IFRAME</div><div class="play-pill">▶</div></div><div class="game-meta"><div><h3>Geometry Dash</h3><p>Browser game · Internet required</p></div><div class="tag">PLAY</div></div></article>
+
+<!-- Surviv.io and Survev.io: Big Games -->
+<article class="game-card" data-game-id="surviv_io" data-arcade-part="big" onclick="launchGame(gamesDatabase.find(g => g.id === 'surviv_io'))" style="cursor:pointer"><button class="favorite-btn" data-fav-id="surviv_io" onclick="event.stopPropagation();toggleFavorite(event,'surviv_io')" title="Favorite">☆</button><div class="thumb" style="background:linear-gradient(135deg,#306d55,#121b37);display:grid;place-items:center;min-height:175px"><span style="font-size:64px">🎯</span><div class="thumb-label">ONLINE · MULTIPLAYER</div><div class="play-pill">▶</div></div><div class="game-meta"><div><h3>Surviv.io</h3><p>2D battle royale · Internet required · Embedding may be blocked</p></div><div class="meta-right"><span class="tag">PLAY</span></div></div></article>
+<article class="game-card" data-game-id="survev_io" data-arcade-part="big" onclick="launchGame(gamesDatabase.find(g => g.id === 'survev_io'))" style="cursor:pointer"><button class="favorite-btn" data-fav-id="survev_io" onclick="event.stopPropagation();toggleFavorite(event,'survev_io')" title="Favorite">☆</button><div class="thumb" style="background:linear-gradient(135deg,#346b83,#25143c);display:grid;place-items:center;min-height:175px"><span style="font-size:64px">🪖</span><div class="thumb-label">ONLINE · MULTIPLAYER</div><div class="play-pill">▶</div></div><div class="game-meta"><div><h3>Survev.io</h3><p>2D battle royale · Internet required · Embedding may be blocked</p></div><div class="meta-right"><span class="tag">PLAY</span></div></div></article>
 <article class="game-card" data-game-id="minecraft_versions" data-arcade-part="big" onclick="launchGame(gamesDatabase.find(g => g.id === 'minecraft_versions'))" style="cursor:pointer"><button class="favorite-btn" data-fav-id="minecraft_versions" onclick="toggleFavorite(event, 'minecraft_versions')" title="Favorite">☆</button><div class="thumb" style="background:linear-gradient(135deg,#29563b,#142339);display:grid;place-items:center;min-height:135px"><span style="font-size:60px">⛏️</span><div class="thumb-label">ONLINE · IFRAME</div><div class="play-pill">▶</div></div><div class="game-meta"><div><h3>Minecraft Versions</h3><p>Browser versions · Internet required</p></div><div class="tag">PLAY</div></div></article>
 
 <article class="game-card" data-game-id="zombs_royale" data-arcade-part="big" onclick="launchGame(gamesDatabase.find(g=>g.id==='zombs_royale'))"><button class="favorite-btn" data-fav-id="zombs_royale" onclick="toggleFavorite(event,'zombs_royale')" title="Favorite">☆</button><div class="thumb" style="background:linear-gradient(135deg,#2a664d,#102437);display:grid;place-items:center;font-size:62px">🧟<div class="thumb-label">ONLINE</div><div class="play-pill">▶</div></div><div class="game-meta"><div><h3>ZombsRoyale</h3><p>Online battle royale · Play inside NitroArcade</p></div><div class="tag">PLAY</div></div></article>
@@ -399,7 +407,7 @@ body.nitro-playerhub-open .nxSidebarProfile{width:min(520px,calc(100vw - 32px))!
 
 <article class="game-card" data-game-id="among_us_itch_direct" data-arcade-part="big" onclick="launchGame(gamesDatabase.find(g => g.id === 'among_us_itch_direct'))"><button class="favorite-btn" data-fav-id="among_us_itch_direct" onclick="toggleFavorite(event, 'among_us_itch_direct')" title="Favorite">☆</button><div class="thumb" style="display:grid;place-items:center;background:radial-gradient(circle,#48226e,#101326);font-size:54px">🚀</div><div class="game-meta"><div><h3>Among Us Online</h3><p>Browser remake • direct itch HTML5 game</p></div><div class="tag">PLAY HERE</div></div></article>
 
-<article class="game-card" data-game-id="baldi_web_direct" data-arcade-part="big" onclick="launchGame(gamesDatabase.find(g => g.id === 'baldi_web_direct'))"><button class="favorite-btn" data-fav-id="baldi_web_direct" onclick="toggleFavorite(event, 'baldi_web_direct')" title="Favorite">☆</button><div class="thumb" style="display:grid;place-items:center;background:radial-gradient(circle,#6d9c47,#152c1b);font-size:54px">📓</div><div class="game-meta"><div><h3>Baldi's Basics (Web)</h3><p>Direct itch.io HTML5 game • embed test</p></div><div class="tag">PLAY HERE</div></div></article>
+<article class="game-card" data-game-id="baldi_web_direct" data-arcade-part="baldi" onclick="launchGame(gamesDatabase.find(g => g.id === 'baldi_web_direct'))"><button class="favorite-btn" data-fav-id="baldi_web_direct" onclick="toggleFavorite(event, 'baldi_web_direct')" title="Favorite">☆</button><div class="thumb" style="display:grid;place-items:center;background:radial-gradient(circle,#6d9c47,#152c1b);font-size:54px">📓</div><div class="game-meta"><div><h3>Baldi's Basics (Web)</h3><p>Direct itch.io HTML5 game • embed test</p></div><div class="tag">PLAY HERE</div></div></article>
 
 <article class="game-card" data-game-id="demolition_tycoon_3d" data-arcade-part="big" onclick="launchGame(gamesDatabase.find(g => g.id === 'demolition_tycoon_3d'))"><button class="favorite-btn" data-fav-id="demolition_tycoon_3d" onclick="toggleFavorite(event, 'demolition_tycoon_3d')" title="Favorite">☆</button><div class="thumb" style="display:grid;place-items:center;background:radial-gradient(circle at center,rgba(140,90,255,.25),#030512)"><span style="font-size:82px">🏗️</span><div class="thumb-label">IFRAME TEST</div><div class="play-pill">▶</div></div><div class="game-meta"><div><h3>Demolition Tycoon 3D</h3><p>3D building demolition tycoon</p></div><div class="tag">PLAY HERE</div></div></article>
 <article class="game-card" data-game-id="yohoho_io" data-arcade-part="big" onclick="launchGame(gamesDatabase.find(g => g.id === 'yohoho_io'))"><button class="favorite-btn" data-fav-id="yohoho_io" onclick="toggleFavorite(event, 'yohoho_io')" title="Favorite">☆</button><div class="thumb" style="display:grid;place-items:center;background:radial-gradient(circle at center,rgba(140,90,255,.25),#030512)"><span style="font-size:82px">🏴‍☠️</span><div class="thumb-label">IFRAME TEST</div><div class="play-pill">▶</div></div><div class="game-meta"><div><h3>YoHoHo.io</h3><p>Pirate multiplayer survival</p></div><div class="tag">PLAY HERE</div></div></article>
@@ -1618,5 +1626,41 @@ document.addEventListener('DOMContentLoaded',()=>{
  const help=[...sidebar?.querySelectorAll('button')||[]].find(b=>b.textContent.includes('Help & Shortcuts'));
  if(button && help)help.insertAdjacentElement('afterend',button);
 });
-</script></body>
+</script>
+<!-- NitroArcade survival games: use the existing NitroArcade game launcher. -->
+<script id="nitro-survival-registration">
+(function () {
+  const entries = [
+    {id:'surviv_io',name:'Surviv.io',category:'arcade',type:'iframe',source:'https://surviv.io',desc:'2D multiplayer battle royale · Internet required; iframe may be blocked'},
+    {id:'survev_io',name:'Survev.io',category:'arcade',type:'iframe',source:'https://survev.io',desc:'2D multiplayer survival game · Internet required; iframe may be blocked'}
+  ];
+  function register() {
+    if (typeof gamesDatabase === 'undefined' || !Array.isArray(gamesDatabase)) return false;
+    for (const game of entries) {
+      if (!gamesDatabase.some(existing => existing.id === game.id)) gamesDatabase.push(game);
+    }
+    return true;
+  }
+  if (!register()) document.addEventListener('DOMContentLoaded', register, {once:true});
+})();
+</script>
+    <script>
+document.addEventListener("DOMContentLoaded", () => {
+  const removeAlinCards = () => {
+    document.querySelectorAll(".nmWorldCard").forEach(card => {
+      const tag = card.querySelector(".nmWorldTag");
+      if (tag && tag.textContent.includes("ALIN 916")) {
+        card.remove();
+      }
+    });
+  };
+
+  removeAlinCards();
+  setTimeout(removeAlinCards, 1000);
+});
+</script>
+
+<!-- Baldi Games and Zombie Tsunami integration -->
+<!-- Baldi Games is handled directly by js/nitro-inline-003.js -->
+</body>
 </html>
